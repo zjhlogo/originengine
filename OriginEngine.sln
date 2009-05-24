@@ -1,0 +1,66 @@
+Microsoft Visual Studio Solution File, Format Version 8.00
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RendererD3D", "source\RendererD3D\RendererD3D.vcproj", "{AC354CD4-184C-4981-BB36-AA0FBD4A0704}"
+	ProjectSection(ProjectDependencies) = postProject
+		{FC86443B-245B-4F29-BEF2-2D39A8F8B063} = {FC86443B-245B-4F29-BEF2-2D39A8F8B063}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RendererOpenGL", "source\RendererOpenGL\RendererOpenGL.vcproj", "{76D80167-2434-4D55-91F5-BE7DEF3C29F0}"
+	ProjectSection(ProjectDependencies) = postProject
+		{FC86443B-245B-4F29-BEF2-2D39A8F8B063} = {FC86443B-245B-4F29-BEF2-2D39A8F8B063}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OriginEngine", "source\OriginEngine\OriginEngine.vcproj", "{D075752D-2334-4F70-B398-75BEA302E0F7}"
+	ProjectSection(ProjectDependencies) = postProject
+		{FC86443B-245B-4F29-BEF2-2D39A8F8B063} = {FC86443B-245B-4F29-BEF2-2D39A8F8B063}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libOE", "source\libOE\libOE.vcproj", "{FC86443B-245B-4F29-BEF2-2D39A8F8B063}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfiguration) = preSolution
+		Debug = Debug
+		Release = Release
+		Unicode Debug = Unicode Debug
+		Unicode Release = Unicode Release
+	EndGlobalSection
+	GlobalSection(ProjectConfiguration) = postSolution
+		{AC354CD4-184C-4981-BB36-AA0FBD4A0704}.Debug.ActiveCfg = Debug|Win32
+		{AC354CD4-184C-4981-BB36-AA0FBD4A0704}.Debug.Build.0 = Debug|Win32
+		{AC354CD4-184C-4981-BB36-AA0FBD4A0704}.Release.ActiveCfg = Release|Win32
+		{AC354CD4-184C-4981-BB36-AA0FBD4A0704}.Release.Build.0 = Release|Win32
+		{AC354CD4-184C-4981-BB36-AA0FBD4A0704}.Unicode Debug.ActiveCfg = Unicode Debug|Win32
+		{AC354CD4-184C-4981-BB36-AA0FBD4A0704}.Unicode Debug.Build.0 = Unicode Debug|Win32
+		{AC354CD4-184C-4981-BB36-AA0FBD4A0704}.Unicode Release.ActiveCfg = Unicode Release|Win32
+		{AC354CD4-184C-4981-BB36-AA0FBD4A0704}.Unicode Release.Build.0 = Unicode Release|Win32
+		{76D80167-2434-4D55-91F5-BE7DEF3C29F0}.Debug.ActiveCfg = Debug|Win32
+		{76D80167-2434-4D55-91F5-BE7DEF3C29F0}.Debug.Build.0 = Debug|Win32
+		{76D80167-2434-4D55-91F5-BE7DEF3C29F0}.Release.ActiveCfg = Release|Win32
+		{76D80167-2434-4D55-91F5-BE7DEF3C29F0}.Release.Build.0 = Release|Win32
+		{76D80167-2434-4D55-91F5-BE7DEF3C29F0}.Unicode Debug.ActiveCfg = Unicode Debug|Win32
+		{76D80167-2434-4D55-91F5-BE7DEF3C29F0}.Unicode Debug.Build.0 = Unicode Debug|Win32
+		{76D80167-2434-4D55-91F5-BE7DEF3C29F0}.Unicode Release.ActiveCfg = Unicode Release|Win32
+		{76D80167-2434-4D55-91F5-BE7DEF3C29F0}.Unicode Release.Build.0 = Unicode Release|Win32
+		{D075752D-2334-4F70-B398-75BEA302E0F7}.Debug.ActiveCfg = Debug|Win32
+		{D075752D-2334-4F70-B398-75BEA302E0F7}.Debug.Build.0 = Debug|Win32
+		{D075752D-2334-4F70-B398-75BEA302E0F7}.Release.ActiveCfg = Release|Win32
+		{D075752D-2334-4F70-B398-75BEA302E0F7}.Release.Build.0 = Release|Win32
+		{D075752D-2334-4F70-B398-75BEA302E0F7}.Unicode Debug.ActiveCfg = Unicode Debug|Win32
+		{D075752D-2334-4F70-B398-75BEA302E0F7}.Unicode Debug.Build.0 = Unicode Debug|Win32
+		{D075752D-2334-4F70-B398-75BEA302E0F7}.Unicode Release.ActiveCfg = Unicode Release|Win32
+		{D075752D-2334-4F70-B398-75BEA302E0F7}.Unicode Release.Build.0 = Unicode Release|Win32
+		{FC86443B-245B-4F29-BEF2-2D39A8F8B063}.Debug.ActiveCfg = Debug|Win32
+		{FC86443B-245B-4F29-BEF2-2D39A8F8B063}.Debug.Build.0 = Debug|Win32
+		{FC86443B-245B-4F29-BEF2-2D39A8F8B063}.Release.ActiveCfg = Release|Win32
+		{FC86443B-245B-4F29-BEF2-2D39A8F8B063}.Release.Build.0 = Release|Win32
+		{FC86443B-245B-4F29-BEF2-2D39A8F8B063}.Unicode Debug.ActiveCfg = Unicode Debug|Win32
+		{FC86443B-245B-4F29-BEF2-2D39A8F8B063}.Unicode Debug.Build.0 = Unicode Debug|Win32
+		{FC86443B-245B-4F29-BEF2-2D39A8F8B063}.Unicode Release.ActiveCfg = Unicode Release|Win32
+		{FC86443B-245B-4F29-BEF2-2D39A8F8B063}.Unicode Release.Build.0 = Unicode Release|Win32
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+	EndGlobalSection
+	GlobalSection(ExtensibilityAddIns) = postSolution
+	EndGlobalSection
+EndGlobal
