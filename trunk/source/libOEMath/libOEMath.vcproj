@@ -93,8 +93,8 @@
 		</Configuration>
 		<Configuration
 			Name="Unicode Debug|Win32"
-			OutputDirectory="$(ConfigurationName)"
-			IntermediateDirectory="$(ConfigurationName)"
+			OutputDirectory="..\..\build\$(ProjectName)\$(ConfigurationName)"
+			IntermediateDirectory="..\..\build\$(ProjectName)\$(ConfigurationName)"
 			ConfigurationType="4"
 			CharacterSet="2">
 			<Tool
@@ -135,8 +135,8 @@
 		</Configuration>
 		<Configuration
 			Name="Unicode Release|Win32"
-			OutputDirectory="$(ConfigurationName)"
-			IntermediateDirectory="$(ConfigurationName)"
+			OutputDirectory="..\..\build\$(ProjectName)\$(ConfigurationName)"
+			IntermediateDirectory="..\..\build\$(ProjectName)\$(ConfigurationName)"
 			ConfigurationType="4"
 			CharacterSet="2">
 			<Tool
