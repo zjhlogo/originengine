@@ -18,5 +18,14 @@ extern const float OEMATH_TOL;		// float type tolerance
 #include "Matrix4x4.h"
 #include "Quaternion.h"
 
+#include "OEMath.inl"
+
+class COEMath
+{
+public:
+	static void BuildLookAtMatrixLH(CMatrix4x4& matOut, const CVector3& vEye, const CVector3& vAt, const CVector3& vUp);
+	static void BuildProjectMatrixLH(CMatrix4x4& matOut, float fFov, float fAspect, float fNear, float fFar);
+
+};
 
 #endif // __OEMATH_H__

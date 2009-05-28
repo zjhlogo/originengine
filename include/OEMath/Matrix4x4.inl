@@ -29,6 +29,14 @@ inline CMatrix4x4::CMatrix4x4(float fm00, float fm01, float fm02, float fm03,
 	m[12] = fm30; m[13] = fm31; m[14] = fm32; m[15] = fm33;
 }
 
+inline void CMatrix4x4::Identity()
+{
+	m[0]  = 1.0f; m[1]  = 0.0f; m[2]  = 0.0f; m[3]  = 0.0f;
+	m[4]  = 0.0f; m[5]  = 1.0f; m[6]  = 0.0f; m[7]  = 0.0f;
+	m[8]  = 0.0f; m[9]  = 0.0f; m[10] = 1.0f; m[11] = 0.0f;
+	m[12] = 0.0f; m[13] = 0.0f; m[14] = 0.0f; m[15] = 1.0f;
+}
+
 inline float CMatrix4x4::Det() const
 {
 	float fA0 = m[0] * m[5] - m[1] * m[4];
@@ -46,14 +54,6 @@ inline float CMatrix4x4::Det() const
 	float fB5 = m[10] * m[15] - m[11] * m[14];
 
 	return fA0*fB5-fA1*fB4+fA2*fB3+fA3*fB2-fA4*fB1+fA5*fB0;
-}
-
-inline void CMatrix4x4::Identity()
-{
-	m[0]  = 1.0f; m[1]  = 0.0f; m[2]  = 0.0f; m[3]  = 0.0f;
-	m[4]  = 0.0f; m[5]  = 1.0f; m[6]  = 0.0f; m[7]  = 0.0f;
-	m[8]  = 0.0f; m[9]  = 0.0f; m[10] = 1.0f; m[11] = 0.0f;
-	m[12] = 0.0f; m[13] = 0.0f; m[14] = 0.0f; m[15] = 1.0f;
 }
 
 inline CMatrix4x4 CMatrix4x4::Transpose() const

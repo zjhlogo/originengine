@@ -38,14 +38,6 @@ inline float CVector4::SquaredLength() const
 	return x*x+y*y+z*z+w*w;
 }
 
-inline void CVector4::Reverse()
-{
-	x = -x;
-	y = -y;
-	z = -z;
-	w = -w;
-}
-
 inline CVector4& CVector4::operator +=(const CVector4& v)
 {
 	x += v.x;

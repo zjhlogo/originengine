@@ -7,6 +7,8 @@
  */
 #include "OED3DDevice_Impl.h"
 #include "OED3DVertDecl_Impl.h"
+
+#include <OEMath/OEMath.h>
 #include <OEInterfaces.h>
 
 IDirect3D9* g_pD3D = NULL;
@@ -252,8 +254,46 @@ void COED3DDevice_Impl::PerformOnce(float fDetailTime)
 
 LRESULT CALLBACK COED3DDevice_Impl::MainWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
+	static short s_nLastMousePosX = 0;
+	static short s_nLastMousePosY = 0;
+
 	switch(uMsg)
 	{
+	case WM_LBUTTONDOWN:
+		{
+			SetCapture(hWnd);
+			short x = LOWORD(lParam);
+			short y = HIWORD(lParam);
+			g_pOEApp->OnLButtonDown(x, y);
+		}
+		break;
+	case WM_LBUTTONUP:
+		{
+			short x = LOWORD(lParam);
+			short y = HIWORD(lParam);
+			g_pOEApp->OnLButtonUp(x, y);
+			ReleaseCapture();
+		}
+		break;
+	case WM_MOUSEMOVE:
+		{
+			short x = LOWORD(lParam);
+			short y = HIWORD(lParam);
+			g_pOEApp->OnMouseMove(x-s_nLastMousePosX, y-s_nLastMousePosY);
+			s_nLastMousePosX = x;
+			s_nLastMousePosY = y;
+		}
+		break;
+	case WM_KEYUP:
+		{
+			g_pOEApp->OnKeyUp((int)wParam);
+		}
+		break;
+	case WM_KEYDOWN:
+		{
+			g_pOEApp->OnKeyDown((int)wParam);
+		}
+		break;
 	case WM_DESTROY:
 		{
 			PostQuitMessage(0);
@@ -272,22 +312,19 @@ LRESULT CALLBACK COED3DDevice_Impl::MainWndProc(HWND hWnd, UINT uMsg, WPARAM wPa
 void COED3DDevice_Impl::InitializeD3D()
 {
 	// TODO: initialize
-	D3DXMATRIX matWorld;
-	D3DXMatrixIdentity(&matWorld);
-	g_pd3dDevice->SetTransform(D3DTS_WORLD, &matWorld);
+	CMatrix4x4 matWorld;
+	matWorld.Identity();
+	g_pOERenderer->SetTransform(IOERenderer::TT_WORLD, matWorld);
 
-	D3DXMATRIX matView;
-	D3DXVECTOR3 vEye(0.0f, 3.0f, -5.0f);
-	D3DXVECTOR3 vAt(0.0f, 0.0f, 0.0f);
-	D3DXVECTOR3 vUp(0.0f, 1.0f, 0.0f);
-	D3DXMatrixLookAtLH(&matView, &vEye, &vAt, &vUp);
-	g_pd3dDevice->SetTransform(D3DTS_VIEW, &matView);
+	CMatrix4x4 matView;
+	COEMath::BuildLookAtMatrixLH(matView, CVector3(0.0f, 3.0f, -5.0f), CVector3(0.0f, 0.0f, 0.0f), CVector3(0.0f, 1.0f, 0.0f));
+	g_pOERenderer->SetTransform(IOERenderer::TT_VIEW, matView);
 
-	D3DXMATRIX matProj;
-	D3DXMatrixPerspectiveFovLH(&matProj, D3DX_PI/4.0f, (float)m_nWindowWidth/(float)m_nWindowHeight, 1.0f, 10000.0f);
-	g_pd3dDevice->SetTransform(D3DTS_PROJECTION, &matProj);
+	CMatrix4x4 matProj;
+	COEMath::BuildProjectMatrixLH(matProj, OEMATH_PI/4.0f, (float)m_nWindowWidth/(float)m_nWindowHeight, 1.0f, 10000.0f);
+	g_pOERenderer->SetTransform(IOERenderer::TT_PROJECTION, matProj);
 
-	g_pd3dDevice->SetRenderState(D3DRS_LIGHTING, FALSE);
-	g_pd3dDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
-	g_pd3dDevice->SetRenderState(D3DRS_ZENABLE, TRUE);
+	g_pOERenderer->EnableLight(false);
+	g_pOERenderer->EnableZBuffer(true);
+	g_pOERenderer->SetCullMode(IOERenderer::CMT_CCW);
 }

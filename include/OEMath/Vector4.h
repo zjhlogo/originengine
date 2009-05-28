@@ -18,7 +18,6 @@ public:
 	float Length() const;
 	float SquaredLength() const;
 	void Normalize();
-	void Reverse();
 
 	CVector4& operator +=(const CVector4& v);
 	CVector4& operator -=(const CVector4& v);

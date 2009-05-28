@@ -9,7 +9,9 @@
 #define __OED3DUTIL_H__
 
 #include <IOEVertDecl.h>
-#include <d3d9.h>
+#include <IOERenderer.h>
+#include <OEMath/OEMath.h>
+#include <d3dx9.h>
 
 class COED3DUtil
 {
@@ -22,6 +24,14 @@ public:
 
 	static int GetVertTypeSize(IOEVertDecl::TYPE eType);
 
+	static D3DTRANSFORMSTATETYPE ToD3DTransformType(IOERenderer::TRANSFORM_TYPE eType);
+	static IOERenderer::TRANSFORM_TYPE ToOETransformType(D3DTRANSFORMSTATETYPE eType);
+
+	static D3DCULL ToD3DCullMode(IOERenderer::CULL_MODE_TYPE eType);
+	static IOERenderer::CULL_MODE_TYPE ToOECullMode(D3DCULL eType);
+
+	static void ToD3DXMatrix(D3DXMATRIX& matOut, const CMatrix4x4& matIn);
+	static void ToOEMatrix(CMatrix4x4& matOut, const D3DXMATRIX& matIn);
 };
 
 #endif // __OED3DUTIL_H__
