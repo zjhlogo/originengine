@@ -37,13 +37,6 @@ inline float CVector3::SquaredLength() const
 	return x*x+y*y+z*z;
 }
 
-inline void CVector3::Reverse()
-{
-	x = -x;
-	y = -y;
-	z = -z;
-}
-
 inline CVector3& CVector3::operator +=(const CVector3& v)
 {
 	x += v.x;
@@ -79,6 +72,41 @@ inline CVector3& CVector3::operator /=(float s)
 inline CVector3 CVector3::operator -() const
 {
 	return CVector3(-x, -y, -z);
+}
+
+inline CVector3 operator +(const CVector3& v1, const CVector3& v2)
+{
+	return CVector3(v1.x+v2.x, v1.y+v2.y, v1.z+v2.z);
+}
+
+inline CVector3 operator -(const CVector3& v1, const CVector3& v2)
+{
+	return CVector3(v1.x-v2.x, v1.y-v2.y, v1.z-v2.z);
+}
+
+inline float operator *(const CVector3& v1, const CVector3& v2)
+{
+	return (v1.x*v2.x + v1.y*v2.y + v1.z*v2.z);
+}
+
+inline CVector3 operator *(float s, const CVector3& v)
+{
+	return CVector3(v.x*s, v.y*s, v.z*s);
+}
+
+inline CVector3 operator *(const CVector3& v, float s)
+{
+	return CVector3(v.x*s, v.y*s, v.z*s);
+}
+
+inline CVector3 operator /(const CVector3& v, float s)
+{
+	return CVector3(v.x/s, v.y/s, v.z/s);
+}
+
+inline CVector3 operator ^(const CVector3& v1, const CVector3& v2)
+{
+	return CVector3(v1.y*v2.z-v1.z*v2.y, -v1.x*v2.z+v1.z*v2.x, v1.x*v2.y-v1.y*v2.x);
 }
 
 #endif // __VECTOR3_INL__

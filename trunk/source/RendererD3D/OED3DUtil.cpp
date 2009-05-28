@@ -108,3 +108,74 @@ int COED3DUtil::GetVertTypeSize(IOEVertDecl::TYPE eType)
 	assert(eType >= 0 && eType < IOEVertDecl::T_MAX);
 	return DECLARE_MAP[eType];
 }
+
+D3DTRANSFORMSTATETYPE COED3DUtil::ToD3DTransformType(IOERenderer::TRANSFORM_TYPE eType)
+{
+	static const D3DTRANSFORMSTATETYPE DECLARE_MAP[IOERenderer::TT_MAX] =
+	{
+		D3DTS_WORLD,
+		D3DTS_WORLD,
+		D3DTS_VIEW,
+		D3DTS_PROJECTION,
+	};
+
+	assert(eType >= 0 && eType < IOERenderer::TT_MAX);
+	return DECLARE_MAP[eType];
+}
+
+IOERenderer::TRANSFORM_TYPE COED3DUtil::ToOETransformType(D3DTRANSFORMSTATETYPE eType)
+{
+	switch (eType)
+	{
+	case D3DTS_WORLD:
+		return IOERenderer::TT_WORLD;
+		break;
+	case D3DTS_VIEW:
+		return IOERenderer::TT_VIEW;
+		break;
+	case D3DTS_PROJECTION:
+		return IOERenderer::TT_PROJECTION;
+		break;
+	}
+
+	return IOERenderer::TT_UNKNOWN;
+}
+
+D3DCULL COED3DUtil::ToD3DCullMode(IOERenderer::CULL_MODE_TYPE eType)
+{
+	static const D3DCULL DECLARE_MAP[IOERenderer::CMT_MAX] =
+	{
+		D3DCULL_NONE,
+		D3DCULL_NONE,
+		D3DCULL_CW,
+		D3DCULL_CCW,
+	};
+
+	assert(eType >= 0 && eType < IOERenderer::CMT_MAX);
+	return DECLARE_MAP[eType];
+}
+
+IOERenderer::CULL_MODE_TYPE COED3DUtil::ToOECullMode(D3DCULL eType)
+{
+	static const int MAP_SIZE = 4;
+	static const IOERenderer::CULL_MODE_TYPE DECLARE_MAP[MAP_SIZE] =
+	{
+		IOERenderer::CMT_NONE,
+		IOERenderer::CMT_NONE,
+		IOERenderer::CMT_CW,
+		IOERenderer::CMT_CCW,
+	};
+
+	assert(eType >= 0 && eType < MAP_SIZE);
+	return DECLARE_MAP[eType];
+}
+
+void COED3DUtil::ToD3DXMatrix(D3DXMATRIX& matOut, const CMatrix4x4& matIn)
+{
+	memcpy(matOut.m, matIn.m, sizeof(matIn.m));
+}
+
+void COED3DUtil::ToOEMatrix(CMatrix4x4& matOut, const D3DXMATRIX& matIn)
+{
+	memcpy(matOut.m, matIn.m, sizeof(matIn.m));
+}

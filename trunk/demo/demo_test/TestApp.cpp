@@ -6,7 +6,9 @@
  * \author zjhlogo (zjhlogo@163.com)
  */
 #include "TestApp.h"
+
 #include <OEInterfaces.h>
+#include <assert.h>
 
 CTestApp::CTestApp()
 {
@@ -21,6 +23,11 @@ CTestApp::~CTestApp()
 void CTestApp::Init()
 {
 	m_pDecl = NULL;
+	m_pCamera = NULL;
+	m_bLButtonDown = false;
+	m_nMouseDetailX = 0;
+	m_nMouseDetailY = 0;
+	memset(m_KeyDown, 0, sizeof(m_KeyDown));
 }
 
 void CTestApp::Destroy()
@@ -40,31 +47,96 @@ bool CTestApp::Initialize()
 	m_pDecl = g_pOEDevice->CreateVertDecl(s_Decl);
 	if (!m_pDecl) return false;
 
+	m_pCamera = new CCamera();
+
 	return true;
 }
 
 void CTestApp::Terminate()
 {
 	SAFE_RELEASE(m_pDecl);
+	SAFE_DELETE(m_pCamera);
 }
 
 void CTestApp::Update(float fDetailTime)
 {
-	// TODO: 
+	bool bRot = UpdateRotation(fDetailTime);
+	bool bMov = UpdateMovement(fDetailTime);
+	if (bRot || bMov) g_pOERenderer->SetTransform(IOERenderer::TT_VIEW, m_pCamera->GetViewMatrix());
 }
 
 void CTestApp::Render(float fDetailTime)
 {
 	static const VERTEX s_Verts[4] =
 	{
-		{-1.0f, -1.0f, 0.0f, 0xFFFFFFFF},
-		{-1.0f, 1.0f, 0.0f, 0xFFFFFFFF},
-		{1.0f, 1.0f, 0.0f, 0xFFFFFFFF},
-		{1.0f, -1.0f, 0.0f, 0xFFFFFFFF},
+		{-10.0f, 0.0f, -10.0f, 0xFFFF0000},
+		{-10.0f, 0.0f, 10.0f, 0xFF00FF00},
+		{10.0f, 0.0f, 10.0f, 0xFF0000FF},
+		{10.0f, 0.0f, -10.0f, 0xFFFFFFFF},
 	};
 
 	static const ushort s_Indis[4] = {0, 1, 3, 2};
 
 	g_pOERenderer->SetVertDecl(m_pDecl);
 	g_pOERenderer->DrawTriStrip(s_Verts, 4, s_Indis, 4);
+}
+
+void CTestApp::OnLButtonDown(int x, int y)
+{
+	m_bLButtonDown = true;
+}
+
+void CTestApp::OnLButtonUp(int x, int y)
+{
+	m_bLButtonDown = false;
+}
+
+void CTestApp::OnMouseMove(int dx, int dy)
+{
+	if (!m_bLButtonDown) return;
+	m_nMouseDetailX = dx;
+	m_nMouseDetailY = dy;
+}
+
+void CTestApp::OnKeyUp(int nKeyCode)
+{
+	assert(nKeyCode > 0 && nKeyCode < KEY_COUNT);
+	m_KeyDown[nKeyCode] = false;
+}
+
+void CTestApp::OnKeyDown(int nKeyCode)
+{
+	assert(nKeyCode > 0 && nKeyCode < KEY_COUNT);
+	m_KeyDown[nKeyCode] = true;
+}
+
+bool CTestApp::UpdateMovement(float fDetailTime)
+{
+	static const float MOVE_DIST = 10.0f;
+
+	bool bUpdateMovement = m_KeyDown['W'] || m_KeyDown['S'] || m_KeyDown['A'] || m_KeyDown['D'];
+	if (!bUpdateMovement) return false;
+
+	if (m_KeyDown['W']) m_pCamera->Move(m_pCamera->GetVectorForword(), MOVE_DIST*fDetailTime);
+	if (m_KeyDown['S']) m_pCamera->Move(m_pCamera->GetVectorForword(), -MOVE_DIST*fDetailTime);
+	if (m_KeyDown['D']) m_pCamera->Move(m_pCamera->GetVectorRight(), MOVE_DIST*fDetailTime);
+	if (m_KeyDown['A']) m_pCamera->Move(m_pCamera->GetVectorRight(), -MOVE_DIST*fDetailTime);
+
+	return true;
+}
+
+bool CTestApp::UpdateRotation(float fDetailTime)
+{
+	static const float ROTATE_ADJUST = 0.1f;
+
+	if (!m_bLButtonDown) return false;
+	if (m_nMouseDetailX == 0 && m_nMouseDetailY == 0) return false;
+
+	if (m_nMouseDetailX) m_pCamera->Rotate(m_pCamera->GetVectorUp(), m_nMouseDetailX*fDetailTime*ROTATE_ADJUST);
+	if (m_nMouseDetailY) m_pCamera->Rotate(m_pCamera->GetVectorRight(), m_nMouseDetailY*fDetailTime*ROTATE_ADJUST);
+
+	m_nMouseDetailY = 0;
+	m_nMouseDetailX = 0;
+
+	return true;
 }

@@ -18,7 +18,6 @@ public:
 	float Length() const;
 	float SquaredLength() const;
 	void Normalize();
-	void Reverse();
 
 	CVector3& operator +=(const CVector3& v);
 	CVector3& operator -=(const CVector3& v);
@@ -33,6 +32,14 @@ public:
 	float z;
 
 };
+
+CVector3 operator +(const CVector3& v1, const CVector3& v2);
+CVector3 operator -(const CVector3& v1, const CVector3& v2);
+float operator *(const CVector3& v1, const CVector3& v2);
+CVector3 operator *(float s, const CVector3& v);
+CVector3 operator *(const CVector3& v, float s);
+CVector3 operator /(const CVector3& v, float s);
+CVector3 operator ^(const CVector3& v1, const CVector3& v2);
 
 #include "Vector3.inl"
 

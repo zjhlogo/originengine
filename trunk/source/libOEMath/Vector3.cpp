@@ -7,17 +7,22 @@
  */
 #include <OEMath/Vector3.h>
 #include <OEMath/OEMath.h>
+#include <assert.h>
 
 void CVector3::Normalize()
 {
-	float m = Length();
-	if (m <= OEMATH_TOL) m = 1.0f;
+	float fMag = Length();
 
-	x /= m;
-	y /= m;
-	z /= m;
+	if (fMag > 0.0f)
+	{
+		float fInvMag = 1.0f/fMag;
 
-	if (fabsf(x) < OEMATH_TOL) x = 0.0f;
-	if (fabsf(y) < OEMATH_TOL) y = 0.0f;
-	if (fabsf(z) < OEMATH_TOL) z = 0.0f;
+		x *= fInvMag;
+		y *= fInvMag;
+		z *= fInvMag;
+	}
+	else
+	{
+		assert(false);
+	}
 }

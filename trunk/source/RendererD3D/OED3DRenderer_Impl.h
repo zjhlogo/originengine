@@ -22,6 +22,13 @@ public:
 	virtual void DrawTriStrip(const void* pVerts, uint nVerts, const ushort* pIndis, uint nIndis);
 	virtual void DrawTriFan(const void* pVerts, uint nVerts, const ushort* pIndis, uint nIndis);
 
+	virtual void SetTransform(TRANSFORM_TYPE eType, const CMatrix4x4& mat);
+	virtual void GetTransform(CMatrix4x4& matOut, TRANSFORM_TYPE eType) const;
+
+	virtual void EnableLight(bool bEnable);
+	virtual void EnableZBuffer(bool bEnable);
+	virtual void SetCullMode(CULL_MODE_TYPE eMode);
+
 private:
 	void Init();
 	void Destroy();
