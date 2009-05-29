@@ -232,6 +232,12 @@ copy &quot;$(TargetPath)&quot; &quot;..\..\bin\&quot;
 				RelativePath=".\Camera.cpp">
 			</File>
 			<File
+				RelativePath=".\MapTile.cpp">
+			</File>
+			<File
+				RelativePath=".\TerrainMgr.cpp">
+			</File>
+			<File
 				RelativePath=".\TestApp.cpp">
 			</File>
 			<File
@@ -244,6 +250,12 @@ copy &quot;$(TargetPath)&quot; &quot;..\..\bin\&quot;
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}">
 			<File
 				RelativePath=".\Camera.h">
+			</File>
+			<File
+				RelativePath=".\MapTile.h">
+			</File>
+			<File
+				RelativePath=".\TerrainMgr.h">
 			</File>
 			<File
 				RelativePath=".\TestApp.h">

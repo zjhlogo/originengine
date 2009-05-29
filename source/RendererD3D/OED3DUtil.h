@@ -30,6 +30,9 @@ public:
 	static D3DCULL ToD3DCullMode(IOERenderer::CULL_MODE_TYPE eType);
 	static IOERenderer::CULL_MODE_TYPE ToOECullMode(D3DCULL eType);
 
+	static D3DFILLMODE ToD3DFillMode(IOERenderer::FILL_MODE eType);
+	static IOERenderer::FILL_MODE ToOEFillMode(D3DFILLMODE eType);
+
 	static void ToD3DXMatrix(D3DXMATRIX& matOut, const CMatrix4x4& matIn);
 	static void ToOEMatrix(CMatrix4x4& matOut, const D3DXMATRIX& matIn);
 };

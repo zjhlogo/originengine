@@ -27,7 +27,11 @@ public:
 
 	virtual void EnableLight(bool bEnable);
 	virtual void EnableZBuffer(bool bEnable);
+	virtual void EnableFog(bool bEnable);
+
 	virtual void SetCullMode(CULL_MODE_TYPE eMode);
+	virtual void SetFillMode(FILL_MODE eFillMode);
+	virtual void SetFogInfo(uint nColor, float fNear, float fFar);
 
 private:
 	void Init();

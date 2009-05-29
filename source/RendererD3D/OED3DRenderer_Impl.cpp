@@ -81,12 +81,38 @@ void COED3DRenderer_Impl::EnableLight(bool bEnable)
 
 void COED3DRenderer_Impl::EnableZBuffer(bool bEnable)
 {
-	if (bEnable) g_pd3dDevice->SetRenderState(D3DRS_ZENABLE, TRUE);
-	else g_pd3dDevice->SetRenderState(D3DRS_ZENABLE, FALSE);
+	if (bEnable)
+	{
+		g_pd3dDevice->SetRenderState(D3DRS_ZENABLE, TRUE);
+		g_pd3dDevice->SetRenderState(D3DRS_FOGVERTEXMODE, D3DFOG_LINEAR);
+	}
+	else
+	{
+		g_pd3dDevice->SetRenderState(D3DRS_ZENABLE, FALSE);
+	}
+}
+
+void COED3DRenderer_Impl::EnableFog(bool bEnable)
+{
+	if (bEnable) g_pd3dDevice->SetRenderState(D3DRS_FOGENABLE, TRUE);
+	else g_pd3dDevice->SetRenderState(D3DRS_FOGENABLE, FALSE);
 }
 
 void COED3DRenderer_Impl::SetCullMode(CULL_MODE_TYPE eMode)
 {
 	D3DCULL eD3DCull = COED3DUtil::ToD3DCullMode(eMode);
 	g_pd3dDevice->SetRenderState(D3DRS_CULLMODE, eD3DCull);
+}
+
+void COED3DRenderer_Impl::SetFillMode(FILL_MODE eFillMode)
+{
+	D3DFILLMODE eD3DFill = COED3DUtil::ToD3DFillMode(eFillMode);
+	g_pd3dDevice->SetRenderState(D3DRS_FILLMODE, eD3DFill);
+}
+
+void COED3DRenderer_Impl::SetFogInfo(uint nColor, float fNear, float fFar)
+{
+	g_pd3dDevice->SetRenderState(D3DRS_FOGCOLOR, nColor);
+	g_pd3dDevice->SetRenderState(D3DRS_FOGSTART, *(DWORD*)&fNear);
+	g_pd3dDevice->SetRenderState(D3DRS_FOGEND, *(DWORD*)&fFar);
 }
