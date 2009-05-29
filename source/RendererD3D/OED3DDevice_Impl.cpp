@@ -204,8 +204,23 @@ bool COED3DDevice_Impl::InternalCreateD3D()
 	d3dpp.AutoDepthStencilFormat = D3DFMT_D16;
 	d3dpp.PresentationInterval = D3DPRESENT_INTERVAL_DEFAULT;
 
-	if (FAILED(g_pD3D->CreateDevice(D3DADAPTER_DEFAULT,
-		D3DDEVTYPE_HAL,
+	uint nAdapterToUse = D3DADAPTER_DEFAULT;
+	D3DDEVTYPE eDeviceType = D3DDEVTYPE_HAL;
+
+	//for (uint nAdapter = 0; nAdapter < g_pD3D->GetAdapterCount(); ++nAdapter)
+	//{
+	//	D3DADAPTER_IDENTIFIER9 Identifier;
+	//	HRESULT hRes = g_pD3D->GetAdapterIdentifier(nAdapter, 0, &Identifier);
+	//	if (strstr(Identifier.Description, "PerfHUD") != 0)
+	//	{
+	//		nAdapterToUse = nAdapter;
+	//		eDeviceType = D3DDEVTYPE_REF;
+	//		break;
+	//	}
+	//}
+
+	if (FAILED(g_pD3D->CreateDevice(nAdapterToUse,
+		eDeviceType,
 		g_hWnd,
 		D3DCREATE_HARDWARE_VERTEXPROCESSING,
 		&d3dpp,
@@ -311,7 +326,7 @@ LRESULT CALLBACK COED3DDevice_Impl::MainWndProc(HWND hWnd, UINT uMsg, WPARAM wPa
 
 void COED3DDevice_Impl::InitializeD3D()
 {
-	// TODO: initialize
+	// initialize
 	CMatrix4x4 matWorld;
 	matWorld.Identity();
 	g_pOERenderer->SetTransform(IOERenderer::TT_WORLD, matWorld);
@@ -325,6 +340,4 @@ void COED3DDevice_Impl::InitializeD3D()
 	g_pOERenderer->SetTransform(IOERenderer::TT_PROJECTION, matProj);
 
 	g_pOERenderer->EnableLight(false);
-	g_pOERenderer->EnableZBuffer(true);
-	g_pOERenderer->SetCullMode(IOERenderer::CMT_CCW);
 }

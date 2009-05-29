@@ -123,7 +123,6 @@ void CTerrainMgr::UpdateTerrain(const CVector3& vEyePos)
 
 void CTerrainMgr::Render(float fDetailTime)
 {
-	g_pOERenderer->SetFillMode(IOERenderer::FM_WIREFRAME);
 	g_pOERenderer->SetVertDecl(m_pDecl);
 
 	CMatrix4x4 matWorldBackup;

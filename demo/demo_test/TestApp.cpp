@@ -22,7 +22,7 @@ CTestApp::~CTestApp()
 
 void CTestApp::Init()
 {
-	//m_pDecl = NULL;
+	m_pDecl = NULL;
 	m_pCamera = NULL;
 	m_pTerrainMgr = NULL;
 	m_bLButtonDown = false;
@@ -38,29 +38,30 @@ void CTestApp::Destroy()
 
 bool CTestApp::Initialize()
 {
-	//static const IOEVertDecl::ELEMENT s_Decl[] =
-	//{
-	//	IOEVertDecl::T_FLOAT3, IOEVertDecl::U_POSITION, 0,
-	//	IOEVertDecl::T_COLOR, IOEVertDecl::U_COLOR, 0,
-	//	IOEVertDecl::T_UNKNOWN, IOEVertDecl::U_UNKNOWN, 0,
-	//};
+	static const IOEVertDecl::ELEMENT s_Decl[] =
+	{
+		IOEVertDecl::T_FLOAT3, IOEVertDecl::U_POSITION, 0,
+		IOEVertDecl::T_COLOR, IOEVertDecl::U_COLOR, 0,
+		IOEVertDecl::T_UNKNOWN, IOEVertDecl::U_UNKNOWN, 0,
+	};
 
-	//m_pDecl = g_pOEDevice->CreateVertDecl(s_Decl);
-	//if (!m_pDecl) return false;
+	m_pDecl = g_pOEDevice->CreateVertDecl(s_Decl);
+	if (!m_pDecl) return false;
 
 	m_pCamera = new CCamera();
 	m_pTerrainMgr = new CTerrainMgr();
 	if (!m_pTerrainMgr->LoadTerrain()) return false;
 
-	g_pOERenderer->EnableFog(true);
-	g_pOERenderer->SetFogInfo(0xFF000000, 200.0f, 400.0f);
+	//g_pOERenderer->EnableFog(true);
+	//g_pOERenderer->SetFogInfo(0xFF000000, 200.0f, 400.0f);
+	g_pOERenderer->SetFillMode(IOERenderer::FM_WIREFRAME);
 
 	return true;
 }
 
 void CTestApp::Terminate()
 {
-	//SAFE_RELEASE(m_pDecl);
+	SAFE_RELEASE(m_pDecl);
 	SAFE_DELETE(m_pCamera);
 	SAFE_DELETE(m_pTerrainMgr);
 }

@@ -52,7 +52,7 @@ private:
 	bool UpdateRotation(float fDetailTime);
 
 private:
-	//IOEVertDecl* m_pDecl;
+	IOEVertDecl* m_pDecl;
 	CCamera* m_pCamera;
 	CTerrainMgr* m_pTerrainMgr;
 
