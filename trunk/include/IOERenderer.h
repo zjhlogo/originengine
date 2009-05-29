@@ -33,6 +33,15 @@ public:
 		CMT_MAX,
 	};
 
+	enum FILL_MODE
+	{
+		FM_UNKNOWN = 0,
+		FM_POINT,
+		FM_WIREFRAME,
+		FM_SOLID,
+		FM_MAX,
+	};
+
 public:
 	IOERenderer() {};
 	virtual ~IOERenderer() {};
@@ -47,7 +56,11 @@ public:
 
 	virtual void EnableLight(bool bEnable) = 0;
 	virtual void EnableZBuffer(bool bEnable) = 0;
+	virtual void EnableFog(bool bEnable) = 0;
+
 	virtual void SetCullMode(CULL_MODE_TYPE eMode) = 0;
+	virtual void SetFillMode(FILL_MODE eFillMode) = 0;
+	virtual void SetFogInfo(uint nColor, float fNear, float fFar) = 0;
 };
 
 extern IOERenderer* g_pOERenderer;

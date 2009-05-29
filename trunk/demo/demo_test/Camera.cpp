@@ -53,7 +53,7 @@ void CCamera::Rotate(const CVector3& vDir, float fRadian)
 	vNewForword.Normalize();
 
 	float fCosTheta = fabsf(vNewForword*m_vUp);
-	if (fCosTheta > 0.9f) return;
+	if (fCosTheta > 0.99f) return;
 
 	m_vLookAt = m_vEye+vNewForword;
 

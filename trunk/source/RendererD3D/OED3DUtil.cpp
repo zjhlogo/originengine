@@ -170,6 +170,35 @@ IOERenderer::CULL_MODE_TYPE COED3DUtil::ToOECullMode(D3DCULL eType)
 	return DECLARE_MAP[eType];
 }
 
+D3DFILLMODE COED3DUtil::ToD3DFillMode(IOERenderer::FILL_MODE eType)
+{
+	static const D3DFILLMODE DECLARE_MAP[IOERenderer::FM_MAX] =
+	{
+		D3DFILL_SOLID,
+		D3DFILL_POINT,
+		D3DFILL_WIREFRAME,
+		D3DFILL_SOLID,
+	};
+
+	assert(eType >= 0 && eType < IOERenderer::FM_MAX);
+	return DECLARE_MAP[eType];
+}
+
+IOERenderer::FILL_MODE COED3DUtil::ToOEFillMode(D3DFILLMODE eType)
+{
+	static const int MAP_SIZE = 4;
+	static const IOERenderer::FILL_MODE DECLARE_MAP[MAP_SIZE] =
+	{
+		IOERenderer::FM_UNKNOWN,
+		IOERenderer::FM_POINT,
+		IOERenderer::FM_WIREFRAME,
+		IOERenderer::FM_SOLID,
+	};
+
+	assert(eType >= 0 && eType < MAP_SIZE);
+	return DECLARE_MAP[eType];
+}
+
 void COED3DUtil::ToD3DXMatrix(D3DXMATRIX& matOut, const CMatrix4x4& matIn)
 {
 	memcpy(matOut.m, matIn.m, sizeof(matIn.m));

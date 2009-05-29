@@ -22,8 +22,9 @@ CTestApp::~CTestApp()
 
 void CTestApp::Init()
 {
-	m_pDecl = NULL;
+	//m_pDecl = NULL;
 	m_pCamera = NULL;
+	m_pTerrainMgr = NULL;
 	m_bLButtonDown = false;
 	m_nMouseDetailX = 0;
 	m_nMouseDetailY = 0;
@@ -37,25 +38,31 @@ void CTestApp::Destroy()
 
 bool CTestApp::Initialize()
 {
-	static const IOEVertDecl::ELEMENT s_Decl[] =
-	{
-		IOEVertDecl::T_FLOAT3, IOEVertDecl::U_POSITION, 0,
-		IOEVertDecl::T_COLOR, IOEVertDecl::U_COLOR, 0,
-		IOEVertDecl::T_UNKNOWN, IOEVertDecl::U_UNKNOWN, 0,
-	};
+	//static const IOEVertDecl::ELEMENT s_Decl[] =
+	//{
+	//	IOEVertDecl::T_FLOAT3, IOEVertDecl::U_POSITION, 0,
+	//	IOEVertDecl::T_COLOR, IOEVertDecl::U_COLOR, 0,
+	//	IOEVertDecl::T_UNKNOWN, IOEVertDecl::U_UNKNOWN, 0,
+	//};
 
-	m_pDecl = g_pOEDevice->CreateVertDecl(s_Decl);
-	if (!m_pDecl) return false;
+	//m_pDecl = g_pOEDevice->CreateVertDecl(s_Decl);
+	//if (!m_pDecl) return false;
 
 	m_pCamera = new CCamera();
+	m_pTerrainMgr = new CTerrainMgr();
+	if (!m_pTerrainMgr->LoadTerrain()) return false;
+
+	g_pOERenderer->EnableFog(true);
+	g_pOERenderer->SetFogInfo(0xFF000000, 200.0f, 400.0f);
 
 	return true;
 }
 
 void CTestApp::Terminate()
 {
-	SAFE_RELEASE(m_pDecl);
+	//SAFE_RELEASE(m_pDecl);
 	SAFE_DELETE(m_pCamera);
+	SAFE_DELETE(m_pTerrainMgr);
 }
 
 void CTestApp::Update(float fDetailTime)
@@ -63,22 +70,25 @@ void CTestApp::Update(float fDetailTime)
 	bool bRot = UpdateRotation(fDetailTime);
 	bool bMov = UpdateMovement(fDetailTime);
 	if (bRot || bMov) g_pOERenderer->SetTransform(IOERenderer::TT_VIEW, m_pCamera->GetViewMatrix());
+	m_pTerrainMgr->UpdateTerrain(m_pCamera->GetEyePos());
 }
 
 void CTestApp::Render(float fDetailTime)
 {
-	static const VERTEX s_Verts[4] =
-	{
-		{-10.0f, 0.0f, -10.0f, 0xFFFF0000},
-		{-10.0f, 0.0f, 10.0f, 0xFF00FF00},
-		{10.0f, 0.0f, 10.0f, 0xFF0000FF},
-		{10.0f, 0.0f, -10.0f, 0xFFFFFFFF},
-	};
+	//static const VERTEX s_Verts[4] =
+	//{
+	//	{-10.0f, 0.0f, -10.0f, 0xFFFF0000},
+	//	{-10.0f, 0.0f, 10.0f, 0xFF00FF00},
+	//	{10.0f, 0.0f, 10.0f, 0xFF0000FF},
+	//	{10.0f, 0.0f, -10.0f, 0xFFFFFFFF},
+	//};
 
-	static const ushort s_Indis[4] = {0, 1, 3, 2};
+	//static const ushort s_Indis[6] = {0, 1, 3, 1, 2, 3};
 
-	g_pOERenderer->SetVertDecl(m_pDecl);
-	g_pOERenderer->DrawTriStrip(s_Verts, 4, s_Indis, 4);
+	//g_pOERenderer->SetFillMode(IOERenderer::FM_SOLID);
+	//g_pOERenderer->SetVertDecl(m_pDecl);
+	//g_pOERenderer->DrawTriList(s_Verts, 4, s_Indis, 6);
+	m_pTerrainMgr->Render(fDetailTime);
 }
 
 void CTestApp::OnLButtonDown(int x, int y)
@@ -108,11 +118,12 @@ void CTestApp::OnKeyDown(int nKeyCode)
 {
 	assert(nKeyCode > 0 && nKeyCode < KEY_COUNT);
 	m_KeyDown[nKeyCode] = true;
+	if (m_KeyDown[0x1B]) g_pOECore->End();		// TODO: 0x1B == VK_ESCAPE
 }
 
 bool CTestApp::UpdateMovement(float fDetailTime)
 {
-	static const float MOVE_DIST = 10.0f;
+	static const float MOVE_DIST = 100.0f;
 
 	bool bUpdateMovement = m_KeyDown['W'] || m_KeyDown['S'] || m_KeyDown['A'] || m_KeyDown['D'];
 	if (!bUpdateMovement) return false;
@@ -127,7 +138,7 @@ bool CTestApp::UpdateMovement(float fDetailTime)
 
 bool CTestApp::UpdateRotation(float fDetailTime)
 {
-	static const float ROTATE_ADJUST = 0.1f;
+	static const float ROTATE_ADJUST = 0.3f;
 
 	if (!m_bLButtonDown) return false;
 	if (m_nMouseDetailX == 0 && m_nMouseDetailY == 0) return false;

@@ -12,6 +12,7 @@
 #include <IOEVertDecl.h>
 
 #include "Camera.h"
+#include "TerrainMgr.h"
 
 class CTestApp : public IOEApp
 {
@@ -51,8 +52,9 @@ private:
 	bool UpdateRotation(float fDetailTime);
 
 private:
-	IOEVertDecl* m_pDecl;
+	//IOEVertDecl* m_pDecl;
 	CCamera* m_pCamera;
+	CTerrainMgr* m_pTerrainMgr;
 
 	bool m_bLButtonDown;
 	int m_nMouseDetailX;
