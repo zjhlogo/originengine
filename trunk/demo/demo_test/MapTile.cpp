@@ -58,6 +58,7 @@ bool CMapTile::LoadMap(const tchar* pstrFileName, int nID)
 			m_pVerts[nIndex].x = x*fDetailWidth;
 			m_pVerts[nIndex].y = pHeightField[nHeightIndex]*0.004f-100.0f;
 			m_pVerts[nIndex].z = z*fDetailHeight;
+			m_pVerts[nIndex].nColor = 0xFFFFFFFF;
 		}
 	}
 
