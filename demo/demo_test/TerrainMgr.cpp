@@ -72,6 +72,9 @@ void CTerrainMgr::UpdateTerrain(const CVector3& vEyePos)
 
 	m_bFirstUpdate = false;
 
+	m_nLastTileX = nX;
+	m_nLastTileZ = nZ;
+
 	// start update terrain tile
 	ResetTile();
 
