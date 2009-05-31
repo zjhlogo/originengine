@@ -16,8 +16,8 @@ class CMapTile
 public:
 	enum CONST_DEFILE
 	{
-		TILE_SIZE = 65,
-		TILE_WIDTH = 400,
+		TILE_SIZE	= 65,
+		TILE_WIDTH	= 400,
 		TILE_HEIGHT = 400,
 	};
 
@@ -32,6 +32,7 @@ public:
 	~CMapTile();
 
 	bool LoadMap(const tchar* pstrFileName, int nID);
+	bool LoadMap(const ushort* pHeightField, int nID);
 	int GetID();
 
 	void Render(float fDetailTime);

@@ -26,6 +26,8 @@ void CTerrainMgr::Init()
 	m_nLastTileX = 0;
 	m_nLastTileZ = 0;
 	m_bFirstUpdate = true;
+
+	m_pMapFile = _tfopen("maptile.raw", _T("rb")); 
 }
 
 void CTerrainMgr::Destroy()
@@ -35,6 +37,9 @@ void CTerrainMgr::Destroy()
 	{
 		SAFE_DELETE(m_pMapTileBuff[i]);
 	}
+
+	fclose(m_pMapFile);
+	m_pMapFile = NULL;
 }
 
 bool CTerrainMgr::LoadTerrain()
@@ -115,8 +120,11 @@ void CTerrainMgr::UpdateTerrain(const CVector3& vEyePos)
 
 		CMapTile* pTile = (*m_vSleepedTile.begin());
 
-		tstring strTileName = GetMapTileFile(nIndex);
-		if (pTile->LoadMap(strTileName.c_str(), nIndex))
+		//tstring strTileName = GetMapTileFile(nIndex);
+		//if (pTile->LoadMap(strTileName.c_str(), nIndex))
+
+		const ushort* pField = GetMapTileField(nIndex);
+		if (pTile->LoadMap(pField, nIndex))
 		{
 			m_vActivedTile.push_back(pTile);
 			m_vSleepedTile.erase(m_vSleepedTile.begin());
@@ -174,6 +182,48 @@ tstring CTerrainMgr::GetMapTileFile(int nIndex)
 {
 	// TODO: 根据索引取得分块地图文件名
 	return _T("maptile.raw");
+}
+
+// 因为高度图暂只做了5*5的。
+const ushort* CTerrainMgr::GetMapTileField(int nIndex)
+{
+	if (!m_pMapFile)
+		return NULL;
+
+	long nPos   = 0;
+	long nLen   = 0;
+	int  nCount = -1;
+
+	for (int z = 0; z < 5/*TILE_COUNT_Z*/; z++)
+	{
+		nLen = CMapTile::TILE_SIZE*CMapTile::TILE_SIZE*sizeof(ushort)*5/*TILE_COUNT_X*/ * z;
+
+		for (int x = 0; x < 5/*TILE_COUNT_X*/; x++)
+		{
+			nCount++;
+
+			if (nCount != nIndex)
+				continue;
+
+			ushort* pHeightField = new ushort[CMapTile::TILE_SIZE*CMapTile::TILE_SIZE];
+			memset(pHeightField, 0, sizeof(ushort) * CMapTile::TILE_SIZE*CMapTile::TILE_SIZE);
+
+			nPos = sizeof(ushort) * x * CMapTile::TILE_SIZE + nLen; 
+			fseek(m_pMapFile, nPos, SEEK_SET);
+
+			for (int i = 0; i < CMapTile::TILE_SIZE; i++)
+			{
+				fread(&pHeightField[i * CMapTile::TILE_SIZE], sizeof(ushort), CMapTile::TILE_SIZE, m_pMapFile);
+
+				nPos  += (sizeof(ushort) * (CMapTile::TILE_SIZE)) * 5/*TILE_COUNT_X*/;
+				fseek(m_pMapFile, nPos, SEEK_SET);
+			}
+
+			return pHeightField;
+		}
+	}
+
+	return NULL;
 }
 
 void CTerrainMgr::CalcMapTileMatrix(CMatrix4x4& matOut, int nIndex)
