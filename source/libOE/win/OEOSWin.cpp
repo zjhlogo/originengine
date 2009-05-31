@@ -1,14 +1,12 @@
 /*!
- * \file OEOS.cpp
- * \date 24-5-2009 10:00:18
+ * \file OEOSWin.cpp
+ * \date 31-5-2009 16:39:52
  * 
  * 
  * \author zjhlogo (zjhlogo@163.com)
  */
-#include "OEOS.h"
+#include <OEOS.h>
 #include <OEHolder.h>
-
-#ifdef WIN32
 
 #include <Windows.h>
 #include <vector>
@@ -79,9 +77,3 @@ void COEOS::FreeOEModule(OEMODULE hModule)
 	if (OEModuleTerm) OEModuleTerm(g_OEHolder);
 	FreeLibrary(hWinModule);
 }
-
-#else
-
-// TODO: linux implement
-
-#endif // WIN32
