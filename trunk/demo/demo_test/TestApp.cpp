@@ -52,8 +52,8 @@ bool CTestApp::Initialize()
 	m_pTerrainMgr = new CTerrainMgr();
 	if (!m_pTerrainMgr->LoadTerrain()) return false;
 
-	//g_pOERenderer->EnableFog(true);
-	//g_pOERenderer->SetFogInfo(0xFF000000, 200.0f, 400.0f);
+	g_pOERenderer->EnableFog(true);
+	g_pOERenderer->SetFogInfo(0xFF000000, 200.0f, 400.0f);
 	g_pOERenderer->SetFillMode(IOERenderer::FM_WIREFRAME);
 
 	return true;
