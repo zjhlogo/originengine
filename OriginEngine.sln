@@ -23,6 +23,10 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libOEMath", "source\libOEMa
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libOEFile", "source\libOEFile\libOEFile.vcproj", "{8DB2388A-089A-4FC6-ABE9-7E9D2AF57940}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfiguration) = preSolution
 		Debug = Debug
@@ -71,6 +75,14 @@ Global
 		{BF852F28-01B5-4492-9273-6E69EE1E4929}.Unicode Debug.Build.0 = Unicode Debug|Win32
 		{BF852F28-01B5-4492-9273-6E69EE1E4929}.Unicode Release.ActiveCfg = Unicode Release|Win32
 		{BF852F28-01B5-4492-9273-6E69EE1E4929}.Unicode Release.Build.0 = Unicode Release|Win32
+		{8DB2388A-089A-4FC6-ABE9-7E9D2AF57940}.Debug.ActiveCfg = Debug|Win32
+		{8DB2388A-089A-4FC6-ABE9-7E9D2AF57940}.Debug.Build.0 = Debug|Win32
+		{8DB2388A-089A-4FC6-ABE9-7E9D2AF57940}.Release.ActiveCfg = Release|Win32
+		{8DB2388A-089A-4FC6-ABE9-7E9D2AF57940}.Release.Build.0 = Release|Win32
+		{8DB2388A-089A-4FC6-ABE9-7E9D2AF57940}.Unicode Debug.ActiveCfg = Unicode Debug|Win32
+		{8DB2388A-089A-4FC6-ABE9-7E9D2AF57940}.Unicode Debug.Build.0 = Unicode Debug|Win32
+		{8DB2388A-089A-4FC6-ABE9-7E9D2AF57940}.Unicode Release.ActiveCfg = Unicode Release|Win32
+		{8DB2388A-089A-4FC6-ABE9-7E9D2AF57940}.Unicode Release.Build.0 = Unicode Release|Win32
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 	EndGlobalSection
