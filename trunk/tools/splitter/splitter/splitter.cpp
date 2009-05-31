@@ -5,15 +5,15 @@
 
 enum CONST_DEFILE
 {
-	SPLITTER_COUNT	= 5,
-	TILE_SIZE		= 65,
-	TILE_WIDTH		= 400,
-	TILE_HEIGHT		= 400
+	SPLIT_Z	= 5,
+	SPLIT_X = 5,
+
+	TILE_SIZE = 65,
 };
 
-typedef unsigned short uint;
+typedef unsigned short ushort;
 
-void WriteRaw(int x, uint* pField)
+void WriteRaw(int x, ushort* pField)
 {
 	char szFileName[128] = {'\0'};
 	sprintf(szFileName, "map_%d.raw", x);
@@ -22,7 +22,7 @@ void WriteRaw(int x, uint* pField)
 	if (!pFile)
 		return;
 
-	fwrite(pField, sizeof(uint), TILE_SIZE*TILE_SIZE, pFile);
+	fwrite(pField, sizeof(ushort), TILE_SIZE*TILE_SIZE, pFile);
 	fclose(pFile);
 }
 
@@ -40,23 +40,24 @@ int _tmain(int argc, _TCHAR* argv[])
 	nPos = ftell(pFile);
 
 	int nCount = 0;
-	for (int y = 0; y < SPLITTER_COUNT; y++)
+	for (int z = 0; z < SPLIT_Z; z++)
 	{
-		nLen = ftell(pFile);
+		//nLen = ftell(pFile);
+		nLen = TILE_SIZE*TILE_SIZE*sizeof(ushort)*SPLIT_X * z;
 
-		for (int x = 0; x < SPLITTER_COUNT; x++)
+		for (int x = 0; x < SPLIT_X; x++)
 		{
-			uint* pHeightField = new uint[TILE_SIZE*TILE_SIZE];
-			memset(pHeightField, 0, sizeof(uint) * TILE_SIZE*TILE_SIZE);
+			ushort* pHeightField = new ushort[TILE_SIZE*TILE_SIZE];
+			memset(pHeightField, 0, sizeof(ushort) * TILE_SIZE*TILE_SIZE);
 
-			nPos = sizeof(uint) * x * TILE_SIZE + nLen; 
+			nPos = sizeof(ushort) * x * TILE_SIZE + nLen; 
 			fseek(pFile, nPos, SEEK_SET);
 
 			for (int i = 0; i < TILE_SIZE; i++)
 			{
-				fread(&pHeightField[i * TILE_SIZE], sizeof(uint), TILE_SIZE, pFile);
+				fread(&pHeightField[i * TILE_SIZE], sizeof(ushort), TILE_SIZE, pFile);
 
-				nPos  += (sizeof(uint) * (TILE_SIZE)) * SPLITTER_COUNT;
+				nPos  += (sizeof(ushort) * (TILE_SIZE)) * SPLIT_X;
 				fseek(pFile, nPos, SEEK_SET);
 			}
 
