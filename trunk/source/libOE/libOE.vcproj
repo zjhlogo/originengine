@@ -199,7 +199,7 @@ copy &quot;$(TargetPath)&quot; &quot;..\..\lib\&quot;
 				RelativePath=".\OEHolder.cpp">
 			</File>
 			<File
-				RelativePath=".\OEOS.cpp">
+				RelativePath=".\win\OEOSWin.cpp">
 			</File>
 		</Filter>
 		<Filter
