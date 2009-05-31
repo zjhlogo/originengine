@@ -18,8 +18,8 @@ public:
 	enum CONST_DEFINE
 	{
 		MAX_TILE_COUNT = 9,
-		TILE_COUNT_X = 16,
-		TILE_COUNT_Z = 16,
+		TILE_COUNT_X   = 16,
+		TILE_COUNT_Z   = 16,
 	};
 
 	typedef std::vector<CMapTile*> VMAP_TILE;
@@ -41,6 +41,7 @@ private:
 	void ResetTile();
 	CMapTile* ActiveSleepedTile(int nID);
 	tstring GetMapTileFile(int nIndex);
+	const ushort* GetMapTileField(int nIndex);
 	void CalcMapTileMatrix(CMatrix4x4& matOut, int nIndex);
 
 private:
@@ -53,6 +54,8 @@ private:
 	bool m_bFirstUpdate;
 	int m_nLastTileX;
 	int m_nLastTileZ;
+
+	FILE* m_pMapFile;
 };
 
 #endif // __TERRAINMGR_H__
