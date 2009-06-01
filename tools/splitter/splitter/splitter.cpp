@@ -5,8 +5,8 @@
 
 enum CONST_DEFILE
 {
-	SPLIT_Z	= 5,
-	SPLIT_X = 5,
+	SPLIT_Z	= 16,
+	SPLIT_X = 16,
 
 	TILE_SIZE = 65,
 };
