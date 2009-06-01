@@ -224,6 +224,12 @@ copy &quot;$(TargetPath)&quot; &quot;..\..\bin\&quot;
 				RelativePath=".\OECore_Impl.cpp">
 			</File>
 			<File
+				RelativePath=".\OEFile_Impl.cpp">
+			</File>
+			<File
+				RelativePath=".\OEFileMgr_Impl.cpp">
+			</File>
+			<File
 				RelativePath=".\OEModule.cpp">
 			</File>
 		</Filter>
@@ -233,6 +239,12 @@ copy &quot;$(TargetPath)&quot; &quot;..\..\bin\&quot;
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}">
 			<File
 				RelativePath=".\OECore_Impl.h">
+			</File>
+			<File
+				RelativePath=".\OEFile_Impl.h">
+			</File>
+			<File
+				RelativePath=".\OEFileMgr_Impl.h">
 			</File>
 			<File
 				RelativePath=".\OEModule.h">

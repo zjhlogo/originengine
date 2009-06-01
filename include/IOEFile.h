@@ -10,6 +10,12 @@
 
 #include "IOEObject.h"
 
+enum OPEN_FILE_FLAG
+{
+	OFF_READ	= 0x00000001,
+	OFF_WRITE	= 0x00000002,
+};
+
 class IOEFile : public IOEObject
 {
 public:
@@ -45,5 +51,9 @@ public:
 	 */
 	virtual uint GetSize() const = 0;
 
+	/*
+	 *	\return current position of file
+	 */
+	virtual long Tell() const = 0;
 };
 #endif // __IOEFILE_H__

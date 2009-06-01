@@ -15,6 +15,7 @@ IOEDevice* g_pOEDevice = NULL;
 IOERenderer* g_pOERenderer = NULL;
 IOETextureMgr* g_pOETextureMgr = NULL;
 IOEShaderMgr* g_pOEShaderMgr = NULL;
+IOEFileMgr* g_pOEFileMgr = NULL;
 
 COEOS::OEMODULE g_hModuleOE = NULL;
 
@@ -38,6 +39,7 @@ void COEHolder::SetupInterfaces()
 	AddInterface(_T("IOERenderer"), (void**)&g_pOERenderer);
 	AddInterface(_T("IOETextureMgr"), (void**)&g_pOETextureMgr);
 	AddInterface(_T("IOEShaderMgr"), (void**)&g_pOEShaderMgr);
+	AddInterface(_T("IOEFileMgr"), (void**)&g_pOEFileMgr);
 }
 
 bool COEHolder::Initialize()

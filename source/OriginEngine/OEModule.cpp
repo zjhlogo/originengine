@@ -17,12 +17,16 @@ bool CreateSingleton()
 	COECore_Impl* pOECore_Impl = new COECore_Impl();
 	if (!pOECore_Impl) return false;
 
+	COEFileMgr_Impl pOEFileMgr_Impl = new COEFileMgr_Impl();
+	if (!pOEFileMgr_Impl) return false;
+
 	return true;
 }
 
 void DestroySingleton()
 {
 	SAFE_DELETE(g_pOECore);
+	SAFE_DELETE(g_pOEFileMgr);
 }
 
 bool OEModuleInit(COEHolder& Holder)
