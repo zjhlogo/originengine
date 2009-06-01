@@ -13,13 +13,6 @@
 class IOEFileMgr
 {
 public:
-	enum OPEN_FILE_FLAG
-	{
-		OFF_READ	= 0x00000001,
-		OFF_WRITE	= 0x00000002,
-	};
-
-public:
 	IOEFileMgr() {};
 	virtual ~IOEFileMgr() {};
 
@@ -32,4 +25,5 @@ public:
 	virtual IOEFile* OpenFile(const tchar* pstrFileName, uint nFlag) = 0;
 
 };
+extern IOEFileMgr* g_pOEFileMgr;
 #endif // __IOEFILEMGR_H__
