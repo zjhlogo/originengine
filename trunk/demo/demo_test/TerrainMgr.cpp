@@ -184,7 +184,6 @@ tstring CTerrainMgr::GetMapTileFile(int nIndex)
 	return _T("maptile.raw");
 }
 
-// 因为高度图暂只做了5*5的。
 const ushort* CTerrainMgr::GetMapTileField(int nIndex)
 {
 	if (!m_pMapFile)
@@ -194,11 +193,11 @@ const ushort* CTerrainMgr::GetMapTileField(int nIndex)
 	long nLen   = 0;
 	int  nCount = -1;
 
-	for (int z = 0; z < 5/*TILE_COUNT_Z*/; z++)
+	for (int z = 0; z < TILE_COUNT_Z; z++)
 	{
-		nLen = CMapTile::TILE_SIZE*CMapTile::TILE_SIZE*sizeof(ushort)*5/*TILE_COUNT_X*/ * z;
+		nLen = CMapTile::TILE_SIZE*CMapTile::TILE_SIZE*sizeof(ushort)*TILE_COUNT_X * z;
 
-		for (int x = 0; x < 5/*TILE_COUNT_X*/; x++)
+		for (int x = 0; x < TILE_COUNT_X; x++)
 		{
 			nCount++;
 
@@ -213,9 +212,9 @@ const ushort* CTerrainMgr::GetMapTileField(int nIndex)
 
 			for (int i = 0; i < CMapTile::TILE_SIZE; i++)
 			{
-				fread(&pHeightField[i * CMapTile::TILE_SIZE], sizeof(ushort), CMapTile::TILE_SIZE, m_pMapFile);
+				fread(&pHeightField[i * CMapTile::TILE_SIZE], sizeof(ushort), CMapTile::TILE_SIZE - 1, m_pMapFile);
 
-				nPos  += (sizeof(ushort) * (CMapTile::TILE_SIZE)) * 5/*TILE_COUNT_X*/;
+				nPos  += (sizeof(ushort) * CMapTile::TILE_SIZE) * TILE_COUNT_X;
 				fseek(m_pMapFile, nPos, SEEK_SET);
 			}
 
