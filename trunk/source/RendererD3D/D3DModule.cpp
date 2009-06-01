@@ -8,6 +8,8 @@
 #include "D3DModule.h"
 #include "OED3DDevice_Impl.h"
 #include "OED3DRenderer_Impl.h"
+#include "OED3DTextureMgr_Impl.h"
+#include "OED3DShaderMgr_Impl.h"
 
 bool CreateSingleton()
 {
@@ -17,11 +19,19 @@ bool CreateSingleton()
 	COED3DRenderer_Impl* pOED3DRenderer_Impl = new COED3DRenderer_Impl();
 	if (!pOED3DDevice_Impl) return false;
 
+	COED3DTextureMgr_Impl* pOED3DTextureMgr_Impl = new COED3DTextureMgr_Impl();
+	if (!pOED3DTextureMgr_Impl) return false;
+
+	COED3DShaderMgr_Impl* pOED3DShaderMgr_Impl = new COED3DShaderMgr_Impl();
+	if (!pOED3DShaderMgr_Impl) return false;
+
 	return true;
 }
 
 void DestroySingleton()
 {
+	SAFE_DELETE(g_pOEShaderMgr);;
+	SAFE_DELETE(g_pOETextureMgr);
 	SAFE_DELETE(g_pOERenderer);
 	SAFE_DELETE(g_pOEDevice);
 }
