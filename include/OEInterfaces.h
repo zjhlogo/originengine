@@ -10,8 +10,11 @@
 
 #include "OEBasicType.h"
 #include "IOECore.h"
+#include "IOEFileMgr.h"
 #include "IOEDevice.h"
 #include "IOERenderer.h"
+#include "IOETextureMgr.h"
+#include "IOEShaderMgr.h"
 #include "IOEApp.h"
 
 #endif // __OEINTERFACES_H__

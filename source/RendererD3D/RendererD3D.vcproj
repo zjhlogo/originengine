@@ -234,6 +234,18 @@ copy &quot;$(TargetPath)&quot; &quot;..\..\bin\&quot;
 				RelativePath=".\OED3DRenderer_Impl.cpp">
 			</File>
 			<File
+				RelativePath=".\OED3DShader_Impl.cpp">
+			</File>
+			<File
+				RelativePath=".\OED3DShaderMgr_Impl.cpp">
+			</File>
+			<File
+				RelativePath=".\OED3DTexture_Impl.cpp">
+			</File>
+			<File
+				RelativePath=".\OED3DTextureMgr_Impl.cpp">
+			</File>
+			<File
 				RelativePath=".\OED3DUtil.cpp">
 			</File>
 			<File
@@ -252,6 +264,18 @@ copy &quot;$(TargetPath)&quot; &quot;..\..\bin\&quot;
 			</File>
 			<File
 				RelativePath=".\OED3DRenderer_Impl.h">
+			</File>
+			<File
+				RelativePath=".\OED3DShader_Impl.h">
+			</File>
+			<File
+				RelativePath=".\OED3DShaderMgr_Impl.h">
+			</File>
+			<File
+				RelativePath=".\OED3DTexture_Impl.h">
+			</File>
+			<File
+				RelativePath=".\OED3DTextureMgr_Impl.h">
 			</File>
 			<File
 				RelativePath=".\OED3DUtil.h">

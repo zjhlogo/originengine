@@ -10,12 +10,22 @@
 
 #include <IOEVertDecl.h>
 #include <IOERenderer.h>
+#include <IOETexture.h>
 #include <OEMath/OEMath.h>
 #include <d3dx9.h>
 
 class COED3DUtil
 {
 public:
+	static void ToD3DXMatrix(D3DXMATRIX& matOut, const CMatrix4x4& matIn);
+	static void ToOEMatrix(CMatrix4x4& matOut, const D3DXMATRIX& matIn);
+
+	static void ToD3DVector3(D3DXVECTOR3& vOut, const CVector3& vIn);
+	static void ToOEVector3(CVector3& vOut, const D3DXVECTOR3& vIn);
+
+	static void ToD3DVector4(D3DXVECTOR4& vOut, const CVector4& vIn);
+	static void ToOEVector4(CVector4& vOut, const D3DXVECTOR4& vIn);
+
 	static D3DDECLTYPE ToD3DVertType(IOEVertDecl::TYPE eType);
 	static IOEVertDecl::TYPE ToOEVertType(D3DDECLTYPE eType);
 
@@ -33,8 +43,8 @@ public:
 	static D3DFILLMODE ToD3DFillMode(IOERenderer::FILL_MODE eType);
 	static IOERenderer::FILL_MODE ToOEFillMode(D3DFILLMODE eType);
 
-	static void ToD3DXMatrix(D3DXMATRIX& matOut, const CMatrix4x4& matIn);
-	static void ToOEMatrix(CMatrix4x4& matOut, const D3DXMATRIX& matIn);
+	static D3DFORMAT ToD3DTexFmt(IOETexture::TEXTURE_FORMAT eFormat);
+	static IOETexture::TEXTURE_FORMAT ToOETexFmt(D3DFORMAT eFormat);
 };
 
 #endif // __OED3DUTIL_H__

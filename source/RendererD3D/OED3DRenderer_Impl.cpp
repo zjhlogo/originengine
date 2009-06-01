@@ -26,6 +26,7 @@ COED3DRenderer_Impl::~COED3DRenderer_Impl()
 void COED3DRenderer_Impl::Init()
 {
 	m_pVertDecl = NULL;
+	m_pTexture = NULL;
 }
 
 void COED3DRenderer_Impl::Destroy()
@@ -42,7 +43,11 @@ void COED3DRenderer_Impl::SetVertDecl(IOEVertDecl* pVertDecl)
 void COED3DRenderer_Impl::DrawTriList(const void* pVerts, uint nVerts, const ushort* pIndis, uint nIndis)
 {
 	assert(m_pVertDecl);
-	g_pd3dDevice->DrawIndexedPrimitiveUP(D3DPT_TRIANGLELIST, 0, nVerts, nIndis/3, pIndis, D3DFMT_INDEX16, pVerts, m_pVertDecl->GetStride());
+	HRESULT hRet = g_pd3dDevice->DrawIndexedPrimitiveUP(D3DPT_TRIANGLELIST, 0, nVerts, nIndis/3, pIndis, D3DFMT_INDEX16, pVerts, m_pVertDecl->GetStride());
+	if (FAILED(hRet))
+	{
+		// TODO: 
+	}
 }
 
 void COED3DRenderer_Impl::DrawTriStrip(const void* pVerts, uint nVerts, const ushort* pIndis, uint nIndis)
@@ -71,6 +76,20 @@ void COED3DRenderer_Impl::GetTransform(CMatrix4x4& matOut, TRANSFORM_TYPE eType)
 	D3DXMATRIX matD3D;
 	g_pd3dDevice->GetTransform(d3dType, &matD3D);
 	COED3DUtil::ToOEMatrix(matOut, matD3D);
+}
+
+void COED3DRenderer_Impl::SetTexture(IOETexture* pTexture)
+{
+	IDirect3DTexture9* pD3DTexture = NULL;
+	m_pTexture = (COED3DTexture_Impl*)pTexture;
+	if (m_pTexture) pD3DTexture = m_pTexture->GetTexture();
+
+	g_pd3dDevice->SetTexture(0, pD3DTexture);
+}
+
+IOETexture* COED3DRenderer_Impl::GetTexture() const
+{
+	return m_pTexture;
 }
 
 void COED3DRenderer_Impl::EnableLight(bool bEnable)

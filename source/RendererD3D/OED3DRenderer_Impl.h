@@ -9,6 +9,7 @@
 #define __OED3DRENDERER_IMPL_H__
 
 #include <IOERenderer.h>
+#include "OED3DTexture_Impl.h"
 #include "OED3DVertDecl_Impl.h"
 
 class COED3DRenderer_Impl : public IOERenderer
@@ -25,6 +26,9 @@ public:
 	virtual void SetTransform(TRANSFORM_TYPE eType, const CMatrix4x4& mat);
 	virtual void GetTransform(CMatrix4x4& matOut, TRANSFORM_TYPE eType) const;
 
+	virtual void SetTexture(IOETexture* pTexture);
+	virtual IOETexture* GetTexture() const;
+
 	virtual void EnableLight(bool bEnable);
 	virtual void EnableZBuffer(bool bEnable);
 	virtual void EnableFog(bool bEnable);
@@ -39,6 +43,7 @@ private:
 
 private:
 	COED3DVertDecl_Impl* m_pVertDecl;
+	COED3DTexture_Impl* m_pTexture;
 
 };
 

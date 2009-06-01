@@ -251,10 +251,28 @@ copy &quot;$(TargetPath)&quot; &quot;..\..\bin\&quot;
 				RelativePath="..\..\include\IOEDevice.h">
 			</File>
 			<File
+				RelativePath="..\..\include\IOEFile.h">
+			</File>
+			<File
+				RelativePath="..\..\include\IOEFileMgr.h">
+			</File>
+			<File
 				RelativePath="..\..\include\IOEObject.h">
 			</File>
 			<File
 				RelativePath="..\..\include\IOERenderer.h">
+			</File>
+			<File
+				RelativePath="..\..\include\IOEShader.h">
+			</File>
+			<File
+				RelativePath="..\..\include\IOEShaderMgr.h">
+			</File>
+			<File
+				RelativePath="..\..\include\IOETexture.h">
+			</File>
+			<File
+				RelativePath="..\..\include\IOETextureMgr.h">
 			</File>
 			<File
 				RelativePath="..\..\include\IOEVertDecl.h">

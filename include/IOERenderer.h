@@ -10,7 +10,9 @@
 
 #include "OEBasicType.h"
 #include "IOEVertDecl.h"
-#include <OEMath/OEMath.h>
+#include "IOETexture.h"
+
+#include "OEMath/OEMath.h"
 
 class IOERenderer
 {
@@ -53,6 +55,9 @@ public:
 
 	virtual void SetTransform(TRANSFORM_TYPE eType, const CMatrix4x4& mat) = 0;
 	virtual void GetTransform(CMatrix4x4& matOut, TRANSFORM_TYPE eType) const = 0;
+
+	virtual void SetTexture(IOETexture* pTexture) = 0;
+	virtual IOETexture* GetTexture() const = 0;
 
 	virtual void EnableLight(bool bEnable) = 0;
 	virtual void EnableZBuffer(bool bEnable) = 0;

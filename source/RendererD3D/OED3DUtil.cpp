@@ -8,6 +8,46 @@
 #include "OED3DUtil.h"
 #include <assert.h>
 
+void COED3DUtil::ToD3DXMatrix(D3DXMATRIX& matOut, const CMatrix4x4& matIn)
+{
+	memcpy(matOut.m, matIn.m, sizeof(matIn.m));
+}
+
+void COED3DUtil::ToOEMatrix(CMatrix4x4& matOut, const D3DXMATRIX& matIn)
+{
+	memcpy(matOut.m, matIn.m, sizeof(matIn.m));
+}
+
+void COED3DUtil::ToD3DVector3(D3DXVECTOR3& vOut, const CVector3& vIn)
+{
+	vOut.x = vIn.x;
+	vOut.y = vIn.y;
+	vOut.z = vIn.z;
+}
+
+void COED3DUtil::ToOEVector3(CVector3& vOut, const D3DXVECTOR3& vIn)
+{
+	vOut.x = vIn.x;
+	vOut.y = vIn.y;
+	vOut.z = vIn.z;
+}
+
+void COED3DUtil::ToD3DVector4(D3DXVECTOR4& vOut, const CVector4& vIn)
+{
+	vOut.x = vIn.x;
+	vOut.y = vIn.y;
+	vOut.z = vIn.z;
+	vOut.w = vIn.w;
+}
+
+void COED3DUtil::ToOEVector4(CVector4& vOut, const D3DXVECTOR4& vIn)
+{
+	vOut.x = vIn.x;
+	vOut.y = vIn.y;
+	vOut.z = vIn.z;
+	vOut.w = vIn.w;
+}
+
 D3DDECLTYPE COED3DUtil::ToD3DVertType(IOEVertDecl::TYPE eType)
 {
 	static const D3DDECLTYPE DECLARE_MAP[IOEVertDecl::T_MAX] =
@@ -199,12 +239,32 @@ IOERenderer::FILL_MODE COED3DUtil::ToOEFillMode(D3DFILLMODE eType)
 	return DECLARE_MAP[eType];
 }
 
-void COED3DUtil::ToD3DXMatrix(D3DXMATRIX& matOut, const CMatrix4x4& matIn)
+D3DFORMAT COED3DUtil::ToD3DTexFmt(IOETexture::TEXTURE_FORMAT eFormat)
 {
-	memcpy(matOut.m, matIn.m, sizeof(matIn.m));
+	switch (eFormat)
+	{
+	case IOETexture::TF_A8R8G8B8:
+		return D3DFMT_A8R8G8B8;
+		break;
+	case IOETexture::TF_A4R4G4B4:
+		return D3DFMT_A4R4G4B4;
+		break;
+	}
+
+	return D3DFMT_UNKNOWN;
 }
 
-void COED3DUtil::ToOEMatrix(CMatrix4x4& matOut, const D3DXMATRIX& matIn)
+IOETexture::TEXTURE_FORMAT COED3DUtil::ToOETexFmt(D3DFORMAT eFormat)
 {
-	memcpy(matOut.m, matIn.m, sizeof(matIn.m));
+	switch (eFormat)
+	{
+	case D3DFMT_A8R8G8B8:
+		return IOETexture::TF_A8R8G8B8;
+		break;
+	case D3DFMT_A4R4G4B4:
+		return IOETexture::TF_A4R4G4B4;
+		break;
+	}
+
+	return IOETexture::TF_UNKNOWN;
 }

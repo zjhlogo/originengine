@@ -18,6 +18,10 @@ extern const float OEMATH_TOL;		// float type tolerance
 #include "Matrix4x4.h"
 #include "Quaternion.h"
 
+// matrix
+CMatrix4x4 operator *(const CMatrix4x4& m1, const CMatrix4x4& m2);
+
+
 #include "OEMath.inl"
 
 class COEMath
