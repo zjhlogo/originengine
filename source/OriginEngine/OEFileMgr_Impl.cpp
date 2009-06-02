@@ -1,30 +1,47 @@
 /*!
-*	created:	2009/06/01
-*	filename: 	OriginEngine\OEFileMgr_Impl.cpp
-*	author:		daishuidi
+ *	created:	2009/06/01
+ *	filename: 	OriginEngine\OEFileMgr_Impl.cpp
+ *	author:		daishuidi
 
-*	purpose:	
-*/
-
+ *	purpose:	
+ */
 #include "OEFileMgr_Impl.h"
-#include <OEInterfaces.h>
 #include "OEFile_Impl.h"
+
+#include <OEInterfaces.h>
 #include <assert.h>
 
 COEFileMgr_Impl::COEFileMgr_Impl()
 {
 	g_pOEFileMgr = this;
+	Init();
 }
 
 COEFileMgr_Impl::~COEFileMgr_Impl()
 {
+	Destroy();
 	g_pOEFileMgr = NULL;
 }
 
-IOEFile* COEFileMgr_Impl::OpenFile( const tchar* pstrFileName, uint nFlag )
+void COEFileMgr_Impl::Init()
 {
-	assert(pstrFileName);
-	
-	IOEFile *pOEFile = new COEFile_Impl(pstrFileName, nFlag);
-	return pOEFile;
+	// TODO: 
+}
+
+void COEFileMgr_Impl::Destroy()
+{
+	// TODO: 
+}
+
+IOEFile* COEFileMgr_Impl::OpenFile(const tchar* pstrFileName, uint nFlag /* = IOEFile::OFF_READ */)
+{
+	IOEFile *pFile = new COEFile_Impl(pstrFileName, nFlag);
+	if (!pFile || !pFile->IsOK())
+	{
+		SAFE_RELEASE(pFile);
+		// TODO: logout
+		return NULL;
+	}
+
+	return pFile;
 }

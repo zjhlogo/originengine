@@ -1,13 +1,16 @@
 /*!
-*	created:	2009/06/01
-*	filename: 	OEFile_Impl.h
-*	author:		daishuidi
+ *	created:	2009/06/01
+ *	filename: 	OEFile_Impl.h
+ *	author:		daishuidi
 	
-*	purpose:	
-*/
+ *	purpose:	
+ */
+
 #ifndef __OEFILE_IMPL_H__
 #define __OEFILE_IMPL_H__
-#include "IOEFile.h"
+
+#include <IOEFile.h>
+
 class COEFile_Impl : public IOEFile
 {
 public:
@@ -22,13 +25,18 @@ public:
 
 	virtual uint GetSize() const;
 
-	virtual long Tell() const;
+	virtual uint Tell() const;
 
 private:
-	bool	Open(const tchar* pstrFileName, uint nFlag);
+	void Init();
+	void Destroy();
+
+	bool Open(const tchar* pstrFileName, uint nFlag);
 
 private:
 	FILE* m_pFile;
 	uint m_nFlag;
+
 };
-#endif
+
+#endif // __OEFILE_IMPL_H__

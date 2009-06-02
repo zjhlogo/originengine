@@ -10,14 +10,15 @@
 
 #include "IOEObject.h"
 
-enum OPEN_FILE_FLAG
-{
-	OFF_READ	= 0x00000001,
-	OFF_WRITE	= 0x00000002,
-};
-
 class IOEFile : public IOEObject
 {
+public:
+	enum OPEN_FILE_FLAG
+	{
+		OFF_READ	= 0x00000001,
+		OFF_WRITE	= 0x00000002,
+	};
+
 public:
 	IOEFile() {};
 	virtual ~IOEFile() {};
@@ -54,6 +55,6 @@ public:
 	/*
 	 *	\return current position of file
 	 */
-	virtual long Tell() const = 0;
+	virtual uint Tell() const = 0;
 };
 #endif // __IOEFILE_H__
