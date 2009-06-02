@@ -11,7 +11,7 @@
 class COEFile_Impl : public IOEFile
 {
 public:
-	COEFile_Impl(FILE* pFile, uint nFlag);
+	COEFile_Impl(const tchar* pstrFileName, uint nFlag);
 	virtual ~COEFile_Impl();
 
 	virtual uint Read(void* pBuffOut, uint nSize);
@@ -23,6 +23,9 @@ public:
 	virtual uint GetSize() const;
 
 	virtual long Tell() const;
+
+private:
+	bool	Open(const tchar* pstrFileName, uint nFlag);
 
 private:
 	FILE* m_pFile;

@@ -25,20 +25,6 @@ IOEFile* COEFileMgr_Impl::OpenFile( const tchar* pstrFileName, uint nFlag )
 {
 	assert(pstrFileName);
 	
-	IOEFile *pOEFile = NULL;
-	FILE* pf = NULL;
-	if (OFF_READ == nFlag)
-	{
-		pf = _tfopen(pstrFileName,_T("rb"));
-	}
-	else if (OFF_WRITE == nFlag)
-	{
-		pf = _tfopen(pstrFileName, _T("wb"));
-	}
-	
-	if (pf)
-	{
-		pOEFile = new COEFile_Impl(pf, nFlag);
-	}
+	IOEFile *pOEFile = new COEFile_Impl(pstrFileName, nFlag);
 	return pOEFile;
 }
