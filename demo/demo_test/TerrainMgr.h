@@ -9,7 +9,7 @@
 #define __TERRAINMGR_H__
 
 #include "MapTile.h"
-#include <IOEVertDecl.h>
+#include <OEInterfaces.h>
 #include <vector>
 
 class CTerrainMgr
@@ -46,6 +46,8 @@ private:
 
 private:
 	IOEVertDecl* m_pDecl;
+	IOETexture* m_pTexture;
+
 	CMapTile* m_pMapTileBuff[MAX_TILE_COUNT];
 
 	VMAP_TILE m_vActivedTile;

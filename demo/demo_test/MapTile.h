@@ -25,6 +25,7 @@ public:
 	{
 		float x, y, z;
 		uint nColor;
+		float u, v;
 	} TILE_VERTEX;
 
 public:

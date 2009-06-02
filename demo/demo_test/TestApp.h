@@ -10,6 +10,7 @@
 
 #include <IOEApp.h>
 #include <IOEVertDecl.h>
+#include <OEInterfaces.h>
 
 #include "Camera.h"
 #include "TerrainMgr.h"
@@ -25,7 +26,7 @@ public:
 	typedef struct VERTEX_tag
 	{
 		float x, y, z;
-		uint nColor;
+		float u, v;
 	} VERTEX;
 
 public:
@@ -52,14 +53,18 @@ private:
 	bool UpdateRotation(float fDetailTime);
 
 private:
-	IOEVertDecl* m_pDecl;
+	//IOEVertDecl* m_pDecl;
 	CCamera* m_pCamera;
 	CTerrainMgr* m_pTerrainMgr;
+
+	IOETexture* m_pTexture;
+	IOEShader* m_pShader;
 
 	bool m_bLButtonDown;
 	int m_nMouseDetailX;
 	int m_nMouseDetailY;
 	bool m_KeyDown[KEY_COUNT];
+
 };
 
 #endif // __TESTAPP_H__

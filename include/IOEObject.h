@@ -13,14 +13,45 @@
 class IOEObject
 {
 public:
-	IOEObject() {m_bOK = false;};
-	virtual ~IOEObject() {};
+	IOEObject()
+	{
+		m_bOK = false;
+		m_nRef = 1;
+	};
 
-	virtual bool IsOK() {return m_bOK;};
-	virtual void Release() {delete this;};
+	virtual ~IOEObject()
+	{
+		// TODO: 
+	};
+
+	virtual bool IsOK()
+	{
+		return m_bOK;
+	};
+
+	virtual void Release()
+	{
+		if (DecRef() <= 0) delete this;
+	};
+
+	int IncRef()
+	{
+		return ++m_nRef;
+	};
+
+	int DecRef()
+	{
+		return --m_nRef;
+	};
+
+	int GetRef() const
+	{
+		return m_nRef;
+	};
 
 protected:
 	bool m_bOK;
+	int m_nRef;
 
 };
 #endif // __IOEOBJECT_H__
