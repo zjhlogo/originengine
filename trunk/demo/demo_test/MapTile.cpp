@@ -55,6 +55,8 @@ bool CMapTile::LoadMap(const ushort* pHeightField, int nID)
 			m_pVerts[nIndex].y = pHeightField[nHeightIndex]*0.004f-100.0f;
 			m_pVerts[nIndex].z = z*fDetailHeight;
 			m_pVerts[nIndex].nColor = 0xFFFFFFFF;
+			m_pVerts[nIndex].u = m_pVerts[nIndex].x/TILE_WIDTH;
+			m_pVerts[nIndex].v = 1.0f - m_pVerts[nIndex].z/TILE_HEIGHT;
 		}
 	}
 
@@ -112,6 +114,8 @@ bool CMapTile::LoadMap(const tchar* pstrFileName, int nID)
 			m_pVerts[nIndex].y = pHeightField[nHeightIndex]*0.004f-100.0f;
 			m_pVerts[nIndex].z = z*fDetailHeight;
 			m_pVerts[nIndex].nColor = 0xFFFFFFFF;
+			m_pVerts[nIndex].u = m_pVerts[nIndex].x/TILE_WIDTH;
+			m_pVerts[nIndex].v = 1.0f - m_pVerts[nIndex].z/TILE_HEIGHT;
 		}
 	}
 

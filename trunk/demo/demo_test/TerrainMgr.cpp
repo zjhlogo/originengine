@@ -6,7 +6,6 @@
  * \author zjhlogo (zjhlogo@163.com)
  */
 #include "TerrainMgr.h"
-#include <OEInterfaces.h>
 #include <assert.h>
 
 CTerrainMgr::CTerrainMgr()
@@ -26,6 +25,7 @@ void CTerrainMgr::Init()
 	m_nLastTileX = 0;
 	m_nLastTileZ = 0;
 	m_bFirstUpdate = true;
+	m_pTexture = NULL;
 
 	m_pMapFile = _tfopen("maptile.raw", _T("rb")); 
 }
@@ -33,6 +33,7 @@ void CTerrainMgr::Init()
 void CTerrainMgr::Destroy()
 {
 	SAFE_RELEASE(m_pDecl);
+	SAFE_RELEASE(m_pTexture);
 	for (int i = 0; i < MAX_TILE_COUNT; ++i)
 	{
 		SAFE_DELETE(m_pMapTileBuff[i]);
@@ -48,6 +49,7 @@ bool CTerrainMgr::LoadTerrain()
 	{
 		IOEVertDecl::T_FLOAT3, IOEVertDecl::U_POSITION, 0,
 		IOEVertDecl::T_COLOR, IOEVertDecl::U_COLOR, 0,
+		IOEVertDecl::T_FLOAT2, IOEVertDecl::U_TEXCOORD, 0,
 		IOEVertDecl::T_UNKNOWN, IOEVertDecl::U_UNKNOWN, 0,
 	};
 
@@ -58,6 +60,9 @@ bool CTerrainMgr::LoadTerrain()
 	{
 		m_pMapTileBuff[i] = new CMapTile();
 	}
+
+	m_pTexture = g_pOETextureMgr->CreateTextureFromFile(_T("grass.png"));
+	if (!m_pTexture) return false;
 
 	return true;
 }
@@ -146,6 +151,8 @@ void CTerrainMgr::Render(float fDetailTime)
 		CMatrix4x4 matTile;
 		CalcMapTileMatrix(matTile, pTile->GetID());
 		g_pOERenderer->SetTransform(IOERenderer::TT_WORLD, matTile);
+		g_pOERenderer->SetTexture(m_pTexture);
+
 		pTile->Render(fDetailTime);
 	}
 

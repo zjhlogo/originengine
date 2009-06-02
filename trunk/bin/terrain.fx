@@ -34,7 +34,7 @@ VS_OUTPUT VSMain(VS_INPUT input)
 float4 PSMain(VS_OUTPUT input) : COLOR
 {
     float4 color = tex2D(texBaseSampler, input.texcoord);
-    return float4(1.0f, 1.0f, 1.0f, 1.0f);
+    return color;
 }
 
 technique Normal

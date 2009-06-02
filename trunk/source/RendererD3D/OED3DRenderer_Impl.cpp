@@ -109,7 +109,9 @@ void COED3DRenderer_Impl::EnableFog(bool bEnable)
 	if (bEnable)
 	{
 		g_pd3dDevice->SetRenderState(D3DRS_FOGENABLE, TRUE);
-		g_pd3dDevice->SetRenderState(D3DRS_FOGVERTEXMODE, D3DFOG_LINEAR);
+
+		// 这里不要用 D3DRS_FOGVERTEXMODE, 否则用 Shader 渲染时, 什么都看不见
+		g_pd3dDevice->SetRenderState(D3DRS_FOGTABLEMODE, D3DFOG_LINEAR);
 	}
 	else
 	{
