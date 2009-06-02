@@ -22,7 +22,7 @@ public:
 	 * \param nFlag can be combine of OPEN_FILE_FLAG
 	 * \return 
 	 */
-	virtual IOEFile* OpenFile(const tchar* pstrFileName, uint nFlag) = 0;
+	virtual IOEFile* OpenFile(const tchar* pstrFileName, uint nFlag = IOEFile::OFF_READ) = 0;
 
 };
 extern IOEFileMgr* g_pOEFileMgr;

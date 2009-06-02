@@ -33,8 +33,7 @@ void CMapTile::Destroy()
 
 bool CMapTile::LoadMap(const ushort* pHeightField, int nID)
 {
-	if (!pHeightField)
-		return false;
+	if (!pHeightField) return false;
 
 	Reset();
 	
@@ -90,12 +89,12 @@ bool CMapTile::LoadMap(const tchar* pstrFileName, int nID)
 {
 	Reset();
 
-	FILE* pFile = _tfopen(pstrFileName, _T("rb"));
+	IOEFile* pFile = g_pOEFileMgr->OpenFile(pstrFileName);
 	if (!pFile) return false;
 
 	ushort* pHeightField = new ushort[TILE_SIZE*TILE_SIZE];
-	fread(pHeightField, sizeof(ushort), TILE_SIZE*TILE_SIZE, pFile);
-	fclose(pFile);
+	pFile->Read(pHeightField, sizeof(ushort)*TILE_SIZE*TILE_SIZE);
+	SAFE_RELEASE(pFile);
 
 	if (!m_pVerts)
 	{

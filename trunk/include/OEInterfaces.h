@@ -9,12 +9,18 @@
 #define __OEINTERFACES_H__
 
 #include "OEBasicType.h"
+
+// 核心模块
 #include "IOECore.h"
 #include "IOEFileMgr.h"
+
+// 渲染模块
 #include "IOEDevice.h"
 #include "IOERenderer.h"
 #include "IOETextureMgr.h"
 #include "IOEShaderMgr.h"
+
+// 用户层
 #include "IOEApp.h"
 
 #endif // __OEINTERFACES_H__

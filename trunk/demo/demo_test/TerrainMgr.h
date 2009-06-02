@@ -57,7 +57,7 @@ private:
 	int m_nLastTileX;
 	int m_nLastTileZ;
 
-	FILE* m_pMapFile;
+	IOEFile* m_pMapFile;
 };
 
 #endif // __TERRAINMGR_H__

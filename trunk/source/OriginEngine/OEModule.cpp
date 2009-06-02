@@ -10,15 +10,15 @@
 #include "OEFileMgr_Impl.h"
 #include <OEOS.h>
 
-COEOS::OEMODULE g_hModuleRenderer = NULL;
+static COEOS::OEMODULE g_hModuleRenderer = NULL;
 
 bool CreateSingleton()
 {
-	COECore_Impl* pOECore_Impl = new COECore_Impl();
-	if (!pOECore_Impl) return false;
-
 	COEFileMgr_Impl* pOEFileMgr_Impl = new COEFileMgr_Impl();
 	if (!pOEFileMgr_Impl) return false;
+
+	COECore_Impl* pOECore_Impl = new COECore_Impl();
+	if (!pOECore_Impl) return false;
 
 	return true;
 }

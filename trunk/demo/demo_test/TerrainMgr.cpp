@@ -27,20 +27,19 @@ void CTerrainMgr::Init()
 	m_bFirstUpdate = true;
 	m_pTexture = NULL;
 
-	m_pMapFile = _tfopen("maptile.raw", _T("rb")); 
+	m_pMapFile = NULL;
 }
 
 void CTerrainMgr::Destroy()
 {
 	SAFE_RELEASE(m_pDecl);
 	SAFE_RELEASE(m_pTexture);
+	SAFE_RELEASE(m_pMapFile);
+
 	for (int i = 0; i < MAX_TILE_COUNT; ++i)
 	{
 		SAFE_DELETE(m_pMapTileBuff[i]);
 	}
-
-	fclose(m_pMapFile);
-	m_pMapFile = NULL;
 }
 
 bool CTerrainMgr::LoadTerrain()
@@ -63,6 +62,9 @@ bool CTerrainMgr::LoadTerrain()
 
 	m_pTexture = g_pOETextureMgr->CreateTextureFromFile(_T("grass.png"));
 	if (!m_pTexture) return false;
+
+	m_pMapFile = g_pOEFileMgr->OpenFile(_T("maptile.raw"));
+	if (!m_pMapFile) return false;
 
 	return true;
 }
@@ -193,9 +195,6 @@ tstring CTerrainMgr::GetMapTileFile(int nIndex)
 
 const ushort* CTerrainMgr::GetMapTileField(int nIndex)
 {
-	if (!m_pMapFile)
-		return NULL;
-
 	long nPos   = 0;
 	long nLen   = 0;
 	int  nCount = -1;
@@ -207,22 +206,20 @@ const ushort* CTerrainMgr::GetMapTileField(int nIndex)
 		for (int x = 0; x < TILE_COUNT_X; x++)
 		{
 			nCount++;
-
-			if (nCount != nIndex)
-				continue;
+			if (nCount != nIndex) continue;
 
 			ushort* pHeightField = new ushort[CMapTile::TILE_SIZE*CMapTile::TILE_SIZE];
 			memset(pHeightField, 0, sizeof(ushort) * CMapTile::TILE_SIZE*CMapTile::TILE_SIZE);
 
 			nPos = sizeof(ushort) * x * CMapTile::TILE_SIZE + nLen; 
-			fseek(m_pMapFile, nPos, SEEK_SET);
+			m_pMapFile->Seek(nPos);
 
 			for (int i = 0; i < CMapTile::TILE_SIZE; i++)
 			{
-				fread(&pHeightField[i * CMapTile::TILE_SIZE], sizeof(ushort), CMapTile::TILE_SIZE - 1, m_pMapFile);
+				m_pMapFile->Read(&pHeightField[i * CMapTile::TILE_SIZE], sizeof(ushort)*(CMapTile::TILE_SIZE-1));
 
 				nPos  += (sizeof(ushort) * CMapTile::TILE_SIZE) * TILE_COUNT_X;
-				fseek(m_pMapFile, nPos, SEEK_SET);
+				m_pMapFile->Seek(nPos);
 			}
 
 			return pHeightField;

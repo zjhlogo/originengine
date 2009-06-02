@@ -9,16 +9,20 @@
 #include <OEInterfaces.h>
 #include <OEOS.h>
 
+// 核心模块
 IOECore* g_pOECore = NULL;
-IOEApp* g_pOEApp = NULL;
+IOEFileMgr* g_pOEFileMgr = NULL;
+
+// 渲染模块
 IOEDevice* g_pOEDevice = NULL;
 IOERenderer* g_pOERenderer = NULL;
 IOETextureMgr* g_pOETextureMgr = NULL;
 IOEShaderMgr* g_pOEShaderMgr = NULL;
-IOEFileMgr* g_pOEFileMgr = NULL;
 
-COEOS::OEMODULE g_hModuleOE = NULL;
+// 用户层
+IOEApp* g_pOEApp = NULL;
 
+static COEOS::OEMODULE g_hModuleOE = NULL;
 COEHolder g_OEHolder;
 
 COEHolder::COEHolder()
@@ -33,13 +37,18 @@ COEHolder::~COEHolder()
 
 void COEHolder::SetupInterfaces()
 {
+	// 核心模块
+	AddInterface(_T("IOEFileMgr"), (void**)&g_pOEFileMgr);
 	AddInterface(_T("IOECore"), (void**)&g_pOECore);
-	AddInterface(_T("IOEApp"), (void**)&g_pOEApp);
+
+	// 渲染模块
 	AddInterface(_T("IOEDevice"), (void**)&g_pOEDevice);
 	AddInterface(_T("IOERenderer"), (void**)&g_pOERenderer);
 	AddInterface(_T("IOETextureMgr"), (void**)&g_pOETextureMgr);
 	AddInterface(_T("IOEShaderMgr"), (void**)&g_pOEShaderMgr);
-	AddInterface(_T("IOEFileMgr"), (void**)&g_pOEFileMgr);
+
+	// 用户层
+	AddInterface(_T("IOEApp"), (void**)&g_pOEApp);
 }
 
 bool COEHolder::Initialize()
