@@ -32,7 +32,7 @@ public:
 	CMapTile();
 	~CMapTile();
 
-	bool LoadMap(const tchar* pstrFileName, int nID);
+	//bool LoadMap(const tchar* pstrFileName, int nID);
 	bool LoadMap(const ushort* pHeightField, int nID);
 	int GetID();
 
