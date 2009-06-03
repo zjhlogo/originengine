@@ -187,11 +187,11 @@ CMapTile* CTerrainMgr::ActiveSleepedTile(int nID)
 	return NULL;
 }
 
-tstring CTerrainMgr::GetMapTileFile(int nIndex)
-{
-	// TODO: 根据索引取得分块地图文件名
-	return _T("maptile.raw");
-}
+//tstring CTerrainMgr::GetMapTileFile(int nIndex)
+//{
+//	// TODO: 根据索引取得分块地图文件名
+//	return _T("maptile.raw");
+//}
 
 const ushort* CTerrainMgr::GetMapTileField(int nIndex)
 {

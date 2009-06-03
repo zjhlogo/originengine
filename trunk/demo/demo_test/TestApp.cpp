@@ -23,8 +23,8 @@ void CTestApp::Init()
 	//m_pDecl = NULL;
 	m_pCamera = NULL;
 	m_pTerrainMgr = NULL;
-	m_pShader = NULL;
-	m_pTexture = NULL;
+	//m_pShader = NULL;
+	//m_pTexture = NULL;
 
 	m_bLButtonDown = false;
 	m_nMouseDetailX = 0;
@@ -39,12 +39,12 @@ void CTestApp::Destroy()
 
 bool CTestApp::Initialize()
 {
-	static const IOEVertDecl::ELEMENT s_Decl[] =
-	{
-		IOEVertDecl::T_FLOAT3, IOEVertDecl::U_POSITION, 0,
-		IOEVertDecl::T_FLOAT2, IOEVertDecl::U_TEXCOORD, 0,
-		IOEVertDecl::T_UNKNOWN, IOEVertDecl::U_UNKNOWN, 0,
-	};
+	//static const IOEVertDecl::ELEMENT s_Decl[] =
+	//{
+	//	IOEVertDecl::T_FLOAT3, IOEVertDecl::U_POSITION, 0,
+	//	IOEVertDecl::T_FLOAT2, IOEVertDecl::U_TEXCOORD, 0,
+	//	IOEVertDecl::T_UNKNOWN, IOEVertDecl::U_UNKNOWN, 0,
+	//};
 
 	//m_pDecl = g_pOEDevice->CreateVertDecl(s_Decl);
 	//if (!m_pDecl) return false;
@@ -57,11 +57,11 @@ bool CTestApp::Initialize()
 	//g_pOERenderer->SetFogInfo(0xFF000000, 600.0f, 800.0f);
 	////g_pOERenderer->SetFillMode(IOERenderer::FM_WIREFRAME);
 
-	m_pShader = g_pOEShaderMgr->CreateShader(s_Decl, _T("terrain.fx"));
-	if (!m_pShader) return false;
+	//m_pShader = g_pOEShaderMgr->CreateShader(s_Decl, _T("terrain.fx"));
+	//if (!m_pShader) return false;
 
-	m_pTexture = g_pOETextureMgr->CreateTextureFromFile(_T("grass.png"));
-	if (!m_pTexture) return false;
+	//m_pTexture = g_pOETextureMgr->CreateTextureFromFile(_T("grass.png"));
+	//if (!m_pTexture) return false;
 
 	//// 这里用来测试引用机制
 	//IOETexture* pTexture1 = g_pOETextureMgr->CreateTextureFromFile(_T("GRASS.PNG"));
@@ -77,8 +77,8 @@ bool CTestApp::Initialize()
 void CTestApp::Terminate()
 {
 	//SAFE_RELEASE(m_pDecl);
-	SAFE_RELEASE(m_pShader);
-	SAFE_RELEASE(m_pTexture);
+	//SAFE_RELEASE(m_pShader);
+	//SAFE_RELEASE(m_pTexture);
 	SAFE_DELETE(m_pCamera);
 	SAFE_DELETE(m_pTerrainMgr);
 }
@@ -93,26 +93,26 @@ void CTestApp::Update(float fDetailTime)
 
 void CTestApp::Render(float fDetailTime)
 {
-	static const VERTEX s_Verts[4] =
-	{
-		{-10.0f, 0.0f, -10.0f, 0.0f, 1.0f},
-		{-10.0f, 0.0f, 10.0f, 0.0f, 0.0f},
-		{10.0f, 0.0f, 10.0f, 1.0f, 0.0f},
-		{10.0f, 0.0f, -10.0f, 1.0f, 1.0f},
-	};
+	//static const VERTEX s_Verts[4] =
+	//{
+	//	{-10.0f, 0.0f, -10.0f, 0.0f, 1.0f},
+	//	{-10.0f, 0.0f, 10.0f, 0.0f, 0.0f},
+	//	{10.0f, 0.0f, 10.0f, 1.0f, 0.0f},
+	//	{10.0f, 0.0f, -10.0f, 1.0f, 1.0f},
+	//};
 
-	static const ushort s_Indis[6] = {0, 1, 3, 1, 2, 3};
+	//static const ushort s_Indis[6] = {0, 1, 3, 1, 2, 3};
 
-	CMatrix4x4 matView;
-	CMatrix4x4 matProj;
+	//CMatrix4x4 matView;
+	//CMatrix4x4 matProj;
 
-	g_pOERenderer->GetTransform(matView, IOERenderer::TT_VIEW);
-	g_pOERenderer->GetTransform(matProj, IOERenderer::TT_PROJECTION);
+	//g_pOERenderer->GetTransform(matView, IOERenderer::TT_VIEW);
+	//g_pOERenderer->GetTransform(matProj, IOERenderer::TT_PROJECTION);
 
-	CMatrix4x4 matViewProj = matView*matProj;
-	m_pShader->SetMatrix(_T("g_matViewProj"), matViewProj);
-	m_pShader->SetTexture(_T("g_texBase"), m_pTexture);
-	m_pShader->DrawTriList(s_Verts, 4, s_Indis, 6);
+	//CMatrix4x4 matViewProj = matView*matProj;
+	//m_pShader->SetMatrix(_T("g_matViewProj"), matViewProj);
+	//m_pShader->SetTexture(_T("g_texBase"), m_pTexture);
+	//m_pShader->DrawTriList(s_Verts, 4, s_Indis, 6);
 
 	//g_pOERenderer->SetFillMode(IOERenderer::FM_SOLID);
 	//g_pOERenderer->SetVertDecl(m_pDecl);

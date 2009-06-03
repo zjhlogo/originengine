@@ -7,6 +7,8 @@
  */
 #include "OED3DTexture_Impl.h"
 #include "OED3DUtil.h"
+
+#include <OEInterfaces.h>
 #include <d3dx9.h>
 
 extern IDirect3DDevice9* g_pd3dDevice;
@@ -58,7 +60,19 @@ IOETexture::TEXTURE_FORMAT COED3DTexture_Impl::GetFormat() const
 
 bool COED3DTexture_Impl::Create(const tchar* pstrFileName)
 {
-	HRESULT hRet = D3DXCreateTextureFromFile(g_pd3dDevice, pstrFileName, &m_pTexture);
+	IOEFile* pFile = g_pOEFileMgr->OpenFile(pstrFileName);
+	if (!pFile) return false;
+
+	uint nSize = pFile->GetSize();
+	if (nSize <= 0) return false;
+
+	uchar* pData = new uchar[nSize];
+	pFile->Read(pData, nSize);
+	SAFE_RELEASE(pFile);
+
+	HRESULT hRet = D3DXCreateTextureFromFileInMemory(g_pd3dDevice, pData, nSize, &m_pTexture);
+	SAFE_DELETE_ARRAY(pData);
+
 	if (FAILED(hRet)) return false;
 
 	D3DSURFACE_DESC Desc;

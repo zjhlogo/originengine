@@ -23,11 +23,11 @@ public:
 		KEY_COUNT = 256,
 	};
 
-	typedef struct VERTEX_tag
-	{
-		float x, y, z;
-		float u, v;
-	} VERTEX;
+	//typedef struct VERTEX_tag
+	//{
+	//	float x, y, z;
+	//	float u, v;
+	//} VERTEX;
 
 public:
 	CTestApp();
@@ -57,8 +57,8 @@ private:
 	CCamera* m_pCamera;
 	CTerrainMgr* m_pTerrainMgr;
 
-	IOETexture* m_pTexture;
-	IOEShader* m_pShader;
+	//IOETexture* m_pTexture;
+	//IOEShader* m_pShader;
 
 	bool m_bLButtonDown;
 	int m_nMouseDetailX;
