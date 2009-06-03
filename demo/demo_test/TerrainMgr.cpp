@@ -36,7 +36,7 @@ void CTerrainMgr::Destroy()
 	SAFE_RELEASE(m_pTexture);
 	SAFE_RELEASE(m_pMapFile);
 
-	for (int i = 0; i < MAX_TILE_COUNT; ++i)
+	for (int i = 0; i < MAX_CACHE_COUNT; ++i)
 	{
 		SAFE_DELETE(m_pMapTileBuff[i]);
 	}
@@ -55,7 +55,7 @@ bool CTerrainMgr::LoadTerrain()
 	m_pDecl = g_pOEDevice->CreateVertDecl(s_Decl);
 	if (!m_pDecl) return false;
 
-	for (int i = 0; i < MAX_TILE_COUNT; ++i)
+	for (int i = 0; i < MAX_CACHE_COUNT; ++i)
 	{
 		m_pMapTileBuff[i] = new CMapTile();
 	}
@@ -63,7 +63,7 @@ bool CTerrainMgr::LoadTerrain()
 	m_pTexture = g_pOETextureMgr->CreateTextureFromFile(_T("grass.png"));
 	if (!m_pTexture) return false;
 
-	m_pMapFile = g_pOEFileMgr->OpenFile(_T("maptile.raw"));
+	m_pMapFile = g_pOEFileMgr->OpenFile(_T("terrain.raw"));
 	if (!m_pMapFile) return false;
 
 	return true;
@@ -99,8 +99,8 @@ void CTerrainMgr::UpdateTerrain(const CVector3& vEyePos)
 		{
 			int nTileX = x+nX;
 			int nTileZ = z+nZ;
-			if (nTileX < 0 || nTileX > TILE_COUNT_X) continue;
-			if (nTileZ < 0 || nTileZ > TILE_COUNT_Z) continue;
+			if (nTileX < 0 || nTileX >= TILE_COUNT_X) continue;
+			if (nTileZ < 0 || nTileZ >= TILE_COUNT_Z) continue;
 
 			int nIndex = nTileZ*TILE_COUNT_X+nTileX;
 
@@ -130,7 +130,7 @@ void CTerrainMgr::UpdateTerrain(const CVector3& vEyePos)
 		//tstring strTileName = GetMapTileFile(nIndex);
 		//if (pTile->LoadMap(strTileName.c_str(), nIndex))
 
-		const ushort* pField = GetMapTileField(nIndex);
+		const uchar* pField = GetMapTileField(nIndex);
 		if (pTile->LoadMap(pField, nIndex))
 		{
 			m_vActivedTile.push_back(pTile);
@@ -166,7 +166,7 @@ void CTerrainMgr::ResetTile()
 	m_vActivedTile.clear();
 
 	m_vSleepedTile.clear();
-	for (int i = 0; i < MAX_TILE_COUNT; ++i)
+	for (int i = 0; i < MAX_CACHE_COUNT; ++i)
 	{
 		m_vSleepedTile.push_back(m_pMapTileBuff[i]);
 	}
@@ -193,40 +193,24 @@ tstring CTerrainMgr::GetMapTileFile(int nIndex)
 	return _T("maptile.raw");
 }
 
-const ushort* CTerrainMgr::GetMapTileField(int nIndex)
+const uchar* CTerrainMgr::GetMapTileField(int nIndex)
 {
-	long nPos   = 0;
-	long nLen   = 0;
-	int  nCount = -1;
+	static uchar s_HeightField[CMapTile::TILE_SIZE*CMapTile::TILE_SIZE];
 
-	for (int z = 0; z < TILE_COUNT_Z; z++)
+	uint nX = nIndex%TILE_COUNT_X;
+	uint nZ = TILE_COUNT_Z - nIndex/TILE_COUNT_X - 1;
+
+	assert(nX < TILE_COUNT_X && nZ < TILE_COUNT_Z);
+
+	uint nBasePos = nZ*(CMapTile::TILE_SIZE-1)*MAP_SIZE_X+nX*(CMapTile::TILE_SIZE-1);
+
+	for (uint z = 0; z < CMapTile::TILE_SIZE; ++z)
 	{
-		nLen = CMapTile::TILE_SIZE*CMapTile::TILE_SIZE*sizeof(ushort)*TILE_COUNT_X * z;
-
-		for (int x = 0; x < TILE_COUNT_X; x++)
-		{
-			nCount++;
-			if (nCount != nIndex) continue;
-
-			ushort* pHeightField = new ushort[CMapTile::TILE_SIZE*CMapTile::TILE_SIZE];
-			memset(pHeightField, 0, sizeof(ushort) * CMapTile::TILE_SIZE*CMapTile::TILE_SIZE);
-
-			nPos = sizeof(ushort) * x * CMapTile::TILE_SIZE + nLen; 
-			m_pMapFile->Seek(nPos);
-
-			for (int i = 0; i < CMapTile::TILE_SIZE; i++)
-			{
-				m_pMapFile->Read(&pHeightField[i * CMapTile::TILE_SIZE], sizeof(ushort)*(CMapTile::TILE_SIZE-1));
-
-				nPos  += (sizeof(ushort) * CMapTile::TILE_SIZE) * TILE_COUNT_X;
-				m_pMapFile->Seek(nPos);
-			}
-
-			return pHeightField;
-		}
+		m_pMapFile->Seek(nBasePos+z*MAP_SIZE_X);
+		m_pMapFile->Read(&s_HeightField[z*CMapTile::TILE_SIZE], CMapTile::TILE_SIZE);
 	}
 
-	return NULL;
+	return s_HeightField;
 }
 
 void CTerrainMgr::CalcMapTileMatrix(CMatrix4x4& matOut, int nIndex)

@@ -17,8 +17,8 @@ public:
 	enum CONST_DEFILE
 	{
 		TILE_SIZE	= 65,
-		TILE_WIDTH	= 400,
-		TILE_HEIGHT = 400,
+		TILE_WIDTH	= 800,
+		TILE_HEIGHT = 800,
 	};
 
 	typedef struct TILE_VERTEX_tag
@@ -33,7 +33,7 @@ public:
 	~CMapTile();
 
 	//bool LoadMap(const tchar* pstrFileName, int nID);
-	bool LoadMap(const ushort* pHeightField, int nID);
+	bool LoadMap(const uchar* pHeightField, int nID);
 	int GetID();
 
 	void Render(float fDetailTime);

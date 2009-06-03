@@ -17,9 +17,13 @@ class CTerrainMgr
 public:
 	enum CONST_DEFINE
 	{
-		MAX_TILE_COUNT = 9,
-		TILE_COUNT_X   = 16,
-		TILE_COUNT_Z   = 16,
+		MAX_CACHE_COUNT = 9,
+
+		TILE_COUNT_X = 16,
+		TILE_COUNT_Z = 16,
+
+		MAP_SIZE_X = TILE_COUNT_X*(CMapTile::TILE_SIZE-1)+1,
+		MAP_SIZE_Z = TILE_COUNT_Z*(CMapTile::TILE_SIZE-1)+1,
 	};
 
 	typedef std::vector<CMapTile*> VMAP_TILE;
@@ -41,14 +45,14 @@ private:
 	void ResetTile();
 	CMapTile* ActiveSleepedTile(int nID);
 	tstring GetMapTileFile(int nIndex);
-	const ushort* GetMapTileField(int nIndex);
+	const uchar* GetMapTileField(int nIndex);
 	void CalcMapTileMatrix(CMatrix4x4& matOut, int nIndex);
 
 private:
 	IOEVertDecl* m_pDecl;
 	IOETexture* m_pTexture;
 
-	CMapTile* m_pMapTileBuff[MAX_TILE_COUNT];
+	CMapTile* m_pMapTileBuff[MAX_CACHE_COUNT];
 
 	VMAP_TILE m_vActivedTile;
 	VMAP_TILE m_vSleepedTile;
