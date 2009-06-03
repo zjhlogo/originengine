@@ -90,7 +90,7 @@ void CMapTile::Destroy()
 //	return true;
 //}
 
-bool CMapTile::LoadMap(const uchar* pHeightField, int nID)
+bool CMapTile::LoadMap(const ushort* pHeightField, int nID)
 {
 	Reset();
 	
@@ -108,7 +108,7 @@ bool CMapTile::LoadMap(const uchar* pHeightField, int nID)
 			int nIndex = z*TILE_SIZE+x;
 			int nHeightIndex = (TILE_SIZE-z-1)*TILE_SIZE+x;
 			m_pVerts[nIndex].x = x*fDetailWidth;
-			m_pVerts[nIndex].y = pHeightField[nHeightIndex]-256.0f;
+			m_pVerts[nIndex].y = pHeightField[nHeightIndex]*0.01f-400.0f;
 			m_pVerts[nIndex].z = z*fDetailHeight;
 			m_pVerts[nIndex].nColor = 0xFFFFFFFF;
 			m_pVerts[nIndex].u = m_pVerts[nIndex].x/TILE_WIDTH;

@@ -33,7 +33,7 @@ public:
 	~CMapTile();
 
 	//bool LoadMap(const tchar* pstrFileName, int nID);
-	bool LoadMap(const uchar* pHeightField, int nID);
+	bool LoadMap(const ushort* pHeightField, int nID);
 	int GetID();
 
 	void Render(float fDetailTime);

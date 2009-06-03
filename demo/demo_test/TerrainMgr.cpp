@@ -130,7 +130,7 @@ void CTerrainMgr::UpdateTerrain(const CVector3& vEyePos)
 		//tstring strTileName = GetMapTileFile(nIndex);
 		//if (pTile->LoadMap(strTileName.c_str(), nIndex))
 
-		const uchar* pField = GetMapTileField(nIndex);
+		const ushort* pField = GetMapTileField(nIndex);
 		if (pTile->LoadMap(pField, nIndex))
 		{
 			m_vActivedTile.push_back(pTile);
@@ -193,21 +193,21 @@ tstring CTerrainMgr::GetMapTileFile(int nIndex)
 	return _T("maptile.raw");
 }
 
-const uchar* CTerrainMgr::GetMapTileField(int nIndex)
+const ushort* CTerrainMgr::GetMapTileField(int nIndex)
 {
-	static uchar s_HeightField[CMapTile::TILE_SIZE*CMapTile::TILE_SIZE];
+	static ushort s_HeightField[CMapTile::TILE_SIZE*CMapTile::TILE_SIZE];
 
 	uint nX = nIndex%TILE_COUNT_X;
 	uint nZ = TILE_COUNT_Z - nIndex/TILE_COUNT_X - 1;
 
 	assert(nX < TILE_COUNT_X && nZ < TILE_COUNT_Z);
 
-	uint nBasePos = nZ*(CMapTile::TILE_SIZE-1)*MAP_SIZE_X+nX*(CMapTile::TILE_SIZE-1);
+	uint nBasePos = (nZ*(CMapTile::TILE_SIZE-1)*MAP_SIZE_X+nX*(CMapTile::TILE_SIZE-1))*sizeof(ushort);
 
 	for (uint z = 0; z < CMapTile::TILE_SIZE; ++z)
 	{
-		m_pMapFile->Seek(nBasePos+z*MAP_SIZE_X);
-		m_pMapFile->Read(&s_HeightField[z*CMapTile::TILE_SIZE], CMapTile::TILE_SIZE);
+		m_pMapFile->Seek(nBasePos+z*MAP_SIZE_X*sizeof(ushort));
+		m_pMapFile->Read(&s_HeightField[z*CMapTile::TILE_SIZE], CMapTile::TILE_SIZE*sizeof(ushort));
 	}
 
 	return s_HeightField;

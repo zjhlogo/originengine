@@ -53,9 +53,9 @@ bool CTestApp::Initialize()
 	m_pTerrainMgr = new CTerrainMgr();
 	if (!m_pTerrainMgr->LoadTerrain()) return false;
 
-	g_pOERenderer->EnableFog(true);
-	g_pOERenderer->SetFogInfo(0xFF000000, 600.0f, 800.0f);
-	//g_pOERenderer->SetFillMode(IOERenderer::FM_WIREFRAME);
+	//g_pOERenderer->EnableFog(true);
+	//g_pOERenderer->SetFogInfo(0xFF000000, 600.0f, 800.0f);
+	////g_pOERenderer->SetFillMode(IOERenderer::FM_WIREFRAME);
 
 	m_pShader = g_pOEShaderMgr->CreateShader(s_Decl, _T("terrain.fx"));
 	if (!m_pShader) return false;
