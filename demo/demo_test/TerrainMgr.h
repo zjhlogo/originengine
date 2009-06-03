@@ -44,7 +44,7 @@ private:
 
 	void ResetTile();
 	CMapTile* ActiveSleepedTile(int nID);
-	tstring GetMapTileFile(int nIndex);
+	//tstring GetMapTileFile(int nIndex);
 	const ushort* GetMapTileField(int nIndex);
 	void CalcMapTileMatrix(CMatrix4x4& matOut, int nIndex);
 
