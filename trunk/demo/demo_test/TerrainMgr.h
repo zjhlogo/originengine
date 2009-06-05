@@ -9,7 +9,6 @@
 #define __TERRAINMGR_H__
 
 #include "MapTile.h"
-#include <OEInterfaces.h>
 #include <vector>
 
 class CTerrainMgr
@@ -44,14 +43,11 @@ private:
 
 	void ResetTile();
 	CMapTile* ActiveSleepedTile(int nID);
-	//tstring GetMapTileFile(int nIndex);
+
 	const ushort* GetMapTileField(int nIndex);
 	void CalcMapTileMatrix(CMatrix4x4& matOut, int nIndex);
 
 private:
-	IOEVertDecl* m_pDecl;
-	IOETexture* m_pTexture;
-
 	CMapTile* m_pMapTileBuff[MAX_CACHE_COUNT];
 
 	VMAP_TILE m_vActivedTile;

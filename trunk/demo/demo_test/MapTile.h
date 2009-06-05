@@ -9,6 +9,7 @@
 #define __MAPTILE_H__
 
 #include <OEBasicType.h>
+#include <OEInterfaces.h>
 #include <OEMath/OEMath.h>
 
 class CMapTile
@@ -24,7 +25,6 @@ public:
 	typedef struct TILE_VERTEX_tag
 	{
 		float x, y, z;
-		uint nColor;
 		float u, v;
 	} TILE_VERTEX;
 
@@ -32,7 +32,6 @@ public:
 	CMapTile();
 	~CMapTile();
 
-	//bool LoadMap(const tchar* pstrFileName, int nID);
 	bool LoadMap(const ushort* pHeightField, int nID);
 	int GetID();
 
@@ -43,12 +42,15 @@ private:
 	void Destroy();
 
 	void Reset();
+	void CalcMatrix(CMatrix4x4& matOut, int nIndex);
 
 private:
 	TILE_VERTEX* m_pVerts;
 	ushort* m_pIndis;
 	int m_nID;
 
+	IOETexture* m_pTexture;
+	IOEShader* m_pShader;
 };
 
 #endif // __MAPTILE_H__

@@ -7,6 +7,7 @@
  */
 #include "OED3DVertDecl_Impl.h"
 #include "OED3DUtil.h"
+#include <assert.h>
 
 extern IDirect3DDevice9* g_pd3dDevice;
 
@@ -23,6 +24,8 @@ COED3DVertDecl_Impl::~COED3DVertDecl_Impl()
 
 void COED3DVertDecl_Impl::Init()
 {
+	memset(m_Element, 0, sizeof(m_Element));
+	m_nElementCount = 0;
 	m_nStride = 0;
 	m_pDecl = NULL;
 }
@@ -32,49 +35,29 @@ void COED3DVertDecl_Impl::Destroy()
 	SAFE_RELEASE(m_pDecl);
 }
 
-bool COED3DVertDecl_Impl::Create(const ELEMENT* pElement)
+const IOEVertDecl::ELEMENT* COED3DVertDecl_Impl::GetElement() const
 {
-	static D3DVERTEXELEMENT9 s_D3DDecl[IOEVertDecl::MAX_ELEMENT_COUNT];
-	static const D3DVERTEXELEMENT9 END_ELEMENT = D3DDECL_END();
+	return m_Element;
+}
 
+bool COED3DVertDecl_Impl::Compare(const ELEMENT* pElement) const
+{
 	int nElementCount = 0;
-	while (pElement[nElementCount].eType != IOEVertDecl::T_UNKNOWN) ++nElementCount;
-	if (nElementCount+1 >= IOEVertDecl::MAX_ELEMENT_COUNT)
+	while (pElement[nElementCount].eType != T_UNKNOWN) ++nElementCount;
+
+	if (m_nElementCount != nElementCount) return false;
+
+	for (uint i = 0; i < m_nElementCount; ++i)
 	{
-		// TODO: logout failed
-		return false;
+		if (m_Element[i].eType != pElement[i].eType
+			|| m_Element[i].eUsage != pElement[i].eUsage
+			|| m_Element[i].nIndex != pElement[i].nIndex) return false;
 	}
-
-	s_D3DDecl[nElementCount] = END_ELEMENT;
-	int nOffset = 0;
-
-	for (int i = 0; i < nElementCount; ++i)
-	{
-		s_D3DDecl[i].Stream = 0;													// Stream index
-		s_D3DDecl[i].Offset = nOffset;												// Offset in the stream in bytes
-		s_D3DDecl[i].Type = COED3DUtil::ToD3DVertType(pElement[i].eType);			// Data type
-		s_D3DDecl[i].Method = D3DDECLMETHOD_DEFAULT;								// Processing method
-		s_D3DDecl[i].Usage = COED3DUtil::ToD3DVertUsage(pElement[i].eUsage);		// Semantics
-		s_D3DDecl[i].UsageIndex = pElement[i].nIndex;								// Semantic index
-
-		nOffset += COED3DUtil::GetVertTypeSize(pElement[i].eType);
-	}
-
-	HRESULT hr = S_OK;
-
-	hr = g_pd3dDevice->CreateVertexDeclaration(s_D3DDecl, &m_pDecl);
-	if (FAILED(hr))
-	{
-		// TODO: logout
-		return false;
-	}
-
-	m_nStride = nOffset;
 
 	return true;
 }
 
-int COED3DVertDecl_Impl::GetStride()
+int COED3DVertDecl_Impl::GetStride() const
 {
 	return m_nStride;
 }
@@ -82,4 +65,46 @@ int COED3DVertDecl_Impl::GetStride()
 IDirect3DVertexDeclaration9* COED3DVertDecl_Impl::GetD3DVertDecl()
 {
 	return m_pDecl;
+}
+
+bool COED3DVertDecl_Impl::Create(const ELEMENT* pElement)
+{
+	static D3DVERTEXELEMENT9 s_D3DDecl[IOEVertDecl::MAX_ELEMENT_COUNT];
+	static const D3DVERTEXELEMENT9 END_ELEMENT = D3DDECL_END();
+
+	// fill the element
+	m_nElementCount = 0;
+	while (pElement[m_nElementCount].eType != IOEVertDecl::T_UNKNOWN)
+	{
+		assert(m_nElementCount < MAX_ELEMENT_COUNT);
+		m_Element[m_nElementCount] = pElement[m_nElementCount];
+		++m_nElementCount;
+	}
+
+	assert(m_nElementCount < MAX_ELEMENT_COUNT);
+	m_Element[m_nElementCount] = pElement[m_nElementCount];
+	s_D3DDecl[m_nElementCount] = END_ELEMENT;
+	m_nStride = 0;
+
+	// fill d3d declare
+	for (uint i = 0; i < m_nElementCount; ++i)
+	{
+		s_D3DDecl[i].Stream = 0;													// Stream index
+		s_D3DDecl[i].Offset = m_nStride;											// Offset in the stream in bytes
+		s_D3DDecl[i].Type = COED3DUtil::ToD3DVertType(m_Element[i].eType);			// Data type
+		s_D3DDecl[i].Method = D3DDECLMETHOD_DEFAULT;								// Processing method
+		s_D3DDecl[i].Usage = COED3DUtil::ToD3DVertUsage(m_Element[i].eUsage);		// Semantics
+		s_D3DDecl[i].UsageIndex = m_Element[i].nIndex;								// Semantic index
+
+		m_nStride += COED3DUtil::GetVertTypeSize(m_Element[i].eType);
+	}
+
+	HRESULT hr = g_pd3dDevice->CreateVertexDeclaration(s_D3DDecl, &m_pDecl);
+	if (FAILED(hr))
+	{
+		// TODO: logout
+		return false;
+	}
+
+	return true;
 }

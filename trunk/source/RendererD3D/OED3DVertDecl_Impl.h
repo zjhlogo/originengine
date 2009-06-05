@@ -17,7 +17,10 @@ public:
 	COED3DVertDecl_Impl(const ELEMENT* pElement);
 	virtual ~COED3DVertDecl_Impl();
 
-	int GetStride();
+	const ELEMENT* GetElement() const;
+	bool Compare(const ELEMENT* pElement) const;
+	int GetStride() const;
+
 	IDirect3DVertexDeclaration9* GetD3DVertDecl();
 
 private:
@@ -27,6 +30,8 @@ private:
 	bool Create(const ELEMENT* pElement);
 
 private:
+	ELEMENT m_Element[MAX_ELEMENT_COUNT];
+	uint m_nElementCount;
 	uint m_nStride;
 	IDirect3DVertexDeclaration9* m_pDecl;
 

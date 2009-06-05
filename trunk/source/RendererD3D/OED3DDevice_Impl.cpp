@@ -6,7 +6,6 @@
  * \author zjhlogo (zjhlogo@163.com)
  */
 #include "OED3DDevice_Impl.h"
-#include "OED3DVertDecl_Impl.h"
 
 #include <OEMath/OEMath.h>
 #include <OEInterfaces.h>
@@ -37,12 +36,12 @@ void COED3DDevice_Impl::Init()
 	m_bSetTimePeriod = false;
 	m_fPrevTime = 0.0f;
 	m_fCurrTime = 0.0f;
-
+	m_vD3DVertDecl.clear();
 }
 
 void COED3DDevice_Impl::Destroy()
 {
-	// TODO: 
+	DestroyDevice();
 }
 
 bool COED3DDevice_Impl::CreateDevice()
@@ -110,6 +109,16 @@ void COED3DDevice_Impl::EndPerform()
 
 IOEVertDecl* COED3DDevice_Impl::CreateVertDecl(const IOEVertDecl::ELEMENT* pElement)
 {
+	for (VOED3D_VERTDECL::iterator it = m_vD3DVertDecl.begin(); it != m_vD3DVertDecl.end(); ++it)
+	{
+		COED3DVertDecl_Impl* pDecl = (*it);
+		if (pDecl->Compare(pElement))
+		{
+			pDecl->IncRef();
+			return pDecl;
+		}
+	}
+
 	COED3DVertDecl_Impl* pDecl = new COED3DVertDecl_Impl(pElement);
 	if (!pDecl || !pDecl->IsOK())
 	{
@@ -117,6 +126,8 @@ IOEVertDecl* COED3DDevice_Impl::CreateVertDecl(const IOEVertDecl::ELEMENT* pElem
 		// TODO: logout failed
 		return NULL;
 	}
+
+	m_vD3DVertDecl.push_back(pDecl);
 
 	return pDecl;
 }
@@ -251,6 +262,8 @@ void COED3DDevice_Impl::InternalDestroyD3D()
 	}
 
 	// TODO: logout
+
+	// TODO: destroy m_vD3DVertDecl vector
 }
 
 void COED3DDevice_Impl::PerformOnce(float fDetailTime)
