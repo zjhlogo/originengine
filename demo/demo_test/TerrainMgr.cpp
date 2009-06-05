@@ -20,20 +20,16 @@ CTerrainMgr::~CTerrainMgr()
 
 void CTerrainMgr::Init()
 {
-	m_pDecl = NULL;
 	memset(m_pMapTileBuff, 0, sizeof(m_pMapTileBuff));
 	m_nLastTileX = 0;
 	m_nLastTileZ = 0;
 	m_bFirstUpdate = true;
-	m_pTexture = NULL;
 
 	m_pMapFile = NULL;
 }
 
 void CTerrainMgr::Destroy()
 {
-	SAFE_RELEASE(m_pDecl);
-	SAFE_RELEASE(m_pTexture);
 	SAFE_RELEASE(m_pMapFile);
 
 	for (int i = 0; i < MAX_CACHE_COUNT; ++i)
@@ -44,24 +40,12 @@ void CTerrainMgr::Destroy()
 
 bool CTerrainMgr::LoadTerrain()
 {
-	static const IOEVertDecl::ELEMENT s_Decl[] =
-	{
-		IOEVertDecl::T_FLOAT3, IOEVertDecl::U_POSITION, 0,
-		IOEVertDecl::T_COLOR, IOEVertDecl::U_COLOR, 0,
-		IOEVertDecl::T_FLOAT2, IOEVertDecl::U_TEXCOORD, 0,
-		IOEVertDecl::T_UNKNOWN, IOEVertDecl::U_UNKNOWN, 0,
-	};
-
-	m_pDecl = g_pOEDevice->CreateVertDecl(s_Decl);
-	if (!m_pDecl) return false;
-
 	for (int i = 0; i < MAX_CACHE_COUNT; ++i)
 	{
+		SAFE_DELETE(m_pMapTileBuff[i]);
 		m_pMapTileBuff[i] = new CMapTile();
+		assert(m_pMapTileBuff[i]);
 	}
-
-	m_pTexture = g_pOETextureMgr->CreateTextureFromFile(_T("grass.png"));
-	if (!m_pTexture) return false;
 
 	m_pMapFile = g_pOEFileMgr->OpenFile(_T("terrain.raw"));
 	if (!m_pMapFile) return false;
@@ -127,9 +111,6 @@ void CTerrainMgr::UpdateTerrain(const CVector3& vEyePos)
 
 		CMapTile* pTile = (*m_vSleepedTile.begin());
 
-		//tstring strTileName = GetMapTileFile(nIndex);
-		//if (pTile->LoadMap(strTileName.c_str(), nIndex))
-
 		const ushort* pField = GetMapTileField(nIndex);
 		if (pTile->LoadMap(pField, nIndex))
 		{
@@ -141,31 +122,18 @@ void CTerrainMgr::UpdateTerrain(const CVector3& vEyePos)
 
 void CTerrainMgr::Render(float fDetailTime)
 {
-	g_pOERenderer->SetVertDecl(m_pDecl);
-
-	CMatrix4x4 matWorldBackup;
-	g_pOERenderer->GetTransform(matWorldBackup, IOERenderer::TT_WORLD);
-
 	for (VMAP_TILE::iterator it = m_vActivedTile.begin(); it != m_vActivedTile.end(); ++it)
 	{
 		CMapTile* pTile = (*it);
-
-		CMatrix4x4 matTile;
-		CalcMapTileMatrix(matTile, pTile->GetID());
-		g_pOERenderer->SetTransform(IOERenderer::TT_WORLD, matTile);
-		g_pOERenderer->SetTexture(m_pTexture);
-
 		pTile->Render(fDetailTime);
 	}
-
-	g_pOERenderer->SetTransform(IOERenderer::TT_WORLD, matWorldBackup);
 }
 
 void CTerrainMgr::ResetTile()
 {
 	m_vActivedTile.clear();
-
 	m_vSleepedTile.clear();
+
 	for (int i = 0; i < MAX_CACHE_COUNT; ++i)
 	{
 		m_vSleepedTile.push_back(m_pMapTileBuff[i]);
@@ -187,12 +155,6 @@ CMapTile* CTerrainMgr::ActiveSleepedTile(int nID)
 	return NULL;
 }
 
-//tstring CTerrainMgr::GetMapTileFile(int nIndex)
-//{
-//	// TODO: 根据索引取得分块地图文件名
-//	return _T("maptile.raw");
-//}
-
 const ushort* CTerrainMgr::GetMapTileField(int nIndex)
 {
 	static ushort s_HeightField[CMapTile::TILE_SIZE*CMapTile::TILE_SIZE];
@@ -211,15 +173,4 @@ const ushort* CTerrainMgr::GetMapTileField(int nIndex)
 	}
 
 	return s_HeightField;
-}
-
-void CTerrainMgr::CalcMapTileMatrix(CMatrix4x4& matOut, int nIndex)
-{
-	int nZ = nIndex/TILE_COUNT_X;
-	int nX = nIndex%TILE_COUNT_X;
-
-	matOut.Identity();
-	matOut.m[12] = (float)(nX*CMapTile::TILE_WIDTH);
-	matOut.m[13] = 0.0f;
-	matOut.m[14] = (float)(nZ*CMapTile::TILE_HEIGHT);
 }

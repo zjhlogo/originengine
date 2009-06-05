@@ -12,8 +12,14 @@
 #include <d3d9.h>
 #include <d3dx9.h>
 
+#include "OED3DVertDecl_Impl.h"
+#include <vector>
+
 class COED3DDevice_Impl : public IOEDevice
 {
+public:
+	typedef std::vector<COED3DVertDecl_Impl*> VOED3D_VERTDECL;
+
 public:
 	COED3DDevice_Impl();
 	virtual ~COED3DDevice_Impl();
@@ -50,6 +56,8 @@ private:
 
 	float m_fPrevTime;
 	float m_fCurrTime;
+
+	VOED3D_VERTDECL m_vD3DVertDecl;
 
 };
 
