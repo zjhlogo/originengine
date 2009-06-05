@@ -9,9 +9,13 @@
 #define __OED3DSHADERMGR_IMPL_H__
 
 #include <IOEShaderMgr.h>
+#include <map>
 
 class COED3DShaderMgr_Impl : public IOEShaderMgr
 {
+public:
+	typedef std::map<tstring, IOEShader*> SHADER_MAP;
+
 public:
 	COED3DShaderMgr_Impl();
 	virtual ~COED3DShaderMgr_Impl();
@@ -21,6 +25,9 @@ public:
 private:
 	void Init();
 	void Destroy();
+
+private:
+	SHADER_MAP m_ShaderMap;
 
 };
 #endif // __OED3DSHADERMGR_IMPL_H__
