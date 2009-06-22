@@ -21,8 +21,8 @@ extern const float OEMATH_TOL;		// float type tolerance
 // matrix
 CMatrix4x4 operator *(const CMatrix4x4& m1, const CMatrix4x4& m2);
 
-
-#include "OEMath.inl"
+// vector
+CVector4 operator *(const CVector4& v, float s);
 
 class COEMath
 {
@@ -30,6 +30,10 @@ public:
 	static void BuildLookAtMatrixLH(CMatrix4x4& matOut, const CVector3& vEye, const CVector3& vAt, const CVector3& vUp);
 	static void BuildProjectMatrixLH(CMatrix4x4& matOut, float fFov, float fAspect, float fNear, float fFar);
 
+	static float Max(float a, float b);
+	static float Min(float a, float b);
 };
+
+#include "OEMath.inl"
 
 #endif // __OEMATH_H__

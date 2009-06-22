@@ -2,8 +2,8 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="7.10"
-	Name="demo_test"
-	ProjectGUID="{EC3D2159-59A9-4FA6-B332-DAAC72C9280A}"
+	Name="demo_water"
+	ProjectGUID="{CEFDEEC2-9346-4590-82B4-EFC8E816EE21}"
 	Keyword="Win32Proj">
 	<Platforms>
 		<Platform
@@ -32,8 +32,8 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="libOE_D.lib"
-				OutputFile="$(OutDir)/demo_test_D.exe"
+				AdditionalDependencies="libOE_D.lib comctl32.lib"
+				OutputFile="$(OutDir)/demo_water_D.exe"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="..\..\lib"
 				GenerateDebugInformation="TRUE"
@@ -82,8 +82,8 @@ copy &quot;$(TargetPath)&quot; &quot;..\..\bin\&quot;
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="libOE.lib"
-				OutputFile="$(OutDir)/demo_test.exe"
+				AdditionalDependencies="libOE.lib comctl32.lib"
+				OutputFile="$(OutDir)/demo_water.exe"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\..\lib"
 				GenerateDebugInformation="TRUE"
@@ -137,8 +137,8 @@ copy &quot;$(TargetPath)&quot; &quot;..\..\bin\&quot;
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="libOE_UD.lib"
-				OutputFile="$(OutDir)/demo_test_UD.exe"
+				AdditionalDependencies="libOE_UD.lib comctl32.lib"
+				OutputFile="$(OutDir)/demo_water_UD.exe"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="..\..\lib"
 				GenerateDebugInformation="TRUE"
@@ -187,8 +187,8 @@ copy &quot;$(TargetPath)&quot; &quot;..\..\bin\&quot;
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="libOEU.lib"
-				OutputFile="$(OutDir)/demo_testU.exe"
+				AdditionalDependencies="libOEU.lib comctl32.lib"
+				OutputFile="$(OutDir)/demo_waterU.exe"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\..\lib"
 				GenerateDebugInformation="TRUE"
@@ -232,16 +232,13 @@ copy &quot;$(TargetPath)&quot; &quot;..\..\bin\&quot;
 				RelativePath="..\common\Camera.cpp">
 			</File>
 			<File
-				RelativePath=".\MapTile.cpp">
+				RelativePath=".\DlgWaveParam.cpp">
 			</File>
 			<File
-				RelativePath=".\TerrainMgr.cpp">
+				RelativePath=".\WaterApp.cpp">
 			</File>
 			<File
-				RelativePath=".\TestApp.cpp">
-			</File>
-			<File
-				RelativePath=".\TestMain.cpp">
+				RelativePath=".\WaterMain.cpp">
 			</File>
 		</Filter>
 		<Filter
@@ -252,16 +249,23 @@ copy &quot;$(TargetPath)&quot; &quot;..\..\bin\&quot;
 				RelativePath="..\common\Camera.h">
 			</File>
 			<File
-				RelativePath=".\MapTile.h">
+				RelativePath=".\DlgWaveParam.h">
 			</File>
 			<File
-				RelativePath=".\TerrainMgr.h">
+				RelativePath=".\resource.h">
 			</File>
 			<File
-				RelativePath=".\TestApp.h">
+				RelativePath=".\WaterApp.h">
 			</File>
 			<File
-				RelativePath=".\TestMain.h">
+				RelativePath=".\WaterMain.h">
+			</File>
+		</Filter>
+		<Filter
+			Name="Resource Files"
+			Filter="">
+			<File
+				RelativePath=".\demo_water.rc">
 			</File>
 		</Filter>
 	</Files>

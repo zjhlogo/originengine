@@ -132,6 +132,17 @@ IOEVertDecl* COED3DDevice_Impl::CreateVertDecl(const IOEVertDecl::ELEMENT* pElem
 	return pDecl;
 }
 
+bool COED3DDevice_Impl::GetDeviceParam(void* pData, const tchar* pstrParamName)
+{
+	if (_tcscmp(pstrParamName, _T("HWND")) == 0)
+	{
+		*(HWND*)pData = g_hWnd;
+		return true;
+	}
+
+	return false;
+}
+
 bool COED3DDevice_Impl::InternalCreateWindow()
 {
 	if (g_hWnd) InternalDestroyWindow();
