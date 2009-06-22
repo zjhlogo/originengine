@@ -1,37 +1,39 @@
 /*!
- * \file TestApp.h
- * \date 24-5-2009 0:10:43
+ * \file WaterApp.h
+ * \date 20-6-2009 9:57:08
  * 
  * 
  * \author zjhlogo (zjhlogo@163.com)
  */
-#ifndef __TESTAPP_H__
-#define __TESTAPP_H__
+#ifndef __WATERAPP_H__
+#define __WATERAPP_H__
 
-#include <IOEApp.h>
-#include <IOEVertDecl.h>
 #include <OEInterfaces.h>
-
 #include "../common/Camera.h"
-#include "TerrainMgr.h"
+#include "DlgWaveParam.h"
 
-class CTestApp : public IOEApp
+class CWaterApp : public IOEApp
 {
 public:
 	enum CONST_DEFINE
 	{
+		NUM_X = 80,
+		NUM_Z = 80,
 		KEY_COUNT = 256,
 	};
 
-	//typedef struct VERTEX_tag
-	//{
-	//	float x, y, z;
-	//	float u, v;
-	//} VERTEX;
+	typedef struct VERTEX_tag
+	{
+		float x, y, z;
+		//float nx, ny, nz;
+		//float hx, hy, hz;
+		float u, v;
+		//float tx, ty, tz;
+	} VERTEX;
 
 public:
-	CTestApp();
-	virtual ~CTestApp();
+	CWaterApp();
+	~CWaterApp();
 
 	virtual bool Initialize();
 	virtual void Terminate();
@@ -53,12 +55,15 @@ private:
 	bool UpdateRotation(float fDetailTime);
 
 private:
-	//IOEVertDecl* m_pDecl;
-	CCamera* m_pCamera;
-	CTerrainMgr* m_pTerrainMgr;
+	VERTEX* m_pVerts;
+	ushort* m_pIndis;
 
-	//IOETexture* m_pTexture;
-	//IOEShader* m_pShader;
+	uint m_nVerts;
+	uint m_nIndis;
+
+	IOEShader* m_pShader;
+	CCamera* m_pCamera;
+	CDlgWaveParam* m_pDlgWaveParam;
 
 	bool m_bLButtonDown;
 	int m_nMouseDetailX;
@@ -67,4 +72,4 @@ private:
 
 };
 
-#endif // __TESTAPP_H__
+#endif // __WATERAPP_H__

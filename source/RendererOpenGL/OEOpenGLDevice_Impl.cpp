@@ -43,3 +43,8 @@ IOEVertDecl* COEOpenGLDevice_Impl::CreateVertDecl(const IOEVertDecl::ELEMENT* pE
 	// TODO: 
 	return NULL;
 }
+
+bool COEOpenGLDevice_Impl::GetDeviceParam(void* pData, const tchar* pstrParamName)
+{
+	return false;
+}

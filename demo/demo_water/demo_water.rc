@@ -1,0 +1,182 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// Chinese (P.R.C.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)
+#ifdef _WIN32
+LANGUAGE LANG_CHINESE, SUBLANG_CHINESE_SIMPLIFIED
+#pragma code_page(936)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_WAVE_PARAMETER DIALOGEX 0, 0, 610, 134
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | 
+    WS_SYSMENU
+CAPTION "Wave Parameter"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    CONTROL         "",IDC_SLD_FREQUENCY1,"msctls_trackbar32",TBS_NOTICKS | 
+                    WS_TABSTOP,51,20,103,12
+    CONTROL         "",IDC_SLD_SPEED1,"msctls_trackbar32",TBS_NOTICKS | 
+                    WS_TABSTOP,51,39,103,12
+    CONTROL         "",IDC_SLD_DIRECTION1,"msctls_trackbar32",TBS_NOTICKS | 
+                    WS_TABSTOP,51,57,103,12
+    CONTROL         "",IDC_SLD_HEIGHT1,"msctls_trackbar32",TBS_NOTICKS | 
+                    WS_TABSTOP,51,74,103,12
+    LTEXT           "frequency:",IDC_STATIC,7,20,36,8
+    LTEXT           "speed:",IDC_STATIC,20,39,23,8
+    LTEXT           "direction:",IDC_STATIC,12,57,31,8
+    LTEXT           "height:",IDC_STATIC,19,74,24,8
+    LTEXT           "Static",IDC_STA_FREQUENCY1,156,20,19,8
+    LTEXT           "Static",IDC_STA_SPEED1,156,39,19,8
+    LTEXT           "Static",IDC_STA_DIRECTION1,156,57,19,8
+    LTEXT           "Static",IDC_STA_HEIGHT1,156,74,19,8
+    CONTROL         "",IDC_SLD_FREQUENCY2,"msctls_trackbar32",TBS_NOTICKS | 
+                    WS_TABSTOP,192,20,103,12
+    CONTROL         "",IDC_SLD_SPEED2,"msctls_trackbar32",TBS_NOTICKS | 
+                    WS_TABSTOP,192,39,103,12
+    CONTROL         "",IDC_SLD_DIRECTION2,"msctls_trackbar32",TBS_NOTICKS | 
+                    WS_TABSTOP,192,57,103,12
+    CONTROL         "",IDC_SLD_HEIGHT2,"msctls_trackbar32",TBS_NOTICKS | 
+                    WS_TABSTOP,192,74,103,12
+    LTEXT           "Static",IDC_STA_FREQUENCY2,297,20,19,8
+    LTEXT           "Static",IDC_STA_SPEED2,297,39,19,8
+    LTEXT           "Static",IDC_STA_DIRECTION2,297,57,19,8
+    LTEXT           "Static",IDC_STA_HEIGHT2,297,74,19,8
+    CONTROL         "",IDC_SLD_FREQUENCY3,"msctls_trackbar32",TBS_NOTICKS | 
+                    WS_TABSTOP,331,20,103,12
+    CONTROL         "",IDC_SLD_SPEED3,"msctls_trackbar32",TBS_NOTICKS | 
+                    WS_TABSTOP,331,39,103,12
+    CONTROL         "",IDC_SLD_DIRECTION3,"msctls_trackbar32",TBS_NOTICKS | 
+                    WS_TABSTOP,331,57,103,12
+    CONTROL         "",IDC_SLD_HEIGHT3,"msctls_trackbar32",TBS_NOTICKS | 
+                    WS_TABSTOP,331,74,103,12
+    LTEXT           "Static",IDC_STA_FREQUENCY3,436,20,19,8
+    LTEXT           "Static",IDC_STA_SPEED3,436,39,19,8
+    LTEXT           "Static",IDC_STA_DIRECTION3,436,57,19,8
+    LTEXT           "Static",IDC_STA_HEIGHT3,436,74,19,8
+    CONTROL         "",IDC_SLD_FREQUENCY4,"msctls_trackbar32",TBS_NOTICKS | 
+                    WS_TABSTOP,472,20,103,12
+    CONTROL         "",IDC_SLD_SPEED4,"msctls_trackbar32",TBS_NOTICKS | 
+                    WS_TABSTOP,472,39,103,12
+    CONTROL         "",IDC_SLD_DIRECTION4,"msctls_trackbar32",TBS_NOTICKS | 
+                    WS_TABSTOP,472,57,103,12
+    CONTROL         "",IDC_SLD_HEIGHT4,"msctls_trackbar32",TBS_NOTICKS | 
+                    WS_TABSTOP,472,74,103,12
+    LTEXT           "Static",IDC_STA_FREQUENCY4,577,20,19,8
+    LTEXT           "Static",IDC_STA_SPEED4,577,39,19,8
+    LTEXT           "Static",IDC_STA_DIRECTION4,577,57,19,8
+    LTEXT           "Static",IDC_STA_HEIGHT4,577,74,19,8
+    GROUPBOX        "Wave 1",IDC_STATIC,47,7,135,84
+    GROUPBOX        "Wave 2",IDC_STATIC,188,7,135,84
+    GROUPBOX        "Wave 4",IDC_STATIC,468,7,135,84
+    GROUPBOX        "Wave 3",IDC_STATIC,327,7,135,84
+    CONTROL         "",IDC_SLD_TIMESCALE,"msctls_trackbar32",TBS_NOTICKS | 
+                    WS_TABSTOP,51,109,103,12
+    CONTROL         "",IDC_SLD_FREQSCALE,"msctls_trackbar32",TBS_NOTICKS | 
+                    WS_TABSTOP,192,109,103,12
+    CONTROL         "",IDC_SLD_SPEEDSCALE,"msctls_trackbar32",TBS_NOTICKS | 
+                    WS_TABSTOP,331,109,103,12
+    CONTROL         "",IDC_SLD_HEIGHTSCALE,"msctls_trackbar32",TBS_NOTICKS | 
+                    WS_TABSTOP,472,109,103,12
+    LTEXT           "Static",IDC_STA_TIMESCALE,155,110,19,8
+    LTEXT           "Static",IDC_STA_FREQSCALE,297,110,19,8
+    LTEXT           "Static",IDC_STA_SPEEDSCALE,435,110,19,8
+    LTEXT           "Static",IDC_STA_HEIGHTSCALE,577,110,19,8
+    CTEXT           "Time Scale",IDC_STATIC,51,99,103,8
+    CTEXT           "Frequency Scale",IDC_STATIC,192,99,103,8
+    CTEXT           "Speed Scale",IDC_STATIC,331,99,103,8
+    CTEXT           "Height Scale",IDC_STATIC,472,99,103,8
+    GROUPBOX        "Scale",IDC_STATIC,47,91,556,36
+    PUSHBUTTON      "Copy",IDC_BTN_COPY,9,95,36,30
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_WAVE_PARAMETER, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 603
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 127
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+#endif    // Chinese (P.R.C.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

@@ -31,4 +31,19 @@ inline CMatrix4x4 operator *(const CMatrix4x4& m1, const CMatrix4x4& m2)
 					  m1.m[12]*m2.m[3] + m1.m[13]*m2.m[7] + m1.m[14]*m2.m[11] + m1.m[15]*m2.m[15]);
 }
 
+inline CVector4 operator *(const CVector4& v, float s)
+{
+	return CVector4(v.x*s, v.y*s, v.z*s, v.w*s);
+}
+
+inline float COEMath::Max(float a, float b)
+{
+	return a > b ? a : b;
+}
+
+inline float COEMath::Min(float a, float b)
+{
+	return a < b ? a : b;
+}
+
 #endif // __OEMATH_INL__

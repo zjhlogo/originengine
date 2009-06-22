@@ -24,6 +24,8 @@ public:
 
 	virtual IOEVertDecl* CreateVertDecl(const IOEVertDecl::ELEMENT* pElement);
 
+	virtual bool GetDeviceParam(void* pData, const tchar* pstrParamName);
+
 };
 
 #endif // __OEOPENGLDEVICE_IMPL_H__
