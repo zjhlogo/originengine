@@ -62,6 +62,7 @@ private:
 	IOEShader* m_pShader;
 	IOETexture* m_pTexBase;
 	IOETexture* m_pTexNormal;
+	IOETexture* m_pTexHeight;
 	CVector3 m_vLightPos;
 
 	bool m_bLButtonDown;

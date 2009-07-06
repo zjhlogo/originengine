@@ -26,6 +26,7 @@ void CBumpMapApp::Init()
 	m_pShader = NULL;
 	m_pTexBase = NULL;
 	m_pTexNormal = NULL;
+	m_pTexHeight = NULL;
 
 	m_bLButtonDown = false;
 	m_nMouseDetailX = 0;
@@ -58,6 +59,9 @@ bool CBumpMapApp::Initialize()
 	m_pTexNormal = g_pOETextureMgr->CreateTextureFromFile(_T("rock_normal.png"));
 	if (!m_pTexNormal) return false;
 
+	m_pTexHeight = g_pOETextureMgr->CreateTextureFromFile(_T("rock_height.png"));
+	if (!m_pTexHeight) return false;
+
 	m_pCamera = new CCamera();
 
 	m_pSimpleShape = new CSimpleShape();
@@ -71,6 +75,7 @@ void CBumpMapApp::Terminate()
 	SAFE_RELEASE(m_pShader);
 	SAFE_RELEASE(m_pTexBase);
 	SAFE_RELEASE(m_pTexNormal);
+	SAFE_RELEASE(m_pTexHeight);
 	SAFE_DELETE(m_pCamera);
 	SAFE_DELETE(m_pSimpleShape);
 }
@@ -109,6 +114,7 @@ void CBumpMapApp::Render(float fDetailTime)
 
 	m_pShader->SetTexture(_T("g_texBase"), m_pTexBase);
 	m_pShader->SetTexture(_T("g_texNormal"), m_pTexNormal);
+	m_pShader->SetTexture(_T("g_texHeight"), m_pTexHeight);
 
 	m_pShader->DrawTriList(s_Verts, 4, s_Indis, 6);
 
@@ -144,14 +150,16 @@ void CBumpMapApp::OnKeyDown(int nKeyCode)
 	m_KeyDown[nKeyCode] = true;
 	if (m_KeyDown[0x1B]) g_pOECore->End();		// TODO: 0x1B == VK_ESCAPE
 
-	if (m_KeyDown['1']) m_pShader->SetTechnique(_T("Base"));
-	if (m_KeyDown['2']) m_pShader->SetTechnique(_T("Normal"));
-	if (m_KeyDown['3']) m_pShader->SetTechnique(_T("NormalMap"));
+	if (m_KeyDown['1']) m_pShader->SetTechnique(_T("Normal"));
+	if (m_KeyDown['2']) m_pShader->SetTechnique(_T("Parallax"));
+	if (m_KeyDown['3']) m_pShader->SetTechnique(_T("BaseTex"));
+	if (m_KeyDown['4']) m_pShader->SetTechnique(_T("NormalTex"));
+	if (m_KeyDown['5']) m_pShader->SetTechnique(_T("HeightTex"));
 }
 
 bool CBumpMapApp::UpdateMovement(float fDetailTime)
 {
-	static const float MOVE_DIST = 400.0f;
+	static const float MOVE_DIST = 20.0f;
 
 	bool bUpdateMovement = m_KeyDown['W'] || m_KeyDown['S'] || m_KeyDown['A'] || m_KeyDown['D'];
 	if (!bUpdateMovement) return false;
