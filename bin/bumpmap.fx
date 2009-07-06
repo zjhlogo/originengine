@@ -72,11 +72,11 @@ float4 PSMainNormal(VS_OUTPUT input) : COLOR
 {
 	float3 lightdir = normalize(input.lightdir);
 
+	float3 basecolor = tex2D(texBaseSampler, input.texcoord);
+
 	float3 normal = tex2D(texNormalSampler, input.texcoord);
 	normal = (normal - 0.5f) * 2.0f;
-
 	float3 specular = dot(normal, lightdir);
-	float3 basecolor = tex2D(texBaseSampler, input.texcoord);
 
 	return float4(basecolor*specular, 1.0f);
 }
@@ -86,14 +86,14 @@ float4 PSMainParallax(VS_OUTPUT input) : COLOR
 	float3 lightdir = normalize(input.lightdir);
 	float3 eyedir = normalize(input.eyedir);
 
-	float3 normal = tex2D(texNormalSampler, input.texcoord);
-	normal = (normal - 0.5f) * 2.0f;
-
-	float3 specular = dot(normal, lightdir);
-
-	float h = tex2D(texHeightSampler, input.texcoord).x;
-	float2 offsetuv = float2(eyedir.x, eyedir.y)*(h*0.04f-0.02f) + input.texcoord;
+	//float hsb = tex2D(texHeightSampler, input.texcoord).x * 0.04f - 0.02f;
+	float hsb = tex2D(texHeightSampler, input.texcoord).x * 0.02f;
+	float2 offsetuv = float2(eyedir.x, eyedir.y)*hsb + input.texcoord;
 	float3 basecolor = tex2D(texBaseSampler, offsetuv);
+
+	float3 normal = tex2D(texNormalSampler, offsetuv);
+	normal = (normal - 0.5f) * 2.0f;
+	float3 specular = dot(normal, lightdir);
 
 	return float4(basecolor*specular, 1.0f);
 }
