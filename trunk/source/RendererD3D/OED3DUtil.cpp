@@ -151,16 +151,20 @@ int COED3DUtil::GetVertTypeSize(IOEVertDecl::TYPE eType)
 
 D3DTRANSFORMSTATETYPE COED3DUtil::ToD3DTransformType(IOERenderer::TRANSFORM_TYPE eType)
 {
-	static const D3DTRANSFORMSTATETYPE DECLARE_MAP[IOERenderer::TT_MAX] =
+	switch (eType)
 	{
-		D3DTS_WORLD,
-		D3DTS_WORLD,
-		D3DTS_VIEW,
-		D3DTS_PROJECTION,
-	};
+	case IOERenderer::TT_WORLD:
+		return D3DTS_WORLD;
+		break;
+	case IOERenderer::TT_VIEW:
+		return D3DTS_VIEW;
+		break;
+	case IOERenderer::TT_PROJECTION:
+		return D3DTS_PROJECTION;
+		break;
+	}
 
-	assert(eType >= 0 && eType < IOERenderer::TT_MAX);
-	return DECLARE_MAP[eType];
+	return D3DTS_FORCE_DWORD;
 }
 
 IOERenderer::TRANSFORM_TYPE COED3DUtil::ToOETransformType(D3DTRANSFORMSTATETYPE eType)

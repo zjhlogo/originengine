@@ -25,6 +25,7 @@ public:
 	CMatrix4x4& operator +=(const CMatrix4x4& mat);
 	CMatrix4x4& operator -=(const CMatrix4x4& mat);
 	CMatrix4x4& operator *=(float s);
+	CMatrix4x4& operator *=(const CMatrix4x4& mat);
 	CMatrix4x4& operator /=(float s);
 
 public:

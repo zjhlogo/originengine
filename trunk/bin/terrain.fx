@@ -1,7 +1,7 @@
-float4x4 g_matViewProj;
+float4x4 g_matWorldViewProj;
 texture g_texBase;
 
-sampler texBaseSampler = 
+sampler texBaseSampler =
 sampler_state
 {
     Texture = <g_texBase>;
@@ -26,7 +26,7 @@ VS_OUTPUT VSMain(VS_INPUT input)
 {
     VS_OUTPUT output;
 
-    output.pos = mul(float4(input.pos, 1.0f), g_matViewProj);
+    output.pos = mul(float4(input.pos, 1.0f), g_matWorldViewProj);
     output.texcoord = input.texcoord;
     return output;
 }

@@ -91,6 +91,32 @@ inline CMatrix4x4& CMatrix4x4::operator *=(float s)
 	return *this;
 }
 
+inline CMatrix4x4& CMatrix4x4::operator *=(const CMatrix4x4& mat)
+{
+	CMatrix4x4 matMul(m[0]*mat.m[0] + m[1]*mat.m[4] + m[2]*mat.m[8] + m[3]*mat.m[12],
+					  m[0]*mat.m[1] + m[1]*mat.m[5] + m[2]*mat.m[9] + m[3]*mat.m[13],
+					  m[0]*mat.m[2] + m[1]*mat.m[6] + m[2]*mat.m[10] + m[3]*mat.m[14],
+					  m[0]*mat.m[3] + m[1]*mat.m[7] + m[2]*mat.m[11] + m[3]*mat.m[15],
+
+					  m[4]*mat.m[0] + m[5]*mat.m[4] + m[6]*mat.m[8] + m[7]*mat.m[12],
+					  m[4]*mat.m[1] + m[5]*mat.m[5] + m[6]*mat.m[9] + m[7]*mat.m[13],
+					  m[4]*mat.m[2] + m[5]*mat.m[6] + m[6]*mat.m[10] + m[7]*mat.m[14],
+					  m[4]*mat.m[3] + m[5]*mat.m[7] + m[6]*mat.m[11] + m[7]*mat.m[15],
+
+					  m[8]*mat.m[0] + m[9]*mat.m[4] + m[10]*mat.m[8] + m[11]*mat.m[12],
+					  m[8]*mat.m[1] + m[9]*mat.m[5] + m[10]*mat.m[9] + m[11]*mat.m[13],
+					  m[8]*mat.m[2] + m[9]*mat.m[6] + m[10]*mat.m[10] + m[11]*mat.m[14],
+					  m[8]*mat.m[3] + m[9]*mat.m[7] + m[10]*mat.m[11] + m[11]*mat.m[15],
+
+					  m[12]*mat.m[0] + m[13]*mat.m[4] + m[14]*mat.m[8] + m[15]*mat.m[12],
+					  m[12]*mat.m[1] + m[13]*mat.m[5] + m[14]*mat.m[9] + m[15]*mat.m[13],
+					  m[12]*mat.m[2] + m[13]*mat.m[6] + m[14]*mat.m[10] + m[15]*mat.m[14],
+					  m[12]*mat.m[3] + m[13]*mat.m[7] + m[14]*mat.m[11] + m[15]*mat.m[15]);
+
+	*this = matMul;
+	return *this;
+}
+
 inline CMatrix4x4& CMatrix4x4::operator /=(float s)
 {
 	m[0]  /= s; m[1]  /= s; m[2]  /= s; m[3]  /= s;

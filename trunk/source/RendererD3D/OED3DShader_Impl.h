@@ -26,7 +26,9 @@ public:
 	virtual bool GetFloat(float& fOut, const tchar* pstrParamName);
 
 	virtual bool SetVector(const tchar* pstrParamName, const CVector4& vIn);
+	virtual bool SetVector(const tchar* pstrParamName, const CVector3& vIn);
 	virtual bool GetVector(CVector4& vOut, const tchar* pstrParamName);
+	virtual bool GetVector(CVector3& vOut, const tchar* pstrParamName);
 
 	virtual bool SetMatrix(const tchar* pstrParamName, const CMatrix4x4& matIn);
 	virtual bool GetMatrix(CMatrix4x4& matOut, const tchar* pstrParamName);

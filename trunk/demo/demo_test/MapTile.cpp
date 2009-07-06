@@ -117,14 +117,11 @@ void CMapTile::Render(float fDetailTime)
 	CMatrix4x4 matWorld;
 	CalcMatrix(matWorld, m_nID);
 
-	CMatrix4x4 matView;
-	g_pOERenderer->GetTransform(matView, IOERenderer::TT_VIEW);
+	CMatrix4x4 matViewProj;
+	g_pOERenderer->GetTransform(matViewProj, IOERenderer::TT_VIEW_PROJ);
 
-	CMatrix4x4 matProj;
-	g_pOERenderer->GetTransform(matProj, IOERenderer::TT_PROJECTION);
-
-	CMatrix4x4 matWorldViewProj = matWorld*matView*matProj;
-	m_pShader->SetMatrix(_T("g_matViewProj"), matWorldViewProj);
+	CMatrix4x4 matWorldViewProj = matWorld*matViewProj;
+	m_pShader->SetMatrix(_T("g_matWorldViewProj"), matWorldViewProj);
 
 	m_pShader->DrawTriList(m_pVerts, TILE_SIZE*TILE_SIZE, m_pIndis, (TILE_SIZE-1)*(TILE_SIZE-1)*6);
 }

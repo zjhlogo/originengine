@@ -23,8 +23,8 @@ public:
 	virtual void DrawTriStrip(const void* pVerts, uint nVerts, const ushort* pIndis, uint nIndis);
 	virtual void DrawTriFan(const void* pVerts, uint nVerts, const ushort* pIndis, uint nIndis);
 
-	virtual void SetTransform(TRANSFORM_TYPE eType, const CMatrix4x4& mat);
-	virtual void GetTransform(CMatrix4x4& matOut, TRANSFORM_TYPE eType) const;
+	virtual bool SetTransform(TRANSFORM_TYPE eType, const CMatrix4x4& mat);
+	virtual bool GetTransform(CMatrix4x4& matOut, TRANSFORM_TYPE eType) const;
 
 	virtual void SetTexture(IOETexture* pTexture);
 	virtual IOETexture* GetTexture() const;
@@ -44,6 +44,10 @@ private:
 private:
 	COED3DVertDecl_Impl* m_pVertDecl;
 	COED3DTexture_Impl* m_pTexture;
+
+	CMatrix4x4 m_matWorld;
+	CMatrix4x4 m_matView;
+	CMatrix4x4 m_matProjection;
 
 };
 

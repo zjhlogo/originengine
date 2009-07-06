@@ -96,23 +96,14 @@ void CBumpMapApp::Render(float fDetailTime)
 
 	static const ushort s_Indis[6] = {0, 1, 3, 1, 2, 3};
 
-	CMatrix4x4 matWorld;
-	g_pOERenderer->GetTransform(matWorld, IOERenderer::TT_WORLD);
-
-	CMatrix4x4 matView;
-	g_pOERenderer->GetTransform(matView, IOERenderer::TT_VIEW);
-
-	CMatrix4x4 matProj;
-	g_pOERenderer->GetTransform(matProj, IOERenderer::TT_PROJECTION);
-
-	CMatrix4x4 matWorldViewProj = matWorld * matView * matProj;
-	m_pShader->SetMatrix(_T("g_matViewProj"), matWorldViewProj);
+	CMatrix4x4 matWorldViewProj;
+	g_pOERenderer->GetTransform(matWorldViewProj, IOERenderer::TT_WORLD_VIEW_PROJ);
+	m_pShader->SetMatrix(_T("g_matWorldViewProj"), matWorldViewProj);
 
 	s_fTotalTime += fDetailTime;
 	m_vLightPos.x = cos(s_fTotalTime)*10.0f;
 	m_vLightPos.y = 5.0f;
 	m_vLightPos.z = sin(s_fTotalTime)*10.0f;
-	m_vLightPos.w = 1.0f;
 
 	m_pShader->SetVector(_T("g_vLightPos"), m_vLightPos);
 
@@ -121,8 +112,7 @@ void CBumpMapApp::Render(float fDetailTime)
 
 	m_pShader->DrawTriList(s_Verts, 4, s_Indis, 6);
 
-	CVector3 vLightPos(m_vLightPos.x, m_vLightPos.y, m_vLightPos.z);
-	m_pSimpleShape->DrawCube(g_pOERenderer, vLightPos);
+	m_pSimpleShape->DrawCube(g_pOERenderer, m_vLightPos);
 }
 
 void CBumpMapApp::OnLButtonDown(int x, int y)

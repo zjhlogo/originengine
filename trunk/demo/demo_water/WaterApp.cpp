@@ -123,14 +123,9 @@ void CWaterApp::Render(float fDetailTime)
 {
 	static float s_fTime = 0.0f;
 
-	CMatrix4x4 matView;
-	g_pOERenderer->GetTransform(matView, IOERenderer::TT_VIEW);
-
-	CMatrix4x4 matProj;
-	g_pOERenderer->GetTransform(matProj, IOERenderer::TT_PROJECTION);
-
-	CMatrix4x4 matViewProj = matView*matProj;
-	m_pShader->SetMatrix(_T("g_matViewProj"), matViewProj);
+	CMatrix4x4 matWorldViewProj;
+	g_pOERenderer->GetTransform(matWorldViewProj, IOERenderer::TT_WORLD_VIEW_PROJ);
+	m_pShader->SetMatrix(_T("g_matWorldViewProj"), matWorldViewProj);
 
 	s_fTime += (fDetailTime*m_pDlgWaveParam->GetTimeScale());
 	m_pShader->SetFloat(_T("fTime"), s_fTime);
