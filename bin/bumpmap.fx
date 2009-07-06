@@ -1,4 +1,4 @@
-float4x4 g_matViewProj;
+float4x4 g_matWorldViewProj;
 float3 g_vLightPos;
 texture g_texBase;
 texture g_texNormal;
@@ -40,7 +40,7 @@ VS_OUTPUT VSMain(VS_INPUT input)
 {
     VS_OUTPUT output;
 
-    output.pos = mul(float4(input.pos, 1.0f), g_matViewProj);
+    output.pos = mul(float4(input.pos, 1.0f), g_matWorldViewProj);
     output.texcoord = input.texcoord;
 
 	float3 vLightDir = g_vLightPos - input.pos;

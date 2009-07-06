@@ -1,4 +1,4 @@
-float4x4 g_matViewProj;
+float4x4 g_matWorldViewProj;
 float fTime;
 
 float4 vWaveFreq;
@@ -31,7 +31,7 @@ VS_OUTPUT VSMain(VS_INPUT input)
 
     float4 newpos = float4(input.pos, 1.0f);
     newpos.y = newpos.y + dot(vSin, vWaveHeight);
-    output.pos = mul(newpos, g_matViewProj);
+    output.pos = mul(newpos, g_matWorldViewProj);
 
     return output;
 }

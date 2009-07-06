@@ -70,12 +70,29 @@ bool COED3DShader_Impl::SetVector(const tchar* pstrParamName, const CVector4& vI
 	return true;
 }
 
+bool COED3DShader_Impl::SetVector(const tchar* pstrParamName, const CVector3& vIn)
+{
+	CVector4 vVec(vIn.x, vIn.y, vIn.z, 0.0f);
+	return SetVector(pstrParamName, vVec);
+}
+
 bool COED3DShader_Impl::GetVector(CVector4& vOut, const tchar* pstrParamName)
 {
 	D3DXVECTOR4 vD3D;
 	if (FAILED(m_pEffect->GetVector(COEOS::tchar2char(pstrParamName), &vD3D))) return false;
 
 	COED3DUtil::ToOEVector4(vOut, vD3D);
+	return true;
+}
+
+bool COED3DShader_Impl::GetVector(CVector3& vOut, const tchar* pstrParamName)
+{
+	CVector4 vVec;
+	if (!GetVector(vVec, pstrParamName)) return false;
+
+	vOut.x = vVec.x;
+	vOut.y = vVec.y;
+	vOut.z = vVec.z;
 	return true;
 }
 

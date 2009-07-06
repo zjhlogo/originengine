@@ -62,7 +62,7 @@ private:
 	IOEShader* m_pShader;
 	IOETexture* m_pTexBase;
 	IOETexture* m_pTexNormal;
-	CVector4 m_vLightPos;
+	CVector3 m_vLightPos;
 
 	bool m_bLButtonDown;
 	int m_nMouseDetailX;

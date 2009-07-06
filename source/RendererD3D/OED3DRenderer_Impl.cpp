@@ -62,20 +62,56 @@ void COED3DRenderer_Impl::DrawTriFan(const void* pVerts, uint nVerts, const usho
 	g_pd3dDevice->DrawIndexedPrimitiveUP(D3DPT_TRIANGLEFAN, 0, nVerts, nIndis-2, pIndis, D3DFMT_INDEX16, pVerts, m_pVertDecl->GetStride());
 }
 
-void COED3DRenderer_Impl::SetTransform(TRANSFORM_TYPE eType, const CMatrix4x4& mat)
+bool COED3DRenderer_Impl::SetTransform(TRANSFORM_TYPE eType, const CMatrix4x4& mat)
 {
 	D3DTRANSFORMSTATETYPE d3dType = COED3DUtil::ToD3DTransformType(eType);
+	if (d3dType == D3DTS_FORCE_DWORD) return false;
+
 	D3DXMATRIX matD3D;
 	COED3DUtil::ToD3DXMatrix(matD3D, mat);
-	g_pd3dDevice->SetTransform(d3dType, &matD3D);
+	if (D3D_OK != g_pd3dDevice->SetTransform(d3dType, &matD3D)) return false;
+
+	switch (eType)
+	{
+	case IOERenderer::TT_WORLD:
+		m_matWorld = mat;
+		break;
+	case IOERenderer::TT_VIEW:
+		m_matView = mat;
+		break;
+	case IOERenderer::TT_PROJECTION:
+		m_matProjection = mat;
+		break;
+	}
+
+	return true;
 }
 
-void COED3DRenderer_Impl::GetTransform(CMatrix4x4& matOut, TRANSFORM_TYPE eType) const
+bool COED3DRenderer_Impl::GetTransform(CMatrix4x4& matOut, TRANSFORM_TYPE eType) const
 {
-	D3DTRANSFORMSTATETYPE d3dType = COED3DUtil::ToD3DTransformType(eType);
-	D3DXMATRIX matD3D;
-	g_pd3dDevice->GetTransform(d3dType, &matD3D);
-	COED3DUtil::ToOEMatrix(matOut, matD3D);
+	bool bOK = false;
+
+	matOut.Identity();
+
+	if (eType & TT_WORLD)
+	{
+		matOut *= m_matWorld;
+		bOK = true;
+	}
+
+	if (eType & TT_VIEW)
+	{
+		matOut *= m_matView;
+		bOK = true;
+	}
+
+	if (eType & TT_PROJECTION)
+	{
+		matOut *= m_matProjection;
+		bOK = true;
+	}
+
+	return bOK;
 }
 
 void COED3DRenderer_Impl::SetTexture(IOETexture* pTexture)
