@@ -60,18 +60,18 @@ void CSimpleShape::DrawCube(IOERenderer* pRenderer, const CVector3& vPos, float 
 
 	static ushort s_Indis[36] =
 	{
-		0, 1, 2,
-		0, 2, 3,
+		0, 2, 1,
+		0, 3, 2,
 		4, 5, 6,
 		4, 6, 7,
-		0, 4, 5,
-		0, 5, 1,
+		0, 5, 4,
+		0, 1, 5,
 		3, 7, 6,
 		3, 6, 2,
 		0, 4, 7,
 		0, 7, 3,
-		1, 5, 6,
-		1, 6, 2
+		1, 6, 5,
+		1, 2, 6
 	};
 
 	if (!m_bOK || !pRenderer) return;
