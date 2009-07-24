@@ -14,7 +14,7 @@
 class COED3DTexture_Impl : public IOETexture
 {
 public:
-	COED3DTexture_Impl(const tchar* pstrFileName);
+	COED3DTexture_Impl(const tstring& strFileName);
 	COED3DTexture_Impl(int nWidth, int nHeight, TEXTURE_FORMAT eFormat);
 	virtual ~COED3DTexture_Impl();
 
@@ -27,7 +27,7 @@ private:
 	void Init();
 	void Destroy();
 
-	bool Create(const tchar* pstrFileName);
+	bool Create(const tstring& strFileName);
 	bool Create(int nWidth, int nHeight, TEXTURE_FORMAT eFormat);
 
 private:

@@ -33,9 +33,9 @@ void COEFileMgr_Impl::Destroy()
 	// TODO: 
 }
 
-IOEFile* COEFileMgr_Impl::OpenFile(const tchar* pstrFileName, uint nFlag /* = IOEFile::OFF_READ */)
+IOEFile* COEFileMgr_Impl::OpenFile(const tstring& strFileName, uint nFlag /* = IOEFile::OFF_READ */)
 {
-	IOEFile *pFile = new COEFile_Impl(pstrFileName, nFlag);
+	IOEFile *pFile = new COEFile_Impl(strFileName, nFlag);
 	if (!pFile || !pFile->IsOK())
 	{
 		SAFE_RELEASE(pFile);

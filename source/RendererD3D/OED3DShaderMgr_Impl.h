@@ -20,7 +20,7 @@ public:
 	COED3DShaderMgr_Impl();
 	virtual ~COED3DShaderMgr_Impl();
 
-	virtual IOEShader* CreateShader(const IOEVertDecl::ELEMENT* pElement, const tchar* pstrFileName);
+	virtual IOEShader* CreateShader(const IOEVertDecl::ELEMENT* pElement, const tstring& strFileName);
 
 private:
 	void Init();

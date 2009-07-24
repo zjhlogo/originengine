@@ -31,14 +31,14 @@ void COED3DTextureMgr_Impl::Destroy()
 	// TODO: check m_TextureMap whether is empty, and logout
 }
 
-IOETexture* COED3DTextureMgr_Impl::CreateTextureFromFile(const tchar* pstrFileName)
+IOETexture* COED3DTextureMgr_Impl::CreateTextureFromFile(const tstring& strFileName)
 {
 	// transform string to lower
-	tstring strFileName = pstrFileName;
-	std::transform(strFileName.begin(), strFileName.end(), strFileName.begin(), tolower);
+	tstring strLowName = strFileName;
+	std::transform(strLowName.begin(), strLowName.end(), strLowName.begin(), tolower);
 
 	// find from map, if exist just increase reference and return
-	TEXTURE_MAP::iterator itfound = m_TextureMap.find(strFileName);
+	TEXTURE_MAP::iterator itfound = m_TextureMap.find(strLowName);
 	if (itfound != m_TextureMap.end())
 	{
 		IOETexture* pTexture = itfound->second;
@@ -47,7 +47,7 @@ IOETexture* COED3DTextureMgr_Impl::CreateTextureFromFile(const tchar* pstrFileNa
 	}
 
 	// no lucky, really create texture
-	COED3DTexture_Impl* pTexture = new COED3DTexture_Impl(strFileName.c_str());
+	COED3DTexture_Impl* pTexture = new COED3DTexture_Impl(strLowName.c_str());
 	if (!pTexture || !pTexture->IsOK())
 	{
 		// TODO: logout
@@ -55,7 +55,7 @@ IOETexture* COED3DTextureMgr_Impl::CreateTextureFromFile(const tchar* pstrFileNa
 		return NULL;
 	}
 
-	m_TextureMap.insert(std::make_pair(strFileName, pTexture));
+	m_TextureMap.insert(std::make_pair(strLowName, pTexture));
 
 	return pTexture;
 }

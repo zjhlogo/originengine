@@ -16,25 +16,25 @@
 class COED3DShader_Impl : public IOEShader
 {
 public:
-	COED3DShader_Impl(const IOEVertDecl::ELEMENT* pElement, const tchar* pstrFileName);
+	COED3DShader_Impl(const IOEVertDecl::ELEMENT* pElement, const tstring& strFileName);
 	virtual ~COED3DShader_Impl();
 
-	virtual bool SetInt(const tchar* pstrParamName, int nValue);
-	virtual bool GetInt(int& nOut, const tchar* pstrParamName);
+	virtual bool SetInt(const tstring& strParamName, int nValue);
+	virtual bool GetInt(int& nOut, const tstring& strParamName);
 
-	virtual bool SetFloat(const tchar* pstrParamName, float fValue);
-	virtual bool GetFloat(float& fOut, const tchar* pstrParamName);
+	virtual bool SetFloat(const tstring& strParamName, float fValue);
+	virtual bool GetFloat(float& fOut, const tstring& strParamName);
 
-	virtual bool SetVector(const tchar* pstrParamName, const CVector4& vIn);
-	virtual bool SetVector(const tchar* pstrParamName, const CVector3& vIn);
-	virtual bool GetVector(CVector4& vOut, const tchar* pstrParamName);
-	virtual bool GetVector(CVector3& vOut, const tchar* pstrParamName);
+	virtual bool SetVector(const tstring& strParamName, const CVector4& vIn);
+	virtual bool SetVector(const tstring& strParamName, const CVector3& vIn);
+	virtual bool GetVector(CVector4& vOut, const tstring& strParamName);
+	virtual bool GetVector(CVector3& vOut, const tstring& strParamName);
 
-	virtual bool SetMatrix(const tchar* pstrParamName, const CMatrix4x4& matIn);
-	virtual bool GetMatrix(CMatrix4x4& matOut, const tchar* pstrParamName);
+	virtual bool SetMatrix(const tstring& strParamName, const CMatrix4x4& matIn);
+	virtual bool GetMatrix(CMatrix4x4& matOut, const tstring& strParamName);
 
-	virtual bool SetTexture(const tchar* pstrParamName, IOETexture* pTexture);
-	virtual bool SetTechnique(const tchar* pstrParamName);
+	virtual bool SetTexture(const tstring& strParamName, IOETexture* pTexture);
+	virtual bool SetTechnique(const tstring& strParamName);
 
 	virtual void DrawTriList(const void* pVerts, uint nVerts, const ushort* pIndis, uint nIndis);
 	virtual void DrawTriStrip(const void* pVerts, uint nVerts, const ushort* pIndis, uint nIndis);
@@ -44,7 +44,7 @@ private:
 	void Init();
 	void Destroy();
 
-	bool Create(const IOEVertDecl::ELEMENT* pElement, const tchar* pstrFileName);
+	bool Create(const IOEVertDecl::ELEMENT* pElement, const tstring& strFileName);
 
 private:
 	COED3DVertDecl_Impl* m_pDecl;

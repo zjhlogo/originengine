@@ -31,7 +31,7 @@ public:
 	bool Initialize();
 	void Terminate();
 
-	void AddInterface(const tchar* pstrClassName, void** ppInterface);
+	void AddInterface(const tstring& strClassName, void** ppInterface);
 	void MergeInterface(const COEHolder& Holder);
 
 private:

@@ -8,6 +8,7 @@
 #include "OEModule.h"
 #include "OECore_Impl.h"
 #include "OEFileMgr_Impl.h"
+#include "OEXmlMgr_Impl.h"
 #include <OEOS.h>
 
 static COEOS::OEMODULE g_hModuleRenderer = NULL;
@@ -16,6 +17,9 @@ bool CreateSingleton()
 {
 	COEFileMgr_Impl* pOEFileMgr_Impl = new COEFileMgr_Impl();
 	if (!pOEFileMgr_Impl) return false;
+
+	COEXmlMgr_Impl* pOEXmlMgr_Impl = new COEXmlMgr_Impl();
+	if (!pOEXmlMgr_Impl) return false;
 
 	COECore_Impl* pOECore_Impl = new COECore_Impl();
 	if (!pOECore_Impl) return false;
@@ -26,6 +30,7 @@ bool CreateSingleton()
 void DestroySingleton()
 {
 	SAFE_DELETE(g_pOECore);
+	SAFE_DELETE(g_pOEXmlMgr);
 	SAFE_DELETE(g_pOEFileMgr);
 }
 

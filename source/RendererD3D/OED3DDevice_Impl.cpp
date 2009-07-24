@@ -33,7 +33,6 @@ void COED3DDevice_Impl::Init()
 	m_nWindowHeight = 600;
 	m_pstrWindowName = _T("Origin Engine");
 
-	m_bSetTimePeriod = false;
 	m_fPrevTime = 0.0f;
 	m_fCurrTime = 0.0f;
 	m_vD3DVertDecl.clear();
@@ -74,11 +73,20 @@ void COED3DDevice_Impl::DestroyDevice()
 
 void COED3DDevice_Impl::StartPerform()
 {
+	static const float MAX_FPS = 120.0f;
+	static int s_Count = 0;
+
 	// show window
 	ShowWindow(g_hWnd, SW_NORMAL);
 	UpdateWindow(g_hWnd);
 
 	// TODO: logout start perform
+
+	// Create Render signal event
+	HANDLE hTickEvent = CreateEvent(NULL, FALSE, FALSE, NULL);
+	ResetEvent(hTickEvent);
+	// Create time event
+	MMRESULT hEventTimer = timeSetEvent((INT)(1000.0f/MAX_FPS), 1, (LPTIMECALLBACK)hTickEvent, 0, TIME_PERIODIC|TIME_CALLBACK_EVENT_SET);
 
 	m_fPrevTime = (float)timeGetTime()/1000.0f;
 	m_fCurrTime = m_fPrevTime;
@@ -88,17 +96,34 @@ void COED3DDevice_Impl::StartPerform()
 
 	while (msg.message != WM_QUIT)
 	{
-		if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
-		{
-			TranslateMessage(&msg);
-			DispatchMessage(&msg);
-		}
-		else
+		if(WAIT_OBJECT_0 == MsgWaitForMultipleObjects(1, &hTickEvent, FALSE, 1000, QS_ALLINPUT))
 		{
 			m_fCurrTime = (float)timeGetTime()/1000.0f;
 			PerformOnce(m_fCurrTime - m_fPrevTime);
 			m_fPrevTime = m_fCurrTime;
 		}
+		else
+		{
+			while(PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) 
+			{
+				if(msg.message == WM_QUIT) break;
+
+				TranslateMessage(&msg);
+				DispatchMessage(&msg);
+			}
+		}
+	}
+
+	if(hEventTimer)
+	{
+		timeKillEvent(hEventTimer);
+		hEventTimer = NULL;
+	}
+
+	if(hTickEvent)
+	{
+		CloseHandle(hTickEvent);
+		hTickEvent = NULL;
 	}
 }
 
@@ -132,9 +157,9 @@ IOEVertDecl* COED3DDevice_Impl::CreateVertDecl(const IOEVertDecl::ELEMENT* pElem
 	return pDecl;
 }
 
-bool COED3DDevice_Impl::GetDeviceParam(void* pData, const tchar* pstrParamName)
+bool COED3DDevice_Impl::GetDeviceParam(void* pData, const tstring& strParamName)
 {
-	if (_tcscmp(pstrParamName, _T("HWND")) == 0)
+	if (strParamName == _T("HWND"))
 	{
 		*(HWND*)pData = g_hWnd;
 		return true;
@@ -253,9 +278,6 @@ bool COED3DDevice_Impl::InternalCreateD3D()
 		return false;
 	}
 
-	timeBeginPeriod(1);
-	m_bSetTimePeriod = true;
-
 	// TODO: logout ok
 
 	return true;
@@ -265,12 +287,6 @@ void COED3DDevice_Impl::InternalDestroyD3D()
 {
 	SAFE_RELEASE(g_pd3dDevice);
 	SAFE_RELEASE(g_pD3D);
-
-	if (m_bSetTimePeriod)
-	{
-		timeEndPeriod(1);
-		m_bSetTimePeriod = false;
-	}
 
 	// TODO: logout
 

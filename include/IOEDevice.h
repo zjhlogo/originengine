@@ -25,7 +25,7 @@ public:
 
 	virtual IOEVertDecl* CreateVertDecl(const IOEVertDecl::ELEMENT* pElement) = 0;
 
-	virtual bool GetDeviceParam(void* pData, const tchar* pstrParamName) = 0;
+	virtual bool GetDeviceParam(void* pData, const tstring& strParamName) = 0;
 };
 
 extern IOEDevice* g_pOEDevice;

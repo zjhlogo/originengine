@@ -18,22 +18,22 @@ public:
 	IOEShader() {};
 	virtual ~IOEShader() {};
 
-	virtual bool SetInt(const tchar* pstrParamName, int nValue) = 0;
-	virtual bool GetInt(int& nOut, const tchar* pstrParamName) = 0;
+	virtual bool SetInt(const tstring& strParamName, int nValue) = 0;
+	virtual bool GetInt(int& nOut, const tstring& strParamName) = 0;
 
-	virtual bool SetFloat(const tchar* pstrParamName, float fValue) = 0;
-	virtual bool GetFloat(float& fOut, const tchar* pstrParamName) = 0;
+	virtual bool SetFloat(const tstring& strParamName, float fValue) = 0;
+	virtual bool GetFloat(float& fOut, const tstring& strParamName) = 0;
 
-	virtual bool SetVector(const tchar* pstrParamName, const CVector4& vIn) = 0;
-	virtual bool SetVector(const tchar* pstrParamName, const CVector3& vIn) = 0;
-	virtual bool GetVector(CVector4& vOut, const tchar* pstrParamName) = 0;
-	virtual bool GetVector(CVector3& vOut, const tchar* pstrParamName) = 0;
+	virtual bool SetVector(const tstring& strParamName, const CVector4& vIn) = 0;
+	virtual bool SetVector(const tstring& strParamName, const CVector3& vIn) = 0;
+	virtual bool GetVector(CVector4& vOut, const tstring& strParamName) = 0;
+	virtual bool GetVector(CVector3& vOut, const tstring& strParamName) = 0;
 
-	virtual bool SetMatrix(const tchar* pstrParamName, const CMatrix4x4& matIn) = 0;
-	virtual bool GetMatrix(CMatrix4x4& matOut, const tchar* pstrParamName) = 0;
+	virtual bool SetMatrix(const tstring& strParamName, const CMatrix4x4& matIn) = 0;
+	virtual bool GetMatrix(CMatrix4x4& matOut, const tstring& strParamName) = 0;
 
-	virtual bool SetTexture(const tchar* pstrParamName, IOETexture* pTexture) = 0;
-	virtual bool SetTechnique(const tchar* pstrParamName) = 0;
+	virtual bool SetTexture(const tstring& strParamName, IOETexture* pTexture) = 0;
+	virtual bool SetTechnique(const tstring& strParamName) = 0;
 
 	virtual void DrawTriList(const void* pVerts, uint nVerts, const ushort* pIndis, uint nIndis) = 0;
 	virtual void DrawTriStrip(const void* pVerts, uint nVerts, const ushort* pIndis, uint nIndis) = 0;
