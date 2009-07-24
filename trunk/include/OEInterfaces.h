@@ -13,6 +13,7 @@
 // ºËÐÄÄ£¿é
 #include "IOECore.h"
 #include "IOEFileMgr.h"
+#include "IOEXmlMgr.h"
 
 // äÖÈ¾Ä£¿é
 #include "IOEDevice.h"

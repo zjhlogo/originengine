@@ -32,14 +32,14 @@ void COED3DShaderMgr_Impl::Destroy()
 	// TODO: check m_ShaderMap whether is empty, and logout
 }
 
-IOEShader* COED3DShaderMgr_Impl::CreateShader(const IOEVertDecl::ELEMENT* pElement, const tchar* pstrFileName)
+IOEShader* COED3DShaderMgr_Impl::CreateShader(const IOEVertDecl::ELEMENT* pElement, const tstring& strFileName)
 {
 	// transform string to lower
-	tstring strFileName = pstrFileName;
-	std::transform(strFileName.begin(), strFileName.end(), strFileName.begin(), tolower);
+	tstring strLowName = strFileName;
+	std::transform(strLowName.begin(), strLowName.end(), strLowName.begin(), tolower);
 
 	// find from map, if exist just increase reference and return
-	SHADER_MAP::iterator itfound = m_ShaderMap.find(strFileName);
+	SHADER_MAP::iterator itfound = m_ShaderMap.find(strLowName);
 	if (itfound != m_ShaderMap.end())
 	{
 		IOEShader* pShader = itfound->second;
@@ -47,7 +47,7 @@ IOEShader* COED3DShaderMgr_Impl::CreateShader(const IOEVertDecl::ELEMENT* pEleme
 		return pShader;
 	}
 
-	COED3DShader_Impl* pShader = new COED3DShader_Impl(pElement, pstrFileName);
+	COED3DShader_Impl* pShader = new COED3DShader_Impl(pElement, strLowName);
 	if (!pShader || !pShader->IsOK())
 	{
 		SAFE_RELEASE(pShader);
@@ -55,7 +55,7 @@ IOEShader* COED3DShaderMgr_Impl::CreateShader(const IOEVertDecl::ELEMENT* pEleme
 		return NULL;
 	}
 
-	m_ShaderMap.insert(std::make_pair(strFileName, pShader));
+	m_ShaderMap.insert(std::make_pair(strLowName, pShader));
 
 	return pShader;
 }

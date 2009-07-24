@@ -16,11 +16,11 @@ public:
 	typedef void* OEMODULE;
 
 public:
-	static const char* tchar2char(const tchar* pstrIn);
-	static const tchar* char2tchar(const char* pstrIn);
-
 	static OEMODULE LoadOEModule(const tchar* pstrModuleName);
 	static void FreeOEModule(OEMODULE hModule);
+
+	static const char* tchar2char_Fast(const tchar* pstrIn);
+	static bool char2tchar(tstring& strOut, const char* pstrIn);
 };
 
 #endif // __OEOS_H__

@@ -12,6 +12,7 @@
 // 核心模块
 IOECore* g_pOECore = NULL;
 IOEFileMgr* g_pOEFileMgr = NULL;
+IOEXmlMgr* g_pOEXmlMgr = NULL;
 
 // 渲染模块
 IOEDevice* g_pOEDevice = NULL;
@@ -39,6 +40,7 @@ void COEHolder::SetupInterfaces()
 {
 	// 核心模块
 	AddInterface(_T("IOEFileMgr"), (void**)&g_pOEFileMgr);
+	AddInterface(_T("IOEXmlMgr"), (void**)&g_pOEXmlMgr);
 	AddInterface(_T("IOECore"), (void**)&g_pOECore);
 
 	// 渲染模块
@@ -69,10 +71,10 @@ void COEHolder::Terminate()
 	g_hModuleOE = NULL;
 }
 
-void COEHolder::AddInterface(const tchar* pstrClassName, void** ppInterface)
+void COEHolder::AddInterface(const tstring& strClassName, void** ppInterface)
 {
 	INTERFACE_INFO Info;
-	Info.strClassName = pstrClassName;
+	Info.strClassName = strClassName;
 	Info.ppInterface = ppInterface;
 
 	INTERFACE_INFO_MAP::iterator itfound = m_InfoMap.find(Info.strClassName);

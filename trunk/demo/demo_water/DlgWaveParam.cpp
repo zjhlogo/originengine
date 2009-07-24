@@ -500,18 +500,15 @@ void CDlgWaveParam::CopyToClipboard()
 	_stprintf(s_strBuf, _T("\tm_fHeightScale = %ff;\r\n"), m_fHeightScale);
 	strData += s_strBuf;
 
-	const char* pszData = COEOS::tchar2char(strData.c_str());
-	size_t nLength = strlen(pszData);
-
 	if (!OpenClipboard(m_hWndDlg)) return;
 	EmptyClipboard();
 
-	HGLOBAL hMem = GlobalAlloc(GMEM_MOVEABLE, nLength+1);
+	HGLOBAL hMem = GlobalAlloc(GMEM_MOVEABLE, strData.length()*sizeof(tchar));
 	void* pMem = GlobalLock(hMem);
-	memcpy(pMem, pszData, nLength+1);
+	memcpy(pMem, strData.c_str(), strData.length()*sizeof(tchar));
 	GlobalUnlock(hMem);
 
-	SetClipboardData(CF_TEXT, hMem);
+	SetClipboardData(CF_UNICODETEXT, hMem);
 
 	CloseClipboard();
 }

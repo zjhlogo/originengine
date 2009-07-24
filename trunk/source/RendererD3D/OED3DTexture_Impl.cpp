@@ -13,10 +13,10 @@
 
 extern IDirect3DDevice9* g_pd3dDevice;
 
-COED3DTexture_Impl::COED3DTexture_Impl(const tchar* pstrFileName)
+COED3DTexture_Impl::COED3DTexture_Impl(const tstring& strFileName)
 {
 	Init();
-	m_bOK = Create(pstrFileName);
+	m_bOK = Create(strFileName);
 }
 
 COED3DTexture_Impl::COED3DTexture_Impl(int nWidth, int nHeight, TEXTURE_FORMAT eFormat)
@@ -58,9 +58,9 @@ IOETexture::TEXTURE_FORMAT COED3DTexture_Impl::GetFormat() const
 	return m_eFormat;
 }
 
-bool COED3DTexture_Impl::Create(const tchar* pstrFileName)
+bool COED3DTexture_Impl::Create(const tstring& strFileName)
 {
-	IOEFile* pFile = g_pOEFileMgr->OpenFile(pstrFileName);
+	IOEFile* pFile = g_pOEFileMgr->OpenFile(strFileName);
 	if (!pFile) return false;
 
 	uint nSize = pFile->GetSize();

@@ -32,6 +32,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalDependencies="../../3rdsrc/tinyxml/tinyxmld.lib"
 				OutputFile="$(OutDir)/OriginEngine_D.dll"
 				LinkIncremental="2"
 				GenerateDebugInformation="TRUE"
@@ -80,6 +81,7 @@ copy &quot;$(TargetPath)&quot; &quot;..\..\bin\&quot;
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalDependencies="../../3rdsrc/tinyxml/tinyxml.lib"
 				OutputFile="$(OutDir)/OriginEngine.dll"
 				LinkIncremental="1"
 				GenerateDebugInformation="TRUE"
@@ -133,6 +135,7 @@ copy &quot;$(TargetPath)&quot; &quot;..\..\bin\&quot;
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalDependencies="../../3rdsrc/tinyxml/tinyxmld.lib"
 				OutputFile="$(OutDir)/OriginEngine_UD.dll"
 				LinkIncremental="2"
 				GenerateDebugInformation="TRUE"
@@ -181,6 +184,7 @@ copy &quot;$(TargetPath)&quot; &quot;..\..\bin\&quot;
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalDependencies="../../3rdsrc/tinyxml/tinyxml.lib"
 				OutputFile="$(OutDir)/OriginEngineU.dll"
 				LinkIncremental="1"
 				GenerateDebugInformation="TRUE"
@@ -232,6 +236,15 @@ copy &quot;$(TargetPath)&quot; &quot;..\..\bin\&quot;
 			<File
 				RelativePath=".\OEModule.cpp">
 			</File>
+			<File
+				RelativePath=".\OEXmlDocument_Impl.cpp">
+			</File>
+			<File
+				RelativePath=".\OEXmlMgr_Impl.cpp">
+			</File>
+			<File
+				RelativePath=".\OEXmlNode_Impl.cpp">
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -248,6 +261,15 @@ copy &quot;$(TargetPath)&quot; &quot;..\..\bin\&quot;
 			</File>
 			<File
 				RelativePath=".\OEModule.h">
+			</File>
+			<File
+				RelativePath=".\OEXmlDocument_Impl.h">
+			</File>
+			<File
+				RelativePath=".\OEXmlMgr_Impl.h">
+			</File>
+			<File
+				RelativePath=".\OEXmlNode_Impl.h">
 			</File>
 		</Filter>
 		<Filter
@@ -288,6 +310,15 @@ copy &quot;$(TargetPath)&quot; &quot;..\..\bin\&quot;
 			</File>
 			<File
 				RelativePath="..\..\include\IOEVertDecl.h">
+			</File>
+			<File
+				RelativePath="..\..\include\IOEXmlDocument.h">
+			</File>
+			<File
+				RelativePath="..\..\include\IOEXmlMgr.h">
+			</File>
+			<File
+				RelativePath="..\..\include\IOEXmlNode.h">
 			</File>
 			<File
 				RelativePath="..\..\include\OEBasicType.h">

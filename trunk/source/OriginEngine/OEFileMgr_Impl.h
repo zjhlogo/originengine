@@ -16,7 +16,7 @@ class COEFileMgr_Impl : public IOEFileMgr
 public:
 	COEFileMgr_Impl();
 	virtual ~COEFileMgr_Impl();
-	virtual IOEFile* OpenFile(const tchar* pstrFileName, uint nFlag = IOEFile::OFF_READ);
+	virtual IOEFile* OpenFile(const tstring& strFileName, uint nFlag = IOEFile::OFF_READ);
 
 private:
 	void Init();

@@ -8,10 +8,10 @@
 #include "OEFile_Impl.h"
 #include <assert.h>
 
-COEFile_Impl::COEFile_Impl(const tchar* pstrFileName, uint nFlag)
+COEFile_Impl::COEFile_Impl(const tstring& strFileName, uint nFlag)
 {
 	Init();
-	m_bOK = Open(pstrFileName, nFlag);
+	m_bOK = Open(strFileName, nFlag);
 }
 
 COEFile_Impl::~COEFile_Impl()
@@ -66,21 +66,21 @@ uint COEFile_Impl::Tell() const
 	return ftell(m_pFile);
 }
 
-bool COEFile_Impl::Open(const tchar* pstrFileName, uint nFlag)
+bool COEFile_Impl::Open(const tstring& strFileName, uint nFlag)
 {
 	m_nFlag = nFlag;
 
 	if (OFF_READ == m_nFlag)
 	{
-		m_pFile = _tfopen(pstrFileName, _T("rb"));
+		m_pFile = _tfopen(strFileName.c_str(), _T("rb"));
 	}
 	else if (OFF_WRITE == m_nFlag)
 	{
-		m_pFile = _tfopen(pstrFileName, _T("wb"));
+		m_pFile = _tfopen(strFileName.c_str(), _T("wb"));
 	}
 	else if (OFF_READ|OFF_WRITE == m_nFlag)
 	{
-		m_pFile = _tfopen(pstrFileName, _T("rwb"));
+		m_pFile = _tfopen(strFileName.c_str(), _T("rwb"));
 	}
 
 	if (!m_pFile) return false;

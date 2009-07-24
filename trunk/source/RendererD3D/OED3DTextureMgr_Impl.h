@@ -20,7 +20,7 @@ public:
 	COED3DTextureMgr_Impl();
 	virtual ~COED3DTextureMgr_Impl();
 
-	virtual IOETexture* CreateTextureFromFile(const tchar* pstrFileName);
+	virtual IOETexture* CreateTextureFromFile(const tstring& strFileName);
 	virtual IOETexture* CreateTexture(int nWidth, int nHeight, IOETexture::TEXTURE_FORMAT eFormat);
 
 private:

@@ -32,7 +32,7 @@ public:
 
 	virtual IOEVertDecl* CreateVertDecl(const IOEVertDecl::ELEMENT* pElement);
 
-	virtual bool GetDeviceParam(void* pData, const tchar* pstrParamName);
+	virtual bool GetDeviceParam(void* pData, const tstring& strParamName);
 
 private:
 	void Init();
@@ -53,8 +53,6 @@ private:
 	int m_nWindowWidth;
 	int m_nWindowHeight;
 	const tchar* m_pstrWindowName;
-
-	bool m_bSetTimePeriod;
 
 	float m_fPrevTime;
 	float m_fCurrTime;
