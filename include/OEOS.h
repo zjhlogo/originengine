@@ -19,7 +19,7 @@ public:
 	static OEMODULE LoadOEModule(const tchar* pstrModuleName);
 	static void FreeOEModule(OEMODULE hModule);
 
-	static const char* tchar2char_Fast(const tchar* pstrIn);
+	static bool tchar2char(std::string& strOut, const tchar* pstrIn);
 	static bool char2tchar(tstring& strOut, const char* pstrIn);
 };
 

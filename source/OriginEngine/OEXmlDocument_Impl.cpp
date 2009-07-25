@@ -6,7 +6,6 @@
  * \author zjhlogo (zjhlogo@163.com)
  */
 #include "OEXmlDocument_Impl.h"
-#include "../../3rdsrc/tinyxml/tinyxml.h"
 #include <OEInterfaces.h>
 #include <OEOS.h>
 
@@ -28,17 +27,21 @@ void COEXmlDocument_Impl::Init()
 
 void COEXmlDocument_Impl::Destroy()
 {
+	DestroyChildMap();
 	SAFE_DELETE(m_pDocument);
 }
 
 IOEXmlNode* COEXmlDocument_Impl::FirstChild()
 {
-	return (IOEXmlNode*)m_pDocument->FirstChildElement();
+	return ToXmlNode(m_pDocument->FirstChildElement());
 }
 
 IOEXmlNode* COEXmlDocument_Impl::FirstChild(const tstring& strNodeName)
 {
-	return (IOEXmlNode*)m_pDocument->FirstChildElement(COEOS::tchar2char_Fast(strNodeName.c_str()));
+	std::string strANSIName;
+	if (!COEOS::tchar2char(strANSIName, strNodeName.c_str())) return NULL;
+
+	return ToXmlNode(m_pDocument->FirstChildElement(strANSIName.c_str()));
 }
 
 bool COEXmlDocument_Impl::Create(const tstring& strFileName)
@@ -61,5 +64,44 @@ bool COEXmlDocument_Impl::Create(const tstring& strFileName)
 		return false;
 	}
 
+	CreateChildMap();
+
 	return true;
+}
+
+void COEXmlDocument_Impl::CreateChildMap()
+{
+	DestroyChildMap();
+
+	COEXmlNode_Impl* pPrevNode = NULL;
+	TiXmlElement* pElementChild = m_pDocument->FirstChildElement();
+	while (pElementChild)
+	{
+		COEXmlNode_Impl* pNewNode = new COEXmlNode_Impl(pElementChild);
+		pNewNode->SetPrevNode(pPrevNode);
+		if (pPrevNode) pPrevNode->SetNextNode(pNewNode);
+
+		m_ChildMap.insert(std::make_pair(pElementChild, pNewNode));
+
+		pPrevNode = pNewNode;
+		pElementChild = pElementChild->NextSiblingElement();
+	}
+}
+
+void COEXmlDocument_Impl::DestroyChildMap()
+{
+	for (COEXmlNode_Impl::XMLNODE_MAP::iterator it = m_ChildMap.begin(); it != m_ChildMap.end(); ++it)
+	{
+		 IOEXmlNode* pXmlNode = it->second;
+		 SAFE_RELEASE(pXmlNode);
+	}
+	m_ChildMap.clear();
+}
+
+IOEXmlNode* COEXmlDocument_Impl::ToXmlNode(TiXmlElement* pElement)
+{
+	COEXmlNode_Impl::XMLNODE_MAP::iterator itfound = m_ChildMap.find(pElement);
+	if (itfound != m_ChildMap.end()) return itfound->second;
+
+	return NULL;
 }

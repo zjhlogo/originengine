@@ -39,34 +39,49 @@ void COED3DShader_Impl::Destroy()
 
 bool COED3DShader_Impl::SetInt(const tstring& strParamName, int nValue)
 {
-	if (FAILED(m_pEffect->SetInt(COEOS::tchar2char_Fast(strParamName.c_str()), nValue))) return false;
+	std::string strANSIName;
+	if (!COEOS::tchar2char(strANSIName, strParamName.c_str())) return false;
+
+	if (FAILED(m_pEffect->SetInt(strANSIName.c_str(), nValue))) return false;
 	return true;
 }
 
 bool COED3DShader_Impl::GetInt(int& nOut, const tstring& strParamName)
 {
-	if (FAILED(m_pEffect->GetInt(COEOS::tchar2char_Fast(strParamName.c_str()), &nOut))) return false;
+	std::string strANSIName;
+	if (!COEOS::tchar2char(strANSIName, strParamName.c_str())) return false;
+
+	if (FAILED(m_pEffect->GetInt(strANSIName.c_str(), &nOut))) return false;
 	return true;
 }
 
 bool COED3DShader_Impl::SetFloat(const tstring& strParamName, float fValue)
 {
-	if (FAILED(m_pEffect->SetFloat(COEOS::tchar2char_Fast(strParamName.c_str()), fValue))) return false;
+	std::string strANSIName;
+	if (!COEOS::tchar2char(strANSIName, strParamName.c_str())) return false;
+
+	if (FAILED(m_pEffect->SetFloat(strANSIName.c_str(), fValue))) return false;
 	return true;
 }
 
 bool COED3DShader_Impl::GetFloat(float& fOut, const tstring& strParamName)
 {
-	if (FAILED(m_pEffect->GetFloat(COEOS::tchar2char_Fast(strParamName.c_str()), &fOut))) return false;
+	std::string strANSIName;
+	if (!COEOS::tchar2char(strANSIName, strParamName.c_str())) return false;
+
+	if (FAILED(m_pEffect->GetFloat(strANSIName.c_str(), &fOut))) return false;
 	return true;
 }
 
 bool COED3DShader_Impl::SetVector(const tstring& strParamName, const CVector4& vIn)
 {
+	std::string strANSIName;
+	if (!COEOS::tchar2char(strANSIName, strParamName.c_str())) return false;
+
 	D3DXVECTOR4 vD3D;
 	COED3DUtil::ToD3DVector4(vD3D, vIn);
 
-	if (FAILED(m_pEffect->SetVector(COEOS::tchar2char_Fast(strParamName.c_str()), &vD3D))) return false;
+	if (FAILED(m_pEffect->SetVector(strANSIName.c_str(), &vD3D))) return false;
 	return true;
 }
 
@@ -78,8 +93,11 @@ bool COED3DShader_Impl::SetVector(const tstring& strParamName, const CVector3& v
 
 bool COED3DShader_Impl::GetVector(CVector4& vOut, const tstring& strParamName)
 {
+	std::string strANSIName;
+	if (!COEOS::tchar2char(strANSIName, strParamName.c_str())) return false;
+
 	D3DXVECTOR4 vD3D;
-	if (FAILED(m_pEffect->GetVector(COEOS::tchar2char_Fast(strParamName.c_str()), &vD3D))) return false;
+	if (FAILED(m_pEffect->GetVector(strANSIName.c_str(), &vD3D))) return false;
 
 	COED3DUtil::ToOEVector4(vOut, vD3D);
 	return true;
@@ -98,17 +116,23 @@ bool COED3DShader_Impl::GetVector(CVector3& vOut, const tstring& strParamName)
 
 bool COED3DShader_Impl::SetMatrix(const tstring& strParamName, const CMatrix4x4& matIn)
 {
+	std::string strANSIName;
+	if (!COEOS::tchar2char(strANSIName, strParamName.c_str())) return false;
+
 	D3DXMATRIX matD3D;
 	COED3DUtil::ToD3DXMatrix(matD3D, matIn);
 
-	if (FAILED(m_pEffect->SetMatrix(COEOS::tchar2char_Fast(strParamName.c_str()), &matD3D))) return false;
+	if (FAILED(m_pEffect->SetMatrix(strANSIName.c_str(), &matD3D))) return false;
 	return true;
 }
 
 bool COED3DShader_Impl::GetMatrix(CMatrix4x4& matOut, const tstring& strParamName)
 {
+	std::string strANSIName;
+	if (!COEOS::tchar2char(strANSIName, strParamName.c_str())) return false;
+
 	D3DXMATRIX matD3D;
-	if (FAILED(m_pEffect->GetMatrix(COEOS::tchar2char_Fast(strParamName.c_str()), &matD3D))) return false;
+	if (FAILED(m_pEffect->GetMatrix(strANSIName.c_str(), &matD3D))) return false;
 
 	COED3DUtil::ToOEMatrix(matOut, matD3D);
 	return true;
@@ -116,8 +140,11 @@ bool COED3DShader_Impl::GetMatrix(CMatrix4x4& matOut, const tstring& strParamNam
 
 bool COED3DShader_Impl::SetTexture(const tstring& strParamName, IOETexture* pTexture)
 {
+	std::string strANSIName;
+	if (!COEOS::tchar2char(strANSIName, strParamName.c_str())) return false;
+
 	COED3DTexture_Impl* pD3DTexture = (COED3DTexture_Impl*)pTexture;
-	if (FAILED(m_pEffect->SetTexture(COEOS::tchar2char_Fast(strParamName.c_str()), pD3DTexture->GetTexture())))
+	if (FAILED(m_pEffect->SetTexture(strANSIName.c_str(), pD3DTexture->GetTexture())))
 	{
 		// TODO: logout
 		return false;
@@ -127,7 +154,10 @@ bool COED3DShader_Impl::SetTexture(const tstring& strParamName, IOETexture* pTex
 
 bool COED3DShader_Impl::SetTechnique(const tstring& strParamName)
 {
-	if (FAILED(m_pEffect->SetTechnique(COEOS::tchar2char_Fast(strParamName.c_str()))))
+	std::string strANSIName;
+	if (!COEOS::tchar2char(strANSIName, strParamName.c_str())) return false;
+
+	if (FAILED(m_pEffect->SetTechnique(strANSIName.c_str())))
 	{
 		// TODO: logout
 		return false;
