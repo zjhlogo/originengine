@@ -6,27 +6,39 @@
  * \author zjhlogo (zjhlogo@163.com)
  */
 #include "OEXmlMgr_Impl.h"
-#include "OEXmlDocument_Impl.h"
+#include "OEXmlNode_Impl.h"
 
 COEXmlMgr_Impl::COEXmlMgr_Impl()
 {
-	// TODO: 
+	g_pOEXmlMgr = this;
+	Init();
 }
 
 COEXmlMgr_Impl::~COEXmlMgr_Impl()
 {
+	Destroy();
+	g_pOEXmlMgr = NULL;
+}
+
+void COEXmlMgr_Impl::Init()
+{
 	// TODO: 
 }
 
-IOEXmlDocument* COEXmlMgr_Impl::OpenXmlFile(const tstring& strFileName)
+void COEXmlMgr_Impl::Destroy()
 {
-	IOEXmlDocument *pDocument = new COEXmlDocument_Impl(strFileName);
-	if (!pDocument || !pDocument->IsOK())
+	// TODO: 
+}
+
+IOEXmlNode* COEXmlMgr_Impl::OpenXmlFile(const tstring& strFileName)
+{
+	IOEXmlNode *pRootNode = new COEXmlNode_Impl(strFileName);
+	if (!pRootNode || !pRootNode->IsOK())
 	{
-		SAFE_RELEASE(pDocument);
+		SAFE_RELEASE(pRootNode);
 		// TODO: logout
 		return NULL;
 	}
 
-	return pDocument;
+	return pRootNode;
 }

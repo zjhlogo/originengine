@@ -16,7 +16,11 @@ public:
 	COEXmlMgr_Impl();
 	virtual ~COEXmlMgr_Impl();
 
-	virtual IOEXmlDocument* OpenXmlFile(const tstring& strFileName);
+	virtual IOEXmlNode* OpenXmlFile(const tstring& strFileName);
+
+private:
+	void Init();
+	void Destroy();
 
 };
 #endif // __OEXMLMGR_IMPL_H__

@@ -8,7 +8,7 @@
 #ifndef __IOEXMLMGR_H__
 #define __IOEXMLMGR_H__
 
-#include "IOEXmlDocument.h"
+#include "IOEXmlNode.h"
 
 class IOEXmlMgr
 {
@@ -16,7 +16,7 @@ public:
 	IOEXmlMgr() {};
 	virtual ~IOEXmlMgr() {};
 
-	virtual IOEXmlDocument* OpenXmlFile(const tstring& strFileName) = 0;
+	virtual IOEXmlNode* OpenXmlFile(const tstring& strFileName) = 0;
 
 };
 
