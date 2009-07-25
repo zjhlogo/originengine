@@ -22,7 +22,10 @@ COEOS::OEMODULE COEOS::LoadOEModule(const tchar* pstrModuleName)
 	HMODULE hWinModule = LoadLibrary(pstrModuleName);
 	if (!hWinModule) return NULL;
 
-	FUNC_MODULE_INIT OEModuleInit = (FUNC_MODULE_INIT)GetProcAddress(hWinModule, tchar2char_Fast(MODULE_INIT_FUNC_NAME));
+	std::string strModuleName;
+	if (!tchar2char(strModuleName, MODULE_INIT_FUNC_NAME)) return NULL;
+
+	FUNC_MODULE_INIT OEModuleInit = (FUNC_MODULE_INIT)GetProcAddress(hWinModule, strModuleName.c_str());
 	if (!OEModuleInit)
 	{
 		FreeLibrary(hWinModule);
@@ -42,13 +45,16 @@ void COEOS::FreeOEModule(OEMODULE hModule)
 {
 	if (!hModule) return;
 
+	std::string strModuleName;
+	if (!tchar2char(strModuleName, MODULE_TERM_FUNC_NAME)) return;
+
 	HMODULE hWinModule = (HMODULE)hModule;
-	FUNC_MODULE_TERM OEModuleTerm = (FUNC_MODULE_TERM)GetProcAddress(hWinModule, tchar2char_Fast(MODULE_TERM_FUNC_NAME));
+	FUNC_MODULE_TERM OEModuleTerm = (FUNC_MODULE_TERM)GetProcAddress(hWinModule, strModuleName.c_str());
 	if (OEModuleTerm) OEModuleTerm(g_OEHolder);
 	FreeLibrary(hWinModule);
 }
 
-const char* COEOS::tchar2char_Fast(const tchar* pstrIn)
+bool COEOS::tchar2char(std::string& strOut, const tchar* pstrIn)
 {
 #ifdef _UNICODE
 	static std::vector<char> s_MultiByteBuf;
@@ -57,9 +63,11 @@ const char* COEOS::tchar2char_Fast(const tchar* pstrIn)
 	if ((int)s_MultiByteBuf.size() < nBufSize) s_MultiByteBuf.resize(nBufSize);
 
 	WideCharToMultiByte(CP_UTF8, NULL, pstrIn, -1, &s_MultiByteBuf[0], nBufSize, NULL, NULL);
-	return &s_MultiByteBuf[0];
+	strOut = ((char*)(&s_MultiByteBuf[0]));
+	return true;
 #else
-	return pstrIn;
+	strOut = pstrIn;
+	return true;
 #endif // _UNICODE
 }
 

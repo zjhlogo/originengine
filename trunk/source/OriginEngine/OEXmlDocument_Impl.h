@@ -8,9 +8,9 @@
 #ifndef __OEXMLDOCUMENT_IMPL_H__
 #define __OEXMLDOCUMENT_IMPL_H__
 
-#include "IOEXmlDocument.h"
-
-class TiXmlDocument;
+#include <IOEXmlDocument.h>
+#include "OEXmlNode_Impl.h"
+#include "../../3rdsrc/tinyxml/tinyxml.h"
 
 class COEXmlDocument_Impl : public IOEXmlDocument
 {
@@ -26,9 +26,14 @@ private:
 	void Destroy();
 
 	bool Create(const tstring& strFileName);
+	void CreateChildMap();
+	void DestroyChildMap();
+
+	IOEXmlNode* ToXmlNode(TiXmlElement* pElement);
 
 private:
 	TiXmlDocument* m_pDocument;
+	COEXmlNode_Impl::XMLNODE_MAP m_ChildMap;
 
 };
 #endif // __OEXMLDOCUMENT_IMPL_H__
