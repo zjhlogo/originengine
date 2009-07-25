@@ -19,7 +19,8 @@ public:
 	typedef std::map<TiXmlElement*, IOEXmlNode*> XMLNODE_MAP;
 
 public:
-	COEXmlNode_Impl(TiXmlElement* pElement);
+	COEXmlNode_Impl(const tstring& strFileName);
+	COEXmlNode_Impl(TiXmlElement* pTiElement, COEXmlNode_Impl* pParentNode);
 	~COEXmlNode_Impl();
 
 	virtual bool GetAttribute(int& nValue, const tstring& strAttrName);
@@ -30,32 +31,32 @@ public:
 	virtual bool SetAttribute(const tstring& strAttrName, float fValue);
 	virtual bool SetAttribute(const tstring& strAttrName, const tstring& strAttrValue);
 
+	virtual bool GetText(tstring& strText);
+	virtual bool SetText(const tstring& strText);
+
 	virtual IOEXmlNode* FirstChild();
 	virtual IOEXmlNode* FirstChild(const tstring& strNodeName);
 
-	virtual IOEXmlNode* NextChild();
-	virtual IOEXmlNode* NextChild(const tstring& strNodeName);
+	virtual IOEXmlNode* NextSibling();
+	virtual IOEXmlNode* NextSibling(const tstring& strNodeName);
 
-	COEXmlNode_Impl* GetPrevNode() const;
-	void SetPrevNode(COEXmlNode_Impl* pNode);
-
-	COEXmlNode_Impl* GetNextNode() const;
-	void SetNextNode(COEXmlNode_Impl* pNode);
+	virtual void Release();
 
 private:
 	void Init();
 	void Destroy();
 
-	bool Create(TiXmlElement* pElement);
+	bool Create(const tstring& strFileName);
+	bool Create(TiXmlElement* pTiElement, COEXmlNode_Impl* pParentNode);
+
 	void CreateChildMap();
 	void DestroyChildMap();
 
-	IOEXmlNode* ToXmlNode(TiXmlElement* pElement);
+	IOEXmlNode* ToXmlNode(TiXmlElement* pTiElement);
 
 private:
-	TiXmlElement* m_pElement;
-	COEXmlNode_Impl* m_pPrevNode;
-	COEXmlNode_Impl* m_pNextNode;
+	COEXmlNode_Impl* m_pParent;
+	TiXmlNode* m_pTiNode;
 	XMLNODE_MAP m_ChildMap;
 
 };

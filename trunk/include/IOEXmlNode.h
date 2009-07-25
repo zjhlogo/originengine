@@ -24,11 +24,14 @@ public:
 	virtual bool SetAttribute(const tstring& strAttrName, float fValue) = 0;
 	virtual bool SetAttribute(const tstring& strAttrName, const tstring& strAttrValue) = 0;
 
+	virtual bool GetText(tstring& strText) = 0;
+	virtual bool SetText(const tstring& strText) = 0;
+
 	virtual IOEXmlNode* FirstChild() = 0;
 	virtual IOEXmlNode* FirstChild(const tstring& strNodeName) = 0;
 
-	virtual IOEXmlNode* NextChild() = 0;
-	virtual IOEXmlNode* NextChild(const tstring& strNodeName) = 0;
+	virtual IOEXmlNode* NextSibling() = 0;
+	virtual IOEXmlNode* NextSibling(const tstring& strNodeName) = 0;
 
 };
 #endif // __IOEXMLNODE_H__

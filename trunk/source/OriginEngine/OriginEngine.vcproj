@@ -237,9 +237,6 @@ copy &quot;$(TargetPath)&quot; &quot;..\..\bin\&quot;
 				RelativePath=".\OEModule.cpp">
 			</File>
 			<File
-				RelativePath=".\OEXmlDocument_Impl.cpp">
-			</File>
-			<File
 				RelativePath=".\OEXmlMgr_Impl.cpp">
 			</File>
 			<File
@@ -261,9 +258,6 @@ copy &quot;$(TargetPath)&quot; &quot;..\..\bin\&quot;
 			</File>
 			<File
 				RelativePath=".\OEModule.h">
-			</File>
-			<File
-				RelativePath=".\OEXmlDocument_Impl.h">
 			</File>
 			<File
 				RelativePath=".\OEXmlMgr_Impl.h">
@@ -310,9 +304,6 @@ copy &quot;$(TargetPath)&quot; &quot;..\..\bin\&quot;
 			</File>
 			<File
 				RelativePath="..\..\include\IOEVertDecl.h">
-			</File>
-			<File
-				RelativePath="..\..\include\IOEXmlDocument.h">
 			</File>
 			<File
 				RelativePath="..\..\include\IOEXmlMgr.h">
