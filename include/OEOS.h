@@ -21,6 +21,14 @@ public:
 
 	static bool tchar2char(std::string& strOut, const tchar* pstrIn);
 	static bool char2tchar(tstring& strOut, const char* pstrIn);
+
+	static bool str2int(int& nValue, const tchar* pstrIn);
+	static bool str2float(float& fValue, const tchar* pstrIn);
+
+	static bool int2str(tstring& strOut, int nValue);
+	static bool float2str(tstring& strOut, float fValue);
+
+	static bool strformat(tstring& strOut, const tchar* strFormat, ...);
 };
 
 #endif // __OEOS_H__

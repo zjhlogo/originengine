@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Config>
+	<WindowWidth>800</WindowWidth>
+	<WindowHeight>600</WindowHeight>
+	<WindowTitle>Origin Engine</WindowTitle>
+	<MaxFPS>120</MaxFPS>
+</Config>

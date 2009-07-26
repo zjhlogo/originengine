@@ -23,6 +23,7 @@ public:
 	virtual TEXTURE_FORMAT GetFormat() const;
 
 	IDirect3DTexture9* GetTexture() const;
+
 private:
 	void Init();
 	void Destroy();

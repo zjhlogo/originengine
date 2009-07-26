@@ -8,6 +8,7 @@
 #include "OED3DShaderMgr_Impl.h"
 #include "OED3DShader_Impl.h"
 
+#include <OEInterfaces.h>
 #include <algorithm>
 
 COED3DShaderMgr_Impl::COED3DShaderMgr_Impl()
@@ -50,8 +51,8 @@ IOEShader* COED3DShaderMgr_Impl::CreateShader(const IOEVertDecl::ELEMENT* pEleme
 	COED3DShader_Impl* pShader = new COED3DShader_Impl(pElement, strLowName);
 	if (!pShader || !pShader->IsOK())
 	{
+		LOGOUT(_T("IOEShaderMgr::CreateShader Failed \"%s\""), strFileName.c_str());
 		SAFE_RELEASE(pShader);
-		// TODO: logout
 		return NULL;
 	}
 

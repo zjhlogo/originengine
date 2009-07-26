@@ -52,8 +52,9 @@ private:
 private:
 	int m_nWindowWidth;
 	int m_nWindowHeight;
-	const tchar* m_pstrWindowName;
+	tstring m_strWindowName;
 
+	float m_fMaxFPS;
 	float m_fPrevTime;
 	float m_fCurrTime;
 

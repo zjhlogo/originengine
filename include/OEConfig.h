@@ -39,4 +39,6 @@
 
 #endif // WIN32
 
+#define ENABLE_LOGOUT 1
+
 #endif // __OECONFIG_H__

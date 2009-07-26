@@ -13,7 +13,9 @@
 // ºËÐÄÄ£¿é
 #include "IOECore.h"
 #include "IOEFileMgr.h"
+#include "IOELogFileMgr.h"
 #include "IOEXmlMgr.h"
+#include "IOEConfigFileMgr.h"
 
 // äÖÈ¾Ä£¿é
 #include "IOEDevice.h"

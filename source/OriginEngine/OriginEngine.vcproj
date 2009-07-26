@@ -225,6 +225,9 @@ copy &quot;$(TargetPath)&quot; &quot;..\..\bin\&quot;
 			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx"
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}">
 			<File
+				RelativePath=".\OEConfigFileMgr_Impl.cpp">
+			</File>
+			<File
 				RelativePath=".\OECore_Impl.cpp">
 			</File>
 			<File
@@ -232,6 +235,9 @@ copy &quot;$(TargetPath)&quot; &quot;..\..\bin\&quot;
 			</File>
 			<File
 				RelativePath=".\OEFileMgr_Impl.cpp">
+			</File>
+			<File
+				RelativePath=".\OELogFileMgr_Impl.cpp">
 			</File>
 			<File
 				RelativePath=".\OEModule.cpp">
@@ -248,6 +254,9 @@ copy &quot;$(TargetPath)&quot; &quot;..\..\bin\&quot;
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}">
 			<File
+				RelativePath=".\OEConfigFileMgr_Impl.h">
+			</File>
+			<File
 				RelativePath=".\OECore_Impl.h">
 			</File>
 			<File
@@ -255,6 +264,9 @@ copy &quot;$(TargetPath)&quot; &quot;..\..\bin\&quot;
 			</File>
 			<File
 				RelativePath=".\OEFileMgr_Impl.h">
+			</File>
+			<File
+				RelativePath=".\OELogFileMgr_Impl.h">
 			</File>
 			<File
 				RelativePath=".\OEModule.h">
@@ -273,6 +285,9 @@ copy &quot;$(TargetPath)&quot; &quot;..\..\bin\&quot;
 				RelativePath="..\..\include\IOEApp.h">
 			</File>
 			<File
+				RelativePath="..\..\include\IOEConfigFileMgr.h">
+			</File>
+			<File
 				RelativePath="..\..\include\IOECore.h">
 			</File>
 			<File
@@ -283,6 +298,9 @@ copy &quot;$(TargetPath)&quot; &quot;..\..\bin\&quot;
 			</File>
 			<File
 				RelativePath="..\..\include\IOEFileMgr.h">
+			</File>
+			<File
+				RelativePath="..\..\include\IOELogFileMgr.h">
 			</File>
 			<File
 				RelativePath="..\..\include\IOEObject.h">

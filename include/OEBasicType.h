@@ -36,4 +36,6 @@ typedef std::basic_string<TCHAR>	tstring;
 #define SAFE_DELETE_ARRAY(x) if (x) {delete[] x; x = NULL;}
 #define SAFE_RELEASE(x) if (x) {x->Release(); x = NULL;}
 
+extern const tstring EMPTY_STRING;
+
 #endif // __OEBASICTYPE_H__

@@ -24,7 +24,12 @@ public:
 	virtual bool SetAttribute(const tstring& strAttrName, float fValue) = 0;
 	virtual bool SetAttribute(const tstring& strAttrName, const tstring& strAttrValue) = 0;
 
+	virtual bool GetText(int& nValue) = 0;
+	virtual bool GetText(float& fValue) = 0;
 	virtual bool GetText(tstring& strText) = 0;
+
+	virtual bool SetText(int nValue) = 0;
+	virtual bool SetText(float fValue) = 0;
 	virtual bool SetText(const tstring& strText) = 0;
 
 	virtual IOEXmlNode* FirstChild() = 0;
