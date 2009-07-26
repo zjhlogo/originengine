@@ -7,6 +7,8 @@
  */
 #include "OED3DVertDecl_Impl.h"
 #include "OED3DUtil.h"
+
+#include <OEInterfaces.h>
 #include <assert.h>
 
 extern IDirect3DDevice9* g_pd3dDevice;
@@ -102,7 +104,7 @@ bool COED3DVertDecl_Impl::Create(const ELEMENT* pElement)
 	HRESULT hr = g_pd3dDevice->CreateVertexDeclaration(s_D3DDecl, &m_pDecl);
 	if (FAILED(hr))
 	{
-		// TODO: logout
+		LOGOUT(_T("COED3DVertDecl_Impl::Create Failed"));
 		return false;
 	}
 

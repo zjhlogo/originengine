@@ -44,10 +44,6 @@ void COED3DRenderer_Impl::DrawTriList(const void* pVerts, uint nVerts, const ush
 {
 	assert(m_pVertDecl);
 	HRESULT hRet = g_pd3dDevice->DrawIndexedPrimitiveUP(D3DPT_TRIANGLELIST, 0, nVerts, nIndis/3, pIndis, D3DFMT_INDEX16, pVerts, m_pVertDecl->GetStride());
-	if (FAILED(hRet))
-	{
-		// TODO: 
-	}
 }
 
 void COED3DRenderer_Impl::DrawTriStrip(const void* pVerts, uint nVerts, const ushort* pIndis, uint nIndis)

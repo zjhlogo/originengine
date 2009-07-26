@@ -31,7 +31,12 @@ public:
 	virtual bool SetAttribute(const tstring& strAttrName, float fValue);
 	virtual bool SetAttribute(const tstring& strAttrName, const tstring& strAttrValue);
 
+	virtual bool GetText(int& nValue);
+	virtual bool GetText(float& fValue);
 	virtual bool GetText(tstring& strText);
+
+	virtual bool SetText(int nValue);
+	virtual bool SetText(float fValue);
 	virtual bool SetText(const tstring& strText);
 
 	virtual IOEXmlNode* FirstChild();

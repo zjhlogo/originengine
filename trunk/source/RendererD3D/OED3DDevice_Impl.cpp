@@ -10,6 +10,7 @@
 #include <OEMath/OEMath.h>
 #include <OEInterfaces.h>
 
+// TODO: wrapped it
 IDirect3D9* g_pD3D = NULL;
 IDirect3DDevice9* g_pd3dDevice = NULL;
 HWND g_hWnd = NULL;
@@ -28,10 +29,11 @@ COED3DDevice_Impl::~COED3DDevice_Impl()
 
 void COED3DDevice_Impl::Init()
 {
-	// TODO: read from config file
-	m_nWindowWidth = 800;
-	m_nWindowHeight = 600;
-	m_pstrWindowName = _T("Origin Engine");
+	// read from config file
+	g_pOEConfigFileMgr->GetValue(m_nWindowWidth, _T("WindowWidth"), 800);
+	g_pOEConfigFileMgr->GetValue(m_nWindowHeight, _T("WindowHeight"), 600);
+	g_pOEConfigFileMgr->GetValue(m_strWindowName, _T("WindowTitle"), _T("Origin Engine"));
+	g_pOEConfigFileMgr->GetValue(m_fMaxFPS, _T("MaxFPS"), 120.0f);
 
 	m_fPrevTime = 0.0f;
 	m_fCurrTime = 0.0f;
@@ -73,20 +75,18 @@ void COED3DDevice_Impl::DestroyDevice()
 
 void COED3DDevice_Impl::StartPerform()
 {
-	static const float MAX_FPS = 120.0f;
-	static int s_Count = 0;
-
 	// show window
 	ShowWindow(g_hWnd, SW_NORMAL);
 	UpdateWindow(g_hWnd);
 
-	// TODO: logout start perform
+	// logout start perform
+	LOGOUT(_T("StartPerforming ..."));
 
 	// Create Render signal event
 	HANDLE hTickEvent = CreateEvent(NULL, FALSE, FALSE, NULL);
 	ResetEvent(hTickEvent);
 	// Create time event
-	MMRESULT hEventTimer = timeSetEvent((INT)(1000.0f/MAX_FPS), 1, (LPTIMECALLBACK)hTickEvent, 0, TIME_PERIODIC|TIME_CALLBACK_EVENT_SET);
+	MMRESULT hEventTimer = timeSetEvent((INT)(1000.0f/m_fMaxFPS), 1, (LPTIMECALLBACK)hTickEvent, 0, TIME_PERIODIC|TIME_CALLBACK_EVENT_SET);
 
 	m_fPrevTime = (float)timeGetTime()/1000.0f;
 	m_fCurrTime = m_fPrevTime;
@@ -148,7 +148,7 @@ IOEVertDecl* COED3DDevice_Impl::CreateVertDecl(const IOEVertDecl::ELEMENT* pElem
 	if (!pDecl || !pDecl->IsOK())
 	{
 		SAFE_DELETE(pDecl);
-		// TODO: logout failed
+		LOGOUT(_T("IOEDevice::CreateVertDecl Failed"));
 		return NULL;
 	}
 
@@ -200,7 +200,7 @@ bool COED3DDevice_Impl::InternalCreateWindow()
 
 	// create the window
 	g_hWnd = CreateWindow(_T("OriginEngine"),
-		m_pstrWindowName,
+		m_strWindowName.c_str(),
 		dwStyle,
 		(nScreenWidth-nAdjustWidth)/2,
 		(nScreenHeight-nAdjustHeight)/2,
@@ -212,11 +212,11 @@ bool COED3DDevice_Impl::InternalCreateWindow()
 		NULL);
 	if (!g_hWnd)
 	{
-		// TODO: logout
+		LOGOUT(_T("COED3DDevice_Impl::InternalCreateWindow Failed"));
 		return false;
 	}
 
-	// TODO: logout ok
+	LOGOUT(_T("COED3DDevice_Impl::InternalCreateWindow OK"));
 	return true;
 }
 
@@ -226,9 +226,8 @@ void COED3DDevice_Impl::InternalDestroyWindow()
 	{
 		DestroyWindow(g_hWnd);
 		g_hWnd = NULL;
+		LOGOUT(_T("COED3DDevice_Impl::InternalDestroyWindow OK"));
 	}
-
-	// TODO: logout
 }
 
 bool COED3DDevice_Impl::InternalCreateD3D()
@@ -238,7 +237,7 @@ bool COED3DDevice_Impl::InternalCreateD3D()
 	g_pD3D = Direct3DCreate9(D3D_SDK_VERSION);
 	if (g_pD3D == NULL)
 	{
-		// TODO: logout failed
+		LOGOUT(_T("COED3DDevice_Impl::InternalCreateD3D Failed"));
 		return false;
 	}
 
@@ -273,24 +272,33 @@ bool COED3DDevice_Impl::InternalCreateD3D()
 		&d3dpp,
 		&g_pd3dDevice)))
 	{
-		// TODO: logout failed
+		LOGOUT(_T("COED3DDevice_Impl::InternalCreateD3D Failed"));
 		InternalDestroyD3D();
 		return false;
 	}
 
-	// TODO: logout ok
+	LOGOUT(_T("COED3DDevice_Impl::InternalCreateD3D OK"));
 
 	return true;
 }
 
 void COED3DDevice_Impl::InternalDestroyD3D()
 {
-	SAFE_RELEASE(g_pd3dDevice);
-	SAFE_RELEASE(g_pD3D);
+	if (g_pd3dDevice)
+	{
+		g_pd3dDevice->Release();
+		g_pd3dDevice = NULL;
+	}
 
-	// TODO: logout
+	if (g_pD3D)
+	{
+		g_pD3D->Release();
+		g_pD3D = NULL;
 
-	// TODO: destroy m_vD3DVertDecl vector
+		LOGOUT(_T("COED3DDevice_Impl::InternalDestroyD3D OK"));
+	}
+
+	// TODO: check m_vD3DVertDecl whether is empty, and logout
 }
 
 void COED3DDevice_Impl::PerformOnce(float fDetailTime)

@@ -7,6 +7,8 @@
  */
 #include "OED3DTextureMgr_Impl.h"
 #include "OED3DTexture_Impl.h"
+
+#include <OEInterfaces.h>
 #include <algorithm>
 
 COED3DTextureMgr_Impl::COED3DTextureMgr_Impl()
@@ -50,7 +52,7 @@ IOETexture* COED3DTextureMgr_Impl::CreateTextureFromFile(const tstring& strFileN
 	COED3DTexture_Impl* pTexture = new COED3DTexture_Impl(strLowName.c_str());
 	if (!pTexture || !pTexture->IsOK())
 	{
-		// TODO: logout
+		LOGOUT(_T("IOETextureMgr::CreateTextureFromFile Failed \"%s\""), strFileName.c_str());
 		SAFE_RELEASE(pTexture);
 		return NULL;
 	}
@@ -65,7 +67,7 @@ IOETexture* COED3DTextureMgr_Impl::CreateTexture(int nWidth, int nHeight, IOETex
 	COED3DTexture_Impl* pTexture = new COED3DTexture_Impl(nWidth, nHeight, eFormat);
 	if (!pTexture || !pTexture->IsOK())
 	{
-		// TODO: logout
+		LOGOUT(_T("IOETextureMgr::CreateTextureFromFile Failed width=%d, height=%d, format=%d"), nWidth, nHeight, eFormat);
 		SAFE_RELEASE(pTexture);
 		return NULL;
 	}

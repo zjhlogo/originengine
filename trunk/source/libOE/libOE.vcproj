@@ -196,6 +196,9 @@ copy &quot;$(TargetPath)&quot; &quot;..\..\lib\&quot;
 				RelativePath=".\IOEApp.cpp">
 			</File>
 			<File
+				RelativePath=".\OEBasicType.cpp">
+			</File>
+			<File
 				RelativePath=".\OEHolder.cpp">
 			</File>
 			<File
@@ -208,6 +211,9 @@ copy &quot;$(TargetPath)&quot; &quot;..\..\lib\&quot;
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}">
 			<File
 				RelativePath="..\..\include\IOEApp.h">
+			</File>
+			<File
+				RelativePath="..\..\include\OEBasicType.h">
 			</File>
 			<File
 				RelativePath="..\..\include\OEHolder.h">

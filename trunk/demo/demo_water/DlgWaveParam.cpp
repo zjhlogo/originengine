@@ -465,40 +465,39 @@ void CDlgWaveParam::UpdateValue(HWND hDlg, int nSliderID, float fValue)
 		break;
 	}
 
-	tchar strValue[128];
-	_stprintf(strValue, _T("%f"), fValue);
-	SetDlgItemText(hDlg, nStaticID, (LPTSTR)strValue);
+	tstring strBuffer;
+	COEOS::float2str(strBuffer, fValue);
+	SetDlgItemText(hDlg, nStaticID, (LPTSTR)strBuffer.c_str());
 }
 
 void CDlgWaveParam::CopyToClipboard()
 {
-	static tchar s_strBuf[1024];
-
 	tstring strData;
+	tstring strBuffer;
 
-	_stprintf(s_strBuf, _T("\tm_vVecFreq = CVector4(%ff, %ff, %ff, %ff);\r\n"), m_vVecFreq.x, m_vVecFreq.y, m_vVecFreq.z, m_vVecFreq.w);
-	strData += s_strBuf;
+	COEOS::strformat(strBuffer, _T("\tm_vVecFreq = CVector4(%ff, %ff, %ff, %ff);\r\n"), m_vVecFreq.x, m_vVecFreq.y, m_vVecFreq.z, m_vVecFreq.w);
+	strData += strBuffer;
 
-	_stprintf(s_strBuf, _T("\tm_vVecSpeed = CVector4(%ff, %ff, %ff, %ff);\r\n"), m_vVecSpeed.x, m_vVecSpeed.y, m_vVecSpeed.z, m_vVecSpeed.w);
-	strData += s_strBuf;
+	COEOS::strformat(strBuffer, _T("\tm_vVecSpeed = CVector4(%ff, %ff, %ff, %ff);\r\n"), m_vVecSpeed.x, m_vVecSpeed.y, m_vVecSpeed.z, m_vVecSpeed.w);
+	strData += strBuffer;
 
-	_stprintf(s_strBuf, _T("\tm_vVecDir = CVector4(%ff, %ff, %ff, %ff);\r\n"), m_vVecDir.x, m_vVecDir.y, m_vVecDir.z, m_vVecDir.w);
-	strData += s_strBuf;
+	COEOS::strformat(strBuffer, _T("\tm_vVecDir = CVector4(%ff, %ff, %ff, %ff);\r\n"), m_vVecDir.x, m_vVecDir.y, m_vVecDir.z, m_vVecDir.w);
+	strData += strBuffer;
 
-	_stprintf(s_strBuf, _T("\tm_vVecHeight = CVector4(%ff, %ff, %ff, %ff);\r\n"), m_vVecHeight.x, m_vVecHeight.y, m_vVecHeight.z, m_vVecHeight.w);
-	strData += s_strBuf;
+	COEOS::strformat(strBuffer, _T("\tm_vVecHeight = CVector4(%ff, %ff, %ff, %ff);\r\n"), m_vVecHeight.x, m_vVecHeight.y, m_vVecHeight.z, m_vVecHeight.w);
+	strData += strBuffer;
 
-	_stprintf(s_strBuf, _T("\tm_fTimeScale = %ff;\r\n"), m_fTimeScale);
-	strData += s_strBuf;
+	COEOS::strformat(strBuffer, _T("\tm_fTimeScale = %ff;\r\n"), m_fTimeScale);
+	strData += strBuffer;
 
-	_stprintf(s_strBuf, _T("\tm_fFreqScale = %ff;\r\n"), m_fFreqScale);
-	strData += s_strBuf;
+	COEOS::strformat(strBuffer, _T("\tm_fFreqScale = %ff;\r\n"), m_fFreqScale);
+	strData += strBuffer;
 
-	_stprintf(s_strBuf, _T("\tm_fSpeedScale = %ff;\r\n"), m_fSpeedScale);
-	strData += s_strBuf;
+	COEOS::strformat(strBuffer, _T("\tm_fSpeedScale = %ff;\r\n"), m_fSpeedScale);
+	strData += strBuffer;
 
-	_stprintf(s_strBuf, _T("\tm_fHeightScale = %ff;\r\n"), m_fHeightScale);
-	strData += s_strBuf;
+	COEOS::strformat(strBuffer, _T("\tm_fHeightScale = %ff;\r\n"), m_fHeightScale);
+	strData += strBuffer;
 
 	if (!OpenClipboard(m_hWndDlg)) return;
 	EmptyClipboard();

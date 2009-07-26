@@ -87,3 +87,46 @@ bool COEOS::char2tchar(tstring& strOut, const char* pstrIn)
 	return true;
 #endif // _UNICODE
 }
+
+bool COEOS::str2int(int& nValue, const tchar* pstrIn)
+{
+	nValue = _tstoi(pstrIn);
+	return true;
+}
+
+bool COEOS::str2float(float& fValue, const tchar* pstrIn)
+{
+	fValue = (float)_tstof(pstrIn);
+	return true;
+}
+
+bool COEOS::int2str(tstring& strOut, int nValue)
+{
+	static tchar s_strBuffer[1024];
+	_sntprintf(s_strBuffer, 1024, _T("%d"), nValue);
+	strOut = s_strBuffer;
+	return true;
+}
+
+bool COEOS::float2str(tstring& strOut, float fValue)
+{
+	static tchar s_strBuffer[1024];
+	_sntprintf(s_strBuffer, 1024, _T("%f"), fValue);
+	strOut = s_strBuffer;
+	return true;
+}
+
+bool COEOS::strformat(tstring& strOut, const tchar* strFormat, ...)
+{
+	static const int MAX_BUFF_COUNT = 1024*10;
+	static tchar s_strBuff[MAX_BUFF_COUNT];
+
+	va_list marker;
+	va_start(marker, strFormat);
+
+	int nLength = _vsntprintf(s_strBuff, MAX_BUFF_COUNT, strFormat, marker);
+	strOut = s_strBuff;
+	va_end(marker);
+
+	return true;
+}

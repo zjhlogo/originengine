@@ -7,6 +7,7 @@
  */
 #include "OEXmlMgr_Impl.h"
 #include "OEXmlNode_Impl.h"
+#include <OEInterfaces.h>
 
 COEXmlMgr_Impl::COEXmlMgr_Impl()
 {
@@ -36,7 +37,7 @@ IOEXmlNode* COEXmlMgr_Impl::OpenXmlFile(const tstring& strFileName)
 	if (!pRootNode || !pRootNode->IsOK())
 	{
 		SAFE_RELEASE(pRootNode);
-		// TODO: logout
+		LOGOUT(_T("IOEXmlMgr::OpenXmlFile Failed \"%s\""), strFileName.c_str());
 		return NULL;
 	}
 

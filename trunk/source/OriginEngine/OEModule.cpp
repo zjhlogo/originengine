@@ -8,30 +8,46 @@
 #include "OEModule.h"
 #include "OECore_Impl.h"
 #include "OEFileMgr_Impl.h"
+#include "OELogFileMgr_Impl.h"
 #include "OEXmlMgr_Impl.h"
+#include "OEConfigFileMgr_Impl.h"
 #include <OEOS.h>
 
 static COEOS::OEMODULE g_hModuleRenderer = NULL;
 
+COEFileMgr_Impl* g_pOEFileMgr_Impl = NULL;
+COELogFileMgr_Impl* g_pOELogFileMgr_Impl = NULL;
+COEXmlMgr_Impl* g_pOEXmlMgr_Impl = NULL;
+COEConfigFileMgr_Impl* g_pOEConfigFileMgr_Impl = NULL;
+COECore_Impl* g_pOECore_Impl = NULL;
+
 bool CreateSingleton()
 {
-	COEFileMgr_Impl* pOEFileMgr_Impl = new COEFileMgr_Impl();
-	if (!pOEFileMgr_Impl) return false;
+	g_pOEFileMgr_Impl = new COEFileMgr_Impl();
+	if (!g_pOEFileMgr_Impl) return false;
 
-	COEXmlMgr_Impl* pOEXmlMgr_Impl = new COEXmlMgr_Impl();
-	if (!pOEXmlMgr_Impl) return false;
+	g_pOELogFileMgr_Impl = new COELogFileMgr_Impl();
+	if (!g_pOELogFileMgr_Impl) return false;
 
-	COECore_Impl* pOECore_Impl = new COECore_Impl();
-	if (!pOECore_Impl) return false;
+	g_pOEXmlMgr_Impl = new COEXmlMgr_Impl();
+	if (!g_pOEXmlMgr_Impl) return false;
+
+	g_pOEConfigFileMgr_Impl = new COEConfigFileMgr_Impl();
+	if (!g_pOEConfigFileMgr_Impl) return false;
+
+	g_pOECore_Impl = new COECore_Impl();
+	if (!g_pOECore_Impl) return false;
 
 	return true;
 }
 
 void DestroySingleton()
 {
-	SAFE_DELETE(g_pOECore);
-	SAFE_DELETE(g_pOEXmlMgr);
-	SAFE_DELETE(g_pOEFileMgr);
+	SAFE_DELETE(g_pOECore_Impl);
+	SAFE_DELETE(g_pOEConfigFileMgr_Impl)
+	SAFE_DELETE(g_pOEXmlMgr_Impl);
+	SAFE_DELETE(g_pOELogFileMgr_Impl);
+	SAFE_DELETE(g_pOEFileMgr_Impl);
 }
 
 bool OEModuleInit(COEHolder& Holder)

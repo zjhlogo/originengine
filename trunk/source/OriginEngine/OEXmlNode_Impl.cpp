@@ -126,6 +126,34 @@ bool COEXmlNode_Impl::SetAttribute(const tstring& strAttrName, const tstring& st
 	return true;
 }
 
+bool COEXmlNode_Impl::GetText(int& nValue)
+{
+	TiXmlElement* pTiElement = m_pTiNode->ToElement();
+	if (!pTiElement) return false;
+
+	const char* pszText = pTiElement->GetText();
+	if (!pszText) return false;
+
+	tstring strText;
+	if (!COEOS::char2tchar(strText, pszText)) return false;
+
+	return COEOS::str2int(nValue, strText.c_str());
+}
+
+bool COEXmlNode_Impl::GetText(float& fValue)
+{
+	TiXmlElement* pTiElement = m_pTiNode->ToElement();
+	if (!pTiElement) return false;
+
+	const char* pszText = pTiElement->GetText();
+	if (!pszText) return false;
+
+	tstring strText;
+	if (!COEOS::char2tchar(strText, pszText)) return false;
+
+	return COEOS::str2float(fValue, strText.c_str());
+}
+
 bool COEXmlNode_Impl::GetText(tstring& strText)
 {
 	TiXmlElement* pTiElement = m_pTiNode->ToElement();
@@ -135,6 +163,54 @@ bool COEXmlNode_Impl::GetText(tstring& strText)
 	if (!pszText) return false;
 
 	return COEOS::char2tchar(strText, pszText);
+}
+
+bool COEXmlNode_Impl::SetText(int nValue)
+{
+	tstring strValue;
+	if (!COEOS::int2str(strValue, nValue)) return false;
+
+	std::string strANSIText;
+	if (!COEOS::tchar2char(strANSIText, strValue.c_str())) return false;
+
+	TiXmlElement* pTiElement = m_pTiNode->ToElement();
+	if (!pTiElement) return false;
+
+	TiXmlNode* pNode = pTiElement->FirstChild();
+	if (!pNode)
+	{
+		TiXmlText* pNewText = new TiXmlText(strANSIText.c_str());
+		pTiElement->LinkEndChild(pNewText);
+		CreateChildMap();
+		return true;
+	}
+
+	pNode->SetValue(strANSIText.c_str());
+	return true;
+}
+
+bool COEXmlNode_Impl::SetText(float fValue)
+{
+	tstring strValue;
+	if (!COEOS::float2str(strValue, fValue)) return false;
+
+	std::string strANSIText;
+	if (!COEOS::tchar2char(strANSIText, strValue.c_str())) return false;
+
+	TiXmlElement* pTiElement = m_pTiNode->ToElement();
+	if (!pTiElement) return false;
+
+	TiXmlNode* pNode = pTiElement->FirstChild();
+	if (!pNode)
+	{
+		TiXmlText* pNewText = new TiXmlText(strANSIText.c_str());
+		pTiElement->LinkEndChild(pNewText);
+		CreateChildMap();
+		return true;
+	}
+
+	pNode->SetValue(strANSIText.c_str());
+	return true;
 }
 
 bool COEXmlNode_Impl::SetText(const tstring& strText)
