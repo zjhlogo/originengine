@@ -244,6 +244,41 @@ IOERenderer::FILL_MODE COED3DUtil::ToOEFillMode(D3DFILLMODE eType)
 	return DECLARE_MAP[eType];
 }
 
+D3DTEXTUREFILTERTYPE COED3DUtil::ToD3DSampleFilter(IOERenderer::SAMPLE_FILTER eType)
+{
+	static const D3DTEXTUREFILTERTYPE DECLARE_MAP[IOERenderer::SF_MAX] =
+	{
+		D3DTEXF_NONE,
+		D3DTEXF_POINT,
+		D3DTEXF_LINEAR,
+		D3DTEXF_ANISOTROPIC,
+		D3DTEXF_PYRAMIDALQUAD,
+		D3DTEXF_GAUSSIANQUAD,
+	};
+
+	assert(eType >= 0 && eType < IOERenderer::SF_MAX);
+	return DECLARE_MAP[eType];
+}
+
+IOERenderer::SAMPLE_FILTER COED3DUtil::ToOESampleFilter(D3DTEXTUREFILTERTYPE eType)
+{
+	static const int MAP_SIZE = 8;
+	static const IOERenderer::SAMPLE_FILTER DECLARE_MAP[MAP_SIZE] =
+	{
+		IOERenderer::SF_UNKNOWN,
+		IOERenderer::SF_POINT,
+		IOERenderer::SF_LINEAR,
+		IOERenderer::SF_ANISOTROPIC,
+		IOERenderer::SF_UNKNOWN,
+		IOERenderer::SF_UNKNOWN,
+		IOERenderer::SF_PYRAMIDALQUAD,
+		IOERenderer::SF_GAUSSIANQUAD,
+	};
+
+	assert(eType >= 0 && eType < MAP_SIZE);
+	return DECLARE_MAP[eType];
+}
+
 D3DFORMAT COED3DUtil::ToD3DTexFmt(IOETexture::TEXTURE_FORMAT eFormat)
 {
 	switch (eFormat)
