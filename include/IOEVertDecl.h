@@ -33,6 +33,7 @@ public:
 	{
 		U_UNKNOWN = 0,
 		U_POSITION,
+		U_POSITIONT,
 		U_NORMAL,
 		U_TEXCOORD,
 		U_COLOR,

@@ -27,6 +27,7 @@ void COED3DRenderer_Impl::Init()
 {
 	m_pVertDecl = NULL;
 	m_pTexture = NULL;
+	m_pShader = NULL;
 }
 
 void COED3DRenderer_Impl::Destroy()
@@ -37,25 +38,31 @@ void COED3DRenderer_Impl::Destroy()
 void COED3DRenderer_Impl::SetVertDecl(IOEVertDecl* pVertDecl)
 {
 	m_pVertDecl = (COED3DVertDecl_Impl*)pVertDecl;
-	g_pd3dDevice->SetVertexDeclaration(m_pVertDecl->GetD3DVertDecl());
 }
 
-void COED3DRenderer_Impl::DrawTriList(const void* pVerts, uint nVerts, const ushort* pIndis, uint nIndis)
+IOEVertDecl* COED3DRenderer_Impl::GetVertDecl() const
 {
-	assert(m_pVertDecl);
-	HRESULT hRet = g_pd3dDevice->DrawIndexedPrimitiveUP(D3DPT_TRIANGLELIST, 0, nVerts, nIndis/3, pIndis, D3DFMT_INDEX16, pVerts, m_pVertDecl->GetStride());
+	return m_pVertDecl;
 }
 
-void COED3DRenderer_Impl::DrawTriStrip(const void* pVerts, uint nVerts, const ushort* pIndis, uint nIndis)
+void COED3DRenderer_Impl::SetTexture(IOETexture* pTexture)
 {
-	assert(m_pVertDecl);
-	g_pd3dDevice->DrawIndexedPrimitiveUP(D3DPT_TRIANGLESTRIP, 0, nVerts, nIndis-2, pIndis, D3DFMT_INDEX16, pVerts, m_pVertDecl->GetStride());
+	m_pTexture = (COED3DTexture_Impl*)pTexture;
 }
 
-void COED3DRenderer_Impl::DrawTriFan(const void* pVerts, uint nVerts, const ushort* pIndis, uint nIndis)
+IOETexture* COED3DRenderer_Impl::GetTexture() const
 {
-	assert(m_pVertDecl);
-	g_pd3dDevice->DrawIndexedPrimitiveUP(D3DPT_TRIANGLEFAN, 0, nVerts, nIndis-2, pIndis, D3DFMT_INDEX16, pVerts, m_pVertDecl->GetStride());
+	return m_pTexture;
+}
+
+void COED3DRenderer_Impl::SetShader(IOEShader* pShader)
+{
+	m_pShader = (COED3DShader_Impl*)pShader;
+}
+
+IOEShader* COED3DRenderer_Impl::GetShader() const
+{
+	return m_pShader;
 }
 
 bool COED3DRenderer_Impl::SetTransform(TRANSFORM_TYPE eType, const CMatrix4x4& mat)
@@ -110,18 +117,108 @@ bool COED3DRenderer_Impl::GetTransform(CMatrix4x4& matOut, TRANSFORM_TYPE eType)
 	return bOK;
 }
 
-void COED3DRenderer_Impl::SetTexture(IOETexture* pTexture)
+void COED3DRenderer_Impl::DrawTriList(const void* pVerts, uint nVerts, const ushort* pIndis, uint nIndis)
 {
-	IDirect3DTexture9* pD3DTexture = NULL;
-	m_pTexture = (COED3DTexture_Impl*)pTexture;
-	if (m_pTexture) pD3DTexture = m_pTexture->GetTexture();
+	if (m_pShader)
+	{
+		ID3DXEffect* pEffect = m_pShader->GetEffect();
+		COED3DVertDecl_Impl* pVertDecl = m_pShader->GetVertDecl();
 
-	g_pd3dDevice->SetTexture(0, pD3DTexture);
+		uint nPass = 0;
+		pEffect->Begin(&nPass, 0);
+		for (uint i = 0; i < nPass; ++i)
+		{
+			pEffect->BeginPass(i);
+			pEffect->CommitChanges();
+
+			g_pd3dDevice->SetVertexDeclaration(pVertDecl->GetD3DVertDecl());
+			HRESULT hRet = g_pd3dDevice->DrawIndexedPrimitiveUP(D3DPT_TRIANGLELIST, 0, nVerts, nIndis/3, pIndis, D3DFMT_INDEX16, pVerts, pVertDecl->GetStride());
+			pEffect->EndPass();
+		}
+		pEffect->End();
+	}
+	else
+	{
+		assert(m_pVertDecl);
+		if (!m_pVertDecl) return;
+
+		g_pd3dDevice->SetVertexDeclaration(m_pVertDecl->GetD3DVertDecl());
+		IDirect3DTexture9* pD3DTexture = NULL;
+		if (m_pTexture) pD3DTexture = m_pTexture->GetTexture();
+		g_pd3dDevice->SetTexture(0, pD3DTexture);
+		HRESULT hRet = g_pd3dDevice->DrawIndexedPrimitiveUP(D3DPT_TRIANGLELIST, 0, nVerts, nIndis/3, pIndis, D3DFMT_INDEX16, pVerts, m_pVertDecl->GetStride());
+	}
 }
 
-IOETexture* COED3DRenderer_Impl::GetTexture() const
+void COED3DRenderer_Impl::DrawTriStrip(const void* pVerts, uint nVerts, const ushort* pIndis, uint nIndis)
 {
-	return m_pTexture;
+	if (m_pShader)
+	{
+		ID3DXEffect* pEffect = m_pShader->GetEffect();
+		COED3DVertDecl_Impl* pVertDecl = m_pShader->GetVertDecl();
+
+		uint nPass = 0;
+		pEffect->Begin(&nPass, 0);
+		for (uint i = 0; i < nPass; ++i)
+		{
+			pEffect->BeginPass(i);
+			pEffect->CommitChanges();
+
+			g_pd3dDevice->SetVertexDeclaration(pVertDecl->GetD3DVertDecl());
+			HRESULT hRet = g_pd3dDevice->DrawIndexedPrimitiveUP(D3DPT_TRIANGLESTRIP, 0, nVerts, nIndis-2, pIndis, D3DFMT_INDEX16, pVerts, pVertDecl->GetStride());
+			pEffect->EndPass();
+		}
+		pEffect->End();
+	}
+	else
+	{
+		assert(m_pVertDecl);
+		if (!m_pVertDecl) return;
+
+		g_pd3dDevice->SetVertexDeclaration(m_pVertDecl->GetD3DVertDecl());
+		IDirect3DTexture9* pD3DTexture = NULL;
+		if (m_pTexture) pD3DTexture = m_pTexture->GetTexture();
+		g_pd3dDevice->SetTexture(0, pD3DTexture);
+		HRESULT hRet = g_pd3dDevice->DrawIndexedPrimitiveUP(D3DPT_TRIANGLESTRIP, 0, nVerts, nIndis-2, pIndis, D3DFMT_INDEX16, pVerts, m_pVertDecl->GetStride());
+	}
+}
+
+void COED3DRenderer_Impl::DrawTriFan(const void* pVerts, uint nVerts, const ushort* pIndis, uint nIndis)
+{
+	if (m_pShader)
+	{
+		ID3DXEffect* pEffect = m_pShader->GetEffect();
+		COED3DVertDecl_Impl* pVertDecl = m_pShader->GetVertDecl();
+
+		uint nPass = 0;
+		pEffect->Begin(&nPass, 0);
+		for (uint i = 0; i < nPass; ++i)
+		{
+			pEffect->BeginPass(i);
+			pEffect->CommitChanges();
+
+			g_pd3dDevice->SetVertexDeclaration(pVertDecl->GetD3DVertDecl());
+			HRESULT hRet = g_pd3dDevice->DrawIndexedPrimitiveUP(D3DPT_TRIANGLEFAN, 0, nVerts, nIndis-2, pIndis, D3DFMT_INDEX16, pVerts, pVertDecl->GetStride());
+			pEffect->EndPass();
+		}
+		pEffect->End();
+	}
+	else
+	{
+		assert(m_pVertDecl);
+		if (!m_pVertDecl) return;
+
+		g_pd3dDevice->SetVertexDeclaration(m_pVertDecl->GetD3DVertDecl());
+		IDirect3DTexture9* pD3DTexture = NULL;
+		if (m_pTexture) pD3DTexture = m_pTexture->GetTexture();
+		g_pd3dDevice->SetTexture(0, pD3DTexture);
+		HRESULT hRet = g_pd3dDevice->DrawIndexedPrimitiveUP(D3DPT_TRIANGLEFAN, 0, nVerts, nIndis-2, pIndis, D3DFMT_INDEX16, pVerts, m_pVertDecl->GetStride());
+	}
+}
+
+void COED3DRenderer_Impl::FlushAll()
+{
+	// TODO: 
 }
 
 void COED3DRenderer_Impl::EnableLight(bool bEnable)

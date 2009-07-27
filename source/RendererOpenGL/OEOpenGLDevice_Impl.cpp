@@ -37,6 +37,11 @@ void COEOpenGLDevice_Impl::EndPerform()
 {
 	// TODO: 
 }
+float COEOpenGLDevice_Impl::GetFPS()
+{
+	// TODO:
+	return 0.0f;
+}
 
 IOEVertDecl* COEOpenGLDevice_Impl::CreateVertDecl(const IOEVertDecl::ELEMENT* pElement)
 {

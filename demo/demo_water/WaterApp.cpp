@@ -136,7 +136,9 @@ void CWaterApp::Render(float fDetailTime)
 	m_pShader->SetVector(_T("vWaveDirY"), m_pDlgWaveParam->GetVecDirY());
 	m_pShader->SetVector(_T("vWaveHeight"), m_pDlgWaveParam->GetVecHeight()*m_pDlgWaveParam->GetHeightScale());
 
-	m_pShader->DrawTriList(m_pVerts, m_nVerts, m_pIndis, m_nIndis);
+	g_pOERenderer->SetShader(m_pShader);
+	g_pOERenderer->DrawTriList(m_pVerts, m_nVerts, m_pIndis, m_nIndis);
+	g_pOERenderer->SetShader(NULL);
 }
 
 void CWaterApp::OnLButtonDown(int x, int y)

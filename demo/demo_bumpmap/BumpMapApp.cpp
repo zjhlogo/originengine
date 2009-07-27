@@ -116,7 +116,9 @@ void CBumpMapApp::Render(float fDetailTime)
 	m_pShader->SetTexture(_T("g_texNormal"), m_pTexNormal);
 	m_pShader->SetTexture(_T("g_texHeight"), m_pTexHeight);
 
-	m_pShader->DrawTriList(s_Verts, 4, s_Indis, 6);
+	g_pOERenderer->SetShader(m_pShader);
+	g_pOERenderer->DrawTriList(s_Verts, 4, s_Indis, 6);
+	g_pOERenderer->SetShader(NULL);
 
 	m_pSimpleShape->DrawCube(g_pOERenderer, m_vLightPos);
 }

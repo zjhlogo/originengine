@@ -30,6 +30,8 @@ public:
 	virtual void StartPerform();
 	virtual void EndPerform();
 
+	virtual float GetFPS();
+
 	virtual IOEVertDecl* CreateVertDecl(const IOEVertDecl::ELEMENT* pElement);
 
 	virtual bool GetDeviceParam(void* pData, const tstring& strParamName);
@@ -55,6 +57,10 @@ private:
 	tstring m_strWindowName;
 
 	float m_fMaxFPS;
+	float m_fCurrFPS;
+	float m_fLastFPSTime;
+	int m_nFPSCount;
+
 	float m_fPrevTime;
 	float m_fCurrTime;
 

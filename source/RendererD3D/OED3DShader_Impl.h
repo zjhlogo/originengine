@@ -36,9 +36,8 @@ public:
 	virtual bool SetTexture(const tstring& strParamName, IOETexture* pTexture);
 	virtual bool SetTechnique(const tstring& strParamName);
 
-	virtual void DrawTriList(const void* pVerts, uint nVerts, const ushort* pIndis, uint nIndis);
-	virtual void DrawTriStrip(const void* pVerts, uint nVerts, const ushort* pIndis, uint nIndis);
-	virtual void DrawTriFan(const void* pVerts, uint nVerts, const ushort* pIndis, uint nIndis);
+	COED3DVertDecl_Impl* GetVertDecl() const;
+	ID3DXEffect* GetEffect() const;
 
 private:
 	void Init();

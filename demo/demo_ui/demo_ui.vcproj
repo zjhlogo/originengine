@@ -2,8 +2,8 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="7.10"
-	Name="OriginEngine"
-	ProjectGUID="{D075752D-2334-4F70-B398-75BEA302E0F7}"
+	Name="demo_ui"
+	ProjectGUID="{8B0F6911-4E12-4358-B5B4-07673EF08BDF}"
 	Keyword="Win32Proj">
 	<Platforms>
 		<Platform
@@ -14,13 +14,13 @@
 			Name="Debug|Win32"
 			OutputDirectory="..\..\build\$(ProjectName)\$(ConfigurationName)"
 			IntermediateDirectory="..\..\build\$(ProjectName)\$(ConfigurationName)"
-			ConfigurationType="2"
+			ConfigurationType="1"
 			CharacterSet="2">
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="..\..\include"
-				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;ORIGINENGINE_EXPORTS"
+				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS"
 				MinimalRebuild="TRUE"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -32,9 +32,10 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="../../3rdsrc/tinyxml/tinyxmld.lib"
-				OutputFile="$(OutDir)/OriginEngine_D.dll"
+				AdditionalDependencies="libOE_D.lib"
+				OutputFile="$(OutDir)/demo_ui_D.exe"
 				LinkIncremental="2"
+				AdditionalLibraryDirectories="..\..\lib"
 				GenerateDebugInformation="TRUE"
 				SubSystem="2"
 				TargetMachine="1"/>
@@ -66,12 +67,12 @@ copy &quot;$(TargetPath)&quot; &quot;..\..\bin\&quot;
 			Name="Release|Win32"
 			OutputDirectory="..\..\build\$(ProjectName)\$(ConfigurationName)"
 			IntermediateDirectory="..\..\build\$(ProjectName)\$(ConfigurationName)"
-			ConfigurationType="2"
+			ConfigurationType="1"
 			CharacterSet="2">
 			<Tool
 				Name="VCCLCompilerTool"
 				AdditionalIncludeDirectories="..\..\include"
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;ORIGINENGINE_EXPORTS"
+				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
@@ -81,9 +82,10 @@ copy &quot;$(TargetPath)&quot; &quot;..\..\bin\&quot;
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="../../3rdsrc/tinyxml/tinyxml.lib"
-				OutputFile="$(OutDir)/OriginEngine.dll"
+				AdditionalDependencies="libOE.lib"
+				OutputFile="$(OutDir)/demo_ui.exe"
 				LinkIncremental="1"
+				AdditionalLibraryDirectories="..\..\lib"
 				GenerateDebugInformation="TRUE"
 				SubSystem="2"
 				OptimizeReferences="2"
@@ -117,13 +119,13 @@ copy &quot;$(TargetPath)&quot; &quot;..\..\bin\&quot;
 			Name="Unicode Debug|Win32"
 			OutputDirectory="..\..\build\$(ProjectName)\$(ConfigurationName)"
 			IntermediateDirectory="..\..\build\$(ProjectName)\$(ConfigurationName)"
-			ConfigurationType="2"
+			ConfigurationType="1"
 			CharacterSet="1">
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="..\..\include"
-				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;ORIGINENGINE_EXPORTS"
+				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS"
 				MinimalRebuild="TRUE"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -135,9 +137,10 @@ copy &quot;$(TargetPath)&quot; &quot;..\..\bin\&quot;
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="../../3rdsrc/tinyxml/tinyxmld.lib"
-				OutputFile="$(OutDir)/OriginEngine_UD.dll"
+				AdditionalDependencies="libOE_UD.lib"
+				OutputFile="$(OutDir)/demo_ui_UD.exe"
 				LinkIncremental="2"
+				AdditionalLibraryDirectories="..\..\lib"
 				GenerateDebugInformation="TRUE"
 				SubSystem="2"
 				TargetMachine="1"/>
@@ -169,12 +172,12 @@ copy &quot;$(TargetPath)&quot; &quot;..\..\bin\&quot;
 			Name="Unicode Release|Win32"
 			OutputDirectory="..\..\build\$(ProjectName)\$(ConfigurationName)"
 			IntermediateDirectory="..\..\build\$(ProjectName)\$(ConfigurationName)"
-			ConfigurationType="2"
+			ConfigurationType="1"
 			CharacterSet="1">
 			<Tool
 				Name="VCCLCompilerTool"
 				AdditionalIncludeDirectories="..\..\include"
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;ORIGINENGINE_EXPORTS"
+				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
@@ -184,9 +187,10 @@ copy &quot;$(TargetPath)&quot; &quot;..\..\bin\&quot;
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="../../3rdsrc/tinyxml/tinyxml.lib"
-				OutputFile="$(OutDir)/OriginEngineU.dll"
+				AdditionalDependencies="libOEU.lib"
+				OutputFile="$(OutDir)/demo_uiU.exe"
 				LinkIncremental="1"
+				AdditionalLibraryDirectories="..\..\lib"
 				GenerateDebugInformation="TRUE"
 				SubSystem="2"
 				OptimizeReferences="2"
@@ -225,28 +229,10 @@ copy &quot;$(TargetPath)&quot; &quot;..\..\bin\&quot;
 			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx"
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}">
 			<File
-				RelativePath=".\OEConfigFileMgr_Impl.cpp">
+				RelativePath=".\UIApp.cpp">
 			</File>
 			<File
-				RelativePath=".\OECore_Impl.cpp">
-			</File>
-			<File
-				RelativePath=".\OEFile_Impl.cpp">
-			</File>
-			<File
-				RelativePath=".\OEFileMgr_Impl.cpp">
-			</File>
-			<File
-				RelativePath=".\OELogFileMgr_Impl.cpp">
-			</File>
-			<File
-				RelativePath=".\OEModule.cpp">
-			</File>
-			<File
-				RelativePath=".\OEXmlMgr_Impl.cpp">
-			</File>
-			<File
-				RelativePath=".\OEXmlNode_Impl.cpp">
+				RelativePath=".\UIMain.cpp">
 			</File>
 		</Filter>
 		<Filter
@@ -254,95 +240,10 @@ copy &quot;$(TargetPath)&quot; &quot;..\..\bin\&quot;
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}">
 			<File
-				RelativePath=".\OEConfigFileMgr_Impl.h">
+				RelativePath=".\UIApp.h">
 			</File>
 			<File
-				RelativePath=".\OECore_Impl.h">
-			</File>
-			<File
-				RelativePath=".\OEFile_Impl.h">
-			</File>
-			<File
-				RelativePath=".\OEFileMgr_Impl.h">
-			</File>
-			<File
-				RelativePath=".\OELogFileMgr_Impl.h">
-			</File>
-			<File
-				RelativePath=".\OEModule.h">
-			</File>
-			<File
-				RelativePath=".\OEXmlMgr_Impl.h">
-			</File>
-			<File
-				RelativePath=".\OEXmlNode_Impl.h">
-			</File>
-		</Filter>
-		<Filter
-			Name="SDK Header Files"
-			Filter="">
-			<File
-				RelativePath="..\..\include\IOEApp.h">
-			</File>
-			<File
-				RelativePath="..\..\include\IOEConfigFileMgr.h">
-			</File>
-			<File
-				RelativePath="..\..\include\IOECore.h">
-			</File>
-			<File
-				RelativePath="..\..\include\IOEDevice.h">
-			</File>
-			<File
-				RelativePath="..\..\include\IOEFile.h">
-			</File>
-			<File
-				RelativePath="..\..\include\IOEFileMgr.h">
-			</File>
-			<File
-				RelativePath="..\..\include\IOELogFileMgr.h">
-			</File>
-			<File
-				RelativePath="..\..\include\IOEObject.h">
-			</File>
-			<File
-				RelativePath="..\..\include\IOERenderer.h">
-			</File>
-			<File
-				RelativePath="..\..\include\IOERenderer2D.h">
-			</File>
-			<File
-				RelativePath="..\..\include\IOEShader.h">
-			</File>
-			<File
-				RelativePath="..\..\include\IOEShaderMgr.h">
-			</File>
-			<File
-				RelativePath="..\..\include\IOETexture.h">
-			</File>
-			<File
-				RelativePath="..\..\include\IOETextureMgr.h">
-			</File>
-			<File
-				RelativePath="..\..\include\IOEVertDecl.h">
-			</File>
-			<File
-				RelativePath="..\..\include\IOEXmlMgr.h">
-			</File>
-			<File
-				RelativePath="..\..\include\IOEXmlNode.h">
-			</File>
-			<File
-				RelativePath="..\..\include\OEBasicType.h">
-			</File>
-			<File
-				RelativePath="..\..\include\OEConfig.h">
-			</File>
-			<File
-				RelativePath="..\..\include\OEHolder.h">
-			</File>
-			<File
-				RelativePath="..\..\include\OEInterfaces.h">
+				RelativePath=".\UIMain.h">
 			</File>
 		</Filter>
 	</Files>
