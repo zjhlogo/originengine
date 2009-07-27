@@ -19,17 +19,21 @@
 		#ifdef _UNICODE
 			#define MODULE_ORIGINENGINE _T("OriginEngine_UD.dll")
 			#define MODULE_RENDERER _T("RendererD3D_UD.dll")
+			#define MODULE_UI _T("OEUI_UD.dll")
 		#else
 			#define MODULE_ORIGINENGINE _T("OriginEngine_D.dll")
 			#define MODULE_RENDERER _T("RendererD3D_D.dll")
+			#define MODULE_UI _T("OEUI_D.dll")
 		#endif // _UNICODE
 	#else
 		#ifdef _UNICODE
 			#define MODULE_ORIGINENGINE _T("OriginEngineU.dll")
 			#define MODULE_RENDERER _T("RendererD3DU.dll")
+			#define MODULE_UI _T("OEUIU.dll")
 		#else
 			#define MODULE_ORIGINENGINE _T("OriginEngine.dll")
 			#define MODULE_RENDERER _T("RendererD3D.dll")
+			#define MODULE_UI _T("OEUI.dll")
 		#endif // _UNICODE
 	#endif // _DEBUG
 
