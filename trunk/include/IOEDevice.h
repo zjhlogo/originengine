@@ -23,6 +23,8 @@ public:
 	virtual void StartPerform() = 0;
 	virtual void EndPerform() = 0;
 
+	virtual float GetFPS() = 0;
+
 	virtual IOEVertDecl* CreateVertDecl(const IOEVertDecl::ELEMENT* pElement) = 0;
 
 	virtual bool GetDeviceParam(void* pData, const tstring& strParamName) = 0;

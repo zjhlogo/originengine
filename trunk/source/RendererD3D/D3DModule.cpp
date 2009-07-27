@@ -11,29 +11,34 @@
 #include "OED3DTextureMgr_Impl.h"
 #include "OED3DShaderMgr_Impl.h"
 
+COED3DDevice_Impl* g_pOED3DDevice_Impl = NULL;
+COED3DRenderer_Impl* g_pOED3DRenderer_Impl = NULL;
+COED3DTextureMgr_Impl* g_pOED3DTextureMgr_Impl = NULL;
+COED3DShaderMgr_Impl* g_pOED3DShaderMgr_Impl = NULL;
+
 bool CreateSingleton()
 {
-	COED3DDevice_Impl* pOED3DDevice_Impl = new COED3DDevice_Impl();
-	if (!pOED3DDevice_Impl) return false;
+	g_pOED3DDevice_Impl = new COED3DDevice_Impl();
+	if (!g_pOED3DDevice_Impl) return false;
 
-	COED3DRenderer_Impl* pOED3DRenderer_Impl = new COED3DRenderer_Impl();
-	if (!pOED3DDevice_Impl) return false;
+	g_pOED3DRenderer_Impl = new COED3DRenderer_Impl();
+	if (!g_pOED3DRenderer_Impl) return false;
 
-	COED3DTextureMgr_Impl* pOED3DTextureMgr_Impl = new COED3DTextureMgr_Impl();
-	if (!pOED3DTextureMgr_Impl) return false;
+	g_pOED3DTextureMgr_Impl = new COED3DTextureMgr_Impl();
+	if (!g_pOED3DTextureMgr_Impl) return false;
 
-	COED3DShaderMgr_Impl* pOED3DShaderMgr_Impl = new COED3DShaderMgr_Impl();
-	if (!pOED3DShaderMgr_Impl) return false;
+	g_pOED3DShaderMgr_Impl = new COED3DShaderMgr_Impl();
+	if (!g_pOED3DShaderMgr_Impl) return false;
 
 	return true;
 }
 
 void DestroySingleton()
 {
-	SAFE_DELETE(g_pOEShaderMgr);;
-	SAFE_DELETE(g_pOETextureMgr);
-	SAFE_DELETE(g_pOERenderer);
-	SAFE_DELETE(g_pOEDevice);
+	SAFE_DELETE(g_pOED3DShaderMgr_Impl);
+	SAFE_DELETE(g_pOED3DTextureMgr_Impl);
+	SAFE_DELETE(g_pOED3DRenderer_Impl);
+	SAFE_DELETE(g_pOED3DDevice_Impl);
 }
 
 bool OEModuleInit(COEHolder& Holder)

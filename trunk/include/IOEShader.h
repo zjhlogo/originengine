@@ -35,10 +35,6 @@ public:
 	virtual bool SetTexture(const tstring& strParamName, IOETexture* pTexture) = 0;
 	virtual bool SetTechnique(const tstring& strParamName) = 0;
 
-	virtual void DrawTriList(const void* pVerts, uint nVerts, const ushort* pIndis, uint nIndis) = 0;
-	virtual void DrawTriStrip(const void* pVerts, uint nVerts, const ushort* pIndis, uint nIndis) = 0;
-	virtual void DrawTriFan(const void* pVerts, uint nVerts, const ushort* pIndis, uint nIndis) = 0;
-
 };
 
 #endif // __IOESHADER_H__

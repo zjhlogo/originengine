@@ -35,6 +35,10 @@ void COED3DDevice_Impl::Init()
 	g_pOEConfigFileMgr->GetValue(m_strWindowName, _T("WindowTitle"), _T("Origin Engine"));
 	g_pOEConfigFileMgr->GetValue(m_fMaxFPS, _T("MaxFPS"), 120.0f);
 
+	m_fCurrFPS = 0.0f;
+	m_fLastFPSTime = 0.0f;
+	m_nFPSCount = 0;
+
 	m_fPrevTime = 0.0f;
 	m_fCurrTime = 0.0f;
 	m_vD3DVertDecl.clear();
@@ -90,6 +94,8 @@ void COED3DDevice_Impl::StartPerform()
 
 	m_fPrevTime = (float)timeGetTime()/1000.0f;
 	m_fCurrTime = m_fPrevTime;
+	m_fLastFPSTime = m_fPrevTime;
+	m_nFPSCount = 0;
 
 	MSG msg;
 	memset(&msg, 0, sizeof(msg));
@@ -101,6 +107,16 @@ void COED3DDevice_Impl::StartPerform()
 			m_fCurrTime = (float)timeGetTime()/1000.0f;
 			PerformOnce(m_fCurrTime - m_fPrevTime);
 			m_fPrevTime = m_fCurrTime;
+
+			// calculate fps
+			++m_nFPSCount;
+			float fDetailFPS = m_fCurrTime - m_fLastFPSTime;
+			if (fDetailFPS > 1.0f)
+			{
+				m_fCurrFPS = m_nFPSCount/fDetailFPS;
+				m_nFPSCount = 0;
+				m_fLastFPSTime = m_fCurrTime;
+			}
 		}
 		else
 		{
@@ -130,6 +146,11 @@ void COED3DDevice_Impl::StartPerform()
 void COED3DDevice_Impl::EndPerform()
 {
 	PostQuitMessage(0);
+}
+
+float COED3DDevice_Impl::GetFPS()
+{
+	return m_fCurrFPS;
 }
 
 IOEVertDecl* COED3DDevice_Impl::CreateVertDecl(const IOEVertDecl::ELEMENT* pElement)

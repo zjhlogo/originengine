@@ -166,52 +166,14 @@ bool COED3DShader_Impl::SetTechnique(const tstring& strParamName)
 	return true;
 }
 
-void COED3DShader_Impl::DrawTriList(const void* pVerts, uint nVerts, const ushort* pIndis, uint nIndis)
+COED3DVertDecl_Impl* COED3DShader_Impl::GetVertDecl() const
 {
-	uint nPass = 0;
-	m_pEffect->Begin(&nPass, 0);
-	for (uint i = 0; i < nPass; ++i)
-	{
-		m_pEffect->BeginPass(i);
-		m_pEffect->CommitChanges();
-
-		g_pOERenderer->SetVertDecl(m_pDecl);
-		g_pOERenderer->DrawTriList(pVerts, nVerts, pIndis, nIndis);
-		m_pEffect->EndPass();
-	}
-	m_pEffect->End();
+	return m_pDecl;
 }
 
-void COED3DShader_Impl::DrawTriStrip(const void* pVerts, uint nVerts, const ushort* pIndis, uint nIndis)
+ID3DXEffect* COED3DShader_Impl::GetEffect() const
 {
-	uint nPass = 0;
-	m_pEffect->Begin(&nPass, 0);
-	for (uint i = 0; i < nPass; ++i)
-	{
-		m_pEffect->BeginPass(i);
-		m_pEffect->CommitChanges();
-
-		g_pOERenderer->SetVertDecl(m_pDecl);
-		g_pOERenderer->DrawTriStrip(pVerts, nVerts, pIndis, nIndis);
-		m_pEffect->EndPass();
-	}
-	m_pEffect->End();
-}
-
-void COED3DShader_Impl::DrawTriFan(const void* pVerts, uint nVerts, const ushort* pIndis, uint nIndis)
-{
-	uint nPass = 0;
-	m_pEffect->Begin(&nPass, 0);
-	for (uint i = 0; i < nPass; ++i)
-	{
-		m_pEffect->BeginPass(i);
-		m_pEffect->CommitChanges();
-
-		g_pOERenderer->SetVertDecl(m_pDecl);
-		g_pOERenderer->DrawTriFan(pVerts, nVerts, pIndis, nIndis);
-		m_pEffect->EndPass();
-	}
-	m_pEffect->End();
+	return m_pEffect;
 }
 
 bool COED3DShader_Impl::Create(const IOEVertDecl::ELEMENT* pElement, const tstring& strFileName)
