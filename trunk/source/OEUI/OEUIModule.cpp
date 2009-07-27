@@ -7,19 +7,25 @@
  */
 #include "OEUIModule.h"
 #include "OEUIRenderer_Impl.h"
+#include "OEUIFontMgr_Impl.h"
 
 COEUIRenderer_Impl* g_pOEUIRenderer_Impl = NULL;
+COEUIFontMgr_Impl* g_pOEUIFontMgr_Impl = NULL;
 
 bool CreateSingleton()
 {
 	g_pOEUIRenderer_Impl = new COEUIRenderer_Impl();
-	if (!g_pOEUIRenderer_Impl || !g_pOEUIRenderer_Impl->IsOK()) return false;
+	if (!g_pOEUIRenderer_Impl) return false;
+
+	g_pOEUIFontMgr_Impl = new COEUIFontMgr_Impl();
+	if (!g_pOEUIFontMgr_Impl) return false;
 
 	return true;
 }
 
 void DestroySingleton()
 {
+	SAFE_DELETE(g_pOEUIFontMgr_Impl);
 	SAFE_DELETE(g_pOEUIRenderer_Impl);
 }
 

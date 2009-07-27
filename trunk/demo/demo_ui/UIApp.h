@@ -9,6 +9,7 @@
 #define __UIAPP_H__
 
 #include <IOEApp.h>
+#include <OEUI/OEUI.h>
 
 class CUIApp : public IOEApp
 {
@@ -25,6 +26,9 @@ public:
 private:
 	void Init();
 	void Destroy();
+
+private:
+	IOEUIFont* m_pFont;
 
 };
 

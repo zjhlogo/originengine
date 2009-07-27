@@ -12,7 +12,7 @@
 
 typedef struct OEUI_VERTEX_tag
 {
-	float x, y, z;
+	float x, y, z, w;
 	uint nColor;
 	float u, v;
 } OEUI_VERTEX;

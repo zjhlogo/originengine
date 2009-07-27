@@ -24,6 +24,9 @@ typedef unsigned short				ushort;
 //typedef int						int;
 typedef unsigned int				uint;
 
+typedef __int64						int64;
+typedef unsigned __int64			uint64;
+
 //typedef float						float;
 
 typedef TCHAR						tchar;

@@ -25,6 +25,7 @@ IOEShaderMgr* g_pOEShaderMgr = NULL;
 
 // UI模块
 IOEUIRenderer* g_pOEUIRenderer = NULL;
+IOEUIFontMgr* g_pOEUIFontMgr = NULL;
 
 // 用户层
 IOEApp* g_pOEApp = NULL;
@@ -59,6 +60,7 @@ void COEHolder::SetupInterfaces()
 
 	// UI模块
 	AddInterface(_T("IOEUIRenderer"), (void**)&g_pOEUIRenderer);
+	AddInterface(_T("IOEUIFontMgr"), (void**)&g_pOEUIFontMgr);
 
 	// 用户层
 	AddInterface(_T("IOEApp"), (void**)&g_pOEApp);

@@ -22,8 +22,6 @@ public:
 	virtual void DrawTriList(const void* pVerts, uint nVerts, const ushort* pIndis, uint nIndis);
 	virtual void FlushAll();
 
-	bool IsOK();
-
 private:
 	void Init();
 	void Destroy();
@@ -33,7 +31,6 @@ private:
 private:
 	IOEVertDecl* m_pDecl;
 	IOETexture* m_pTexture;
-	bool m_bOK;
 
 };
 #endif // __OEUIRENDERER_IMPL_H__

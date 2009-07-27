@@ -228,7 +228,13 @@ copy &quot;$(TargetPath)&quot; &quot;..\..\bin\&quot;
 				RelativePath=".\OEUI.cpp">
 			</File>
 			<File
+				RelativePath=".\OEUIBitmapFont_Impl.cpp">
+			</File>
+			<File
 				RelativePath=".\OEUIFont_Impl.cpp">
+			</File>
+			<File
+				RelativePath=".\OEUIFontMgr_Impl.cpp">
 			</File>
 			<File
 				RelativePath=".\OEUIModule.cpp">
@@ -248,7 +254,13 @@ copy &quot;$(TargetPath)&quot; &quot;..\..\bin\&quot;
 				RelativePath="..\..\include\Oeui\OEUI.h">
 			</File>
 			<File
+				RelativePath=".\OEUIBitmapFont_Impl.h">
+			</File>
+			<File
 				RelativePath=".\OEUIFont_Impl.h">
+			</File>
+			<File
+				RelativePath=".\OEUIFontMgr_Impl.h">
 			</File>
 			<File
 				RelativePath=".\OEUIModule.h">
@@ -265,6 +277,9 @@ copy &quot;$(TargetPath)&quot; &quot;..\..\bin\&quot;
 			Filter="">
 			<File
 				RelativePath="..\..\include\Oeui\IOEUIFont.h">
+			</File>
+			<File
+				RelativePath="..\..\include\Oeui\IOEUIFontMgr.h">
 			</File>
 			<File
 				RelativePath="..\..\include\Oeui\IOEUIRenderer.h">

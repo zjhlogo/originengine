@@ -9,8 +9,38 @@
 
 COEUIFont_Impl::COEUIFont_Impl()
 {
+	Init();
 }
 
 COEUIFont_Impl::~COEUIFont_Impl()
 {
+	Destroy();
+}
+
+void COEUIFont_Impl::Init()
+{
+	// TODO: 
+}
+
+void COEUIFont_Impl::Destroy()
+{
+	// TODO: 
+}
+
+int COEUIFont_Impl::GetLineHeight() const
+{
+	// TODO: 
+	return 0;
+}
+
+const IOEUIFont::CHAR_INFO* COEUIFont_Impl::GetCharInfo(int nID) const
+{
+	// TODO: 
+	return NULL;
+}
+
+float COEUIFont_Impl::GetKerning(int nFirstID, int nSecondID) const
+{
+	// TODO: 
+	return 0.0f;
 }
