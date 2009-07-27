@@ -261,3 +261,11 @@ void COED3DRenderer_Impl::SetFogInfo(uint nColor, float fNear, float fFar)
 	g_pd3dDevice->SetRenderState(D3DRS_FOGSTART, *(DWORD*)&fNear);
 	g_pd3dDevice->SetRenderState(D3DRS_FOGEND, *(DWORD*)&fFar);
 }
+
+void COED3DRenderer_Impl::SetSampleFilter(SAMPLE_FILTER eSampleFilter)
+{
+	D3DTEXTUREFILTERTYPE eD3DSampleFilter = COED3DUtil::ToD3DSampleFilter(eSampleFilter);
+	g_pd3dDevice->SetSamplerState(0, D3DSAMP_MAGFILTER, eD3DSampleFilter);
+	g_pd3dDevice->SetSamplerState(0, D3DSAMP_MINFILTER, eD3DSampleFilter);
+	g_pd3dDevice->SetSamplerState(0, D3DSAMP_MIPFILTER, eD3DSampleFilter);
+}

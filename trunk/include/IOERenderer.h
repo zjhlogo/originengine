@@ -48,6 +48,17 @@ public:
 		FM_MAX,
 	};
 
+	enum SAMPLE_FILTER
+	{
+		SF_UNKNOWN = 0,
+		SF_POINT,
+		SF_LINEAR,
+		SF_ANISOTROPIC,
+		SF_PYRAMIDALQUAD,
+		SF_GAUSSIANQUAD,
+		SF_MAX,
+	};
+
 public:
 	IOERenderer() {};
 	virtual ~IOERenderer() {};
@@ -75,6 +86,7 @@ public:
 	virtual void SetCullMode(CULL_MODE_TYPE eMode) = 0;
 	virtual void SetFillMode(FILL_MODE eFillMode) = 0;
 	virtual void SetFogInfo(uint nColor, float fNear, float fFar) = 0;
+	virtual void SetSampleFilter(SAMPLE_FILTER eSampleFilter) = 0;
 };
 
 extern IOERenderer* g_pOERenderer;

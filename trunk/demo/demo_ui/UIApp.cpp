@@ -33,7 +33,7 @@ bool CUIApp::Initialize()
 	m_pFont = g_pOEUIFontMgr->CreateBitmapFont(_T("12px_Tahoma.fnt"));
 	if (!m_pFont) return false;
 
-	g_pOERenderer->SetCullMode(IOERenderer::CMT_NONE);
+	g_pOERenderer->SetSampleFilter(IOERenderer::SF_POINT);
 
 	return true;
 }

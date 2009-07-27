@@ -411,7 +411,5 @@ void COED3DDevice_Impl::InitializeD3D()
 	g_pOERenderer->EnableLight(false);
 
 	// TODO: integrate into g_pOERenderer
-	g_pd3dDevice->SetSamplerState(0, D3DSAMP_MAGFILTER, D3DTEXF_LINEAR);
-	g_pd3dDevice->SetSamplerState(0, D3DSAMP_MINFILTER, D3DTEXF_LINEAR);
-	g_pd3dDevice->SetSamplerState(0, D3DSAMP_MIPFILTER, D3DTEXF_LINEAR);
+	g_pOERenderer->SetSampleFilter(IOERenderer::SF_LINEAR);
 }

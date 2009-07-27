@@ -43,6 +43,9 @@ public:
 	static D3DFILLMODE ToD3DFillMode(IOERenderer::FILL_MODE eType);
 	static IOERenderer::FILL_MODE ToOEFillMode(D3DFILLMODE eType);
 
+	static D3DTEXTUREFILTERTYPE ToD3DSampleFilter(IOERenderer::SAMPLE_FILTER eType);
+	static IOERenderer::SAMPLE_FILTER ToOESampleFilter(D3DTEXTUREFILTERTYPE eType);
+
 	static D3DFORMAT ToD3DTexFmt(IOETexture::TEXTURE_FORMAT eFormat);
 	static IOETexture::TEXTURE_FORMAT ToOETexFmt(D3DFORMAT eFormat);
 };
