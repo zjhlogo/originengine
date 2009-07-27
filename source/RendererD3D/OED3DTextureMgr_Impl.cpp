@@ -49,10 +49,10 @@ IOETexture* COED3DTextureMgr_Impl::CreateTextureFromFile(const tstring& strFileN
 	}
 
 	// no lucky, really create texture
-	COED3DTexture_Impl* pTexture = new COED3DTexture_Impl(strLowName.c_str());
+	COED3DTexture_Impl* pTexture = new COED3DTexture_Impl(strLowName);
 	if (!pTexture || !pTexture->IsOK())
 	{
-		LOGOUT(_T("IOETextureMgr::CreateTextureFromFile Failed \"%s\""), strFileName.c_str());
+		LOGOUT(_T("IOETextureMgr::CreateTextureFromFile Failed \"%s\""), strLowName.c_str());
 		SAFE_RELEASE(pTexture);
 		return NULL;
 	}

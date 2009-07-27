@@ -12,7 +12,6 @@ COEUIRenderer_Impl::COEUIRenderer_Impl()
 {
 	g_pOEUIRenderer = this;
 	Init();
-	m_bOK = Create();
 }
 
 COEUIRenderer_Impl::~COEUIRenderer_Impl()
@@ -25,7 +24,6 @@ void COEUIRenderer_Impl::Init()
 {
 	m_pDecl = NULL;
 	m_pTexture = NULL;
-	m_bOK = false;
 }
 
 void COEUIRenderer_Impl::Destroy()
@@ -45,6 +43,8 @@ IOETexture* COEUIRenderer_Impl::GetTexture() const
 
 void COEUIRenderer_Impl::DrawTriList(const void* pVerts, uint nVerts, const ushort* pIndis, uint nIndis)
 {
+	if (!m_pDecl) Create();
+
 	// TODO: cache it
 	g_pOERenderer->SetVertDecl(m_pDecl);
 	g_pOERenderer->SetTexture(m_pTexture);
@@ -56,18 +56,13 @@ void COEUIRenderer_Impl::FlushAll()
 	// TODO: 
 }
 
-bool COEUIRenderer_Impl::IsOK()
-{
-	return m_bOK;
-}
-
 bool COEUIRenderer_Impl::Create()
 {
 	static const IOEVertDecl::ELEMENT s_Decl[] =
 	{
-		IOEVertDecl::T_FLOAT3, IOEVertDecl::U_POSITIONT, 0,
+		IOEVertDecl::T_FLOAT4, IOEVertDecl::U_POSITIONT, 0,
 		IOEVertDecl::T_COLOR, IOEVertDecl::U_COLOR, 0,
-		IOEVertDecl::T_FLOAT3, IOEVertDecl::U_TEXCOORD, 0,		// normal
+		IOEVertDecl::T_FLOAT2, IOEVertDecl::U_TEXCOORD, 0,		// normal
 		IOEVertDecl::T_UNKNOWN, IOEVertDecl::U_UNKNOWN, 0,
 	};
 
