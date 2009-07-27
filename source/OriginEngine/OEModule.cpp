@@ -65,8 +65,14 @@ bool OEModuleInit(COEHolder& Holder)
 
 	Holder.MergeInterface(g_OEHolder);
 
+	// load renderer module
 	g_hModuleRenderer = COEOS::LoadOEModule(MODULE_RENDERER);
 	if (!g_hModuleRenderer) return false;
+	Holder.MergeInterface(g_OEHolder);
+
+	// load ui module
+	g_hModuleUI = COEOS::LoadOEModule(MODULE_UI);
+	if (!g_hModuleUI) return false;
 	Holder.MergeInterface(g_OEHolder);
 
 	return true;
@@ -74,7 +80,11 @@ bool OEModuleInit(COEHolder& Holder)
 
 void OEModuleTerm(COEHolder& Holder)
 {
+	COEOS::FreeOEModule(g_hModuleUI);
+	g_hModuleUI = NULL;
+
 	COEOS::FreeOEModule(g_hModuleRenderer);
+	g_hModuleRenderer = NULL;
 
 	DestroySingleton();
 
