@@ -216,11 +216,6 @@ void COED3DRenderer_Impl::DrawTriFan(const void* pVerts, uint nVerts, const usho
 	}
 }
 
-void COED3DRenderer_Impl::FlushAll()
-{
-	// TODO: 
-}
-
 void COED3DRenderer_Impl::EnableLight(bool bEnable)
 {
 	if (bEnable) g_pd3dDevice->SetRenderState(D3DRS_LIGHTING, TRUE);

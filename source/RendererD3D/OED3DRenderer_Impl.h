@@ -35,8 +35,6 @@ public:
 	virtual void DrawTriStrip(const void* pVerts, uint nVerts, const ushort* pIndis, uint nIndis);
 	virtual void DrawTriFan(const void* pVerts, uint nVerts, const ushort* pIndis, uint nIndis);
 
-	virtual void FlushAll();
-
 	virtual void EnableLight(bool bEnable);
 	virtual void EnableZBuffer(bool bEnable);
 	virtual void EnableFog(bool bEnable);

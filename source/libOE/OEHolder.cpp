@@ -8,6 +8,7 @@
 #include <OEHolder.h>
 #include <OEInterfaces.h>
 #include <OEOS.h>
+#include <OEUI/OEUI.h>
 
 // 核心模块
 IOECore* g_pOECore = NULL;
@@ -21,6 +22,9 @@ IOEDevice* g_pOEDevice = NULL;
 IOERenderer* g_pOERenderer = NULL;
 IOETextureMgr* g_pOETextureMgr = NULL;
 IOEShaderMgr* g_pOEShaderMgr = NULL;
+
+// UI模块
+IOEUIRenderer* g_pOEUIRenderer = NULL;
 
 // 用户层
 IOEApp* g_pOEApp = NULL;
@@ -52,6 +56,9 @@ void COEHolder::SetupInterfaces()
 	AddInterface(_T("IOERenderer"), (void**)&g_pOERenderer);
 	AddInterface(_T("IOETextureMgr"), (void**)&g_pOETextureMgr);
 	AddInterface(_T("IOEShaderMgr"), (void**)&g_pOEShaderMgr);
+
+	// UI模块
+	AddInterface(_T("IOEUIRenderer"), (void**)&g_pOEUIRenderer);
 
 	// 用户层
 	AddInterface(_T("IOEApp"), (void**)&g_pOEApp);
