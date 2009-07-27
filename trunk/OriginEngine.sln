@@ -23,6 +23,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libOEMath", "source\libOEMa
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OEUI", "source\OEUI\OEUI.vcproj", "{CBCC086D-37D5-4C44-AA7E-C539DF7DE73E}"
+	ProjectSection(ProjectDependencies) = postProject
+		{FC86443B-245B-4F29-BEF2-2D39A8F8B063} = {FC86443B-245B-4F29-BEF2-2D39A8F8B063}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfiguration) = preSolution
 		Debug = Debug
@@ -71,6 +76,14 @@ Global
 		{BF852F28-01B5-4492-9273-6E69EE1E4929}.Unicode Debug.Build.0 = Unicode Debug|Win32
 		{BF852F28-01B5-4492-9273-6E69EE1E4929}.Unicode Release.ActiveCfg = Unicode Release|Win32
 		{BF852F28-01B5-4492-9273-6E69EE1E4929}.Unicode Release.Build.0 = Unicode Release|Win32
+		{CBCC086D-37D5-4C44-AA7E-C539DF7DE73E}.Debug.ActiveCfg = Debug|Win32
+		{CBCC086D-37D5-4C44-AA7E-C539DF7DE73E}.Debug.Build.0 = Debug|Win32
+		{CBCC086D-37D5-4C44-AA7E-C539DF7DE73E}.Release.ActiveCfg = Release|Win32
+		{CBCC086D-37D5-4C44-AA7E-C539DF7DE73E}.Release.Build.0 = Release|Win32
+		{CBCC086D-37D5-4C44-AA7E-C539DF7DE73E}.Unicode Debug.ActiveCfg = Unicode Debug|Win32
+		{CBCC086D-37D5-4C44-AA7E-C539DF7DE73E}.Unicode Debug.Build.0 = Unicode Debug|Win32
+		{CBCC086D-37D5-4C44-AA7E-C539DF7DE73E}.Unicode Release.ActiveCfg = Unicode Release|Win32
+		{CBCC086D-37D5-4C44-AA7E-C539DF7DE73E}.Unicode Release.Build.0 = Unicode Release|Win32
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 	EndGlobalSection
