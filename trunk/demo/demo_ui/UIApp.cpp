@@ -7,6 +7,7 @@
  */
 #include "UIApp.h"
 #include <OEInterfaces.h>
+#include <OEOS.h>
 
 CUIApp::CUIApp()
 {
@@ -21,6 +22,7 @@ CUIApp::~CUIApp()
 void CUIApp::Init()
 {
 	m_pFont = NULL;
+	m_pString = NULL;
 }
 
 void CUIApp::Destroy()
@@ -33,6 +35,9 @@ bool CUIApp::Initialize()
 	m_pFont = g_pOEUIFontMgr->CreateBitmapFont(_T("12px_Tahoma.fnt"));
 	if (!m_pFont) return false;
 
+	m_pString = g_pOEUIStringMgr->CreateUIString(m_pFont);
+	if (!m_pString) return false;
+
 	g_pOERenderer->SetSampleFilter(IOERenderer::SF_POINT);
 
 	return true;
@@ -40,53 +45,28 @@ bool CUIApp::Initialize()
 
 void CUIApp::Terminate()
 {
+	SAFE_RELEASE(m_pString);
 	SAFE_RELEASE(m_pFont);
 }
 
 void CUIApp::Update(float fDetailTime)
 {
-	// TODO: 
+	//static float s_fTotalTime = 0.0f;
+	//s_fTotalTime += fDetailTime;
+
+	//if (s_fTotalTime > 1.0f)
+	//{
+	//	tstring strFPS;
+	//	float fFPS = g_pOEDevice->GetFPS();
+
+	//	COEOS::strformat(strFPS, _T("%0.2f FPS"), fFPS);
+	//	m_pString->SetText(strFPS);
+	//	s_fTotalTime -= 1.0f;
+	//}
 }
 
 void CUIApp::Render(float fDetailTime)
 {
-	static OEUI_VERTEX s_Verts[4];
-	static ushort s_Indis[] = {0, 1, 3, 1, 2, 3};
-
-	const IOEUIFont::CHAR_INFO* pCharInfo = m_pFont->GetCharInfo(_T('A'));
-
-	s_Verts[0].x = 100.0f+pCharInfo->fOffsetX;
-	s_Verts[0].y = 100.0f+pCharInfo->fOffsetY+pCharInfo->height;
-	s_Verts[0].z = 1.0f;
-	s_Verts[0].w = 1.0f;
-	s_Verts[0].nColor = 0xFFFFFFFF;
-	s_Verts[0].u = pCharInfo->u;
-	s_Verts[0].v = pCharInfo->v+pCharInfo->h;
-
-	s_Verts[1].x = 100.0f+pCharInfo->fOffsetX;
-	s_Verts[1].y = 100.0f+pCharInfo->fOffsetY;
-	s_Verts[1].z = 1.0f;
-	s_Verts[1].w = 1.0f;
-	s_Verts[1].nColor = 0xFFFFFFFF;
-	s_Verts[1].u = pCharInfo->u;
-	s_Verts[1].v = pCharInfo->v;
-
-	s_Verts[2].x = 100.0f+pCharInfo->fOffsetX+pCharInfo->width;
-	s_Verts[2].y = 100.0f+pCharInfo->fOffsetY;
-	s_Verts[2].z = 1.0f;
-	s_Verts[2].w = 1.0f;
-	s_Verts[2].nColor = 0xFFFFFFFF;
-	s_Verts[2].u = pCharInfo->u+pCharInfo->w;
-	s_Verts[2].v = pCharInfo->v;
-
-	s_Verts[3].x = 100.0f+pCharInfo->fOffsetX+pCharInfo->width;
-	s_Verts[3].y = 100.0f+pCharInfo->fOffsetY+pCharInfo->height;
-	s_Verts[3].z = 1.0f;
-	s_Verts[3].w = 1.0f;
-	s_Verts[3].nColor = 0xFFFFFFFF;
-	s_Verts[3].u = pCharInfo->u+pCharInfo->w;
-	s_Verts[3].v = pCharInfo->v+pCharInfo->h;
-
-	g_pOEUIRenderer->SetTexture(pCharInfo->pTexture);
-	g_pOEUIRenderer->DrawTriList(s_Verts, 4, s_Indis, 6);
+	//CPoint pos(0, 0);
+	//if (m_pString) m_pString->Render(pos);
 }

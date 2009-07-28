@@ -44,3 +44,8 @@ void OEModuleTerm(COEHolder& Holder)
 
 	Holder.MergeInterface(g_OEHolder);
 }
+
+void OEModuleSyncInterfaces(COEHolder& Holder)
+{
+	g_OEHolder.MergeInterface(Holder);
+}

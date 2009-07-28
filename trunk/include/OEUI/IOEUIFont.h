@@ -37,7 +37,7 @@ public:
 	IOEUIFont() {};
 	virtual ~IOEUIFont() {};
 
-	virtual int GetLineHeight() const = 0;
+	virtual float GetLineHeight() const = 0;
 	virtual const CHAR_INFO* GetCharInfo(int nID) const = 0;
 	virtual float GetKerning(int nFirstID, int nSecondID) const = 0;
 

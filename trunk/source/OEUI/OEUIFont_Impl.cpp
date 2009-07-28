@@ -27,7 +27,7 @@ void COEUIFont_Impl::Destroy()
 	// TODO: 
 }
 
-int COEUIFont_Impl::GetLineHeight() const
+float COEUIFont_Impl::GetLineHeight() const
 {
 	// TODO: 
 	return 0;

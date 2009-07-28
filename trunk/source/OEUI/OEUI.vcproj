@@ -243,6 +243,12 @@ copy &quot;$(TargetPath)&quot; &quot;..\..\bin\&quot;
 				RelativePath=".\OEUIRenderer_Impl.cpp">
 			</File>
 			<File
+				RelativePath=".\OEUIString_Impl.cpp">
+			</File>
+			<File
+				RelativePath=".\OEUIStringMgr_Impl.cpp">
+			</File>
+			<File
 				RelativePath=".\OEUIType.cpp">
 			</File>
 		</Filter>
@@ -269,6 +275,12 @@ copy &quot;$(TargetPath)&quot; &quot;..\..\bin\&quot;
 				RelativePath=".\OEUIRenderer_Impl.h">
 			</File>
 			<File
+				RelativePath=".\OEUIString_Impl.h">
+			</File>
+			<File
+				RelativePath=".\OEUIStringMgr_Impl.h">
+			</File>
+			<File
 				RelativePath="..\..\include\Oeui\OEUIType.h">
 			</File>
 		</Filter>
@@ -286,6 +298,9 @@ copy &quot;$(TargetPath)&quot; &quot;..\..\bin\&quot;
 			</File>
 			<File
 				RelativePath="..\..\include\Oeui\IOEUIString.h">
+			</File>
+			<File
+				RelativePath="..\..\include\Oeui\IOEUIStringMgr.h">
 			</File>
 		</Filter>
 	</Files>

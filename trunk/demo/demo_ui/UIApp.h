@@ -29,6 +29,7 @@ private:
 
 private:
 	IOEUIFont* m_pFont;
+	IOEUIString* m_pString;
 
 };
 

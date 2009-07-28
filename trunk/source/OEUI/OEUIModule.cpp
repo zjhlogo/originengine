@@ -8,9 +8,11 @@
 #include "OEUIModule.h"
 #include "OEUIRenderer_Impl.h"
 #include "OEUIFontMgr_Impl.h"
+#include "OEUIStringMgr_Impl.h"
 
 COEUIRenderer_Impl* g_pOEUIRenderer_Impl = NULL;
 COEUIFontMgr_Impl* g_pOEUIFontMgr_Impl = NULL;
+COEUIStringMgr_Impl* g_pOEUIStringMgr_Impl = NULL;
 
 bool CreateSingleton()
 {
@@ -20,11 +22,15 @@ bool CreateSingleton()
 	g_pOEUIFontMgr_Impl = new COEUIFontMgr_Impl();
 	if (!g_pOEUIFontMgr_Impl) return false;
 
+	g_pOEUIStringMgr_Impl = new COEUIStringMgr_Impl();
+	if (!g_pOEUIStringMgr_Impl) return false;
+
 	return true;
 }
 
 void DestroySingleton()
 {
+	SAFE_DELETE(g_pOEUIStringMgr_Impl);
 	SAFE_DELETE(g_pOEUIFontMgr_Impl);
 	SAFE_DELETE(g_pOEUIRenderer_Impl);
 }
@@ -51,4 +57,9 @@ void OEModuleTerm(COEHolder& Holder)
 	DestroySingleton();
 
 	Holder.MergeInterface(g_OEHolder);
+}
+
+void OEModuleSyncInterfaces(COEHolder& Holder)
+{
+	g_OEHolder.MergeInterface(Holder);
 }

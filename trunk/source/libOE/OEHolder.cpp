@@ -26,6 +26,7 @@ IOEShaderMgr* g_pOEShaderMgr = NULL;
 // UI模块
 IOEUIRenderer* g_pOEUIRenderer = NULL;
 IOEUIFontMgr* g_pOEUIFontMgr = NULL;
+IOEUIStringMgr* g_pOEUIStringMgr = NULL;
 
 // 用户层
 IOEApp* g_pOEApp = NULL;
@@ -61,6 +62,7 @@ void COEHolder::SetupInterfaces()
 	// UI模块
 	AddInterface(_T("IOEUIRenderer"), (void**)&g_pOEUIRenderer);
 	AddInterface(_T("IOEUIFontMgr"), (void**)&g_pOEUIFontMgr);
+	AddInterface(_T("IOEUIStringMgr"), (void**)&g_pOEUIStringMgr);
 
 	// 用户层
 	AddInterface(_T("IOEApp"), (void**)&g_pOEApp);
@@ -74,6 +76,7 @@ bool COEHolder::Initialize()
 	g_hModuleOE = COEOS::LoadOEModule(MODULE_ORIGINENGINE);
 	if (!g_hModuleOE) return false;
 
+	COEOS::SyncModuleInterfaces(g_hModuleOE);
 	return true;
 }
 

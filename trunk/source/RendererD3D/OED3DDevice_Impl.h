@@ -13,6 +13,7 @@
 #include <d3dx9.h>
 
 #include "OED3DVertDecl_Impl.h"
+#include <OEUI/OEUI.h>
 #include <vector>
 
 class COED3DDevice_Impl : public IOEDevice
@@ -66,6 +67,8 @@ private:
 
 	VOED3D_VERTDECL m_vD3DVertDecl;
 
+	IOEUIFont* m_pFontFPS;
+	IOEUIString* m_pStringFPS;
 };
 
 #endif // __OED3DDEVICE_IMPL_H__
