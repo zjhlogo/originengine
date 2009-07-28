@@ -38,7 +38,7 @@ bool CUIApp::Initialize()
 	m_pString = g_pOEUIStringMgr->CreateUIString(m_pFont);
 	if (!m_pString) return false;
 
-	g_pOERenderer->SetSampleFilter(IOERenderer::SF_POINT);
+	m_pString->SetText(_T("HANDLE g_hTickEvent = ::CreateEvent(NULL, FALSE, FALSE, NULL);"));
 
 	return true;
 }
@@ -51,22 +51,10 @@ void CUIApp::Terminate()
 
 void CUIApp::Update(float fDetailTime)
 {
-	//static float s_fTotalTime = 0.0f;
-	//s_fTotalTime += fDetailTime;
-
-	//if (s_fTotalTime > 1.0f)
-	//{
-	//	tstring strFPS;
-	//	float fFPS = g_pOEDevice->GetFPS();
-
-	//	COEOS::strformat(strFPS, _T("%0.2f FPS"), fFPS);
-	//	m_pString->SetText(strFPS);
-	//	s_fTotalTime -= 1.0f;
-	//}
+	// TODO: 
 }
 
 void CUIApp::Render(float fDetailTime)
 {
-	//CPoint pos(0, 0);
-	//if (m_pString) m_pString->Render(pos);
+	if (m_pString) m_pString->Render(CPoint(100.0f, 100.0f));
 }

@@ -251,6 +251,9 @@ copy &quot;$(TargetPath)&quot; &quot;..\..\bin\&quot;
 			<File
 				RelativePath=".\OEUIType.cpp">
 			</File>
+			<File
+				RelativePath=".\OEUIVertexCache.cpp">
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -282,6 +285,9 @@ copy &quot;$(TargetPath)&quot; &quot;..\..\bin\&quot;
 			</File>
 			<File
 				RelativePath="..\..\include\Oeui\OEUIType.h">
+			</File>
+			<File
+				RelativePath=".\OEUIVertexCache.h">
 			</File>
 		</Filter>
 		<Filter
