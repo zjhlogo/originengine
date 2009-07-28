@@ -22,9 +22,8 @@ COEUIBitmapFont_Impl::~COEUIBitmapFont_Impl()
 void COEUIBitmapFont_Impl::Init()
 {
 	m_pDocument = NULL;
-	m_nLineHeight = 0;
+	m_fLineHeight = 0.0f;
 	m_nPageCount = 0;
-	m_nCharCount = 0;
 }
 
 void COEUIBitmapFont_Impl::Destroy()
@@ -35,9 +34,9 @@ void COEUIBitmapFont_Impl::Destroy()
 	DestroyCharsInfo();
 }
 
-int COEUIBitmapFont_Impl::GetLineHeight() const
+float COEUIBitmapFont_Impl::GetLineHeight() const
 {
-	return m_nLineHeight;
+	return m_fLineHeight;
 }
 
 const IOEUIFont::CHAR_INFO* COEUIBitmapFont_Impl::GetCharInfo(int nID) const
@@ -93,7 +92,7 @@ bool COEUIBitmapFont_Impl::Create(const tstring& strFileName)
 
 bool COEUIBitmapFont_Impl::ParseCommonInfo(IOEXmlNode* pCommonNode)
 {
-	if (!pCommonNode->GetAttribute(m_nLineHeight, _T("lineHeight"))) return false;
+	if (!pCommonNode->GetAttribute(m_fLineHeight, _T("lineHeight"))) return false;
 	if (!pCommonNode->GetAttribute(m_nPageCount, _T("pages"))) return false;
 	return true;
 }
@@ -164,14 +163,12 @@ bool COEUIBitmapFont_Impl::CreateCharsInfo(IOEXmlNode* pCharsNode)
 		m_CharInfoMap.insert(std::make_pair(CharInfo.nID, CharInfo));
 	}
 
-	m_nCharCount = (int)m_CharInfoMap.size();
 	return true;
 }
 
 void COEUIBitmapFont_Impl::DestroyCharsInfo()
 {
 	m_CharInfoMap.clear();
-	m_nCharCount = 0;
 }
 
 bool COEUIBitmapFont_Impl::CreateKerningsInfo(IOEXmlNode* pKerningsNode)
@@ -207,5 +204,6 @@ void COEUIBitmapFont_Impl::DestroyKerningsInfo()
 
 int COEUIBitmapFont_Impl::HashKerningID(int nFirstID, int nSecondID) const
 {
-	return nFirstID*m_nCharCount+nSecondID;
+	int nHashKey = (nFirstID << 16) | (nSecondID & 0x0000FFFF);
+	return nHashKey;
 }

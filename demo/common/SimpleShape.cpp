@@ -86,5 +86,6 @@ void CSimpleShape::DrawCube(IOERenderer* pRenderer, const CVector3& vPos, float 
 	}
 
 	pRenderer->SetVertDecl(m_pDecl);
+	pRenderer->SetTexture(NULL);
 	pRenderer->DrawTriList(&Verts, 8, s_Indis, 36);
 }

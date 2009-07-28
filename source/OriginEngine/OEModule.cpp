@@ -90,3 +90,11 @@ void OEModuleTerm(COEHolder& Holder)
 
 	Holder.MergeInterface(g_OEHolder);
 }
+
+void OEModuleSyncInterfaces(COEHolder& Holder)
+{
+	g_OEHolder.MergeInterface(Holder);
+
+	COEOS::SyncModuleInterfaces(g_hModuleRenderer);
+	COEOS::SyncModuleInterfaces(g_hModuleUI);
+}

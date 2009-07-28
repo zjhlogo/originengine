@@ -11,5 +11,6 @@
 #include "OEUIType.h"
 #include "IOEUIRenderer.h"
 #include "IOEUIFontMgr.h"
+#include "IOEUIStringMgr.h"
 
 #endif // __OEUI_H__

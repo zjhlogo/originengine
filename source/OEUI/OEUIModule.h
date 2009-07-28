@@ -12,5 +12,6 @@
 
 extern "C" __declspec(dllexport) bool OEModuleInit(COEHolder& Holder);
 extern "C" __declspec(dllexport) void OEModuleTerm(COEHolder& Holder);
+extern "C" __declspec(dllexport) void OEModuleSyncInterfaces(COEHolder& Holder);
 
 #endif // __OEUIMODULE_H__

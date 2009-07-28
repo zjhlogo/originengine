@@ -16,7 +16,7 @@ public:
 	COEUIFont_Impl();
 	virtual ~COEUIFont_Impl();
 
-	virtual int GetLineHeight() const;
+	virtual float GetLineHeight() const;
 	virtual const CHAR_INFO* GetCharInfo(int nID) const;
 	virtual float GetKerning(int nFirstID, int nSecondID) const;
 

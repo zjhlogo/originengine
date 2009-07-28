@@ -9,6 +9,7 @@
 
 #include <OEMath/OEMath.h>
 #include <OEInterfaces.h>
+#include <OEOS.h>
 
 // TODO: wrapped it
 IDirect3D9* g_pD3D = NULL;
@@ -33,7 +34,10 @@ void COED3DDevice_Impl::Init()
 	g_pOEConfigFileMgr->GetValue(m_nWindowWidth, _T("WindowWidth"), 800);
 	g_pOEConfigFileMgr->GetValue(m_nWindowHeight, _T("WindowHeight"), 600);
 	g_pOEConfigFileMgr->GetValue(m_strWindowName, _T("WindowTitle"), _T("Origin Engine"));
-	g_pOEConfigFileMgr->GetValue(m_fMaxFPS, _T("MaxFPS"), 120.0f);
+	g_pOEConfigFileMgr->GetValue(m_fMaxFPS, _T("MaxFPS"), 60.0f);
+
+	if (m_fMaxFPS < 1.0f) m_fMaxFPS = 1.0f;
+	if (m_fMaxFPS > 100.0f) m_fMaxFPS = 100.0f;
 
 	m_fCurrFPS = 0.0f;
 	m_fLastFPSTime = 0.0f;
@@ -42,6 +46,9 @@ void COED3DDevice_Impl::Init()
 	m_fPrevTime = 0.0f;
 	m_fCurrTime = 0.0f;
 	m_vD3DVertDecl.clear();
+
+	m_pFontFPS = NULL;
+	m_pStringFPS = NULL;
 }
 
 void COED3DDevice_Impl::Destroy()
@@ -73,6 +80,9 @@ bool COED3DDevice_Impl::CreateDevice()
 
 void COED3DDevice_Impl::DestroyDevice()
 {
+	SAFE_RELEASE(m_pStringFPS);
+	SAFE_RELEASE(m_pFontFPS);
+
 	if (g_pd3dDevice) InternalDestroyD3D();
 	if (g_hWnd) InternalDestroyWindow();
 }
@@ -116,6 +126,13 @@ void COED3DDevice_Impl::StartPerform()
 				m_fCurrFPS = m_nFPSCount/fDetailFPS;
 				m_nFPSCount = 0;
 				m_fLastFPSTime = m_fCurrTime;
+
+				if (m_pStringFPS)
+				{
+					tstring strText;
+					COEOS::strformat(strText, _T("%.2f FPS"), m_fCurrFPS);
+					m_pStringFPS->SetText(strText);
+				}
 			}
 		}
 		else
@@ -329,7 +346,14 @@ void COED3DDevice_Impl::PerformOnce(float fDetailTime)
 	g_pd3dDevice->Clear(0, NULL, D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER, D3DCOLOR_XRGB(0, 0, 0), 1.0f, 0);
 	if (SUCCEEDED(g_pd3dDevice->BeginScene()))
 	{
+		g_pOERenderer->SetSampleFilter(IOERenderer::SF_LINEAR);
 		g_pOEApp->Render(fDetailTime);
+
+		if (m_pStringFPS)
+		{
+			g_pOERenderer->SetSampleFilter(IOERenderer::SF_POINT);
+			m_pStringFPS->Render(CPoint(0, 0));
+		}
 
 		g_pd3dDevice->EndScene();
 		g_pd3dDevice->Present(NULL, NULL, NULL, NULL);
@@ -410,6 +434,7 @@ void COED3DDevice_Impl::InitializeD3D()
 
 	g_pOERenderer->EnableLight(false);
 
-	// TODO: integrate into g_pOERenderer
-	g_pOERenderer->SetSampleFilter(IOERenderer::SF_LINEAR);
+	// FPS
+	m_pFontFPS = g_pOEUIFontMgr->CreateBitmapFont(_T("12px_Tahoma.fnt"));
+	m_pStringFPS = g_pOEUIStringMgr->CreateUIString(m_pFontFPS);
 }

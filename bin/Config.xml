@@ -3,5 +3,5 @@
 	<WindowWidth>800</WindowWidth>
 	<WindowHeight>600</WindowHeight>
 	<WindowTitle>Origin Engine</WindowTitle>
-	<MaxFPS>120</MaxFPS>
+	<MaxFPS>60</MaxFPS>
 </Config>

@@ -25,7 +25,7 @@ public:
 	COEUIBitmapFont_Impl(const tstring& strFileName);
 	virtual ~COEUIBitmapFont_Impl();
 
-	virtual int GetLineHeight() const;
+	virtual float GetLineHeight() const;
 	virtual const CHAR_INFO* GetCharInfo(int nID) const;
 	virtual float GetKerning(int nFirstID, int nSecondID) const;
 
@@ -50,9 +50,8 @@ private:
 
 private:
 	IOEXmlNode* m_pDocument;
-	int m_nLineHeight;
+	float m_fLineHeight;
 	int m_nPageCount;
-	int m_nCharCount;
 
 	VOETEXTURE m_vTexture;
 	CHAR_INFO_MAP m_CharInfoMap;

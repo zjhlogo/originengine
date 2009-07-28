@@ -13,9 +13,11 @@
 
 #define MODULE_INIT_FUNC_NAME _T("OEModuleInit")
 #define MODULE_TERM_FUNC_NAME _T("OEModuleTerm")
+#define MODULE_SYNC_FUNC_NAME _T("OEModuleSyncInterfaces")
 
 typedef bool (*FUNC_MODULE_INIT)(COEHolder& Holder);
 typedef void (*FUNC_MODULE_TERM)(COEHolder& Holder);
+typedef void (*FUNC_MODULE_SYNC)(COEHolder& Holder);
 
 COEOS::OEMODULE COEOS::LoadOEModule(const tchar* pstrModuleName)
 {
@@ -45,13 +47,25 @@ void COEOS::FreeOEModule(OEMODULE hModule)
 {
 	if (!hModule) return;
 
-	std::string strModuleName;
-	if (!tchar2char(strModuleName, MODULE_TERM_FUNC_NAME)) return;
+	std::string strModuleFunc;
+	if (!tchar2char(strModuleFunc, MODULE_TERM_FUNC_NAME)) return;
 
 	HMODULE hWinModule = (HMODULE)hModule;
-	FUNC_MODULE_TERM OEModuleTerm = (FUNC_MODULE_TERM)GetProcAddress(hWinModule, strModuleName.c_str());
+	FUNC_MODULE_TERM OEModuleTerm = (FUNC_MODULE_TERM)GetProcAddress(hWinModule, strModuleFunc.c_str());
 	if (OEModuleTerm) OEModuleTerm(g_OEHolder);
 	FreeLibrary(hWinModule);
+}
+
+void COEOS::SyncModuleInterfaces(OEMODULE hModule)
+{
+	if (!hModule) return;
+
+	std::string strModuleFunc;
+	if (!tchar2char(strModuleFunc, MODULE_SYNC_FUNC_NAME)) return;
+
+	HMODULE hWinModule = (HMODULE)hModule;
+	FUNC_MODULE_SYNC OEModuleSync = (FUNC_MODULE_SYNC)GetProcAddress(hWinModule, strModuleFunc.c_str());
+	if (OEModuleSync) OEModuleSync(g_OEHolder);
 }
 
 bool COEOS::tchar2char(std::string& strOut, const tchar* pstrIn)
