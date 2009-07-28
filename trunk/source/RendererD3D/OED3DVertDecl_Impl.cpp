@@ -37,6 +37,11 @@ void COED3DVertDecl_Impl::Destroy()
 	SAFE_RELEASE(m_pDecl);
 }
 
+int COED3DVertDecl_Impl::GetStrideSize() const
+{
+	return m_nStride;
+}
+
 const IOEVertDecl::ELEMENT* COED3DVertDecl_Impl::GetElement() const
 {
 	return m_Element;
@@ -57,11 +62,6 @@ bool COED3DVertDecl_Impl::Compare(const ELEMENT* pElement) const
 	}
 
 	return true;
-}
-
-int COED3DVertDecl_Impl::GetStride() const
-{
-	return m_nStride;
 }
 
 IDirect3DVertexDeclaration9* COED3DVertDecl_Impl::GetD3DVertDecl()

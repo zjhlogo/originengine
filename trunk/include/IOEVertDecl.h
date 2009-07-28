@@ -51,6 +51,8 @@ public:
 	IOEVertDecl() {};
 	virtual ~IOEVertDecl() {};
 
+	virtual int GetStrideSize() const = 0;
+
 };
 
 #endif // __IOEVERTDECL_H__

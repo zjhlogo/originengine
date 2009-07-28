@@ -346,14 +346,14 @@ void COED3DDevice_Impl::PerformOnce(float fDetailTime)
 	g_pd3dDevice->Clear(0, NULL, D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER, D3DCOLOR_XRGB(0, 0, 0), 1.0f, 0);
 	if (SUCCEEDED(g_pd3dDevice->BeginScene()))
 	{
+		// render scene
 		g_pOERenderer->SetSampleFilter(IOERenderer::SF_LINEAR);
 		g_pOEApp->Render(fDetailTime);
 
-		if (m_pStringFPS)
-		{
-			g_pOERenderer->SetSampleFilter(IOERenderer::SF_POINT);
-			m_pStringFPS->Render(CPoint(0, 0));
-		}
+		// render screen
+		g_pOERenderer->SetSampleFilter(IOERenderer::SF_POINT);
+		if (m_pStringFPS) m_pStringFPS->Render(CPoint(0, 0));
+		g_pOEUIRenderer->FlushAll();
 
 		g_pd3dDevice->EndScene();
 		g_pd3dDevice->Present(NULL, NULL, NULL, NULL);

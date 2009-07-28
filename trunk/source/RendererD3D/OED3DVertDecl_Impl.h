@@ -17,9 +17,10 @@ public:
 	COED3DVertDecl_Impl(const ELEMENT* pElement);
 	virtual ~COED3DVertDecl_Impl();
 
+	virtual int GetStrideSize() const;
+
 	const ELEMENT* GetElement() const;
 	bool Compare(const ELEMENT* pElement) const;
-	int GetStride() const;
 
 	IDirect3DVertexDeclaration9* GetD3DVertDecl();
 

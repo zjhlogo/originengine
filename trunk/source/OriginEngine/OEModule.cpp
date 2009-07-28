@@ -80,9 +80,11 @@ bool OEModuleInit(COEHolder& Holder)
 
 void OEModuleTerm(COEHolder& Holder)
 {
+	// free ui module
 	COEOS::FreeOEModule(g_hModuleUI);
 	g_hModuleUI = NULL;
 
+	// free renderer module
 	COEOS::FreeOEModule(g_hModuleRenderer);
 	g_hModuleRenderer = NULL;
 
