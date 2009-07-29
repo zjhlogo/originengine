@@ -36,9 +36,6 @@ void COED3DDevice_Impl::Init()
 	g_pOEConfigFileMgr->GetValue(m_strWindowName, _T("WindowTitle"), _T("Origin Engine"));
 	g_pOEConfigFileMgr->GetValue(m_fMaxFPS, _T("MaxFPS"), 60.0f);
 
-	if (m_fMaxFPS < 1.0f) m_fMaxFPS = 1.0f;
-	if (m_fMaxFPS > 100.0f) m_fMaxFPS = 100.0f;
-
 	m_fCurrFPS = 0.0f;
 	m_fLastFPSTime = 0.0f;
 	m_nFPSCount = 0;
@@ -99,8 +96,11 @@ void COED3DDevice_Impl::StartPerform()
 	// Create Render signal event
 	HANDLE hTickEvent = CreateEvent(NULL, FALSE, FALSE, NULL);
 	ResetEvent(hTickEvent);
+
 	// Create time event
-	MMRESULT hEventTimer = timeSetEvent((INT)(1000.0f/m_fMaxFPS), 1, (LPTIMECALLBACK)hTickEvent, 0, TIME_PERIODIC|TIME_CALLBACK_EVENT_SET);
+	UINT nDelay = (UINT)(1000.0f/m_fMaxFPS);
+	if (nDelay < 1) nDelay = 1;
+	MMRESULT hEventTimer = timeSetEvent(nDelay, 1, (LPTIMECALLBACK)hTickEvent, 0, TIME_PERIODIC|TIME_CALLBACK_EVENT_SET);
 
 	m_fPrevTime = (float)timeGetTime()/1000.0f;
 	m_fCurrTime = m_fPrevTime;
@@ -286,7 +286,7 @@ bool COED3DDevice_Impl::InternalCreateD3D()
 	d3dpp.BackBufferFormat = D3DFMT_UNKNOWN;
 	d3dpp.EnableAutoDepthStencil = TRUE;
 	d3dpp.AutoDepthStencilFormat = D3DFMT_D16;
-	d3dpp.PresentationInterval = D3DPRESENT_INTERVAL_DEFAULT;
+	d3dpp.PresentationInterval = D3DPRESENT_INTERVAL_IMMEDIATE;
 
 	uint nAdapterToUse = D3DADAPTER_DEFAULT;
 	D3DDEVTYPE eDeviceType = D3DDEVTYPE_HAL;

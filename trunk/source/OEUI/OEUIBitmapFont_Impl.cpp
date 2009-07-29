@@ -155,8 +155,8 @@ bool COEUIBitmapFont_Impl::CreateCharsInfo(IOEXmlNode* pCharsNode)
 		CharInfo.pTexture = m_vTexture[nPage];
 		CharInfo.nRef = 0;
 
-		CharInfo.u = CharInfo.x/CharInfo.pTexture->GetWidth();
-		CharInfo.v = CharInfo.y/CharInfo.pTexture->GetHeight();
+		CharInfo.u = (CharInfo.x+0.5f)/CharInfo.pTexture->GetWidth();
+		CharInfo.v = (CharInfo.y+0.5f)/CharInfo.pTexture->GetHeight();
 		CharInfo.w = CharInfo.width/CharInfo.pTexture->GetWidth();
 		CharInfo.h = CharInfo.height/CharInfo.pTexture->GetHeight();
 
