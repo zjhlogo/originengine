@@ -23,4 +23,7 @@ private:
 
 };
 
+bool OEFileSystemInit();
+void OEFileSystemDestroy();
+
 #endif // __OEFILEMGR_IMPL_H__

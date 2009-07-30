@@ -9,7 +9,6 @@
 #include "OEFile_Impl.h"
 #include <assert.h>
 
-IOEFileMgr* g_pOEFileMgr = NULL;
 COEFileMgr_Impl* g_pOEFileMgr_Impl = NULL;
 
 bool OEFileSystemInit()
