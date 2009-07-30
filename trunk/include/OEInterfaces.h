@@ -16,6 +16,7 @@
 #include "IOELogFileMgr.h"
 #include "IOEXmlMgr.h"
 #include "IOEConfigFileMgr.h"
+#include "IOEMeshMgr.h"
 
 // äÖÈ¾Ä£¿é
 #include "IOEDevice.h"

@@ -11,19 +11,25 @@
 #include "OELogFileMgr_Impl.h"
 #include "OEXmlMgr_Impl.h"
 #include "OEConfigFileMgr_Impl.h"
+#include "OEMeshMgr_Impl.h"
+
 #include <OEOS.h>
 
 static COEOS::OEMODULE g_hModuleRenderer = NULL;
 static COEOS::OEMODULE g_hModuleUI = NULL;
 
+COECore_Impl* g_pOECore_Impl = NULL;
 COEFileMgr_Impl* g_pOEFileMgr_Impl = NULL;
 COELogFileMgr_Impl* g_pOELogFileMgr_Impl = NULL;
 COEXmlMgr_Impl* g_pOEXmlMgr_Impl = NULL;
 COEConfigFileMgr_Impl* g_pOEConfigFileMgr_Impl = NULL;
-COECore_Impl* g_pOECore_Impl = NULL;
+COEMeshMgr_Impl* g_pOEMeshMgr_Impl = NULL;
 
 bool CreateSingleton()
 {
+	g_pOECore_Impl = new COECore_Impl();
+	if (!g_pOECore_Impl) return false;
+
 	g_pOEFileMgr_Impl = new COEFileMgr_Impl();
 	if (!g_pOEFileMgr_Impl) return false;
 
@@ -36,8 +42,8 @@ bool CreateSingleton()
 	g_pOEConfigFileMgr_Impl = new COEConfigFileMgr_Impl();
 	if (!g_pOEConfigFileMgr_Impl) return false;
 
-	g_pOECore_Impl = new COECore_Impl();
-	if (!g_pOECore_Impl) return false;
+	g_pOEMeshMgr_Impl = new COEMeshMgr_Impl();
+	if (!g_pOEMeshMgr_Impl) return false;
 
 	return true;
 }
@@ -45,6 +51,7 @@ bool CreateSingleton()
 void DestroySingleton()
 {
 	SAFE_DELETE(g_pOECore_Impl);
+	SAFE_DELETE(g_pOEMeshMgr_Impl);
 	SAFE_DELETE(g_pOEConfigFileMgr_Impl);
 	SAFE_DELETE(g_pOEXmlMgr_Impl);
 	SAFE_DELETE(g_pOELogFileMgr_Impl);
