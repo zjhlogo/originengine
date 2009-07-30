@@ -16,6 +16,7 @@ IOEFileMgr* g_pOEFileMgr = NULL;
 IOELogFileMgr* g_pOELogFileMgr = NULL;
 IOEXmlMgr* g_pOEXmlMgr = NULL;
 IOEConfigFileMgr* g_pOEConfigFileMgr = NULL;
+IOEMeshMgr* g_pOEMeshMgr = NULL;
 
 // äÖÈ¾Ä£¿é
 IOEDevice* g_pOEDevice = NULL;
@@ -47,11 +48,12 @@ COEHolder::~COEHolder()
 void COEHolder::SetupInterfaces()
 {
 	// ºËÐÄÄ£¿é
+	AddInterface(_T("IOECore"), (void**)&g_pOECore);
 	AddInterface(_T("IOEFileMgr"), (void**)&g_pOEFileMgr);
 	AddInterface(_T("IOELogFileMgr"), (void**)&g_pOELogFileMgr);
 	AddInterface(_T("IOEXmlMgr"), (void**)&g_pOEXmlMgr);
 	AddInterface(_T("IOEConfigFileMgr"), (void**)&g_pOEConfigFileMgr);
-	AddInterface(_T("IOECore"), (void**)&g_pOECore);
+	AddInterface(_T("IOEMeshMgr"), (void**)&g_pOEMeshMgr);
 
 	// äÖÈ¾Ä£¿é
 	AddInterface(_T("IOEDevice"), (void**)&g_pOEDevice);

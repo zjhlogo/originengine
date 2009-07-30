@@ -240,6 +240,12 @@ copy &quot;$(TargetPath)&quot; &quot;..\..\bin\&quot;
 				RelativePath=".\OELogFileMgr_Impl.cpp">
 			</File>
 			<File
+				RelativePath=".\OEMesh_Impl.cpp">
+			</File>
+			<File
+				RelativePath=".\OEMeshMgr_Impl.cpp">
+			</File>
+			<File
 				RelativePath=".\OEModule.cpp">
 			</File>
 			<File
@@ -267,6 +273,12 @@ copy &quot;$(TargetPath)&quot; &quot;..\..\bin\&quot;
 			</File>
 			<File
 				RelativePath=".\OELogFileMgr_Impl.h">
+			</File>
+			<File
+				RelativePath=".\OEMesh_Impl.h">
+			</File>
+			<File
+				RelativePath=".\OEMeshMgr_Impl.h">
 			</File>
 			<File
 				RelativePath=".\OEModule.h">
@@ -301,6 +313,12 @@ copy &quot;$(TargetPath)&quot; &quot;..\..\bin\&quot;
 			</File>
 			<File
 				RelativePath="..\..\include\IOELogFileMgr.h">
+			</File>
+			<File
+				RelativePath="..\..\include\IOEMesh.h">
+			</File>
+			<File
+				RelativePath="..\..\include\IOEMeshMgr.h">
 			</File>
 			<File
 				RelativePath="..\..\include\IOEObject.h">
