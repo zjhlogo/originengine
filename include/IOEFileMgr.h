@@ -25,5 +25,7 @@ public:
 	virtual IOEFile* OpenFile(const tstring& strFileName, uint nFlag = IOEFile::OFF_READ) = 0;
 
 };
+
 extern IOEFileMgr* g_pOEFileMgr;
+
 #endif // __IOEFILEMGR_H__
