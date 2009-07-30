@@ -42,6 +42,7 @@ private:
 	IOETexture* m_pTexture;
 
 	COEUIVertexCache* m_pVertsCache[VERTEX_CACHE_COUNT];
+	bool m_bInitialized;
 
 };
 #endif // __OEUIRENDERER_IMPL_H__

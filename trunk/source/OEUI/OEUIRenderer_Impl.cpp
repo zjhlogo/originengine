@@ -27,6 +27,7 @@ void COEUIRenderer_Impl::Init()
 	m_pTexture = NULL;
 
 	memset(m_pVertsCache, 0, sizeof(m_pVertsCache));
+	m_bInitialized = false;
 }
 
 void COEUIRenderer_Impl::Destroy()
@@ -50,7 +51,10 @@ IOETexture* COEUIRenderer_Impl::GetTexture() const
 
 void COEUIRenderer_Impl::DrawTriList(const void* pVerts, uint nVerts, const ushort* pIndis, uint nIndis)
 {
-	if (!m_pDecl) Create();
+	if (!m_bInitialized)
+	{
+		m_bInitialized = Create();
+	}
 
 	COEUIVertexCache* pEmptyCache = NULL;
 	COEUIVertexCache* pMatchCache = NULL;
@@ -93,6 +97,8 @@ void COEUIRenderer_Impl::DrawTriList(const void* pVerts, uint nVerts, const usho
 
 void COEUIRenderer_Impl::FlushAll()
 {
+	if (!m_bInitialized) return;
+
 	for (int i = 0; i < VERTEX_CACHE_COUNT; ++i)
 	{
 		m_pVertsCache[i]->Flush();
