@@ -1,11 +1,10 @@
 /*!
- *	created:	2009/06/01
- *	filename: 	OEFile_Impl.h
- *	author:		daishuidi
-	
- *	purpose:	
+ * \file OEFile_Impl.h
+ * \date 30-7-2009 17:09:01
+ * 
+ * 
+ * \author zjhlogo (zjhlogo@163.com)
  */
-
 #ifndef __OEFILE_IMPL_H__
 #define __OEFILE_IMPL_H__
 
@@ -34,5 +33,4 @@ private:
 	uint m_nFlag;
 
 };
-
 #endif // __OEFILE_IMPL_H__

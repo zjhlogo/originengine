@@ -1,9 +1,9 @@
 /*!
- *	created:	2009/06/01
- *	filename: 	OriginEngine\OEFileMgr_Impl.h
- *	author:		daishuidi
-	
- *	purpose:	
+ * \file OEFileMgr_Impl.h
+ * \date 30-7-2009 17:07:25
+ * 
+ * 
+ * \author zjhlogo (zjhlogo@163.com)
  */
 #ifndef __OEFILEMGR_IMPL_H__
 #define __OEFILEMGR_IMPL_H__

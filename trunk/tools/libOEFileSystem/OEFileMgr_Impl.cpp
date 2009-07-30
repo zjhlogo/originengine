@@ -1,15 +1,35 @@
 /*!
- *	created:	2009/06/01
- *	filename: 	OriginEngine\OEFileMgr_Impl.cpp
- *	author:		daishuidi
-
- *	purpose:	
+ * \file OEFileMgr_Impl.cpp
+ * \date 30-7-2009 17:07:29
+ * 
+ * 
+ * \author zjhlogo (zjhlogo@163.com)
  */
 #include "OEFileMgr_Impl.h"
 #include "OEFile_Impl.h"
-
-#include <OEInterfaces.h>
 #include <assert.h>
+
+IOEFileMgr* g_pOEFileMgr = NULL;
+COEFileMgr_Impl* g_pOEFileMgr_Impl = NULL;
+
+bool OEFileSystemInit()
+{
+	if (g_pOEFileMgr_Impl)
+	{
+		assert(false);
+		return false;
+	}
+
+	g_pOEFileMgr_Impl = new COEFileMgr_Impl();
+	if (!g_pOEFileMgr_Impl) return false;
+
+	return true;
+}
+
+void OEFileSystemDestroy()
+{
+	SAFE_DELETE(g_pOEFileMgr_Impl);
+}
 
 COEFileMgr_Impl::COEFileMgr_Impl()
 {
@@ -35,10 +55,9 @@ void COEFileMgr_Impl::Destroy()
 
 IOEFile* COEFileMgr_Impl::OpenFile(const tstring& strFileName, uint nFlag /* = IOEFile::OFF_READ */)
 {
-	COEFile_Impl *pFile = new COEFile_Impl(strFileName, nFlag);
+	COEFile_Impl* pFile = new COEFile_Impl(strFileName, nFlag);
 	if (!pFile || !pFile->IsOK())
 	{
-		LOGOUT(_T("IOEFileMgr::OpenFile Failed \"%s\""), strFileName.c_str());
 		SAFE_RELEASE(pFile);
 		return NULL;
 	}
