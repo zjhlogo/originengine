@@ -39,8 +39,8 @@ void COEUIVertexCache::Init()
 
 void COEUIVertexCache::Destroy()
 {
-	SAFE_DELETE(m_pVertsCache);
-	SAFE_DELETE(m_pIndisCache);
+	SAFE_DELETE_ARRAY(m_pVertsCache);
+	SAFE_DELETE_ARRAY(m_pIndisCache);
 
 	m_nVertsCacheSize = 0;
 	m_nMaxVertsCount = 0;

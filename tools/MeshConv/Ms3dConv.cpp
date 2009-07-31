@@ -259,16 +259,22 @@ bool CMs3dConv::LoadFromFile(const tstring& strFileName)
 			{
 				fPrevU = arrTriangles[nTriaIndex].s[nInternalIndex];
 				fPrevV = arrTriangles[nTriaIndex].t[nInternalIndex];
+				fPrevU -= floorf(fPrevU);
+				fPrevV -= floorf(fPrevV);
+
 				bPrevUV = true;
 				m_vVertices[i].u = fPrevU;
 				m_vVertices[i].v = fPrevV;
 			}
 			else
 			{
-				float fDetailU = fabsf(fPrevU - arrTriangles[nTriaIndex].s[nInternalIndex]);
-				float fDetailV = fabsf(fPrevV - arrTriangles[nTriaIndex].t[nInternalIndex]);
+				float fCurrU = arrTriangles[nTriaIndex].s[nInternalIndex];
+				float fCurrV = arrTriangles[nTriaIndex].t[nInternalIndex];
+				float fDetailU = fabsf(fPrevU - fCurrU);
+				float fDetailV = fabsf(fPrevV - fCurrV);
+
 				fDetailU -= floorf(fDetailU);
-				fDetailV -= floorf(fDetailV);
+				fDetailU -= floorf(fDetailV);
 
 				if ( fDetailU > 0.01f
 					|| fDetailV > 0.01f)

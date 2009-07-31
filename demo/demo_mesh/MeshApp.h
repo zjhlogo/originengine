@@ -1,39 +1,37 @@
 /*!
- * \file WaterApp.h
- * \date 20-6-2009 9:57:08
+ * \file MeshApp.h
+ * \date 31-7-2009 20:41:47
  * 
  * 
  * \author zjhlogo (zjhlogo@163.com)
  */
-#ifndef __WATERAPP_H__
-#define __WATERAPP_H__
+#ifndef __MESHAPP_H__
+#define __MESHAPP_H__
 
+#include <IOEApp.h>
 #include <OEInterfaces.h>
-#include "../common/Camera.h"
-#include "DlgWaveParam.h"
 
-class CWaterApp : public IOEApp
+#include "../common/Camera.h"
+#include "../common/SimpleShape.h"
+
+class CMeshApp : public IOEApp
 {
 public:
 	enum CONST_DEFINE
 	{
-		NUM_X = 80,
-		NUM_Z = 80,
 		KEY_COUNT = 256,
 	};
 
 	typedef struct VERTEX_tag
 	{
 		float x, y, z;
-		//float nx, ny, nz;
-		//float hx, hy, hz;
 		float u, v;
-		//float tx, ty, tz;
+		float nx, ny, nz;
 	} VERTEX;
 
 public:
-	CWaterApp();
-	virtual ~CWaterApp();
+	CMeshApp();
+	virtual ~CMeshApp();
 
 	virtual bool Initialize();
 	virtual void Terminate();
@@ -61,9 +59,11 @@ private:
 	uint m_nVerts;
 	uint m_nIndis;
 
+	IOETexture* m_pTexture;
 	IOEShader* m_pShader;
+
 	CCamera* m_pCamera;
-	CDlgWaveParam* m_pDlgWaveParam;
+	CSimpleShape* m_pSimpleShape;
 
 	bool m_bLButtonDown;
 	int m_nMouseDetailX;
@@ -72,4 +72,4 @@ private:
 
 };
 
-#endif // __WATERAPP_H__
+#endif // __MESHAPP_H__
