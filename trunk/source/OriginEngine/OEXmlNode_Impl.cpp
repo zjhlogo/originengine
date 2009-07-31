@@ -291,7 +291,7 @@ bool COEXmlNode_Impl::Create(const tstring& strFileName)
 
 	TiXmlDocument* pDocument = new TiXmlDocument();
 	pDocument->Parse((const char*)pBuffer);
-	SAFE_DELETE(pBuffer);
+	SAFE_DELETE_ARRAY(pBuffer);
 
 	if (pDocument->Error())
 	{

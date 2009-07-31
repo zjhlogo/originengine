@@ -9,7 +9,6 @@
 #define __TESTAPP_H__
 
 #include <IOEApp.h>
-#include <IOEVertDecl.h>
 #include <OEInterfaces.h>
 
 #include "../common/Camera.h"
