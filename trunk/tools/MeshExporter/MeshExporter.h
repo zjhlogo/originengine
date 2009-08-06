@@ -68,6 +68,18 @@ private:
 	bool ExportRotationController(IGameControl* pGameControl);
 	bool ExportScaleController(IGameControl* pGameControl);
 
+	bool ExportMaxStdPosKey(IGameControl* pGameControl);
+	bool ExportIndependentPosKey(IGameControl* pGameControl);
+
+	bool ExportMaxStdRotKey(IGameControl* pGameControl);
+	bool ExportEulerRotKey(IGameControl* pGameControl);
+
+	bool ExportMaxStdScaleKey(IGameControl* pGameControl);
+
+	bool ExportConstraintKey(IGameControl* pGameControl);
+	bool ExportListKey(IGameControl* pGameControl);
+	bool ExportSampleKey(IGameControl* pGameControl);
+
 private:
 	IOEFile* m_pFile;
 	IGameScene * m_pIGame;

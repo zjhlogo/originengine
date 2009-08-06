@@ -171,38 +171,31 @@ bool CMeshExporter::ExportPositionController(IGameControl* pGameControl)
 	{
 	case IGameControl::IGAME_MAXSTD:
 		{
-			IGameKeyTab PosKey;
-			if (pGameControl->GetBezierKeys(PosKey, IGAME_POS))
-			{
-				// TODO: export Bezier Key
-			}
-			else if (pGameControl->GetLinearKeys(PosKey, IGAME_POS))
-			{
-				// TODO: export Linear Key
-			}
-			else
-			{
-				// TODO: 
-			}
+			// export std pos key
+			ExportMaxStdPosKey(pGameControl);
 		}
 		break;
 	case IGameControl::IGAME_POS_CONSTRAINT:
 		{
-			// TODO: export constraint controller
+			// export constraint controller
+			ExportConstraintKey(pGameControl);
 		}
 		break;
 	case IGameControl::IGAME_LIST:
 		{
-			// TODO: export list controller
+			// export list controller
+			ExportListKey(pGameControl);
 		}
 		break;
 	case IGameControl::IGAME_INDEPENDENT_POS:
 		{
-			// TODO: export independent controller
+			// export independent controller
+			ExportIndependentPosKey(pGameControl);
 		}
 		break;
 	default:
 		{
+			// TODO: 
 			return false;
 		}
 		break;
@@ -218,38 +211,26 @@ bool CMeshExporter::ExportRotationController(IGameControl* pGameControl)
 	{
 	case IGameControl::IGAME_MAXSTD:
 		{
-			IGameKeyTab RotKey;
-			if (pGameControl->GetTCBKeys(RotKey, IGAME_ROT))
-			{
-				// TODO: export TCB Keys
-			}
-			else if (pGameControl->GetLinearKeys(RotKey, IGAME_ROT))
-			{
-				// TODO: export Linear Keys
-			}
-			else if (pGameControl->GetBezierKeys(RotKey, IGAME_ROT))
-			{
-				// TODO: export Bezier Keys
-			}
-			else
-			{
-				// TODO: 
-			}
+			// export std rot key
+			ExportMaxStdRotKey(pGameControl);
 		}
 		break;
 	case IGameControl::IGAME_EULER:
 		{
-			// TODO: export Euler controller
+			// export Euler controller
+			ExportEulerRotKey(pGameControl);
 		}
 		break;
 	case IGameControl::IGAME_ROT_CONSTRAINT:
 		{
-			// TODO: export constraint controller
+			// export constraint controller
+			ExportConstraintKey(pGameControl);
 		}
 		break;
 	case IGameControl::IGAME_LIST:
 		{
-			// TODO: export list controller
+			// export list controller
+			ExportListKey(pGameControl);
 		}
 		break;
 	default:
@@ -270,15 +251,8 @@ bool CMeshExporter::ExportScaleController(IGameControl* pGameControl)
 	{
 	case IGameControl::IGAME_MAXSTD:
 		{
-			IGameKeyTab ScaleKey;
-			if (pGameControl->GetBezierKeys(ScaleKey, IGAME_SCALE))
-			{
-				// TODO: export Bezier Keys
-			}
-			else
-			{
-				// TODO: 
-			}
+			// export scale key
+			ExportMaxStdScaleKey(pGameControl);
 		}
 		break;
 	default:
@@ -289,4 +263,303 @@ bool CMeshExporter::ExportScaleController(IGameControl* pGameControl)
 	}
 
 	return true;
+}
+
+bool CMeshExporter::ExportMaxStdPosKey(IGameControl* pGameControl)
+{
+	IGameKeyTab PosKey;
+	if (pGameControl->GetBezierKeys(PosKey, IGAME_POS))
+	{
+		int nCount = PosKey.Count();
+
+		for (int i = 0; i < nCount; ++i)
+		{
+			// TODO: time = PosKey[i].t;
+			// TODO: position = PosKey[i].bezierKey.pval;
+		}
+	}
+	else if (pGameControl->GetLinearKeys(PosKey, IGAME_POS))
+	{
+		int nCount = PosKey.Count();
+
+		for (int i = 0; i < nCount; ++i)
+		{
+			// TODO: time = PosKey[i].t;
+			// TODO: position = PosKey[i].linearKey.pval;
+		}
+	}
+	else
+	{
+		// TODO: 
+	}
+
+	return true;
+}
+
+bool CMeshExporter::ExportIndependentPosKey(IGameControl* pGameControl)
+{
+	IGameKeyTab PosKey;
+	if (pGameControl->GetBezierKeys(PosKey, IGAME_POS_X))
+	{
+		int nCount = PosKey.Count();
+
+		for (int i = 0; i < nCount; ++i)
+		{
+			// TODO: time = PosKey[i].t;
+			// TODO: position = PosKey[i].bezierKey.fval;
+		}
+	}
+
+	if (pGameControl->GetLinearKeys(PosKey, IGAME_POS_X))
+	{
+		int nCount = PosKey.Count();
+
+		for (int i = 0; i < nCount; ++i)
+		{
+			// TODO: time = PosKey[i].t;
+			// TODO: position = PosKey[i].linearKey.fval;
+		}
+	}
+
+	if (pGameControl->GetBezierKeys(PosKey, IGAME_POS_Y))
+	{
+		int nCount = PosKey.Count();
+
+		for (int i = 0; i < nCount; ++i)
+		{
+			// TODO: time = PosKey[i].t;
+			// TODO: position = PosKey[i].bezierKey.fval;
+		}
+	}
+
+	if (pGameControl->GetLinearKeys(PosKey, IGAME_POS_Y))
+	{
+		int nCount = PosKey.Count();
+
+		for (int i = 0; i < nCount; ++i)
+		{
+			// TODO: time = PosKey[i].t;
+			// TODO: position = PosKey[i].linearKey.fval;
+		}
+	}
+
+	if (pGameControl->GetBezierKeys(PosKey, IGAME_POS_Z))
+	{
+		int nCount = PosKey.Count();
+
+		for (int i = 0; i < nCount; ++i)
+		{
+			// TODO: time = PosKey[i].t;
+			// TODO: position = PosKey[i].bezierKey.fval;
+		}
+	}
+
+	if (pGameControl->GetLinearKeys(PosKey, IGAME_POS_Z))
+	{
+		int nCount = PosKey.Count();
+
+		for (int i = 0; i < nCount; ++i)
+		{
+			// TODO: time = PosKey[i].t;
+			// TODO: position = PosKey[i].linearKey.fval;
+		}
+	}
+
+	return true;
+}
+
+bool CMeshExporter::ExportMaxStdRotKey(IGameControl* pGameControl)
+{
+	IGameKeyTab RotKey;
+	if (pGameControl->GetBezierKeys(RotKey, IGAME_ROT))
+	{
+		// export Bezier Keys
+		int nCount = RotKey.Count();
+
+		for (int i = 0; i < nCount; ++i)
+		{
+			// TODO: time = RotKey[i].t;
+			// TODO: Quat = RotKey[i].bezierKey.qval;
+		}
+	}
+	else if (pGameControl->GetLinearKeys(RotKey, IGAME_ROT))
+	{
+		// export Linear Keys
+		int nCount = RotKey.Count();
+
+		for (int i = 0; i < nCount; ++i)
+		{
+			// TODO: time = RotKey[i].t;
+			// TODO: Quat = RotKey[i].linearKey.qval;
+		}
+	}
+	else if (pGameControl->GetTCBKeys(RotKey, IGAME_ROT))
+	{
+		// export TCB Keys
+		int nCount = RotKey.Count();
+
+		for (int i = 0; i < nCount; ++i)
+		{
+			// TODO: time = RotKey[i].t;
+			// TODO: AngAxis = RotKey[i].tcbKey.aval;
+		}
+	}
+	else
+	{
+		// TODO: 
+	}
+
+	return true;
+}
+
+bool CMeshExporter::ExportEulerRotKey(IGameControl* pGameControl)
+{
+	IGameKeyTab RotKey;
+
+	if (pGameControl->GetBezierKeys(RotKey, IGAME_EULER_X))
+	{
+		int nCount = RotKey.Count();
+
+		for (int i = 0; i < nCount; ++i)
+		{
+			// TODO: time = RotKey[i].t;
+			// TODO: RotKey[i].bezierKey.fval;
+		}
+	}
+
+	if (pGameControl->GetLinearKeys(RotKey, IGAME_EULER_X))
+	{
+		int nCount = RotKey.Count();
+
+		for (int i = 0; i < nCount; ++i)
+		{
+			// TODO: time = RotKey[i].t;
+			// TODO: RotKey[i].linearKey.fval;
+		}
+	}
+
+	if (pGameControl->GetBezierKeys(RotKey, IGAME_EULER_Y))
+	{
+		int nCount = RotKey.Count();
+
+		for (int i = 0; i < nCount; ++i)
+		{
+			// TODO: time = RotKey[i].t;
+			// TODO: RotKey[i].bezierKey.fval;
+		}
+	}
+
+	if (pGameControl->GetLinearKeys(RotKey, IGAME_EULER_Y))
+	{
+		int nCount = RotKey.Count();
+
+		for (int i = 0; i < nCount; ++i)
+		{
+			// TODO: time = RotKey[i].t;
+			// TODO: RotKey[i].linearKey.fval;
+		}
+	}
+
+	if (pGameControl->GetBezierKeys(RotKey, IGAME_EULER_Z))
+	{
+		int nCount = RotKey.Count();
+
+		for (int i = 0; i < nCount; ++i)
+		{
+			// TODO: time = RotKey[i].t;
+			// TODO: RotKey[i].bezierKey.fval;
+		}
+	}
+
+	if (pGameControl->GetLinearKeys(RotKey, IGAME_EULER_Z))
+	{
+		int nCount = RotKey.Count();
+
+		for (int i = 0; i < nCount; ++i)
+		{
+			// TODO: time = RotKey[i].t;
+			// TODO: RotKey[i].linearKey.fval;
+		}
+	}
+
+	return true;
+}
+
+bool CMeshExporter::ExportMaxStdScaleKey(IGameControl* pGameControl)
+{
+	IGameKeyTab ScaleKey;
+	if (pGameControl->GetBezierKeys(ScaleKey, IGAME_SCALE))
+	{
+		int nCount = ScaleKey.Count();
+
+		for (int i = 0; i < nCount; ++i)
+		{
+			// TODO: time = ScaleKey[i].t;
+			// TODO: ScaleKey[i].bezierKey.sval;
+		}
+	}
+	else
+	{
+		// TODO: 
+	}
+
+	return true;
+}
+
+bool CMeshExporter::ExportConstraintKey(IGameControl* pGameControl)
+{
+	IGameConstraint* pGameConstraint = pGameControl->GetConstraint(IGAME_POS);
+
+	int nConstraintCount = pGameConstraint->NumberOfConstraintNodes();
+	for(int i = 0; i < nConstraintCount; ++i)
+	{
+		float fWeight = pGameConstraint->GetConstraintWeight(i);
+		int nNodeID = pGameConstraint->GetConstraintNodes(i)->GetNodeID();
+
+		// TODO: export constraint
+	}
+
+	IPropertyContainer* pPropertyContainer = pGameConstraint->GetIPropertyContainer();
+	int nPropertyCount = pPropertyContainer->GetNumberOfProperties();
+
+	for(int i = 0; i < nPropertyCount; ++i)
+	{
+		// TODO: dump property
+	}
+
+	return true;
+}
+
+bool CMeshExporter::ExportListKey(IGameControl* pGameControl)
+{
+	int nCount = pGameControl->GetNumOfListSubControls(IGAME_POS);
+	for (int i = 0; i < nCount; ++i)
+	{
+		IGameControl* pSubGameControl = pGameControl->GetListSubControl(i, IGAME_POS);
+		bool bOK = ExportPositionController(pSubGameControl);
+		// TODO: check bOK
+	}
+
+	nCount = pGameControl->GetNumOfListSubControls(IGAME_ROT);
+	for (int i = 0; i < nCount; ++i)
+	{
+		IGameControl* pSubGameControl = pGameControl->GetListSubControl(i, IGAME_ROT);
+		bool bOK = ExportRotationController(pSubGameControl);
+		// TODO: check bOK
+	}
+
+	nCount = pGameControl->GetNumOfListSubControls(IGAME_SCALE);
+	for (int i = 0; i < nCount; ++i)
+	{
+		IGameControl* pSubGameControl = pGameControl->GetListSubControl(i, IGAME_SCALE);
+		bool bOK = ExportScaleController(pSubGameControl);
+		// TODO: check bOK
+	}
+
+	return true;
+}
+
+bool CMeshExporter::ExportSampleKey(IGameControl* pGameControl)
+{
+	// TODO: 
 }
