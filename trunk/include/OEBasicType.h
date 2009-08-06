@@ -31,7 +31,7 @@ typedef unsigned __int64			uint64;
 
 typedef TCHAR						tchar;
 
-typedef std::basic_string<TCHAR>	tstring;
+typedef std::basic_string<tchar>	tstring;
 
 //typedef NULL						NULL;
 
