@@ -6,6 +6,7 @@
  * \author zjhlogo (zjhlogo@163.com)
  */
 #include "MeshExporter.h"
+#include <OEOS.h>
 
 CMeshExporter::CMeshExporter()
 {
@@ -113,7 +114,9 @@ bool CMeshExporter::ExportNode(IGameNode* pGameNode, int nDepth /* = 0 */)
 	ExportMesh(pGameNode);
 
 	// export controller
+	m_TimeValueSet.clear();
 	ExportController(pGameNode);
+	DumpTimeValueSet(m_TimeValueSet);
 
 	// export child
 	int nChildCount = pGameNode->GetChildCount();
@@ -274,6 +277,7 @@ bool CMeshExporter::ExportMaxStdPosKey(IGameControl* pGameControl)
 
 		for (int i = 0; i < nCount; ++i)
 		{
+			m_TimeValueSet.insert(PosKey[i].t);
 			// TODO: time = PosKey[i].t;
 			// TODO: position = PosKey[i].bezierKey.pval;
 		}
@@ -284,6 +288,7 @@ bool CMeshExporter::ExportMaxStdPosKey(IGameControl* pGameControl)
 
 		for (int i = 0; i < nCount; ++i)
 		{
+			m_TimeValueSet.insert(PosKey[i].t);
 			// TODO: time = PosKey[i].t;
 			// TODO: position = PosKey[i].linearKey.pval;
 		}
@@ -305,6 +310,7 @@ bool CMeshExporter::ExportIndependentPosKey(IGameControl* pGameControl)
 
 		for (int i = 0; i < nCount; ++i)
 		{
+			m_TimeValueSet.insert(PosKey[i].t);
 			// TODO: time = PosKey[i].t;
 			// TODO: position = PosKey[i].bezierKey.fval;
 		}
@@ -316,6 +322,7 @@ bool CMeshExporter::ExportIndependentPosKey(IGameControl* pGameControl)
 
 		for (int i = 0; i < nCount; ++i)
 		{
+			m_TimeValueSet.insert(PosKey[i].t);
 			// TODO: time = PosKey[i].t;
 			// TODO: position = PosKey[i].linearKey.fval;
 		}
@@ -327,6 +334,7 @@ bool CMeshExporter::ExportIndependentPosKey(IGameControl* pGameControl)
 
 		for (int i = 0; i < nCount; ++i)
 		{
+			m_TimeValueSet.insert(PosKey[i].t);
 			// TODO: time = PosKey[i].t;
 			// TODO: position = PosKey[i].bezierKey.fval;
 		}
@@ -338,6 +346,7 @@ bool CMeshExporter::ExportIndependentPosKey(IGameControl* pGameControl)
 
 		for (int i = 0; i < nCount; ++i)
 		{
+			m_TimeValueSet.insert(PosKey[i].t);
 			// TODO: time = PosKey[i].t;
 			// TODO: position = PosKey[i].linearKey.fval;
 		}
@@ -349,6 +358,7 @@ bool CMeshExporter::ExportIndependentPosKey(IGameControl* pGameControl)
 
 		for (int i = 0; i < nCount; ++i)
 		{
+			m_TimeValueSet.insert(PosKey[i].t);
 			// TODO: time = PosKey[i].t;
 			// TODO: position = PosKey[i].bezierKey.fval;
 		}
@@ -360,6 +370,7 @@ bool CMeshExporter::ExportIndependentPosKey(IGameControl* pGameControl)
 
 		for (int i = 0; i < nCount; ++i)
 		{
+			m_TimeValueSet.insert(PosKey[i].t);
 			// TODO: time = PosKey[i].t;
 			// TODO: position = PosKey[i].linearKey.fval;
 		}
@@ -378,6 +389,7 @@ bool CMeshExporter::ExportMaxStdRotKey(IGameControl* pGameControl)
 
 		for (int i = 0; i < nCount; ++i)
 		{
+			m_TimeValueSet.insert(RotKey[i].t);
 			// TODO: time = RotKey[i].t;
 			// TODO: Quat = RotKey[i].bezierKey.qval;
 		}
@@ -389,6 +401,7 @@ bool CMeshExporter::ExportMaxStdRotKey(IGameControl* pGameControl)
 
 		for (int i = 0; i < nCount; ++i)
 		{
+			m_TimeValueSet.insert(RotKey[i].t);
 			// TODO: time = RotKey[i].t;
 			// TODO: Quat = RotKey[i].linearKey.qval;
 		}
@@ -400,6 +413,7 @@ bool CMeshExporter::ExportMaxStdRotKey(IGameControl* pGameControl)
 
 		for (int i = 0; i < nCount; ++i)
 		{
+			m_TimeValueSet.insert(RotKey[i].t);
 			// TODO: time = RotKey[i].t;
 			// TODO: AngAxis = RotKey[i].tcbKey.aval;
 		}
@@ -422,6 +436,7 @@ bool CMeshExporter::ExportEulerRotKey(IGameControl* pGameControl)
 
 		for (int i = 0; i < nCount; ++i)
 		{
+			m_TimeValueSet.insert(RotKey[i].t);
 			// TODO: time = RotKey[i].t;
 			// TODO: RotKey[i].bezierKey.fval;
 		}
@@ -433,6 +448,7 @@ bool CMeshExporter::ExportEulerRotKey(IGameControl* pGameControl)
 
 		for (int i = 0; i < nCount; ++i)
 		{
+			m_TimeValueSet.insert(RotKey[i].t);
 			// TODO: time = RotKey[i].t;
 			// TODO: RotKey[i].linearKey.fval;
 		}
@@ -444,6 +460,7 @@ bool CMeshExporter::ExportEulerRotKey(IGameControl* pGameControl)
 
 		for (int i = 0; i < nCount; ++i)
 		{
+			m_TimeValueSet.insert(RotKey[i].t);
 			// TODO: time = RotKey[i].t;
 			// TODO: RotKey[i].bezierKey.fval;
 		}
@@ -455,6 +472,7 @@ bool CMeshExporter::ExportEulerRotKey(IGameControl* pGameControl)
 
 		for (int i = 0; i < nCount; ++i)
 		{
+			m_TimeValueSet.insert(RotKey[i].t);
 			// TODO: time = RotKey[i].t;
 			// TODO: RotKey[i].linearKey.fval;
 		}
@@ -466,6 +484,7 @@ bool CMeshExporter::ExportEulerRotKey(IGameControl* pGameControl)
 
 		for (int i = 0; i < nCount; ++i)
 		{
+			m_TimeValueSet.insert(RotKey[i].t);
 			// TODO: time = RotKey[i].t;
 			// TODO: RotKey[i].bezierKey.fval;
 		}
@@ -477,6 +496,7 @@ bool CMeshExporter::ExportEulerRotKey(IGameControl* pGameControl)
 
 		for (int i = 0; i < nCount; ++i)
 		{
+			m_TimeValueSet.insert(RotKey[i].t);
 			// TODO: time = RotKey[i].t;
 			// TODO: RotKey[i].linearKey.fval;
 		}
@@ -494,6 +514,7 @@ bool CMeshExporter::ExportMaxStdScaleKey(IGameControl* pGameControl)
 
 		for (int i = 0; i < nCount; ++i)
 		{
+			m_TimeValueSet.insert(ScaleKey[i].t);
 			// TODO: time = ScaleKey[i].t;
 			// TODO: ScaleKey[i].bezierKey.sval;
 		}
@@ -562,4 +583,17 @@ bool CMeshExporter::ExportListKey(IGameControl* pGameControl)
 bool CMeshExporter::ExportSampleKey(IGameControl* pGameControl)
 {
 	// TODO: 
+	return false;
+}
+
+void CMeshExporter::DumpTimeValueSet(const TIME_VALUE_SET& TimeValueSet)
+{
+	for (TIME_VALUE_SET::const_iterator it = TimeValueSet.begin(); it != TimeValueSet.end(); ++it)
+	{
+		tstring strOut;
+		COEOS::strformat(strOut, _T("%d, "), (*it));
+		m_pFile->Write(strOut.c_str(), (uint)(strOut.length()*sizeof(tchar)));
+	}
+
+	m_pFile->Write(_T("\n"), sizeof(tchar));
 }

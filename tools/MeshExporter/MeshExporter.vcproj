@@ -44,7 +44,10 @@
 			<Tool
 				Name="VCMIDLTool"/>
 			<Tool
-				Name="VCPostBuildEventTool"/>
+				Name="VCPostBuildEventTool"
+				CommandLine="echo copy &quot;$(TargetPath)&quot; &quot;e:\Program Files\Autodesk\3ds Max 9\plugins\&quot;
+copy &quot;$(TargetPath)&quot; &quot;e:\Program Files\Autodesk\3ds Max 9\plugins\&quot;
+"/>
 			<Tool
 				Name="VCPreBuildEventTool"/>
 			<Tool

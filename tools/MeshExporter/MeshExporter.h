@@ -12,6 +12,8 @@
 #include <IGame/IGame.h>
 
 #include <vector>
+#include <set>
+
 #include <IOEFileMgr.h>
 
 class CMeshExporter : public SceneExport
@@ -39,6 +41,7 @@ public:
 	} VERTEX;
 
 	typedef std::vector<VERTEX> VVERTEX;
+	typedef std::set<TimeValue> TIME_VALUE_SET;
 
 public:
 	CMeshExporter();
@@ -80,11 +83,14 @@ private:
 	bool ExportListKey(IGameControl* pGameControl);
 	bool ExportSampleKey(IGameControl* pGameControl);
 
+	void DumpTimeValueSet(const TIME_VALUE_SET& TimeValueSet);
+
 private:
 	IOEFile* m_pFile;
 	IGameScene * m_pIGame;
 
 	VVERTEX m_vVerts;
+	TIME_VALUE_SET m_TimeValueSet;
 
 };
 #endif // __MESHEXPORTER_H__
