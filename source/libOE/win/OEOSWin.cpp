@@ -11,6 +11,44 @@
 #include <Windows.h>
 #include <vector>
 
+#include "../OEFileMgr_Impl.h"
+#include "../OELogFileMgr_Impl.h"
+#include "../OEXmlMgr_Impl.h"
+
+COEFileMgr_Impl* g_pOEFileMgr_Impl = NULL;
+COELogFileMgr_Impl* g_pOELogFileMgr_Impl = NULL;
+COEXmlMgr_Impl* g_pOEXmlMgr_Impl = NULL;
+
+bool COEOS::Initialize()
+{
+	if (!g_pOEFileMgr_Impl)
+	{
+		g_pOEFileMgr_Impl = new COEFileMgr_Impl();
+		if (!g_pOEFileMgr_Impl) return false;
+	}
+
+	if (!g_pOELogFileMgr_Impl)
+	{
+		g_pOELogFileMgr_Impl = new COELogFileMgr_Impl();
+		if (!g_pOELogFileMgr_Impl) return false;
+	}
+
+	if (!g_pOEXmlMgr_Impl)
+	{
+		g_pOEXmlMgr_Impl = new COEXmlMgr_Impl();
+		if (!g_pOEXmlMgr_Impl) return false;
+	}
+
+	return true;
+}
+
+void COEOS::Terminate()
+{
+	SAFE_DELETE(g_pOEXmlMgr_Impl);
+	SAFE_DELETE(g_pOELogFileMgr_Impl);
+	SAFE_DELETE(g_pOEFileMgr_Impl);
+}
+
 #define MODULE_INIT_FUNC_NAME _T("OEModuleInit")
 #define MODULE_TERM_FUNC_NAME _T("OEModuleTerm")
 #define MODULE_SYNC_FUNC_NAME _T("OEModuleSyncInterfaces")

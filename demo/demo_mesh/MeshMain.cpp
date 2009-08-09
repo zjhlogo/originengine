@@ -6,14 +6,19 @@
  * \author zjhlogo (zjhlogo@163.com)
  */
 #include <Windows.h>
+#include <OEOS.h>
 #include "MeshMain.h"
 #include "MeshApp.h"
 
 int __stdcall WinMain(HINSTANCE hInst, HINSTANCE hPrevInst, LPSTR lpCmdLine, int nShowCmd)
 {
-	CMeshApp* pApp = new CMeshApp();
-	pApp->Run();
-	SAFE_DELETE(pApp);
+	if (COEOS::Initialize())
+	{
+		CMeshApp* pApp = new CMeshApp();
+		pApp->Run();
+		SAFE_DELETE(pApp);
+	}
 
+	COEOS::Terminate();
 	return 0;
 }

@@ -17,15 +17,16 @@ int main(int argc, char** argv)
 	tstring strFileName;
 	if (!COEOS::char2tchar(strFileName, argv[1])) return 0;
 
-	OEFileSystemInit();
-
-	CMs3dConv conv;
-	if (conv.LoadFromFile(strFileName))
+	if (COEOS::Initialize())
 	{
-		strFileName.append(_T(".mesh"));
-		conv.DoConvert(strFileName);
+		CMs3dConv conv;
+		if (conv.LoadFromFile(strFileName))
+		{
+			strFileName.append(_T(".mesh"));
+			conv.DoConvert(strFileName);
+		}
 	}
 
-	OEFileSystemDestroy();
+	COEOS::Terminate();
 	return 0;
 }

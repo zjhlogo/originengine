@@ -6,6 +6,8 @@
  * \author zjhlogo (zjhlogo@163.com)
  */
 #include "OEMeshMgr_Impl.h"
+#include "OEMesh_Impl.h"
+#include <OEInterfaces.h>
 
 COEMeshMgr_Impl::COEMeshMgr_Impl()
 {
@@ -31,6 +33,14 @@ void COEMeshMgr_Impl::Destroy()
 
 IOEMesh* COEMeshMgr_Impl::CreateMeshFromFile(const tstring& strFileName)
 {
-	// TODO: 
-	return NULL;
+	// TODO: check whether the mesh created
+	COEMesh_Impl* pMesh = new COEMesh_Impl(strFileName);
+	if (!pMesh || !pMesh->IsOK())
+	{
+		LOGOUT(_T("IOEMeshMgr::CreateMeshFromFile Failed"));
+		SAFE_RELEASE(pMesh);
+		return NULL;
+	}
+
+	return pMesh;
 }

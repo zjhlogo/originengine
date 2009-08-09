@@ -6,14 +6,19 @@
  * \author zjhlogo (zjhlogo@163.com)
  */
 #include <Windows.h>
+#include <OEOS.h>
 #include "TestMain.h"
 #include "TestApp.h"
 
 int __stdcall WinMain(HINSTANCE hInst, HINSTANCE hPrevInst, LPSTR lpCmdLine, int nShowCmd)
 {
-	CTestApp* pApp = new CTestApp();
-	pApp->Run();
-	SAFE_DELETE(pApp);
+	if (COEOS::Initialize())
+	{
+		CTestApp* pApp = new CTestApp();
+		pApp->Run();
+		SAFE_DELETE(pApp);
+	}
 
+	COEOS::Terminate();
 	return 0;
 }

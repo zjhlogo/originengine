@@ -97,9 +97,6 @@ bool CWaterApp::Initialize()
 	if (!m_pDlgWaveParam) return false;
 	if (!m_pDlgWaveParam->Initialize()) return false;
 
-	g_pOERenderer->SetCullMode(IOERenderer::CMT_NONE);
-	g_pOERenderer->SetFillMode(IOERenderer::FM_WIREFRAME);
-
 	return true;
 }
 
@@ -122,6 +119,8 @@ void CWaterApp::Update(float fDetailTime)
 void CWaterApp::Render(float fDetailTime)
 {
 	static float s_fTime = 0.0f;
+
+	g_pOERenderer->SetFillMode(IOERenderer::FM_WIREFRAME);
 
 	CMatrix4x4 matWorldViewProj;
 	g_pOERenderer->GetTransform(matWorldViewProj, IOERenderer::TT_WORLD_VIEW_PROJ);

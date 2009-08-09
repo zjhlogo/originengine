@@ -10,11 +10,13 @@
 
 #include "OEBasicType.h"
 
-// 核心模块
-#include "IOECore.h"
+// 基础模块
 #include "IOEFileMgr.h"
 #include "IOELogFileMgr.h"
 #include "IOEXmlMgr.h"
+
+// 核心模块
+#include "IOECore.h"
 #include "IOEConfigFileMgr.h"
 #include "IOEMeshMgr.h"
 

@@ -32,7 +32,6 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="../../3rdsrc/tinyxml/tinyxmld.lib"
 				OutputFile="$(OutDir)/OriginEngine_D.dll"
 				LinkIncremental="2"
 				GenerateDebugInformation="TRUE"
@@ -81,7 +80,6 @@ copy &quot;$(TargetPath)&quot; &quot;..\..\bin\&quot;
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="../../3rdsrc/tinyxml/tinyxml.lib"
 				OutputFile="$(OutDir)/OriginEngine.dll"
 				LinkIncremental="1"
 				GenerateDebugInformation="TRUE"
@@ -135,7 +133,6 @@ copy &quot;$(TargetPath)&quot; &quot;..\..\bin\&quot;
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="../../3rdsrc/tinyxml/tinyxmld.lib"
 				OutputFile="$(OutDir)/OriginEngine_UD.dll"
 				LinkIncremental="2"
 				GenerateDebugInformation="TRUE"
@@ -184,7 +181,6 @@ copy &quot;$(TargetPath)&quot; &quot;..\..\bin\&quot;
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="../../3rdsrc/tinyxml/tinyxml.lib"
 				OutputFile="$(OutDir)/OriginEngineU.dll"
 				LinkIncremental="1"
 				GenerateDebugInformation="TRUE"
@@ -231,28 +227,19 @@ copy &quot;$(TargetPath)&quot; &quot;..\..\bin\&quot;
 				RelativePath=".\OECore_Impl.cpp">
 			</File>
 			<File
-				RelativePath=".\OEFile_Impl.cpp">
-			</File>
-			<File
-				RelativePath=".\OEFileMgr_Impl.cpp">
-			</File>
-			<File
-				RelativePath=".\OELogFileMgr_Impl.cpp">
-			</File>
-			<File
 				RelativePath=".\OEMesh_Impl.cpp">
+			</File>
+			<File
+				RelativePath=".\OEMeshBone_Impl.cpp">
 			</File>
 			<File
 				RelativePath=".\OEMeshMgr_Impl.cpp">
 			</File>
 			<File
+				RelativePath=".\OEMeshPiece_Impl.cpp">
+			</File>
+			<File
 				RelativePath=".\OEModule.cpp">
-			</File>
-			<File
-				RelativePath=".\OEXmlMgr_Impl.cpp">
-			</File>
-			<File
-				RelativePath=".\OEXmlNode_Impl.cpp">
 			</File>
 		</Filter>
 		<Filter
@@ -266,28 +253,19 @@ copy &quot;$(TargetPath)&quot; &quot;..\..\bin\&quot;
 				RelativePath=".\OECore_Impl.h">
 			</File>
 			<File
-				RelativePath=".\OEFile_Impl.h">
-			</File>
-			<File
-				RelativePath=".\OEFileMgr_Impl.h">
-			</File>
-			<File
-				RelativePath=".\OELogFileMgr_Impl.h">
-			</File>
-			<File
 				RelativePath=".\OEMesh_Impl.h">
+			</File>
+			<File
+				RelativePath=".\OEMeshBone_Impl.h">
 			</File>
 			<File
 				RelativePath=".\OEMeshMgr_Impl.h">
 			</File>
 			<File
+				RelativePath=".\OEMeshPiece_Impl.h">
+			</File>
+			<File
 				RelativePath=".\OEModule.h">
-			</File>
-			<File
-				RelativePath=".\OEXmlMgr_Impl.h">
-			</File>
-			<File
-				RelativePath=".\OEXmlNode_Impl.h">
 			</File>
 		</Filter>
 		<Filter
@@ -306,19 +284,16 @@ copy &quot;$(TargetPath)&quot; &quot;..\..\bin\&quot;
 				RelativePath="..\..\include\IOEDevice.h">
 			</File>
 			<File
-				RelativePath="..\..\include\IOEFile.h">
-			</File>
-			<File
-				RelativePath="..\..\include\IOEFileMgr.h">
-			</File>
-			<File
-				RelativePath="..\..\include\IOELogFileMgr.h">
-			</File>
-			<File
 				RelativePath="..\..\include\IOEMesh.h">
 			</File>
 			<File
+				RelativePath="..\..\include\IOEMeshBone.h">
+			</File>
+			<File
 				RelativePath="..\..\include\IOEMeshMgr.h">
+			</File>
+			<File
+				RelativePath="..\..\include\IOEMeshPiece.h">
 			</File>
 			<File
 				RelativePath="..\..\include\IOEObject.h">
@@ -345,16 +320,13 @@ copy &quot;$(TargetPath)&quot; &quot;..\..\bin\&quot;
 				RelativePath="..\..\include\IOEVertDecl.h">
 			</File>
 			<File
-				RelativePath="..\..\include\IOEXmlMgr.h">
-			</File>
-			<File
-				RelativePath="..\..\include\IOEXmlNode.h">
-			</File>
-			<File
 				RelativePath="..\..\include\OEBasicType.h">
 			</File>
 			<File
 				RelativePath="..\..\include\OEConfig.h">
+			</File>
+			<File
+				RelativePath="..\..\include\OEFmtMesh.h">
 			</File>
 			<File
 				RelativePath="..\..\include\OEHolder.h">

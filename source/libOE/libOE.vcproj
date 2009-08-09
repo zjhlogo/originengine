@@ -32,6 +32,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLibrarianTool"
+				AdditionalDependencies="../../3rdsrc/tinyxml/tinyxmld.lib"
 				OutputFile="$(OutDir)/libOE_D.lib"/>
 			<Tool
 				Name="VCMIDLTool"/>
@@ -74,6 +75,7 @@ copy &quot;$(TargetPath)&quot; &quot;..\..\lib\&quot;
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLibrarianTool"
+				AdditionalDependencies="../../3rdsrc/tinyxml/tinyxml.lib"
 				OutputFile="$(OutDir)/libOE.lib"/>
 			<Tool
 				Name="VCMIDLTool"/>
@@ -119,6 +121,7 @@ copy &quot;$(TargetPath)&quot; &quot;..\..\lib\&quot;
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLibrarianTool"
+				AdditionalDependencies="../../3rdsrc/tinyxml/tinyxmld.lib"
 				OutputFile="$(OutDir)/libOE_UD.lib"/>
 			<Tool
 				Name="VCMIDLTool"/>
@@ -161,6 +164,7 @@ copy &quot;$(TargetPath)&quot; &quot;..\..\lib\&quot;
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLibrarianTool"
+				AdditionalDependencies="../../3rdsrc/tinyxml/tinyxml.lib"
 				OutputFile="$(OutDir)/libOEU.lib"/>
 			<Tool
 				Name="VCMIDLTool"/>
@@ -199,10 +203,25 @@ copy &quot;$(TargetPath)&quot; &quot;..\..\lib\&quot;
 				RelativePath=".\OEBasicType.cpp">
 			</File>
 			<File
+				RelativePath=".\OEFile_Impl.cpp">
+			</File>
+			<File
+				RelativePath=".\OEFileMgr_Impl.cpp">
+			</File>
+			<File
 				RelativePath=".\OEHolder.cpp">
 			</File>
 			<File
+				RelativePath=".\OELogFileMgr_Impl.cpp">
+			</File>
+			<File
 				RelativePath=".\win\OEOSWin.cpp">
+			</File>
+			<File
+				RelativePath=".\OEXmlMgr_Impl.cpp">
+			</File>
+			<File
+				RelativePath=".\OEXmlNode_Impl.cpp">
 			</File>
 		</Filter>
 		<Filter
@@ -216,10 +235,44 @@ copy &quot;$(TargetPath)&quot; &quot;..\..\lib\&quot;
 				RelativePath="..\..\include\OEBasicType.h">
 			</File>
 			<File
+				RelativePath=".\OEFile_Impl.h">
+			</File>
+			<File
+				RelativePath=".\OEFileMgr_Impl.h">
+			</File>
+			<File
 				RelativePath="..\..\include\OEHolder.h">
 			</File>
 			<File
+				RelativePath=".\OELogFileMgr_Impl.h">
+			</File>
+			<File
 				RelativePath="..\..\include\OEOS.h">
+			</File>
+			<File
+				RelativePath=".\OEXmlMgr_Impl.h">
+			</File>
+			<File
+				RelativePath=".\OEXmlNode_Impl.h">
+			</File>
+		</Filter>
+		<Filter
+			Name="SDK Header Files"
+			Filter="">
+			<File
+				RelativePath="..\..\include\IOEFile.h">
+			</File>
+			<File
+				RelativePath="..\..\include\IOEFileMgr.h">
+			</File>
+			<File
+				RelativePath="..\..\include\IOELogFileMgr.h">
+			</File>
+			<File
+				RelativePath="..\..\include\IOEXmlMgr.h">
+			</File>
+			<File
+				RelativePath="..\..\include\IOEXmlNode.h">
 			</File>
 		</Filter>
 	</Files>
