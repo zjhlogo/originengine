@@ -352,6 +352,7 @@ void COED3DDevice_Impl::PerformOnce(float fDetailTime)
 
 		// render screen
 		g_pOERenderer->SetSampleFilter(IOERenderer::SF_POINT);
+		g_pOERenderer->SetFillMode(IOERenderer::FM_SOLID);
 		if (m_pStringFPS) m_pStringFPS->Render(CPoint(0, 0));
 		g_pOEUIRenderer->FlushAll();
 

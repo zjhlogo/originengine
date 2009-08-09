@@ -1,16 +1,10 @@
 Microsoft Visual Studio Solution File, Format Version 8.00
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libOEFileSystem", "tools\libOEFileSystem\libOEFileSystem.vcproj", "{42EDF346-51DE-44E4-98ED-F492CF2C0143}"
-	ProjectSection(ProjectDependencies) = postProject
-	EndProjectSection
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MeshConv", "tools\MeshConv\MeshConv.vcproj", "{AA283B70-9245-4C23-A1AD-C61D3E229ADB}"
 	ProjectSection(ProjectDependencies) = postProject
-		{42EDF346-51DE-44E4-98ED-F492CF2C0143} = {42EDF346-51DE-44E4-98ED-F492CF2C0143}
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MeshExporter", "tools\MeshExporter\MeshExporter.vcproj", "{974A94F3-86D6-4CAC-8560-C5C1CE798CCF}"
 	ProjectSection(ProjectDependencies) = postProject
-		{42EDF346-51DE-44E4-98ED-F492CF2C0143} = {42EDF346-51DE-44E4-98ED-F492CF2C0143}
 	EndProjectSection
 EndProject
 Global
@@ -21,14 +15,6 @@ Global
 		Unicode Release = Unicode Release
 	EndGlobalSection
 	GlobalSection(ProjectConfiguration) = postSolution
-		{42EDF346-51DE-44E4-98ED-F492CF2C0143}.Debug.ActiveCfg = Debug|Win32
-		{42EDF346-51DE-44E4-98ED-F492CF2C0143}.Debug.Build.0 = Debug|Win32
-		{42EDF346-51DE-44E4-98ED-F492CF2C0143}.Release.ActiveCfg = Release|Win32
-		{42EDF346-51DE-44E4-98ED-F492CF2C0143}.Release.Build.0 = Release|Win32
-		{42EDF346-51DE-44E4-98ED-F492CF2C0143}.Unicode Debug.ActiveCfg = Unicode Debug|Win32
-		{42EDF346-51DE-44E4-98ED-F492CF2C0143}.Unicode Debug.Build.0 = Unicode Debug|Win32
-		{42EDF346-51DE-44E4-98ED-F492CF2C0143}.Unicode Release.ActiveCfg = Unicode Release|Win32
-		{42EDF346-51DE-44E4-98ED-F492CF2C0143}.Unicode Release.Build.0 = Unicode Release|Win32
 		{AA283B70-9245-4C23-A1AD-C61D3E229ADB}.Debug.ActiveCfg = Debug|Win32
 		{AA283B70-9245-4C23-A1AD-C61D3E229ADB}.Debug.Build.0 = Debug|Win32
 		{AA283B70-9245-4C23-A1AD-C61D3E229ADB}.Release.ActiveCfg = Release|Win32

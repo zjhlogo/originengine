@@ -6,7 +6,7 @@
  * \author zjhlogo (zjhlogo@163.com)
  */
 #include "OEMesh_Impl.h"
-#include <OEInterfaces.h>
+#include <OEFmtMesh.h>
 
 COEMesh_Impl::COEMesh_Impl(const tstring& strFileName)
 {
@@ -26,16 +26,117 @@ void COEMesh_Impl::Init()
 
 void COEMesh_Impl::Destroy()
 {
-	// TODO: 
+	for (VMESH_PIECE::iterator it = m_vPiece.begin(); it != m_vPiece.end(); ++it)
+	{
+		IOEMeshPiece* pMeshPiece = (*it);
+		SAFE_RELEASE(pMeshPiece);
+	}
+	m_vPiece.clear();
+
+	for (VMESH_BONE::iterator it = m_vBone.begin(); it != m_vBone.end(); ++it)
+	{
+		IOEMeshBone* pMeshBone = (*it);
+		SAFE_RELEASE(pMeshBone);
+	}
+	m_vBone.clear();
 }
 
-void COEMesh_Impl::Render(float fDetailTime)
+int COEMesh_Impl::GetNumPieces() const
 {
-	// TODO: 
+	return (int)m_vPiece.size();
+}
+
+IOEMeshPiece* COEMesh_Impl::GetPiece(int nIndex) const
+{
+	if (nIndex < 0 || nIndex >= (int)m_vPiece.size()) return NULL;
+	return m_vPiece[nIndex];
+}
+
+IOEMeshPiece* COEMesh_Impl::FindPiece(const tstring& strName) const
+{
+	for (VMESH_PIECE::const_iterator it = m_vPiece.begin(); it != m_vPiece.end(); ++it)
+	{
+		if ((*it)->GetName() == strName) return (*it);
+	}
+
+	return NULL;
+}
+
+int COEMesh_Impl::GetNumBones() const
+{
+	return (int)m_vBone.size();
+}
+
+IOEMeshBone* COEMesh_Impl::GetBone(int nIndex) const
+{
+	if (nIndex < 0 || nIndex >= (int)m_vBone.size()) return NULL;
+	return m_vBone[nIndex];
+}
+
+IOEMeshBone* COEMesh_Impl::FindBone(const tstring& strName) const
+{
+	for (VMESH_BONE::const_iterator it = m_vBone.begin(); it != m_vBone.end(); ++it)
+	{
+		if ((*it)->GetName() == strName) return (*it);
+	}
+
+	return NULL;
 }
 
 bool COEMesh_Impl::Create(const tstring& strFileName)
 {
-	// TODO:
-	return false;
+	IOEFile* pFile = g_pOEFileMgr->OpenFile(strFileName);
+	if (!pFile) return false;
+
+	COEFmtMesh::FILE_HEADER Header;
+	pFile->Read(&Header, sizeof(Header));
+
+	if (Header.nMagicNumber != COEFmtMesh::MAGIC_NUMBER
+		|| Header.nVersion != COEFmtMesh::CURRENT_VERSION)
+	{
+		SAFE_RELEASE(pFile);
+		return false;
+	}
+
+	// read piece info
+	std::vector<COEFmtMesh::PIECE> vPieces;
+	if (Header.nNumPieces > 0)
+	{
+		vPieces.resize(Header.nNumPieces);
+		pFile->Read(&vPieces[0], sizeof(COEFmtMesh::PIECE)*Header.nNumPieces);
+	}
+
+	// read bone info
+	std::vector<COEFmtMesh::BONE> vBones;
+	if (Header.nNumBones > 0)
+	{
+		vBones.resize(Header.nNumBones);
+		pFile->Read(&vBones[0], sizeof(COEFmtMesh::BONE)*Header.nNumBones);
+	}
+
+	// create pieces
+	for (int i = 0; i < Header.nNumPieces; ++i)
+	{
+		COEMeshPiece_Impl* pMeshPiece = new COEMeshPiece_Impl(vPieces[i], pFile);
+		if (!pMeshPiece || !pMeshPiece->IsOK())
+		{
+			SAFE_RELEASE(pMeshPiece);
+			return false;
+		}
+		m_vPiece.push_back(pMeshPiece);
+	}
+
+	// create bones
+	for (int i = 0; i < Header.nNumBones; ++i)
+	{
+		COEMeshBone_Impl* pMeshBone = new COEMeshBone_Impl(vBones[i], i, pFile);
+		if (!pMeshBone || !pMeshBone->IsOK())
+		{
+			SAFE_RELEASE(pMeshBone);
+			return false;
+		}
+		m_vBone.push_back(pMeshBone);
+	}
+
+	return true;
 }

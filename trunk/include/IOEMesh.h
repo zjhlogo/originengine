@@ -9,6 +9,8 @@
 #define __IOEMESH_H__
 
 #include "IOEObject.h"
+#include "IOEMeshPiece.h"
+#include "IOEMeshBone.h"
 
 class IOEMesh : public IOEObject
 {
@@ -16,7 +18,13 @@ public:
 	IOEMesh() {};
 	virtual ~IOEMesh() {};
 
-	virtual void Render(float fDetailTime) = 0;
+	virtual int GetNumPieces() const = 0;
+	virtual IOEMeshPiece* GetPiece(int nIndex) const = 0;
+	virtual IOEMeshPiece* FindPiece(const tstring& strName) const = 0;
+
+	virtual int GetNumBones() const = 0;
+	virtual IOEMeshBone* GetBone(int nIndex) const = 0;
+	virtual IOEMeshBone* FindBone(const tstring& strName) const = 0;
 
 };
 #endif // __IOEMESH_H__

@@ -8,19 +8,14 @@
 #include "MeshExporterDesc.h"
 #include "MeshExporter.h"
 
-bool OEFileSystemInit();
-void OEFileSystemDestroy();
-
 CMeshExporterDesc::CMeshExporterDesc()
 {
 	// TODO: 
-	OEFileSystemInit();
 }
 
 CMeshExporterDesc::~CMeshExporterDesc()
 {
 	// TODO: 
-	OEFileSystemDestroy();
 }
 
 int CMeshExporterDesc::IsPublic()

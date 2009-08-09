@@ -20,14 +20,9 @@ CMeshApp::~CMeshApp()
 
 void CMeshApp::Init()
 {
-	m_pVerts = NULL;
-	m_pIndis = NULL;
-	m_nVerts = 0;
-	m_nIndis = 0;
-	m_pShader = NULL;
-	m_pTexture = NULL;
 	m_pCamera = NULL;
 	m_pSimpleShape = NULL;
+	m_pMesh = NULL;
 
 	m_bLButtonDown = false;
 	m_nMouseDetailX = 0;
@@ -42,52 +37,23 @@ void CMeshApp::Destroy()
 
 bool CMeshApp::Initialize()
 {
-	static const IOEVertDecl::ELEMENT s_Decl[] =
-	{
-		IOEVertDecl::T_FLOAT3, IOEVertDecl::U_POSITION, 0,
-		IOEVertDecl::T_FLOAT2, IOEVertDecl::U_TEXCOORD, 0,
-		IOEVertDecl::T_FLOAT3, IOEVertDecl::U_TEXCOORD, 1,
-		IOEVertDecl::T_UNKNOWN, IOEVertDecl::U_UNKNOWN, 0,
-	};
-
-	m_pShader = g_pOEShaderMgr->CreateShader(s_Decl, _T("mesh.fx"));
-	if (!m_pShader) return false;
-
-	m_pTexture = g_pOETextureMgr->CreateTextureFromFile(_T("rock.png"));
-	if (!m_pTexture) return false;
-
 	m_pCamera = new CCamera();
 	if (!m_pCamera) return false;
 
 	m_pSimpleShape = new CSimpleShape();
 	if (!m_pSimpleShape || !m_pSimpleShape->Initialize()) return false;
 
-	IOEFile* pFile = g_pOEFileMgr->OpenFile(_T("teapot.ms3d.mesh"));
-	if (!pFile) return false;
+	m_pMesh = g_pOEMeshMgr->CreateMeshFromFile(_T("bone.mesh"));
+	if (!m_pMesh) return false;
 
-	pFile->Read(&m_nVerts, sizeof(m_nVerts));
-	m_pVerts = new VERTEX[m_nVerts];
-	pFile->Read(m_pVerts, sizeof(VERTEX)*m_nVerts);
-
-	pFile->Read(&m_nIndis, sizeof(m_nIndis));
-	m_pIndis = new ushort[m_nIndis];
-	pFile->Read(m_pIndis, sizeof(ushort)*m_nIndis);
-
-	SAFE_RELEASE(pFile);
 	return true;
 }
 
 void CMeshApp::Terminate()
 {
-	SAFE_RELEASE(m_pShader);
-	SAFE_RELEASE(m_pTexture);
-
+	SAFE_RELEASE(m_pMesh);
 	SAFE_DELETE(m_pSimpleShape);
 	SAFE_DELETE(m_pCamera);
-	SAFE_DELETE_ARRAY(m_pVerts);
-	SAFE_DELETE_ARRAY(m_pIndis);
-	m_nVerts = 0;
-	m_nIndis = 0;
 }
 
 void CMeshApp::Update(float fDetailTime)
@@ -101,22 +67,11 @@ void CMeshApp::Render(float fDetailTime)
 {
 	static float s_fTotalTime = 0.0f;
 
-	CMatrix4x4 matWorldViewProj;
-	g_pOERenderer->GetTransform(matWorldViewProj, IOERenderer::TT_WORLD_VIEW_PROJ);
-
 	s_fTotalTime += fDetailTime;
 	CVector3 vLightPos;
 	vLightPos.x = cos(s_fTotalTime)*10.0f;
 	vLightPos.y = 5.0f;
 	vLightPos.z = sin(s_fTotalTime)*10.0f;
-
-	m_pShader->SetMatrix(_T("g_matWorldViewProj"), matWorldViewProj);
-	m_pShader->SetVector(_T("g_vLightPos"), vLightPos);
-	m_pShader->SetTexture(_T("g_texBase"), m_pTexture);
-
-	g_pOERenderer->SetShader(m_pShader);
-	g_pOERenderer->DrawTriList(m_pVerts, m_nVerts, m_pIndis, m_nIndis);
-	g_pOERenderer->SetShader(NULL);
 
 	m_pSimpleShape->DrawCube(g_pOERenderer, vLightPos);
 }

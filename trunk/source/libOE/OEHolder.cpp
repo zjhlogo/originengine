@@ -10,11 +10,13 @@
 #include <OEOS.h>
 #include <OEUI/OEUI.h>
 
-// 核心模块
-IOECore* g_pOECore = NULL;
+// 基础模块
 IOEFileMgr* g_pOEFileMgr = NULL;
 IOELogFileMgr* g_pOELogFileMgr = NULL;
 IOEXmlMgr* g_pOEXmlMgr = NULL;
+
+// 核心模块
+IOECore* g_pOECore = NULL;
 IOEConfigFileMgr* g_pOEConfigFileMgr = NULL;
 IOEMeshMgr* g_pOEMeshMgr = NULL;
 
@@ -47,11 +49,13 @@ COEHolder::~COEHolder()
 
 void COEHolder::SetupInterfaces()
 {
-	// 核心模块
-	AddInterface(_T("IOECore"), (void**)&g_pOECore);
+	// 基础模块
 	AddInterface(_T("IOEFileMgr"), (void**)&g_pOEFileMgr);
 	AddInterface(_T("IOELogFileMgr"), (void**)&g_pOELogFileMgr);
 	AddInterface(_T("IOEXmlMgr"), (void**)&g_pOEXmlMgr);
+
+	// 核心模块
+	AddInterface(_T("IOECore"), (void**)&g_pOECore);
 	AddInterface(_T("IOEConfigFileMgr"), (void**)&g_pOEConfigFileMgr);
 	AddInterface(_T("IOEMeshMgr"), (void**)&g_pOEMeshMgr);
 

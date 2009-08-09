@@ -16,6 +16,9 @@ public:
 	typedef void* OEMODULE;
 
 public:
+	static bool Initialize();
+	static void Terminate();
+
 	static OEMODULE LoadOEModule(const tchar* pstrModuleName);
 	static void FreeOEModule(OEMODULE hModule);
 	static void SyncModuleInterfaces(OEMODULE hModule);

@@ -10,9 +10,11 @@
 
 #include <max.h>
 #include <IGame/IGame.h>
+#include <IGame/IGameModifier.h>
 
 #include <vector>
 #include <set>
+#include <map>
 
 #include <IOEFileMgr.h>
 
@@ -24,24 +26,82 @@ public:
 		CURRENT_VERSION = 100,
 	};
 
-	typedef struct BONE_tag
+	typedef struct NODE_INFO_tag
+	{
+		IGameNode* pGameNode;
+		IGameNode* pParentGameNode;
+	} NODE_INFO;
+
+	typedef std::vector<NODE_INFO> VNODE_INFO;
+
+	typedef struct SKIN_tag
 	{
 		int nBoneIndex;
 		float fWeight;
-	} BONE;
+	} SKIN;
 
-	typedef std::vector<BONE> VBONE;
+	typedef std::vector<SKIN> VSKIN;
 
 	typedef struct VERTEX_tag
 	{
 		Point3 pos;
-		float u, v;
-		float nx, ny, nz;
-		VBONE Bones;
+		//float u, v;
+		//float nx, ny, nz;
+		VSKIN Skins;
 	} VERTEX;
 
 	typedef std::vector<VERTEX> VVERTEX;
+
+	typedef struct FACE_tag
+	{
+		int nVertIndex[3];
+	} FACE;
+
+	typedef std::vector<FACE> VFACE;
+
+	typedef struct SKIN_MESH_tag
+	{
+		tstring strName;
+		GMatrix matLocal;
+		VVERTEX vVerts;
+		VFACE vFaces;
+	} SKIN_MESH;
+
+	typedef std::vector<SKIN_MESH> VSKIN_MESH;
+
+	typedef struct FRAME_INFO_tag
+	{
+		TimeValue Time;
+		GMatrix matAnim;
+	} FRAME_INFO;
+
+	typedef std::vector<FRAME_INFO> VFRAME_INFO;
+
+	typedef struct BONE_INFO_tag
+	{
+		tstring strName;
+		int nNodeID;
+		int nParentNodeID;
+
+		int nID;
+		int nParentID;
+
+		GMatrix matLocal;
+		VFRAME_INFO vFrameInfo;
+	} BONE_INFO;
+
+	typedef std::vector<BONE_INFO> VBONE_INFO;
+	typedef std::map<int, int> BONE_INFO_MAP;
+
 	typedef std::set<TimeValue> TIME_VALUE_SET;
+
+	typedef struct FILE_BLOCK_tag
+	{
+		uint nOffset;
+		uint nSize;
+	} FILE_BLOCK;
+
+	typedef std::vector<FILE_BLOCK> VFILE_BLOCK;
 
 public:
 	CMeshExporter();
@@ -63,33 +123,40 @@ private:
 	void Init();
 	void Destroy();
 
-	bool ExportNode(IGameNode* pGameNode, int nDepth = 0);
-	bool ExportMesh(IGameNode* pGameNode);
+	void Cleanup();
 
-	bool ExportController(IGameNode* pGameNode);
-	bool ExportPositionController(IGameControl* pGameControl);
-	bool ExportRotationController(IGameControl* pGameControl);
-	bool ExportScaleController(IGameControl* pGameControl);
+	bool CollectNodes(IGameNode* pGameNode, IGameNode* pParentGameNode = NULL);
 
-	bool ExportMaxStdPosKey(IGameControl* pGameControl);
-	bool ExportIndependentPosKey(IGameControl* pGameControl);
+	bool BuildMeshsInfo();
+	bool BuildBonesInfo();
 
-	bool ExportMaxStdRotKey(IGameControl* pGameControl);
-	bool ExportEulerRotKey(IGameControl* pGameControl);
+	bool SaveToFile(const tstring& strFileName);
 
-	bool ExportMaxStdScaleKey(IGameControl* pGameControl);
+	bool DumpSkinMesh(SKIN_MESH& SkinMeshOut, IGameNode* pGameNode);
+	bool DumpSkinVerts(SKIN_MESH& SkinMeshOut, IGameSkin* pGameSkin);
 
-	bool ExportConstraintKey(IGameControl* pGameControl);
-	bool ExportListKey(IGameControl* pGameControl);
-	bool ExportSampleKey(IGameControl* pGameControl);
+	bool DumpController(VFRAME_INFO& vFrameInfoOut, IGameNode* pGameNode);
+	bool DumpPositionController(TIME_VALUE_SET& TimeSetOut, IGameControl* pGameControl);
+	bool DumpRotationController(TIME_VALUE_SET& TimeSetOut, IGameControl* pGameControl);
+	bool DumpScaleController(TIME_VALUE_SET& TimeSetOut, IGameControl* pGameControl);
 
-	void DumpTimeValueSet(const TIME_VALUE_SET& TimeValueSet);
+	bool DumpMaxStdPosKey(TIME_VALUE_SET& TimeSetOut, IGameControl* pGameControl);
+	bool DumpIndependentPosKey(TIME_VALUE_SET& TimeSetOut, IGameControl* pGameControl);
+
+	bool DumpMaxStdRotKey(TIME_VALUE_SET& TimeSetOut, IGameControl* pGameControl);
+	bool DumpEulerRotKey(TIME_VALUE_SET& TimeSetOut, IGameControl* pGameControl);
+
+	bool DumpMaxStdScaleKey(TIME_VALUE_SET& TimeSetOut, IGameControl* pGameControl);
+
+	bool DumpConstraintKey(TIME_VALUE_SET& TimeSetOut, IGameControl* pGameControl);
+	bool DumpListKey(TIME_VALUE_SET& TimeSetOut, IGameControl* pGameControl);
 
 private:
-	IOEFile* m_pFile;
-	IGameScene * m_pIGame;
-
-	VVERTEX m_vVerts;
+	VNODE_INFO m_vMeshNode;
+	VNODE_INFO m_vBoneNode;
+	VSKIN_MESH m_vSkinMesh;
+	VBONE_INFO m_vBoneInfo;
+	BONE_INFO_MAP m_vBoneInfoMap;
 	TIME_VALUE_SET m_TimeValueSet;
 
 };

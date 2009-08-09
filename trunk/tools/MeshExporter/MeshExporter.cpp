@@ -7,6 +7,7 @@
  */
 #include "MeshExporter.h"
 #include <OEOS.h>
+#include <OEFmtMesh.h>
 
 CMeshExporter::CMeshExporter()
 {
@@ -20,13 +21,12 @@ CMeshExporter::~CMeshExporter()
 
 void CMeshExporter::Init()
 {
-	m_pFile = NULL;
-	m_pIGame = NULL;
+	// TODO: 
 }
 
 void CMeshExporter::Destroy()
 {
-	SAFE_RELEASE(m_pFile);
+	// TODO: 
 }
 
 int CMeshExporter::ExtCount()
@@ -41,12 +41,12 @@ const TCHAR* CMeshExporter::Ext(int n)
 
 const TCHAR* CMeshExporter::LongDesc()
 {
-	return _T("Export to .mesh file format");
+	return _T("Export to origin engine mesh file format");
 }
 
 const TCHAR* CMeshExporter::ShortDesc()
 {
-	return _T(".mesh file format");
+	return _T("Origin Engine Mesh");
 }
 
 const TCHAR* CMeshExporter::AuthorName()
@@ -76,98 +76,421 @@ unsigned int CMeshExporter::Version()
 
 void CMeshExporter::ShowAbout(HWND hWnd)
 {
-	MessageBox(hWnd, _T("Mesh Exporter"), _T("Copyright (c) 2009, zjhlogo All rights reserved"), MB_OK);
+	MessageBox(hWnd, _T("Origin Engine Mesh Exporter"), _T("Copyright (c) 2009, zjhlogo All rights reserved"), MB_OK);
 }
 
 int CMeshExporter::DoExport(const TCHAR* name, ExpInterface* ei, Interface* i, BOOL suppressPrompts /* = FALSE */, DWORD options /* = 0 */)
 {
-	m_vVerts.clear();
+	Cleanup();
 
-	SAFE_RELEASE(m_pFile);
-	m_pFile = g_pOEFileMgr->OpenFile(name, IOEFile::OFF_WRITE);
-	if (!m_pFile) return FALSE;
-
-	m_pIGame = GetIGameInterface();
+	IGameScene* pIGame = GetIGameInterface();
 	IGameConversionManager* pGameConvMgr = GetConversionManager();
 	pGameConvMgr->SetCoordSystem(IGameConversionManager::IGAME_D3D);
-	m_pIGame->InitialiseIGame();
+	pIGame->InitialiseIGame();
 
-	int nNodeCount = m_pIGame->GetTopLevelNodeCount();
+	// collect usefull nodes
+	int nNodeCount = pIGame->GetTopLevelNodeCount();
 	for (int i = 0; i < nNodeCount; ++i)
 	{
-		IGameNode* pGameNode = m_pIGame->GetTopLevelNode(i);
-		ExportNode(pGameNode);
+		IGameNode* pGameNode = pIGame->GetTopLevelNode(i);
+		CollectNodes(pGameNode);
 	}
 
-	m_pIGame->ReleaseIGame();
-	m_pIGame = NULL;
+	// build bone info
+	BuildBonesInfo();
 
-	SAFE_RELEASE(m_pFile);
+	// build mesh info
+	BuildMeshsInfo();
+
+	// save to file
+	SaveToFile(name);
+
+	pIGame->ReleaseIGame();
+	pIGame = NULL;
+
+	Cleanup();
+
 	return TRUE;
 }
 
-bool CMeshExporter::ExportNode(IGameNode* pGameNode, int nDepth /* = 0 */)
+void CMeshExporter::Cleanup()
+{
+	m_TimeValueSet.clear();
+	m_vMeshNode.clear();
+	m_vBoneNode.clear();
+	m_vSkinMesh.clear();
+	m_vBoneInfo.clear();
+	m_vBoneInfoMap.clear();
+}
+
+bool CMeshExporter::CollectNodes(IGameNode* pGameNode, IGameNode* pParentGameNode /* = NULL */)
 {
 	if (!pGameNode) return false;
 
-	// export object
-	ExportMesh(pGameNode);
-
-	// export controller
-	m_TimeValueSet.clear();
-	ExportController(pGameNode);
-	DumpTimeValueSet(m_TimeValueSet);
+	IGameObject* pGameObject = pGameNode->GetIGameObject();
+	switch (pGameObject->GetIGameType())
+	{
+	case IGameObject::IGAME_MESH:
+		{
+			NODE_INFO NodeInfo;
+			NodeInfo.pGameNode = pGameNode;
+			NodeInfo.pParentGameNode = pParentGameNode;
+			m_vMeshNode.push_back(NodeInfo);
+		}
+		break;
+	case IGameObject::IGAME_BONE:
+		{
+			NODE_INFO NodeInfo;
+			NodeInfo.pGameNode = pGameNode;
+			NodeInfo.pParentGameNode = pParentGameNode;
+			m_vBoneNode.push_back(NodeInfo);
+		}
+		break;
+	}
 
 	// export child
 	int nChildCount = pGameNode->GetChildCount();
 	for (int i = 0; i < nChildCount; ++i)
 	{
-		bool bOK = ExportNode(pGameNode->GetNodeChild(i), nDepth+1);
+		bool bOK = CollectNodes(pGameNode->GetNodeChild(i), pGameNode);
 		// TODO: check bOK
 	}
 
 	return true;
 }
 
-bool CMeshExporter::ExportMesh(IGameNode* pGameNode)
+bool CMeshExporter::BuildMeshsInfo()
 {
-	IGameObject* pGameObject = pGameNode->GetIGameObject();
-	if (pGameObject->GetIGameType() != IGameObject::IGAME_MESH) return false;
-
-	IGameMesh* pGameMesh = (IGameMesh*)pGameObject;
-	int nVertsCount = pGameMesh->GetNumberOfVerts();
-
-	// export vertices
-	for(int i = 0; i < nVertsCount; ++i)
+	for (VNODE_INFO::iterator it = m_vMeshNode.begin(); it != m_vMeshNode.end(); ++it)
 	{
-		VERTEX Vert;
-		bool bOK = pGameMesh->GetVertex(i, Vert.pos, true);
-		assert(bOK);
-		m_vVerts.push_back(Vert);
+		NODE_INFO& NodeInfo = (*it);
 
-		// TODO: more
+		SKIN_MESH SkinMesh;
+		SkinMesh.strName = NodeInfo.pGameNode->GetName();
+		SkinMesh.matLocal = NodeInfo.pGameNode->GetLocalTM();
+		bool bOK = DumpSkinMesh(SkinMesh, NodeInfo.pGameNode);
+		// TODO: check bOK
+		m_vSkinMesh.push_back(SkinMesh);
 	}
 
 	return true;
 }
 
-bool CMeshExporter::ExportController(IGameNode* pGameNode)
+bool CMeshExporter::BuildBonesInfo()
 {
-	IGameControl* pGameControl = pGameNode->GetIGameControl();
+	for (VNODE_INFO::iterator it = m_vBoneNode.begin(); it != m_vBoneNode.end(); ++it)
+	{
+		NODE_INFO& NodeInfo = (*it);
 
-	// export position controller
-	if (pGameControl->IsAnimated(IGAME_POS)) ExportPositionController(pGameControl);
+		BONE_INFO BoneInfo;
+		BoneInfo.strName = NodeInfo.pGameNode->GetName();
+		BoneInfo.nNodeID = NodeInfo.pGameNode->GetNodeID();
+		BoneInfo.nParentNodeID = 0;
+		if (NodeInfo.pParentGameNode) BoneInfo.nParentNodeID = NodeInfo.pParentGameNode->GetNodeID();
+		BoneInfo.nID = (int)m_vBoneInfo.size();
+		BoneInfo.nParentID = -1;
+		BoneInfo.matLocal = NodeInfo.pGameNode->GetLocalTM();
+		bool bOK = DumpController(BoneInfo.vFrameInfo, NodeInfo.pGameNode);
+		// TODO: check bOK
+		m_vBoneInfo.push_back(BoneInfo);
+		m_vBoneInfoMap.insert(std::make_pair(BoneInfo.nNodeID, BoneInfo.nID));
+	}
 
-	// export rotation controller
-	if (pGameControl->IsAnimated(IGAME_ROT)) ExportRotationController(pGameControl);
-
-	// export scale controller
-	if (pGameControl->IsAnimated(IGAME_SCALE)) ExportScaleController(pGameControl);
+	for (VBONE_INFO::iterator it = m_vBoneInfo.begin(); it != m_vBoneInfo.end(); ++it)
+	{
+		BONE_INFO& BoneInfo = (*it);
+		BONE_INFO_MAP::iterator itfound = m_vBoneInfoMap.find(BoneInfo.nParentNodeID);
+		if (itfound != m_vBoneInfoMap.end())
+		{
+			BoneInfo.nParentID = itfound->second;
+		}
+		else
+		{
+			// TODO: 
+		}
+	}
 
 	return true;
 }
 
-bool CMeshExporter::ExportPositionController(IGameControl* pGameControl)
+bool CMeshExporter::SaveToFile(const tstring& strFileName)
+{
+	IOEFile* pFile = g_pOEFileMgr->OpenFile(strFileName, IOEFile::OFF_WRITE);
+	if (!pFile) return false;
+
+	int nNumMesh = (int)m_vSkinMesh.size();
+	int nNumBone = (int)m_vBoneInfo.size();
+
+	uint nSizeOfHeader = sizeof(COEFmtMesh::FILE_HEADER);
+	uint nSizeOfMeshs = sizeof(COEFmtMesh::PIECE)*nNumMesh;
+	uint nSizeOfBones = sizeof(COEFmtMesh::BONE)*nNumBone;
+
+	uint nCurrPos = nSizeOfHeader+nSizeOfMeshs+nSizeOfBones;
+
+	// calculate verts offset
+	VFILE_BLOCK vVertsBlock;
+	uint nElementSize = sizeof(float)*3+sizeof(int)*4+sizeof(float)*4;
+	for (int i = 0; i < nNumMesh; ++i)
+	{
+		FILE_BLOCK FileBlock;
+		FileBlock.nOffset = nCurrPos;
+		FileBlock.nSize = nElementSize*(uint)m_vSkinMesh[i].vVerts.size();
+		vVertsBlock.push_back(FileBlock);
+
+		nCurrPos += FileBlock.nSize;
+	}
+
+	// calculate indis offset
+	VFILE_BLOCK vIndisBlock;
+	nElementSize = sizeof(ushort)*3;
+	for (int i = 0; i < nNumMesh; ++i)
+	{
+		FILE_BLOCK FileBlock;
+		FileBlock.nOffset = nCurrPos;
+		FileBlock.nSize = nElementSize*(uint)m_vSkinMesh[i].vFaces.size();
+		vIndisBlock.push_back(FileBlock);
+
+		nCurrPos += FileBlock.nSize;
+	}
+
+	// calculate bones offset
+	VFILE_BLOCK vBoneBlock;
+	nElementSize = sizeof(float)+sizeof(float)*16;
+	for (int i = 0; i < nNumBone; ++i)
+	{
+		FILE_BLOCK FileBlock;
+		FileBlock.nOffset = nCurrPos;
+		FileBlock.nSize = nElementSize*(uint)m_vBoneInfo[i].vFrameInfo.size();
+		vBoneBlock.push_back(FileBlock);
+
+		nCurrPos += FileBlock.nSize;
+	}
+
+	// write header
+	COEFmtMesh::FILE_HEADER Header;
+	Header.nMagicNumber = COEFmtMesh::MAGIC_NUMBER;
+	Header.nVersion = COEFmtMesh::CURRENT_VERSION;
+	Header.nNumPieces = nNumMesh;
+	Header.nNumBones = nNumBone;
+	pFile->Write(&Header, sizeof(Header));
+
+	// write piece list
+	for (int i = 0; i < nNumMesh; ++i)
+	{
+		COEFmtMesh::PIECE Piece;
+
+		std::string strName;
+		COEOS::tchar2char(strName, m_vSkinMesh[i].strName.c_str());
+		strncpy(Piece.szName, strName.c_str(), COEFmtMesh::PIECE_NAME_SIZE);
+
+		Piece.nPieceMask = COEFmtMesh::PM_VISIBLE;
+		Piece.nVertexDataMask = COEFmtMesh::VDM_XYZ | COEFmtMesh::VDM_BONE;
+		Piece.nMaterialID = 0;														// TODO: 
+		Piece.nNumVerts = (int)m_vSkinMesh[i].vVerts.size();
+		Piece.nOffVerts = vVertsBlock[i].nOffset;
+		Piece.nNumIndis = (int)m_vSkinMesh[i].vFaces.size()*3;
+		Piece.nOffIndis = vIndisBlock[i].nOffset;
+
+		pFile->Write(&Piece, sizeof(Piece));
+	}
+
+	// write bone list
+	for (int i = 0; i < nNumBone; ++i)
+	{
+		COEFmtMesh::BONE Bone;
+
+		std::string strName;
+		COEOS::tchar2char(strName, m_vBoneInfo[i].strName.c_str());
+		strncpy(Bone.szName, strName.c_str(), COEFmtMesh::BONE_NAME_SIZE);
+
+		Bone.nParentIndex = m_vBoneInfo[i].nParentID;
+
+		if (!m_vBoneInfo[i].vFrameInfo.empty())
+		{
+			TimeValue TimeTick = m_vBoneInfo[i].vFrameInfo.rbegin()->Time;
+			Bone.fTimeLength = TicksToSec(TimeTick);
+		}
+		else
+		{
+			Bone.fTimeLength = 0.0f;
+		}
+
+		memcpy(Bone.matLocal, m_vBoneInfo[i].matLocal.GetAddr(), sizeof(float)*16);
+
+		Bone.nNumBoneFrame = (int)m_vBoneInfo[i].vFrameInfo.size();
+		Bone.nOffBoneFrame = vBoneBlock[i].nOffset;
+		pFile->Write(&Bone, sizeof(Bone));
+	}
+
+	// write vertex data
+	for (int i = 0; i < nNumMesh; ++i)
+	{
+		int nNumVerts = (int)m_vSkinMesh[i].vVerts.size();
+		for (int j = 0; j < nNumVerts; ++j)
+		{
+			VERTEX& Vertex = m_vSkinMesh[i].vVerts[j];
+			float fPos[3];
+			fPos[0] = Vertex.pos.x;
+			fPos[1] = Vertex.pos.y;
+			fPos[2] = Vertex.pos.z;
+			pFile->Write(fPos, sizeof(fPos));
+
+			// TODO: add more data
+
+			int arrBoneID[4] = {0};
+			float arrWeight[4] = {0.0f};
+
+			int nSkinCount = (int)Vertex.Skins.size();
+			if (nSkinCount > 4) nSkinCount = 4;
+			for (int k = 0; k < nSkinCount; ++k)
+			{
+				arrBoneID[k] = Vertex.Skins[k].nBoneIndex;
+				arrWeight[k] = Vertex.Skins[k].fWeight;
+			}
+			pFile->Write(arrBoneID, sizeof(int)*4);
+			pFile->Write(arrWeight, sizeof(float)*4);
+		}
+	}
+
+	// write index data
+	for (int i = 0; i < nNumMesh; ++i)
+	{
+		int nNumFaces = (int)m_vSkinMesh[i].vFaces.size();
+		for (int j = 0; j < nNumFaces; ++j)
+		{
+			ushort nIndex[3];
+			nIndex[0] = (ushort)m_vSkinMesh[i].vFaces[j].nVertIndex[0];
+			nIndex[1] = (ushort)m_vSkinMesh[i].vFaces[j].nVertIndex[1];
+			nIndex[2] = (ushort)m_vSkinMesh[i].vFaces[j].nVertIndex[2];
+			pFile->Write(nIndex, sizeof(nIndex));
+		}
+	}
+
+	// write bone data
+	for (int i = 0; i < nNumBone; ++i)
+	{
+		int nNumFrame = (int)m_vBoneInfo[i].vFrameInfo.size();
+		for (int j = 0; j < nNumFrame; ++j)
+		{
+			FRAME_INFO& FrameInfo = m_vBoneInfo[i].vFrameInfo[j];
+			float fTime = TicksToSec(FrameInfo.Time);
+			pFile->Write(&fTime, sizeof(float));
+			pFile->Write(FrameInfo.matAnim.GetAddr(), sizeof(float)*16);
+		}
+	}
+
+	SAFE_RELEASE(pFile);
+	return true;
+}
+
+bool CMeshExporter::DumpSkinMesh(SKIN_MESH& SkinMeshOut, IGameNode* pGameNode)
+{
+	IGameObject* pGameObject = pGameNode->GetIGameObject();
+	if (pGameObject->GetIGameType() != IGameObject::IGAME_MESH) return false;
+
+	IGameMesh* pGameMesh = (IGameMesh*)pGameObject;
+	pGameMesh->SetCreateOptimizedNormalList();
+	if (!pGameMesh->InitializeData()) return false;
+
+	// vertices
+	int nNumVerts = pGameMesh->GetNumberOfVerts();
+	for(int i = 0; i < nNumVerts; ++i)
+	{
+		VERTEX Vertex;
+		pGameMesh->GetVertex(i, Vertex.pos, true);
+		SkinMeshOut.vVerts.push_back(Vertex);
+	}
+
+	// faces
+	int nNumFaces = pGameMesh->GetNumberOfFaces();
+	for (int i = 0; i < nNumFaces; ++i)
+	{
+		FaceEx* pFace = pGameMesh->GetFace(i);
+		FACE Face;
+		Face.nVertIndex[0] = pFace->vert[0];
+		Face.nVertIndex[1] = pFace->vert[1];
+		Face.nVertIndex[2] = pFace->vert[2];
+		SkinMeshOut.vFaces.push_back(Face);
+	}
+
+	// skins
+	int nNumModifier = pGameObject->GetNumModifiers();
+	for (int i = 0; i < nNumModifier; ++i)
+	{
+		IGameModifier* pGameModifier = pGameObject->GetIGameModifier(i);
+		if (!pGameModifier->IsSkin()) continue;
+		IGameSkin* pGameSkin = (IGameSkin*)pGameModifier;
+
+		bool bOK = DumpSkinVerts(SkinMeshOut, pGameSkin);
+		// TODO: check bOK
+	}
+
+	return true;
+}
+
+bool CMeshExporter::DumpSkinVerts(SKIN_MESH& SkinMeshOut, IGameSkin* pGameSkin)
+{
+	int nNumSkinVerts = pGameSkin->GetNumOfSkinnedVerts();
+	assert(nNumSkinVerts == SkinMeshOut.vVerts.size());
+
+	for (int i = 0; i < nNumSkinVerts; ++i)
+	{
+		int nNumBone = pGameSkin->GetNumberOfBones(i);
+		for (int j = 0; j < nNumBone; ++j)
+		{
+			int nNodeID = pGameSkin->GetBoneID(i, j);
+			BONE_INFO_MAP::iterator it = m_vBoneInfoMap.find(nNodeID);
+			if (it == m_vBoneInfoMap.end()) continue;
+
+			SKIN Skin;
+			Skin.nBoneIndex = it->second;
+			Skin.fWeight = pGameSkin->GetWeight(i, j);
+			SkinMeshOut.vVerts[i].Skins.push_back(Skin);
+		}
+	}
+
+	return true;
+}
+
+bool CMeshExporter::DumpController(VFRAME_INFO& vFrameInfoOut, IGameNode* pGameNode)
+{
+	IGameControl* pGameControl = pGameNode->GetIGameControl();
+
+	TIME_VALUE_SET TimeValueSet;
+
+	// export position controller
+	if (pGameControl->IsAnimated(IGAME_POS)) DumpPositionController(TimeValueSet, pGameControl);
+
+	// export rotation controller
+	if (pGameControl->IsAnimated(IGAME_ROT)) DumpRotationController(TimeValueSet, pGameControl);
+
+	// export scale controller
+	if (pGameControl->IsAnimated(IGAME_SCALE)) DumpScaleController(TimeValueSet, pGameControl);
+
+	// 
+	IGameKeyTab TMKey;
+	pGameControl->GetFullSampledKeys(TMKey, 1, IGAME_TM, true);
+
+	TIME_VALUE_SET::const_iterator it = TimeValueSet.begin();
+	int nCount = TMKey.Count();
+
+	for (int i = 0; i < nCount; ++i)
+	{
+		if (it == TimeValueSet.end()) break;
+		if (TMKey[i].t < (*it)) continue;
+
+		FRAME_INFO FrameInfo;
+		FrameInfo.Time = TMKey[i].t;
+		FrameInfo.matAnim = TMKey[i].sampleKey.gval;
+		vFrameInfoOut.push_back(FrameInfo);
+
+		++it;
+	}
+
+	return true;
+}
+
+bool CMeshExporter::DumpPositionController(TIME_VALUE_SET& TimeSetOut, IGameControl* pGameControl)
 {
 	IGameControl::MaxControlType eControlType = pGameControl->GetControlType(IGAME_POS);
 	switch (eControlType)
@@ -175,25 +498,25 @@ bool CMeshExporter::ExportPositionController(IGameControl* pGameControl)
 	case IGameControl::IGAME_MAXSTD:
 		{
 			// export std pos key
-			ExportMaxStdPosKey(pGameControl);
+			DumpMaxStdPosKey(TimeSetOut, pGameControl);
 		}
 		break;
 	case IGameControl::IGAME_POS_CONSTRAINT:
 		{
 			// export constraint controller
-			ExportConstraintKey(pGameControl);
+			DumpConstraintKey(TimeSetOut, pGameControl);
 		}
 		break;
 	case IGameControl::IGAME_LIST:
 		{
 			// export list controller
-			ExportListKey(pGameControl);
+			DumpListKey(TimeSetOut, pGameControl);
 		}
 		break;
 	case IGameControl::IGAME_INDEPENDENT_POS:
 		{
 			// export independent controller
-			ExportIndependentPosKey(pGameControl);
+			DumpIndependentPosKey(TimeSetOut, pGameControl);
 		}
 		break;
 	default:
@@ -207,7 +530,7 @@ bool CMeshExporter::ExportPositionController(IGameControl* pGameControl)
 	return true;
 }
 
-bool CMeshExporter::ExportRotationController(IGameControl* pGameControl)
+bool CMeshExporter::DumpRotationController(TIME_VALUE_SET& TimeSetOut, IGameControl* pGameControl)
 {
 	IGameControl::MaxControlType eControlType = pGameControl->GetControlType(IGAME_ROT);
 	switch (eControlType)
@@ -215,29 +538,30 @@ bool CMeshExporter::ExportRotationController(IGameControl* pGameControl)
 	case IGameControl::IGAME_MAXSTD:
 		{
 			// export std rot key
-			ExportMaxStdRotKey(pGameControl);
+			DumpMaxStdRotKey(TimeSetOut, pGameControl);
 		}
 		break;
 	case IGameControl::IGAME_EULER:
 		{
 			// export Euler controller
-			ExportEulerRotKey(pGameControl);
+			DumpEulerRotKey(TimeSetOut, pGameControl);
 		}
 		break;
 	case IGameControl::IGAME_ROT_CONSTRAINT:
 		{
 			// export constraint controller
-			ExportConstraintKey(pGameControl);
+			DumpConstraintKey(TimeSetOut, pGameControl);
 		}
 		break;
 	case IGameControl::IGAME_LIST:
 		{
 			// export list controller
-			ExportListKey(pGameControl);
+			DumpListKey(TimeSetOut, pGameControl);
 		}
 		break;
 	default:
 		{
+			// TODO: 
 			return false;
 		}
 		break;
@@ -246,7 +570,7 @@ bool CMeshExporter::ExportRotationController(IGameControl* pGameControl)
 	return true;
 }
 
-bool CMeshExporter::ExportScaleController(IGameControl* pGameControl)
+bool CMeshExporter::DumpScaleController(TIME_VALUE_SET& TimeSetOut, IGameControl* pGameControl)
 {
 	IGameControl::MaxControlType eControlType = pGameControl->GetControlType(IGAME_SCALE);
 
@@ -255,11 +579,12 @@ bool CMeshExporter::ExportScaleController(IGameControl* pGameControl)
 	case IGameControl::IGAME_MAXSTD:
 		{
 			// export scale key
-			ExportMaxStdScaleKey(pGameControl);
+			DumpMaxStdScaleKey(TimeSetOut, pGameControl);
 		}
 		break;
 	default:
 		{
+			// TODO: 
 			return false;
 		}
 		break;
@@ -268,7 +593,7 @@ bool CMeshExporter::ExportScaleController(IGameControl* pGameControl)
 	return true;
 }
 
-bool CMeshExporter::ExportMaxStdPosKey(IGameControl* pGameControl)
+bool CMeshExporter::DumpMaxStdPosKey(TIME_VALUE_SET& TimeSetOut, IGameControl* pGameControl)
 {
 	IGameKeyTab PosKey;
 	if (pGameControl->GetBezierKeys(PosKey, IGAME_POS))
@@ -277,9 +602,9 @@ bool CMeshExporter::ExportMaxStdPosKey(IGameControl* pGameControl)
 
 		for (int i = 0; i < nCount; ++i)
 		{
-			m_TimeValueSet.insert(PosKey[i].t);
-			// TODO: time = PosKey[i].t;
-			// TODO: position = PosKey[i].bezierKey.pval;
+			TimeSetOut.insert(PosKey[i].t);
+			// time = PosKey[i].t;
+			// position = PosKey[i].bezierKey.pval;
 		}
 	}
 	else if (pGameControl->GetLinearKeys(PosKey, IGAME_POS))
@@ -288,20 +613,16 @@ bool CMeshExporter::ExportMaxStdPosKey(IGameControl* pGameControl)
 
 		for (int i = 0; i < nCount; ++i)
 		{
-			m_TimeValueSet.insert(PosKey[i].t);
-			// TODO: time = PosKey[i].t;
-			// TODO: position = PosKey[i].linearKey.pval;
+			TimeSetOut.insert(PosKey[i].t);
+			// time = PosKey[i].t;
+			// position = PosKey[i].linearKey.pval;
 		}
-	}
-	else
-	{
-		// TODO: 
 	}
 
 	return true;
 }
 
-bool CMeshExporter::ExportIndependentPosKey(IGameControl* pGameControl)
+bool CMeshExporter::DumpIndependentPosKey(TIME_VALUE_SET& TimeSetOut, IGameControl* pGameControl)
 {
 	IGameKeyTab PosKey;
 	if (pGameControl->GetBezierKeys(PosKey, IGAME_POS_X))
@@ -310,9 +631,9 @@ bool CMeshExporter::ExportIndependentPosKey(IGameControl* pGameControl)
 
 		for (int i = 0; i < nCount; ++i)
 		{
-			m_TimeValueSet.insert(PosKey[i].t);
-			// TODO: time = PosKey[i].t;
-			// TODO: position = PosKey[i].bezierKey.fval;
+			TimeSetOut.insert(PosKey[i].t);
+			// time = PosKey[i].t;
+			// position = PosKey[i].bezierKey.fval;
 		}
 	}
 
@@ -322,9 +643,9 @@ bool CMeshExporter::ExportIndependentPosKey(IGameControl* pGameControl)
 
 		for (int i = 0; i < nCount; ++i)
 		{
-			m_TimeValueSet.insert(PosKey[i].t);
-			// TODO: time = PosKey[i].t;
-			// TODO: position = PosKey[i].linearKey.fval;
+			TimeSetOut.insert(PosKey[i].t);
+			// time = PosKey[i].t;
+			// position = PosKey[i].linearKey.fval;
 		}
 	}
 
@@ -334,9 +655,9 @@ bool CMeshExporter::ExportIndependentPosKey(IGameControl* pGameControl)
 
 		for (int i = 0; i < nCount; ++i)
 		{
-			m_TimeValueSet.insert(PosKey[i].t);
-			// TODO: time = PosKey[i].t;
-			// TODO: position = PosKey[i].bezierKey.fval;
+			TimeSetOut.insert(PosKey[i].t);
+			// time = PosKey[i].t;
+			// position = PosKey[i].bezierKey.fval;
 		}
 	}
 
@@ -346,9 +667,9 @@ bool CMeshExporter::ExportIndependentPosKey(IGameControl* pGameControl)
 
 		for (int i = 0; i < nCount; ++i)
 		{
-			m_TimeValueSet.insert(PosKey[i].t);
-			// TODO: time = PosKey[i].t;
-			// TODO: position = PosKey[i].linearKey.fval;
+			TimeSetOut.insert(PosKey[i].t);
+			// time = PosKey[i].t;
+			// position = PosKey[i].linearKey.fval;
 		}
 	}
 
@@ -358,9 +679,9 @@ bool CMeshExporter::ExportIndependentPosKey(IGameControl* pGameControl)
 
 		for (int i = 0; i < nCount; ++i)
 		{
-			m_TimeValueSet.insert(PosKey[i].t);
-			// TODO: time = PosKey[i].t;
-			// TODO: position = PosKey[i].bezierKey.fval;
+			TimeSetOut.insert(PosKey[i].t);
+			// time = PosKey[i].t;
+			// position = PosKey[i].bezierKey.fval;
 		}
 	}
 
@@ -370,16 +691,16 @@ bool CMeshExporter::ExportIndependentPosKey(IGameControl* pGameControl)
 
 		for (int i = 0; i < nCount; ++i)
 		{
-			m_TimeValueSet.insert(PosKey[i].t);
-			// TODO: time = PosKey[i].t;
-			// TODO: position = PosKey[i].linearKey.fval;
+			TimeSetOut.insert(PosKey[i].t);
+			// time = PosKey[i].t;
+			// position = PosKey[i].linearKey.fval;
 		}
 	}
 
 	return true;
 }
 
-bool CMeshExporter::ExportMaxStdRotKey(IGameControl* pGameControl)
+bool CMeshExporter::DumpMaxStdRotKey(TIME_VALUE_SET& TimeSetOut, IGameControl* pGameControl)
 {
 	IGameKeyTab RotKey;
 	if (pGameControl->GetBezierKeys(RotKey, IGAME_ROT))
@@ -389,9 +710,9 @@ bool CMeshExporter::ExportMaxStdRotKey(IGameControl* pGameControl)
 
 		for (int i = 0; i < nCount; ++i)
 		{
-			m_TimeValueSet.insert(RotKey[i].t);
-			// TODO: time = RotKey[i].t;
-			// TODO: Quat = RotKey[i].bezierKey.qval;
+			TimeSetOut.insert(RotKey[i].t);
+			// time = RotKey[i].t;
+			// Quat = RotKey[i].bezierKey.qval;
 		}
 	}
 	else if (pGameControl->GetLinearKeys(RotKey, IGAME_ROT))
@@ -401,9 +722,9 @@ bool CMeshExporter::ExportMaxStdRotKey(IGameControl* pGameControl)
 
 		for (int i = 0; i < nCount; ++i)
 		{
-			m_TimeValueSet.insert(RotKey[i].t);
-			// TODO: time = RotKey[i].t;
-			// TODO: Quat = RotKey[i].linearKey.qval;
+			TimeSetOut.insert(RotKey[i].t);
+			// time = RotKey[i].t;
+			// Quat = RotKey[i].linearKey.qval;
 		}
 	}
 	else if (pGameControl->GetTCBKeys(RotKey, IGAME_ROT))
@@ -413,20 +734,16 @@ bool CMeshExporter::ExportMaxStdRotKey(IGameControl* pGameControl)
 
 		for (int i = 0; i < nCount; ++i)
 		{
-			m_TimeValueSet.insert(RotKey[i].t);
-			// TODO: time = RotKey[i].t;
-			// TODO: AngAxis = RotKey[i].tcbKey.aval;
+			TimeSetOut.insert(RotKey[i].t);
+			// time = RotKey[i].t;
+			// AngAxis = RotKey[i].tcbKey.aval;
 		}
-	}
-	else
-	{
-		// TODO: 
 	}
 
 	return true;
 }
 
-bool CMeshExporter::ExportEulerRotKey(IGameControl* pGameControl)
+bool CMeshExporter::DumpEulerRotKey(TIME_VALUE_SET& TimeSetOut, IGameControl* pGameControl)
 {
 	IGameKeyTab RotKey;
 
@@ -436,9 +753,9 @@ bool CMeshExporter::ExportEulerRotKey(IGameControl* pGameControl)
 
 		for (int i = 0; i < nCount; ++i)
 		{
-			m_TimeValueSet.insert(RotKey[i].t);
-			// TODO: time = RotKey[i].t;
-			// TODO: RotKey[i].bezierKey.fval;
+			TimeSetOut.insert(RotKey[i].t);
+			// time = RotKey[i].t;
+			// RotKey[i].bezierKey.fval;
 		}
 	}
 
@@ -448,9 +765,9 @@ bool CMeshExporter::ExportEulerRotKey(IGameControl* pGameControl)
 
 		for (int i = 0; i < nCount; ++i)
 		{
-			m_TimeValueSet.insert(RotKey[i].t);
-			// TODO: time = RotKey[i].t;
-			// TODO: RotKey[i].linearKey.fval;
+			TimeSetOut.insert(RotKey[i].t);
+			// time = RotKey[i].t;
+			// RotKey[i].linearKey.fval;
 		}
 	}
 
@@ -460,9 +777,9 @@ bool CMeshExporter::ExportEulerRotKey(IGameControl* pGameControl)
 
 		for (int i = 0; i < nCount; ++i)
 		{
-			m_TimeValueSet.insert(RotKey[i].t);
-			// TODO: time = RotKey[i].t;
-			// TODO: RotKey[i].bezierKey.fval;
+			TimeSetOut.insert(RotKey[i].t);
+			// time = RotKey[i].t;
+			// RotKey[i].bezierKey.fval;
 		}
 	}
 
@@ -472,9 +789,9 @@ bool CMeshExporter::ExportEulerRotKey(IGameControl* pGameControl)
 
 		for (int i = 0; i < nCount; ++i)
 		{
-			m_TimeValueSet.insert(RotKey[i].t);
-			// TODO: time = RotKey[i].t;
-			// TODO: RotKey[i].linearKey.fval;
+			TimeSetOut.insert(RotKey[i].t);
+			// time = RotKey[i].t;
+			// RotKey[i].linearKey.fval;
 		}
 	}
 
@@ -484,9 +801,9 @@ bool CMeshExporter::ExportEulerRotKey(IGameControl* pGameControl)
 
 		for (int i = 0; i < nCount; ++i)
 		{
-			m_TimeValueSet.insert(RotKey[i].t);
-			// TODO: time = RotKey[i].t;
-			// TODO: RotKey[i].bezierKey.fval;
+			TimeSetOut.insert(RotKey[i].t);
+			// time = RotKey[i].t;
+			// RotKey[i].bezierKey.fval;
 		}
 	}
 
@@ -496,16 +813,16 @@ bool CMeshExporter::ExportEulerRotKey(IGameControl* pGameControl)
 
 		for (int i = 0; i < nCount; ++i)
 		{
-			m_TimeValueSet.insert(RotKey[i].t);
-			// TODO: time = RotKey[i].t;
-			// TODO: RotKey[i].linearKey.fval;
+			TimeSetOut.insert(RotKey[i].t);
+			// time = RotKey[i].t;
+			// RotKey[i].linearKey.fval;
 		}
 	}
 
 	return true;
 }
 
-bool CMeshExporter::ExportMaxStdScaleKey(IGameControl* pGameControl)
+bool CMeshExporter::DumpMaxStdScaleKey(TIME_VALUE_SET& TimeSetOut, IGameControl* pGameControl)
 {
 	IGameKeyTab ScaleKey;
 	if (pGameControl->GetBezierKeys(ScaleKey, IGAME_SCALE))
@@ -514,50 +831,46 @@ bool CMeshExporter::ExportMaxStdScaleKey(IGameControl* pGameControl)
 
 		for (int i = 0; i < nCount; ++i)
 		{
-			m_TimeValueSet.insert(ScaleKey[i].t);
-			// TODO: time = ScaleKey[i].t;
-			// TODO: ScaleKey[i].bezierKey.sval;
+			TimeSetOut.insert(ScaleKey[i].t);
+			// time = ScaleKey[i].t;
+			// ScaleKey[i].bezierKey.sval;
 		}
 	}
-	else
-	{
-		// TODO: 
-	}
 
 	return true;
 }
 
-bool CMeshExporter::ExportConstraintKey(IGameControl* pGameControl)
+bool CMeshExporter::DumpConstraintKey(TIME_VALUE_SET& TimeSetOut, IGameControl* pGameControl)
 {
-	IGameConstraint* pGameConstraint = pGameControl->GetConstraint(IGAME_POS);
+	//IGameConstraint* pGameConstraint = pGameControl->GetConstraint(IGAME_POS);
 
-	int nConstraintCount = pGameConstraint->NumberOfConstraintNodes();
-	for(int i = 0; i < nConstraintCount; ++i)
-	{
-		float fWeight = pGameConstraint->GetConstraintWeight(i);
-		int nNodeID = pGameConstraint->GetConstraintNodes(i)->GetNodeID();
+	//int nConstraintCount = pGameConstraint->NumberOfConstraintNodes();
+	//for(int i = 0; i < nConstraintCount; ++i)
+	//{
+	//	float fWeight = pGameConstraint->GetConstraintWeight(i);
+	//	int nNodeID = pGameConstraint->GetConstraintNodes(i)->GetNodeID();
 
-		// TODO: export constraint
-	}
+	//	// TODO: export constraint
+	//}
 
-	IPropertyContainer* pPropertyContainer = pGameConstraint->GetIPropertyContainer();
-	int nPropertyCount = pPropertyContainer->GetNumberOfProperties();
+	//IPropertyContainer* pPropertyContainer = pGameConstraint->GetIPropertyContainer();
+	//int nPropertyCount = pPropertyContainer->GetNumberOfProperties();
 
-	for(int i = 0; i < nPropertyCount; ++i)
-	{
-		// TODO: dump property
-	}
+	//for(int i = 0; i < nPropertyCount; ++i)
+	//{
+	//	// TODO: dump property
+	//}
 
 	return true;
 }
 
-bool CMeshExporter::ExportListKey(IGameControl* pGameControl)
+bool CMeshExporter::DumpListKey(TIME_VALUE_SET& TimeSetOut, IGameControl* pGameControl)
 {
 	int nCount = pGameControl->GetNumOfListSubControls(IGAME_POS);
 	for (int i = 0; i < nCount; ++i)
 	{
 		IGameControl* pSubGameControl = pGameControl->GetListSubControl(i, IGAME_POS);
-		bool bOK = ExportPositionController(pSubGameControl);
+		bool bOK = DumpPositionController(TimeSetOut, pSubGameControl);
 		// TODO: check bOK
 	}
 
@@ -565,7 +878,7 @@ bool CMeshExporter::ExportListKey(IGameControl* pGameControl)
 	for (int i = 0; i < nCount; ++i)
 	{
 		IGameControl* pSubGameControl = pGameControl->GetListSubControl(i, IGAME_ROT);
-		bool bOK = ExportRotationController(pSubGameControl);
+		bool bOK = DumpRotationController(TimeSetOut, pSubGameControl);
 		// TODO: check bOK
 	}
 
@@ -573,27 +886,9 @@ bool CMeshExporter::ExportListKey(IGameControl* pGameControl)
 	for (int i = 0; i < nCount; ++i)
 	{
 		IGameControl* pSubGameControl = pGameControl->GetListSubControl(i, IGAME_SCALE);
-		bool bOK = ExportScaleController(pSubGameControl);
+		bool bOK = DumpScaleController(TimeSetOut, pSubGameControl);
 		// TODO: check bOK
 	}
 
 	return true;
-}
-
-bool CMeshExporter::ExportSampleKey(IGameControl* pGameControl)
-{
-	// TODO: 
-	return false;
-}
-
-void CMeshExporter::DumpTimeValueSet(const TIME_VALUE_SET& TimeValueSet)
-{
-	for (TIME_VALUE_SET::const_iterator it = TimeValueSet.begin(); it != TimeValueSet.end(); ++it)
-	{
-		tstring strOut;
-		COEOS::strformat(strOut, _T("%d, "), (*it));
-		m_pFile->Write(strOut.c_str(), (uint)(strOut.length()*sizeof(tchar)));
-	}
-
-	m_pFile->Write(_T("\n"), sizeof(tchar));
 }

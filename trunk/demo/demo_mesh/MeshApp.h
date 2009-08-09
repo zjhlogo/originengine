@@ -22,13 +22,6 @@ public:
 		KEY_COUNT = 256,
 	};
 
-	typedef struct VERTEX_tag
-	{
-		float x, y, z;
-		float u, v;
-		float nx, ny, nz;
-	} VERTEX;
-
 public:
 	CMeshApp();
 	virtual ~CMeshApp();
@@ -53,17 +46,10 @@ private:
 	bool UpdateRotation(float fDetailTime);
 
 private:
-	VERTEX* m_pVerts;
-	ushort* m_pIndis;
-
-	uint m_nVerts;
-	uint m_nIndis;
-
-	IOETexture* m_pTexture;
-	IOEShader* m_pShader;
-
 	CCamera* m_pCamera;
 	CSimpleShape* m_pSimpleShape;
+
+	IOEMesh* m_pMesh;
 
 	bool m_bLButtonDown;
 	int m_nMouseDetailX;

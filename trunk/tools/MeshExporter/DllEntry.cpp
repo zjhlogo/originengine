@@ -7,6 +7,7 @@
  */
 #include "DllEntry.h"
 #include "MeshExporterDesc.h"
+#include <OEOS.h>
 
 HINSTANCE g_hInst = NULL;
 BOOL g_bCtrlInit = FALSE;
@@ -19,6 +20,8 @@ BOOL WINAPI DllMain(HINSTANCE hInstDLL, DWORD fdwReason, LPVOID lpvReserved)
 		g_bCtrlInit = TRUE;
 		InitCustomControls(g_hInst);
 		InitCommonControls();
+
+		COEOS::Initialize();
 	}
 
 	return TRUE;
