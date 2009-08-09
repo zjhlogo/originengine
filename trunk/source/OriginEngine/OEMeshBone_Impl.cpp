@@ -21,8 +21,8 @@ COEMeshBone_Impl::~COEMeshBone_Impl()
 
 void COEMeshBone_Impl::Init()
 {
-	m_nID = INVALID_BONE_ID;
-	m_nParentID = INVALID_BONE_ID;
+	m_nID = COEFmtMesh::INVALID_BONE_ID;
+	m_nParentID = COEFmtMesh::INVALID_BONE_ID;
 	m_pParent = NULL;
 	m_fTimeLength = 0.0f;
 }
@@ -77,6 +77,11 @@ IOEMeshBone* COEMeshBone_Impl::GetChild(int nIndex) const
 {
 	if (nIndex < 0 || nIndex >= (int)m_vChildren.size()) return NULL;
 	return m_vChildren[nIndex];
+}
+
+int COEMeshBone_Impl::GetParentID() const
+{
+	return m_nParentID;
 }
 
 void COEMeshBone_Impl::SetParent(COEMeshBone_Impl* pParent)

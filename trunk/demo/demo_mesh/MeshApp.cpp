@@ -22,6 +22,8 @@ void CMeshApp::Init()
 {
 	m_pCamera = NULL;
 	m_pSimpleShape = NULL;
+
+	m_pDecl = NULL;
 	m_pMesh = NULL;
 
 	m_bLButtonDown = false;
@@ -37,6 +39,16 @@ void CMeshApp::Destroy()
 
 bool CMeshApp::Initialize()
 {
+	static const IOEVertDecl::ELEMENT s_Decl[] =
+	{
+		IOEVertDecl::T_FLOAT3, IOEVertDecl::U_POSITION, 0,
+		IOEVertDecl::T_COLOR, IOEVertDecl::U_COLOR, 0,
+		IOEVertDecl::T_UNKNOWN, IOEVertDecl::U_UNKNOWN, 0,
+	};
+
+	m_pDecl = g_pOEDevice->CreateVertDecl(s_Decl);
+	if (!m_pDecl) return false;
+
 	m_pCamera = new CCamera();
 	if (!m_pCamera) return false;
 
@@ -46,11 +58,35 @@ bool CMeshApp::Initialize()
 	m_pMesh = g_pOEMeshMgr->CreateMeshFromFile(_T("bone.mesh"));
 	if (!m_pMesh) return false;
 
+	CMatrix4x4 matCurr;
+	VERTEX Vertex;
+	ushort nIndex = 0;
+	uint nColors[3] = {0xFFFF0000, 0xFF00FF00, 0xFF0000FF};
+
+	IOEMeshBone* pBone = m_pMesh->GetBone(0);
+	while (pBone)
+	{
+		const CMatrix4x4& matLocal = pBone->GetLocalMatrix();
+		matCurr = matLocal * matCurr;
+
+		Vertex.x = matCurr.m[12];
+		Vertex.y = matCurr.m[13];
+		Vertex.z = matCurr.m[14];
+		Vertex.nColor = nColors[nIndex%3];
+
+		m_vVerts.push_back(Vertex);
+		m_vIndis.push_back(nIndex);
+
+		++nIndex;
+		pBone = pBone->GetChild(0);
+	}
+
 	return true;
 }
 
 void CMeshApp::Terminate()
 {
+	SAFE_RELEASE(m_pDecl);
 	SAFE_RELEASE(m_pMesh);
 	SAFE_DELETE(m_pSimpleShape);
 	SAFE_DELETE(m_pCamera);
@@ -65,6 +101,16 @@ void CMeshApp::Update(float fDetailTime)
 
 void CMeshApp::Render(float fDetailTime)
 {
+	static VERTEX s_Verts[4] = 
+	{
+		{0.0f, 0.0f, 0.0f, 0xFF00FF00},
+		{0.0f, 10.0f, 0.0f, 0xFF00FF00},
+		{10.0f, 10.0f, 0.0f, 0xFF00FF00},
+		{10.0f, 20.0f, 0.0f, 0xFF00FF00},
+	};
+
+	static ushort s_Indis[4] = {0, 1, 2, 3};
+
 	static float s_fTotalTime = 0.0f;
 
 	s_fTotalTime += fDetailTime;
@@ -74,6 +120,10 @@ void CMeshApp::Render(float fDetailTime)
 	vLightPos.z = sin(s_fTotalTime)*10.0f;
 
 	m_pSimpleShape->DrawCube(g_pOERenderer, vLightPos);
+
+	g_pOERenderer->SetVertDecl(m_pDecl);
+	//g_pOERenderer->DrawLineStrip(s_Verts, 4, s_Indis, 4);
+	g_pOERenderer->DrawLineStrip(&m_vVerts[0], (uint)m_vVerts.size(), &m_vIndis[0], (uint)m_vIndis.size());
 }
 
 void CMeshApp::OnLButtonDown(int x, int y)

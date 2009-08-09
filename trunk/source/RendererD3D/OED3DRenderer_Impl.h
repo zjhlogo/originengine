@@ -31,6 +31,9 @@ public:
 	virtual bool SetTransform(TRANSFORM_TYPE eType, const CMatrix4x4& mat);
 	virtual bool GetTransform(CMatrix4x4& matOut, TRANSFORM_TYPE eType) const;
 
+	virtual void DrawLineList(const void* pVerts, uint nVerts, const ushort* pIndis, uint nIndis);
+	virtual void DrawLineStrip(const void* pVerts, uint nVerts, const ushort* pIndis, uint nIndis);
+
 	virtual void DrawTriList(const void* pVerts, uint nVerts, const ushort* pIndis, uint nIndis);
 	virtual void DrawTriStrip(const void* pVerts, uint nVerts, const ushort* pIndis, uint nIndis);
 	virtual void DrawTriFan(const void* pVerts, uint nVerts, const ushort* pIndis, uint nIndis);
@@ -47,6 +50,8 @@ public:
 private:
 	void Init();
 	void Destroy();
+
+	void DrawPrimitive(D3DPRIMITIVETYPE eType, const void* pVerts, uint nVerts, const ushort* pIndis, uint nPrimCount);
 
 private:
 	COED3DVertDecl_Impl* m_pVertDecl;

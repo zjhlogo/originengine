@@ -239,6 +239,12 @@ copy &quot;$(TargetPath)&quot; &quot;..\..\bin\&quot;
 				RelativePath=".\OEMeshPiece_Impl.cpp">
 			</File>
 			<File
+				RelativePath=".\OEModel_Impl.cpp">
+			</File>
+			<File
+				RelativePath=".\OEModelMgr_Impl.cpp">
+			</File>
+			<File
 				RelativePath=".\OEModule.cpp">
 			</File>
 		</Filter>
@@ -263,6 +269,12 @@ copy &quot;$(TargetPath)&quot; &quot;..\..\bin\&quot;
 			</File>
 			<File
 				RelativePath=".\OEMeshPiece_Impl.h">
+			</File>
+			<File
+				RelativePath=".\OEModel_Impl.h">
+			</File>
+			<File
+				RelativePath=".\OEModelMgr_Impl.h">
 			</File>
 			<File
 				RelativePath=".\OEModule.h">
@@ -294,6 +306,12 @@ copy &quot;$(TargetPath)&quot; &quot;..\..\bin\&quot;
 			</File>
 			<File
 				RelativePath="..\..\include\IOEMeshPiece.h">
+			</File>
+			<File
+				RelativePath="..\..\include\IOEModel.h">
+			</File>
+			<File
+				RelativePath="..\..\include\IOEModelMgr.h">
 			</File>
 			<File
 				RelativePath="..\..\include\IOEObject.h">

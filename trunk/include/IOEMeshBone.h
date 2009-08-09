@@ -14,11 +14,6 @@
 class IOEMeshBone : public IOEObject
 {
 public:
-	enum CONST_DEFINE
-	{
-		INVALID_BONE_ID = -1,
-	};
-
 	typedef struct BONE_FRAME_tag
 	{
 		float fTime;

@@ -43,4 +43,5 @@ private:
 	VMESH_BONE m_vBone;
 
 };
+
 #endif // __OEMESH_IMPL_H__

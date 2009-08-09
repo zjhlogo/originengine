@@ -75,6 +75,9 @@ public:
 	virtual bool SetTransform(TRANSFORM_TYPE eType, const CMatrix4x4& mat) = 0;
 	virtual bool GetTransform(CMatrix4x4& matOut, TRANSFORM_TYPE eType) const = 0;
 
+	virtual void DrawLineList(const void* pVerts, uint nVerts, const ushort* pIndis, uint nIndis) = 0;
+	virtual void DrawLineStrip(const void* pVerts, uint nVerts, const ushort* pIndis, uint nIndis) = 0;
+
 	virtual void DrawTriList(const void* pVerts, uint nVerts, const ushort* pIndis, uint nIndis) = 0;
 	virtual void DrawTriStrip(const void* pVerts, uint nVerts, const ushort* pIndis, uint nIndis) = 0;
 	virtual void DrawTriFan(const void* pVerts, uint nVerts, const ushort* pIndis, uint nIndis) = 0;

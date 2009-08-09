@@ -37,4 +37,5 @@ private:
 	ushort* m_pIndis;
 
 };
+
 #endif // __OEMESHPIECE_IMPL_H__
