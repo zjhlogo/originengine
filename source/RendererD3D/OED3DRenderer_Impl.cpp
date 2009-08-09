@@ -117,103 +117,29 @@ bool COED3DRenderer_Impl::GetTransform(CMatrix4x4& matOut, TRANSFORM_TYPE eType)
 	return bOK;
 }
 
+void COED3DRenderer_Impl::DrawLineList(const void* pVerts, uint nVerts, const ushort* pIndis, uint nIndis)
+{
+	DrawPrimitive(D3DPT_LINELIST, pVerts, nVerts, pIndis, nIndis/2);
+}
+
+void COED3DRenderer_Impl::DrawLineStrip(const void* pVerts, uint nVerts, const ushort* pIndis, uint nIndis)
+{
+	DrawPrimitive(D3DPT_LINESTRIP, pVerts, nVerts, pIndis, nIndis-1);
+}
+
 void COED3DRenderer_Impl::DrawTriList(const void* pVerts, uint nVerts, const ushort* pIndis, uint nIndis)
 {
-	if (m_pShader)
-	{
-		ID3DXEffect* pEffect = m_pShader->GetEffect();
-		COED3DVertDecl_Impl* pVertDecl = m_pShader->GetVertDecl();
-
-		uint nPass = 0;
-		pEffect->Begin(&nPass, 0);
-		for (uint i = 0; i < nPass; ++i)
-		{
-			pEffect->BeginPass(i);
-			pEffect->CommitChanges();
-
-			g_pd3dDevice->SetVertexDeclaration(pVertDecl->GetD3DVertDecl());
-			HRESULT hRet = g_pd3dDevice->DrawIndexedPrimitiveUP(D3DPT_TRIANGLELIST, 0, nVerts, nIndis/3, pIndis, D3DFMT_INDEX16, pVerts, pVertDecl->GetStrideSize());
-			pEffect->EndPass();
-		}
-		pEffect->End();
-	}
-	else
-	{
-		assert(m_pVertDecl);
-		if (!m_pVertDecl) return;
-
-		g_pd3dDevice->SetVertexDeclaration(m_pVertDecl->GetD3DVertDecl());
-		IDirect3DTexture9* pD3DTexture = NULL;
-		if (m_pTexture) pD3DTexture = m_pTexture->GetTexture();
-		g_pd3dDevice->SetTexture(0, pD3DTexture);
-		HRESULT hRet = g_pd3dDevice->DrawIndexedPrimitiveUP(D3DPT_TRIANGLELIST, 0, nVerts, nIndis/3, pIndis, D3DFMT_INDEX16, pVerts, m_pVertDecl->GetStrideSize());
-	}
+	DrawPrimitive(D3DPT_TRIANGLELIST, pVerts, nVerts, pIndis, nIndis/3);
 }
 
 void COED3DRenderer_Impl::DrawTriStrip(const void* pVerts, uint nVerts, const ushort* pIndis, uint nIndis)
 {
-	if (m_pShader)
-	{
-		ID3DXEffect* pEffect = m_pShader->GetEffect();
-		COED3DVertDecl_Impl* pVertDecl = m_pShader->GetVertDecl();
-
-		uint nPass = 0;
-		pEffect->Begin(&nPass, 0);
-		for (uint i = 0; i < nPass; ++i)
-		{
-			pEffect->BeginPass(i);
-			pEffect->CommitChanges();
-
-			g_pd3dDevice->SetVertexDeclaration(pVertDecl->GetD3DVertDecl());
-			HRESULT hRet = g_pd3dDevice->DrawIndexedPrimitiveUP(D3DPT_TRIANGLESTRIP, 0, nVerts, nIndis-2, pIndis, D3DFMT_INDEX16, pVerts, pVertDecl->GetStrideSize());
-			pEffect->EndPass();
-		}
-		pEffect->End();
-	}
-	else
-	{
-		assert(m_pVertDecl);
-		if (!m_pVertDecl) return;
-
-		g_pd3dDevice->SetVertexDeclaration(m_pVertDecl->GetD3DVertDecl());
-		IDirect3DTexture9* pD3DTexture = NULL;
-		if (m_pTexture) pD3DTexture = m_pTexture->GetTexture();
-		g_pd3dDevice->SetTexture(0, pD3DTexture);
-		HRESULT hRet = g_pd3dDevice->DrawIndexedPrimitiveUP(D3DPT_TRIANGLESTRIP, 0, nVerts, nIndis-2, pIndis, D3DFMT_INDEX16, pVerts, m_pVertDecl->GetStrideSize());
-	}
+	DrawPrimitive(D3DPT_TRIANGLESTRIP, pVerts, nVerts, pIndis, nIndis-2);
 }
 
 void COED3DRenderer_Impl::DrawTriFan(const void* pVerts, uint nVerts, const ushort* pIndis, uint nIndis)
 {
-	if (m_pShader)
-	{
-		ID3DXEffect* pEffect = m_pShader->GetEffect();
-		COED3DVertDecl_Impl* pVertDecl = m_pShader->GetVertDecl();
-
-		uint nPass = 0;
-		pEffect->Begin(&nPass, 0);
-		for (uint i = 0; i < nPass; ++i)
-		{
-			pEffect->BeginPass(i);
-			pEffect->CommitChanges();
-
-			g_pd3dDevice->SetVertexDeclaration(pVertDecl->GetD3DVertDecl());
-			HRESULT hRet = g_pd3dDevice->DrawIndexedPrimitiveUP(D3DPT_TRIANGLEFAN, 0, nVerts, nIndis-2, pIndis, D3DFMT_INDEX16, pVerts, pVertDecl->GetStrideSize());
-			pEffect->EndPass();
-		}
-		pEffect->End();
-	}
-	else
-	{
-		assert(m_pVertDecl);
-		if (!m_pVertDecl) return;
-
-		g_pd3dDevice->SetVertexDeclaration(m_pVertDecl->GetD3DVertDecl());
-		IDirect3DTexture9* pD3DTexture = NULL;
-		if (m_pTexture) pD3DTexture = m_pTexture->GetTexture();
-		g_pd3dDevice->SetTexture(0, pD3DTexture);
-		HRESULT hRet = g_pd3dDevice->DrawIndexedPrimitiveUP(D3DPT_TRIANGLEFAN, 0, nVerts, nIndis-2, pIndis, D3DFMT_INDEX16, pVerts, m_pVertDecl->GetStrideSize());
-	}
+	DrawPrimitive(D3DPT_TRIANGLEFAN, pVerts, nVerts, pIndis, nIndis-2);
 }
 
 void COED3DRenderer_Impl::EnableLight(bool bEnable)
@@ -268,4 +194,37 @@ void COED3DRenderer_Impl::SetSampleFilter(SAMPLE_FILTER eSampleFilter)
 	g_pd3dDevice->SetSamplerState(0, D3DSAMP_MAGFILTER, eD3DSampleFilter);
 	g_pd3dDevice->SetSamplerState(0, D3DSAMP_MINFILTER, eD3DSampleFilter);
 	g_pd3dDevice->SetSamplerState(0, D3DSAMP_MIPFILTER, eD3DSampleFilter);
+}
+
+void COED3DRenderer_Impl::DrawPrimitive(D3DPRIMITIVETYPE eType, const void* pVerts, uint nVerts, const ushort* pIndis, uint nPrimCount)
+{
+	if (m_pShader)
+	{
+		ID3DXEffect* pEffect = m_pShader->GetEffect();
+		COED3DVertDecl_Impl* pVertDecl = m_pShader->GetVertDecl();
+
+		uint nPass = 0;
+		pEffect->Begin(&nPass, 0);
+		for (uint i = 0; i < nPass; ++i)
+		{
+			pEffect->BeginPass(i);
+			pEffect->CommitChanges();
+
+			g_pd3dDevice->SetVertexDeclaration(pVertDecl->GetD3DVertDecl());
+			HRESULT hRet = g_pd3dDevice->DrawIndexedPrimitiveUP(eType, 0, nVerts, nPrimCount, pIndis, D3DFMT_INDEX16, pVerts, pVertDecl->GetStrideSize());
+			pEffect->EndPass();
+		}
+		pEffect->End();
+	}
+	else
+	{
+		assert(m_pVertDecl);
+		if (!m_pVertDecl) return;
+
+		g_pd3dDevice->SetVertexDeclaration(m_pVertDecl->GetD3DVertDecl());
+		IDirect3DTexture9* pD3DTexture = NULL;
+		if (m_pTexture) pD3DTexture = m_pTexture->GetTexture();
+		g_pd3dDevice->SetTexture(0, pD3DTexture);
+		HRESULT hRet = g_pd3dDevice->DrawIndexedPrimitiveUP(eType, 0, nVerts, nPrimCount, pIndis, D3DFMT_INDEX16, pVerts, m_pVertDecl->GetStrideSize());
+	}
 }

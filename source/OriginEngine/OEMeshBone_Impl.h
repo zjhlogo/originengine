@@ -36,6 +36,7 @@ public:
 	virtual int GetNumChildren() const;
 	virtual IOEMeshBone* GetChild(int nIndex) const;
 
+	int GetParentID() const;
 	void SetParent(COEMeshBone_Impl* pParent);
 
 private:
@@ -61,4 +62,5 @@ private:
 	VBONE_FRAME m_vFrame;
 
 };
+
 #endif // __OEMESHBONE_IMPL_H__

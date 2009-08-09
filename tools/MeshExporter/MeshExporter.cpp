@@ -188,7 +188,7 @@ bool CMeshExporter::BuildBonesInfo()
 		BoneInfo.nParentNodeID = 0;
 		if (NodeInfo.pParentGameNode) BoneInfo.nParentNodeID = NodeInfo.pParentGameNode->GetNodeID();
 		BoneInfo.nID = (int)m_vBoneInfo.size();
-		BoneInfo.nParentID = -1;
+		BoneInfo.nParentID = COEFmtMesh::INVALID_BONE_ID;
 		BoneInfo.matLocal = NodeInfo.pGameNode->GetLocalTM();
 		bool bOK = DumpController(BoneInfo.vFrameInfo, NodeInfo.pGameNode);
 		// TODO: check bOK

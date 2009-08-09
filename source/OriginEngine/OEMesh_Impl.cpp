@@ -138,5 +138,17 @@ bool COEMesh_Impl::Create(const tstring& strFileName)
 		m_vBone.push_back(pMeshBone);
 	}
 
+	// create parent/child relation
+	for (int i = 0; i < Header.nNumBones; ++i)
+	{
+		int nParentID = m_vBone[i]->GetParentID();
+		if (nParentID == COEFmtMesh::INVALID_BONE_ID) continue;
+
+		COEMeshBone_Impl* pParent = NULL;
+		if (nParentID >= 0 && nParentID < Header.nNumBones) pParent = m_vBone[nParentID];
+
+		m_vBone[i]->SetParent(pParent);
+	}
+
 	return true;
 }

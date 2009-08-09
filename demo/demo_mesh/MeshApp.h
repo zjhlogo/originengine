@@ -14,6 +14,8 @@
 #include "../common/Camera.h"
 #include "../common/SimpleShape.h"
 
+#include <vector>
+
 class CMeshApp : public IOEApp
 {
 public:
@@ -21,6 +23,15 @@ public:
 	{
 		KEY_COUNT = 256,
 	};
+
+	typedef struct VERTEX_tag
+	{
+		float x, y, z;
+		uint nColor;
+	} VERTEX;
+
+	typedef std::vector<VERTEX> VVERTEX;
+	typedef std::vector<ushort> VUSHORT;
 
 public:
 	CMeshApp();
@@ -49,7 +60,11 @@ private:
 	CCamera* m_pCamera;
 	CSimpleShape* m_pSimpleShape;
 
+	IOEVertDecl* m_pDecl;
 	IOEMesh* m_pMesh;
+
+	VVERTEX m_vVerts;
+	VUSHORT m_vIndis;
 
 	bool m_bLButtonDown;
 	int m_nMouseDetailX;
