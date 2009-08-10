@@ -58,29 +58,6 @@ bool CMeshApp::Initialize()
 	m_pMesh = g_pOEMeshMgr->CreateMeshFromFile(_T("bone.mesh"));
 	if (!m_pMesh) return false;
 
-	CMatrix4x4 matCurr;
-	VERTEX Vertex;
-	ushort nIndex = 0;
-	uint nColors[3] = {0xFFFF0000, 0xFF00FF00, 0xFF0000FF};
-
-	IOEMeshBone* pBone = m_pMesh->GetBone(0);
-	while (pBone)
-	{
-		const CMatrix4x4& matLocal = pBone->GetLocalMatrix();
-		matCurr = matLocal * matCurr;
-
-		Vertex.x = matCurr.m[12];
-		Vertex.y = matCurr.m[13];
-		Vertex.z = matCurr.m[14];
-		Vertex.nColor = nColors[nIndex%3];
-
-		m_vVerts.push_back(Vertex);
-		m_vIndis.push_back(nIndex);
-
-		++nIndex;
-		pBone = pBone->GetChild(0);
-	}
-
 	return true;
 }
 
@@ -120,6 +97,8 @@ void CMeshApp::Render(float fDetailTime)
 	vLightPos.z = sin(s_fTotalTime)*10.0f;
 
 	m_pSimpleShape->DrawCube(g_pOERenderer, vLightPos);
+
+	RebuildBoneVerts(s_fTotalTime);
 
 	g_pOERenderer->SetVertDecl(m_pDecl);
 	//g_pOERenderer->DrawLineStrip(s_Verts, 4, s_Indis, 4);
@@ -184,4 +163,35 @@ bool CMeshApp::UpdateRotation(float fDetailTime)
 	m_nMouseDetailX = 0;
 
 	return true;
+}
+
+void CMeshApp::RebuildBoneVerts(float fTime)
+{
+	uint nColors[3] = {0xFFFF0000, 0xFF00FF00, 0xFF0000FF};
+
+	m_vVerts.clear();
+	m_vIndis.clear();
+
+	CMatrix4x4 matCurr;
+	VERTEX Vertex;
+	ushort nIndex = 0;
+
+	IOEMeshBone* pBone = m_pMesh->GetBone(0);
+	while (pBone)
+	{
+		CMatrix4x4 matLocal;
+		pBone->SlerpMatrix(matLocal, fTime, true);
+		matCurr = matLocal * matCurr;
+
+		Vertex.x = matCurr.m[12];
+		Vertex.y = matCurr.m[13];
+		Vertex.z = matCurr.m[14];
+		Vertex.nColor = nColors[nIndex%3];
+
+		m_vVerts.push_back(Vertex);
+		m_vIndis.push_back(nIndex);
+
+		++nIndex;
+		pBone = pBone->GetChild(0);
+	}
 }

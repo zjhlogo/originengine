@@ -56,6 +56,8 @@ private:
 	bool UpdateMovement(float fDetailTime);
 	bool UpdateRotation(float fDetailTime);
 
+	void RebuildBoneVerts(float fTime);
+
 private:
 	CCamera* m_pCamera;
 	CSimpleShape* m_pSimpleShape;

@@ -68,3 +68,140 @@ void COEMath::BuildProjectMatrixLH(CMatrix4x4& matOut, float fFov, float fAspect
 	matOut.m[14] = -fNear*fFar/(fFar-fNear);
 	matOut.m[15] = 0.0f;
 }
+
+void COEMath::BuildQuaternionFromMatrix(CQuaternion& qOut, const CMatrix4x4& matIn)
+{
+	float fWSquaredMinus1 = matIn.m[0] + matIn.m[5] + matIn.m[10];
+	float fXSquaredMinus1 = matIn.m[0] - matIn.m[5] - matIn.m[10];
+	float fYSquaredMinus1 = matIn.m[5] - matIn.m[0] - matIn.m[10];
+	float fZSquaredMinus1 = matIn.m[10] - matIn.m[0] - matIn.m[5];
+
+	int nBiggestIndex = 0;
+	float fBiggestSquaredMinus1 = fWSquaredMinus1;
+
+	if (fXSquaredMinus1 > fBiggestSquaredMinus1)
+	{
+		fBiggestSquaredMinus1 = fXSquaredMinus1;
+		nBiggestIndex = 1;
+	}
+
+	if (fYSquaredMinus1 > fBiggestSquaredMinus1)
+	{
+		fBiggestSquaredMinus1 = fYSquaredMinus1;
+		nBiggestIndex = 2;
+	}
+
+	if (fZSquaredMinus1 > fBiggestSquaredMinus1)
+	{
+		fBiggestSquaredMinus1 = fZSquaredMinus1;
+		nBiggestIndex = 3;
+	}
+
+	// 
+	float fBiggestValue = sqrt(fBiggestSquaredMinus1 + 1.0f) * 0.5f;
+	float fMult = 0.25f / fBiggestValue;
+
+	// 
+	switch (nBiggestIndex)
+	{
+	case 0:
+		qOut.w = fBiggestValue;
+		qOut.x = (matIn.m[6] - matIn.m[9]) * fMult;
+		qOut.y = (matIn.m[8] - matIn.m[2]) * fMult;
+		qOut.z = (matIn.m[1] - matIn.m[4]) * fMult;
+		break;
+	case 1:
+		qOut.x = fBiggestValue;
+		qOut.w = (matIn.m[6] - matIn.m[9]) * fMult;
+		qOut.y = (matIn.m[1] + matIn.m[4]) * fMult;
+		qOut.z = (matIn.m[8] + matIn.m[2]) * fMult;
+		break;
+	case 2:
+		qOut.y = fBiggestValue;
+		qOut.w = (matIn.m[8] - matIn.m[2]) * fMult;
+		qOut.x = (matIn.m[1] + matIn.m[4]) * fMult;
+		qOut.z = (matIn.m[6] + matIn.m[9]) * fMult;
+		break;
+	case 3:
+		qOut.z = fBiggestValue;
+		qOut.w = (matIn.m[1] - matIn.m[4]) * fMult;
+		qOut.x = (matIn.m[8] + matIn.m[2]) * fMult;
+		qOut.y = (matIn.m[6] + matIn.m[9]) * fMult;
+		break;
+	}
+}
+
+void COEMath::BuildMatrixFromQuaternion(CMatrix4x4& matOut, const CQuaternion& qIn)
+{
+	float f2WX = 2.0f*qIn.w*qIn.x;
+	float f2WY = 2.0f*qIn.w*qIn.y;
+	float f2WZ = 2.0f*qIn.w*qIn.z;
+	float f2XX = 2.0f*qIn.x*qIn.x;
+	float f2XY = 2.0f*qIn.x*qIn.y;
+	float f2XZ = 2.0f*qIn.x*qIn.z;
+	float f2YY = 2.0f*qIn.y*qIn.y;
+	float f2YZ = 2.0f*qIn.y*qIn.z;
+	float f2ZZ = 2.0f*qIn.z*qIn.z;
+
+	matOut.m[0] = 1.0f - f2YY - f2ZZ;
+	matOut.m[1] = f2XY + f2WZ;
+	matOut.m[2] = f2XZ - f2WY;
+	matOut.m[3] = 0.0f;
+
+	matOut.m[4] = f2XY - f2WZ;
+	matOut.m[5] = 1.0f - f2XX - f2ZZ;
+	matOut.m[6] = f2YZ + f2WX;
+	matOut.m[7] = 0.0f;
+
+	matOut.m[8] = f2XZ + f2WY;
+	matOut.m[9] = f2YZ - f2WX;
+	matOut.m[10] = 1.0f - f2XX - f2YY;
+	matOut.m[11] = 0.0f;
+
+	matOut.m[12] = 0.0f;
+	matOut.m[13] = 0.0f;
+	matOut.m[14] = 0.0f;
+	matOut.m[15] = 1.0f;
+}
+
+void COEMath::QuaternionSlerp(CQuaternion& qOut, const CQuaternion& q1, const CQuaternion& q2, float t)
+{
+	float cosOmega = q1.w*q2.w + q1.x*q2.x + q1.y*q2.y + q1.z*q2.z;
+
+	bool bInvert = false;
+	if (cosOmega < 0.0f)
+	{
+		bInvert = true;
+		cosOmega = -cosOmega;
+	}
+
+	float k0, k1;
+	if (cosOmega > 0.9999f)
+	{
+		k0 = 1.0f - t;
+		k1 = t;
+	}
+	else
+	{
+		float sinOmega = sqrt(1.0f - cosOmega*cosOmega);
+		float omega = atan2f(sinOmega, cosOmega);
+		float oneOverSinOmega = 1.0f / sinOmega;
+		k0 = sin((1.0f - t) * omega) * oneOverSinOmega;
+		k1 = sin(t * omega) * oneOverSinOmega;
+	}
+
+	if (bInvert)
+	{
+		qOut.w = q1.w*k0 - q2.w*k1;
+		qOut.x = q1.x*k0 - q2.x*k1;
+		qOut.y = q1.y*k0 - q2.y*k1;
+		qOut.z = q1.z*k0 - q2.z*k1;
+	}
+	else
+	{
+		qOut.w = q1.w*k0 + q2.w*k1;
+		qOut.x = q1.x*k0 + q2.x*k1;
+		qOut.y = q1.y*k0 + q2.y*k1;
+		qOut.z = q1.z*k0 + q2.z*k1;
+	}
+}

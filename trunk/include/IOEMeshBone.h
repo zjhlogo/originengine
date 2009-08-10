@@ -37,5 +37,7 @@ public:
 	virtual int GetNumChildren() const = 0;
 	virtual IOEMeshBone* GetChild(int nIndex) const = 0;
 
+	virtual bool SlerpMatrix(CMatrix4x4& matOut, float fTime, bool bLoop = true) = 0;
+
 };
 #endif // __IOEMESHBONE_H__

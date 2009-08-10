@@ -79,6 +79,68 @@ IOEMeshBone* COEMeshBone_Impl::GetChild(int nIndex) const
 	return m_vChildren[nIndex];
 }
 
+bool COEMeshBone_Impl::SlerpMatrix(CMatrix4x4& matOut, float fTime, bool bLoop /*= true*/)
+{
+	int nFrameCount = (int)m_vFrame.size();
+	if (nFrameCount <= 0) return false;
+
+	if (fTime >= m_fTimeLength)
+	{
+		if (!bLoop)
+		{
+			matOut = m_vFrame[nFrameCount-1].matTransform;
+			return true;
+		}
+
+		fTime -= floorf(fTime/m_fTimeLength)*m_fTimeLength;
+	}
+
+	if (fTime <= 0.0f)
+	{
+		if (!bLoop)
+		{
+			matOut = m_vFrame[0].matTransform;
+			return true;
+		}
+
+		fTime -= floorf(fTime/m_fTimeLength)*m_fTimeLength;
+	}
+
+	int nPrevIndex = 0;
+	int nNextIndex = 0;
+
+	for (int i = 0; i < nFrameCount-1; ++i)
+	{
+		if (fTime >= m_vFrame[i].fTime && fTime < m_vFrame[i+1].fTime)
+		{
+			nPrevIndex = i;
+			nNextIndex = i+1;
+			break;
+		}
+	}
+
+	if (nPrevIndex == nNextIndex)
+	{
+		matOut = m_vFrame[nPrevIndex].matTransform;
+		return true;
+	}
+
+	CQuaternion q1;
+	CQuaternion q2;
+	COEMath::BuildQuaternionFromMatrix(q1, m_vFrame[nPrevIndex].matTransform);
+	COEMath::BuildQuaternionFromMatrix(q2, m_vFrame[nNextIndex].matTransform);
+
+	CQuaternion q;
+	float t = (fTime - m_vFrame[nPrevIndex].fTime) / (m_vFrame[nNextIndex].fTime - m_vFrame[nPrevIndex].fTime);
+	COEMath::QuaternionSlerp(q, q1, q2, t);
+
+	COEMath::BuildMatrixFromQuaternion(matOut, q);
+	matOut.m[12] = (1.0f-t)*m_vFrame[nPrevIndex].matTransform.m[12] + t*m_vFrame[nNextIndex].matTransform.m[12];
+	matOut.m[13] = (1.0f-t)*m_vFrame[nPrevIndex].matTransform.m[13] + t*m_vFrame[nNextIndex].matTransform.m[13];
+	matOut.m[14] = (1.0f-t)*m_vFrame[nPrevIndex].matTransform.m[14] + t*m_vFrame[nNextIndex].matTransform.m[14];
+	return true;
+}
+
 int COEMeshBone_Impl::GetParentID() const
 {
 	return m_nParentID;
