@@ -1,21 +1,30 @@
 Microsoft Visual Studio Solution File, Format Version 8.00
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "demo_test", "demo\demo_test\demo_test.vcproj", "{EC3D2159-59A9-4FA6-B332-DAAC72C9280A}"
 	ProjectSection(ProjectDependencies) = postProject
+		{FC86443B-245B-4F29-BEF2-2D39A8F8B063} = {FC86443B-245B-4F29-BEF2-2D39A8F8B063}
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "demo_water", "demo\demo_water\demo_water.vcproj", "{CEFDEEC2-9346-4590-82B4-EFC8E816EE21}"
 	ProjectSection(ProjectDependencies) = postProject
+		{FC86443B-245B-4F29-BEF2-2D39A8F8B063} = {FC86443B-245B-4F29-BEF2-2D39A8F8B063}
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "demo_bumpmap", "demo\demo_bumpmap\demo_bumpmap.vcproj", "{3F23835C-D6A0-4218-9A8C-297B5DCA0010}"
 	ProjectSection(ProjectDependencies) = postProject
+		{FC86443B-245B-4F29-BEF2-2D39A8F8B063} = {FC86443B-245B-4F29-BEF2-2D39A8F8B063}
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "demo_ui", "demo\demo_ui\demo_ui.vcproj", "{8B0F6911-4E12-4358-B5B4-07673EF08BDF}"
 	ProjectSection(ProjectDependencies) = postProject
+		{FC86443B-245B-4F29-BEF2-2D39A8F8B063} = {FC86443B-245B-4F29-BEF2-2D39A8F8B063}
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "demo_mesh", "demo\demo_mesh\demo_mesh.vcproj", "{B69C8802-3861-4770-8358-8303F7697B00}"
+	ProjectSection(ProjectDependencies) = postProject
+		{FC86443B-245B-4F29-BEF2-2D39A8F8B063} = {FC86443B-245B-4F29-BEF2-2D39A8F8B063}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libOE", "source\libOE\libOE.vcproj", "{FC86443B-245B-4F29-BEF2-2D39A8F8B063}"
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
@@ -67,6 +76,14 @@ Global
 		{B69C8802-3861-4770-8358-8303F7697B00}.Unicode Debug.Build.0 = Unicode Debug|Win32
 		{B69C8802-3861-4770-8358-8303F7697B00}.Unicode Release.ActiveCfg = Unicode Release|Win32
 		{B69C8802-3861-4770-8358-8303F7697B00}.Unicode Release.Build.0 = Unicode Release|Win32
+		{FC86443B-245B-4F29-BEF2-2D39A8F8B063}.Debug.ActiveCfg = Debug|Win32
+		{FC86443B-245B-4F29-BEF2-2D39A8F8B063}.Debug.Build.0 = Debug|Win32
+		{FC86443B-245B-4F29-BEF2-2D39A8F8B063}.Release.ActiveCfg = Release|Win32
+		{FC86443B-245B-4F29-BEF2-2D39A8F8B063}.Release.Build.0 = Release|Win32
+		{FC86443B-245B-4F29-BEF2-2D39A8F8B063}.Unicode Debug.ActiveCfg = Unicode Debug|Win32
+		{FC86443B-245B-4F29-BEF2-2D39A8F8B063}.Unicode Debug.Build.0 = Unicode Debug|Win32
+		{FC86443B-245B-4F29-BEF2-2D39A8F8B063}.Unicode Release.ActiveCfg = Unicode Release|Win32
+		{FC86443B-245B-4F29-BEF2-2D39A8F8B063}.Unicode Release.Build.0 = Unicode Release|Win32
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 	EndGlobalSection

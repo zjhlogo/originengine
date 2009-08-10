@@ -32,7 +32,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="libOE_D.lib comctl32.lib"
+				AdditionalDependencies="comctl32.lib"
 				OutputFile="$(OutDir)/demo_water_D.exe"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="..\..\lib"
@@ -82,7 +82,7 @@ copy &quot;$(TargetPath)&quot; &quot;..\..\bin\&quot;
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="libOE.lib comctl32.lib"
+				AdditionalDependencies="comctl32.lib"
 				OutputFile="$(OutDir)/demo_water.exe"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\..\lib"
@@ -137,7 +137,7 @@ copy &quot;$(TargetPath)&quot; &quot;..\..\bin\&quot;
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="libOE_UD.lib comctl32.lib"
+				AdditionalDependencies="comctl32.lib"
 				OutputFile="$(OutDir)/demo_water_UD.exe"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="..\..\lib"
@@ -187,7 +187,7 @@ copy &quot;$(TargetPath)&quot; &quot;..\..\bin\&quot;
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="libOEU.lib comctl32.lib"
+				AdditionalDependencies="comctl32.lib"
 				OutputFile="$(OutDir)/demo_waterU.exe"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\..\lib"

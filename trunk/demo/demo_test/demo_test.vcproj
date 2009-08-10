@@ -32,7 +32,6 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="libOE_D.lib"
 				OutputFile="$(OutDir)/demo_test_D.exe"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="..\..\lib"
@@ -82,7 +81,6 @@ copy &quot;$(TargetPath)&quot; &quot;..\..\bin\&quot;
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="libOE.lib"
 				OutputFile="$(OutDir)/demo_test.exe"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\..\lib"
@@ -137,7 +135,6 @@ copy &quot;$(TargetPath)&quot; &quot;..\..\bin\&quot;
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="libOE_UD.lib"
 				OutputFile="$(OutDir)/demo_test_UD.exe"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="..\..\lib"
@@ -187,7 +184,6 @@ copy &quot;$(TargetPath)&quot; &quot;..\..\bin\&quot;
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="libOEU.lib"
 				OutputFile="$(OutDir)/demo_testU.exe"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\..\lib"

@@ -32,7 +32,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="comctl32.lib core.lib geom.lib maxutil.lib igame.lib libOE_D.lib"
+				AdditionalDependencies="comctl32.lib core.lib geom.lib maxutil.lib igame.lib"
 				OutputFile="$(OutDir)/MeshExporter_D.dle"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="..\..\lib"
@@ -44,10 +44,7 @@
 			<Tool
 				Name="VCMIDLTool"/>
 			<Tool
-				Name="VCPostBuildEventTool"
-				CommandLine="echo copy &quot;$(TargetPath)&quot; &quot;e:\Program Files\Autodesk\3ds Max 9\plugins\&quot;
-copy &quot;$(TargetPath)&quot; &quot;e:\Program Files\Autodesk\3ds Max 9\plugins\&quot;
-"/>
+				Name="VCPostBuildEventTool"/>
 			<Tool
 				Name="VCPreBuildEventTool"/>
 			<Tool
@@ -84,7 +81,7 @@ copy &quot;$(TargetPath)&quot; &quot;e:\Program Files\Autodesk\3ds Max 9\plugins
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="comctl32.lib core.lib geom.lib maxutil.lib  igame.lib libOE.lib"
+				AdditionalDependencies="comctl32.lib core.lib geom.lib maxutil.lib igame.lib"
 				OutputFile="$(OutDir)/MeshExporter.dle"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\..\lib"
@@ -138,7 +135,7 @@ copy &quot;$(TargetPath)&quot; &quot;e:\Program Files\Autodesk\3ds Max 9\plugins
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="comctl32.lib core.lib geom.lib maxutil.lib  igame.lib libOE_UD.lib"
+				AdditionalDependencies="comctl32.lib core.lib geom.lib maxutil.lib igame.lib"
 				OutputFile="$(OutDir)/MeshExporter_UD.dle"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="..\..\lib"
@@ -187,7 +184,7 @@ copy &quot;$(TargetPath)&quot; &quot;e:\Program Files\Autodesk\3ds Max 9\plugins
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="comctl32.lib core.lib geom.lib maxutil.lib  igame.lib libOEU.lib"
+				AdditionalDependencies="comctl32.lib core.lib geom.lib maxutil.lib igame.lib"
 				OutputFile="$(OutDir)/MeshExporterU.dle"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\..\lib"
