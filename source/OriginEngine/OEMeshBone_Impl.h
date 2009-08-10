@@ -36,6 +36,8 @@ public:
 	virtual int GetNumChildren() const;
 	virtual IOEMeshBone* GetChild(int nIndex) const;
 
+	virtual bool SlerpMatrix(CMatrix4x4& matOut, float fTime, bool bLoop = true);
+
 	int GetParentID() const;
 	void SetParent(COEMeshBone_Impl* pParent);
 
