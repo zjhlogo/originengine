@@ -37,10 +37,7 @@
 			<Tool
 				Name="VCMIDLTool"/>
 			<Tool
-				Name="VCPostBuildEventTool"
-				CommandLine="echo copy &quot;$(TargetPath)&quot; &quot;..\..\lib\&quot;
-copy &quot;$(TargetPath)&quot; &quot;..\..\lib\&quot;
-"/>
+				Name="VCPostBuildEventTool"/>
 			<Tool
 				Name="VCPreBuildEventTool"/>
 			<Tool
@@ -80,10 +77,7 @@ copy &quot;$(TargetPath)&quot; &quot;..\..\lib\&quot;
 			<Tool
 				Name="VCMIDLTool"/>
 			<Tool
-				Name="VCPostBuildEventTool"
-				CommandLine="echo copy &quot;$(TargetPath)&quot; &quot;..\..\lib\&quot;
-copy &quot;$(TargetPath)&quot; &quot;..\..\lib\&quot;
-"/>
+				Name="VCPostBuildEventTool"/>
 			<Tool
 				Name="VCPreBuildEventTool"/>
 			<Tool
@@ -126,10 +120,7 @@ copy &quot;$(TargetPath)&quot; &quot;..\..\lib\&quot;
 			<Tool
 				Name="VCMIDLTool"/>
 			<Tool
-				Name="VCPostBuildEventTool"
-				CommandLine="echo copy &quot;$(TargetPath)&quot; &quot;..\..\lib\&quot;
-copy &quot;$(TargetPath)&quot; &quot;..\..\lib\&quot;
-"/>
+				Name="VCPostBuildEventTool"/>
 			<Tool
 				Name="VCPreBuildEventTool"/>
 			<Tool
@@ -169,10 +160,7 @@ copy &quot;$(TargetPath)&quot; &quot;..\..\lib\&quot;
 			<Tool
 				Name="VCMIDLTool"/>
 			<Tool
-				Name="VCPostBuildEventTool"
-				CommandLine="echo copy &quot;$(TargetPath)&quot; &quot;..\..\lib\&quot;
-copy &quot;$(TargetPath)&quot; &quot;..\..\lib\&quot;
-"/>
+				Name="VCPostBuildEventTool"/>
 			<Tool
 				Name="VCPreBuildEventTool"/>
 			<Tool
