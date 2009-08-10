@@ -125,6 +125,9 @@ bool COEMeshBone_Impl::SlerpMatrix(CMatrix4x4& matOut, float fTime, bool bLoop /
 		return true;
 	}
 
+	//float t = (fTime - m_vFrame[nPrevIndex].fTime) / (m_vFrame[nNextIndex].fTime - m_vFrame[nPrevIndex].fTime);
+	//COEMath::MatrixLerp(matOut, m_vFrame[nPrevIndex].matTransform, m_vFrame[nNextIndex].matTransform, t);
+
 	CQuaternion q1;
 	CQuaternion q2;
 	COEMath::BuildQuaternionFromMatrix(q1, m_vFrame[nPrevIndex].matTransform);

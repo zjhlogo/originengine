@@ -164,6 +164,32 @@ void COEMath::BuildMatrixFromQuaternion(CMatrix4x4& matOut, const CQuaternion& q
 	matOut.m[15] = 1.0f;
 }
 
+void COEMath::MatrixLerp(CMatrix4x4& matOut, const CMatrix4x4& mat1, const CMatrix4x4& mat2, float t)
+{
+	float k0 = 1.0f - t;
+	float k1 = t;
+
+	matOut.m[0] = k0*mat1.m[0] + k1*mat2.m[0];
+	matOut.m[1] = k0*mat1.m[1] + k1*mat2.m[1];
+	matOut.m[2] = k0*mat1.m[2] + k1*mat2.m[2];
+	matOut.m[3] = 0.0f;
+
+	matOut.m[4] = k0*mat1.m[4] + k1*mat2.m[4];
+	matOut.m[5] = k0*mat1.m[5] + k1*mat2.m[5];
+	matOut.m[6] = k0*mat1.m[6] + k1*mat2.m[6];
+	matOut.m[7] = 0.0f;
+
+	matOut.m[8] = k0*mat1.m[8] + k1*mat2.m[8];
+	matOut.m[9] = k0*mat1.m[9] + k1*mat2.m[9];
+	matOut.m[10] = k0*mat1.m[10] + k1*mat2.m[10];
+	matOut.m[11] = 0.0f;
+
+	matOut.m[12] = k0*mat1.m[12] + k1*mat2.m[12];
+	matOut.m[13] = k0*mat1.m[13] + k1*mat2.m[13];
+	matOut.m[14] = k0*mat1.m[14] + k1*mat2.m[14];
+	matOut.m[15] = 1.0f;
+}
+
 void COEMath::QuaternionSlerp(CQuaternion& qOut, const CQuaternion& q1, const CQuaternion& q2, float t)
 {
 	float cosOmega = q1.w*q2.w + q1.x*q2.x + q1.y*q2.y + q1.z*q2.z;

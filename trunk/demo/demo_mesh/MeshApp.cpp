@@ -167,31 +167,40 @@ bool CMeshApp::UpdateRotation(float fDetailTime)
 
 void CMeshApp::RebuildBoneVerts(float fTime)
 {
-	uint nColors[3] = {0xFFFF0000, 0xFF00FF00, 0xFF0000FF};
-
 	m_vVerts.clear();
 	m_vIndis.clear();
 
-	CMatrix4x4 matCurr;
-	VERTEX Vertex;
-	ushort nIndex = 0;
-
+	CMatrix4x4 matWorld;
 	IOEMeshBone* pBone = m_pMesh->GetBone(0);
-	while (pBone)
+	BuildBoneVerts(m_vVerts, m_vIndis, fTime, pBone, matWorld, -1);
+}
+
+void CMeshApp::BuildBoneVerts(VVERTEX& vVerts, VUSHORT& vIndis, float fTime, IOEMeshBone* pBone, const CMatrix4x4& matParent, int nParentVertIndex)
+{
+	if (!pBone) return;
+
+	CMatrix4x4 matLocal;
+	pBone->SlerpMatrix(matLocal, fTime, true);
+	CMatrix4x4 matWorld = matLocal * matParent;
+
+	VERTEX Vertex;
+	Vertex.x = matWorld.m[12];
+	Vertex.y = matWorld.m[13];
+	Vertex.z = matWorld.m[14];
+	Vertex.nColor = 0xFFFFFFFF;
+
+	int nSelfIndex = (int)vVerts.size();
+	vVerts.push_back(Vertex);
+
+	if (nParentVertIndex != -1)
 	{
-		CMatrix4x4 matLocal;
-		pBone->SlerpMatrix(matLocal, fTime, true);
-		matCurr = matLocal * matCurr;
+		vIndis.push_back(nParentVertIndex);
+		vIndis.push_back(nSelfIndex);
+	}
 
-		Vertex.x = matCurr.m[12];
-		Vertex.y = matCurr.m[13];
-		Vertex.z = matCurr.m[14];
-		Vertex.nColor = nColors[nIndex%3];
-
-		m_vVerts.push_back(Vertex);
-		m_vIndis.push_back(nIndex);
-
-		++nIndex;
-		pBone = pBone->GetChild(0);
+	int nNumChildBone = pBone->GetNumChildren();
+	for (int i = 0; i < nNumChildBone; ++i)
+	{
+		BuildBoneVerts(vVerts, vIndis, fTime, pBone->GetChild(i), matWorld, nSelfIndex);
 	}
 }
