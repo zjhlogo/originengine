@@ -57,6 +57,7 @@ private:
 	bool UpdateRotation(float fDetailTime);
 
 	void RebuildBoneVerts(float fTime);
+	void BuildBoneVerts(VVERTEX& vVerts, VUSHORT& vIndis, float fTime, IOEMeshBone* pBone, const CMatrix4x4& matParent, int nParentVertIndex);
 
 private:
 	CCamera* m_pCamera;
