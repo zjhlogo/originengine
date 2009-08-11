@@ -501,6 +501,12 @@ bool CMeshExporter::DumpPositionController(TIME_VALUE_SET& TimeSetOut, IGameCont
 			DumpMaxStdPosKey(TimeSetOut, pGameControl);
 		}
 		break;
+	case IGameControl::IGAME_BIPED:
+		{
+			// export biped pos key
+			DumpBipedPosKey(TimeSetOut, pGameControl);
+		}
+		break;
 	case IGameControl::IGAME_POS_CONSTRAINT:
 		{
 			// export constraint controller
@@ -539,6 +545,12 @@ bool CMeshExporter::DumpRotationController(TIME_VALUE_SET& TimeSetOut, IGameCont
 		{
 			// export std rot key
 			DumpMaxStdRotKey(TimeSetOut, pGameControl);
+		}
+		break;
+	case IGameControl::IGAME_BIPED:
+		{
+			// export biped rot key
+			DumpBipedRotKey(TimeSetOut, pGameControl);
 		}
 		break;
 	case IGameControl::IGAME_EULER:
@@ -582,6 +594,12 @@ bool CMeshExporter::DumpScaleController(TIME_VALUE_SET& TimeSetOut, IGameControl
 			DumpMaxStdScaleKey(TimeSetOut, pGameControl);
 		}
 		break;
+	case IGameControl::IGAME_BIPED:
+		{
+			// export scale key
+			DumpBipedScaleKey(TimeSetOut, pGameControl);
+		}
+		break;
 	default:
 		{
 			// TODO: 
@@ -617,6 +635,20 @@ bool CMeshExporter::DumpMaxStdPosKey(TIME_VALUE_SET& TimeSetOut, IGameControl* p
 			// time = PosKey[i].t;
 			// position = PosKey[i].linearKey.pval;
 		}
+	}
+
+	return true;
+}
+
+bool CMeshExporter::DumpBipedPosKey(TIME_VALUE_SET& TimeSetOut, IGameControl* pGameControl)
+{
+	Control* pControl = pGameControl->GetMaxControl(IGAME_POS);
+
+	int nNumKey = pControl->NumKeys();
+	for (int i = 0; i < nNumKey; ++i)
+	{
+		TimeValue KeyTime = pControl->GetKeyTime(i);
+		TimeSetOut.insert(KeyTime);
 	}
 
 	return true;
@@ -743,6 +775,20 @@ bool CMeshExporter::DumpMaxStdRotKey(TIME_VALUE_SET& TimeSetOut, IGameControl* p
 	return true;
 }
 
+bool CMeshExporter::DumpBipedRotKey(TIME_VALUE_SET& TimeSetOut, IGameControl* pGameControl)
+{
+	Control* pControl = pGameControl->GetMaxControl(IGAME_ROT);
+
+	int nNumKey = pControl->NumKeys();
+	for (int i = 0; i < nNumKey; ++i)
+	{
+		TimeValue KeyTime = pControl->GetKeyTime(i);
+		TimeSetOut.insert(KeyTime);
+	}
+
+	return true;
+}
+
 bool CMeshExporter::DumpEulerRotKey(TIME_VALUE_SET& TimeSetOut, IGameControl* pGameControl)
 {
 	IGameKeyTab RotKey;
@@ -835,6 +881,20 @@ bool CMeshExporter::DumpMaxStdScaleKey(TIME_VALUE_SET& TimeSetOut, IGameControl*
 			// time = ScaleKey[i].t;
 			// ScaleKey[i].bezierKey.sval;
 		}
+	}
+
+	return true;
+}
+
+bool CMeshExporter::DumpBipedScaleKey(TIME_VALUE_SET& TimeSetOut, IGameControl* pGameControl)
+{
+	Control* pControl = pGameControl->GetMaxControl(IGAME_SCALE);
+
+	int nNumKey = pControl->NumKeys();
+	for (int i = 0; i < nNumKey; ++i)
+	{
+		TimeValue KeyTime = pControl->GetKeyTime(i);
+		TimeSetOut.insert(KeyTime);
 	}
 
 	return true;
