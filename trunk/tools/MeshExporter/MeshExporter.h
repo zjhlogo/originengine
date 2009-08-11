@@ -141,12 +141,15 @@ private:
 	bool DumpScaleController(TIME_VALUE_SET& TimeSetOut, IGameControl* pGameControl);
 
 	bool DumpMaxStdPosKey(TIME_VALUE_SET& TimeSetOut, IGameControl* pGameControl);
+	bool DumpBipedPosKey(TIME_VALUE_SET& TimeSetOut, IGameControl* pGameControl);
 	bool DumpIndependentPosKey(TIME_VALUE_SET& TimeSetOut, IGameControl* pGameControl);
 
 	bool DumpMaxStdRotKey(TIME_VALUE_SET& TimeSetOut, IGameControl* pGameControl);
+	bool DumpBipedRotKey(TIME_VALUE_SET& TimeSetOut, IGameControl* pGameControl);
 	bool DumpEulerRotKey(TIME_VALUE_SET& TimeSetOut, IGameControl* pGameControl);
 
 	bool DumpMaxStdScaleKey(TIME_VALUE_SET& TimeSetOut, IGameControl* pGameControl);
+	bool DumpBipedScaleKey(TIME_VALUE_SET& TimeSetOut, IGameControl* pGameControl);
 
 	bool DumpConstraintKey(TIME_VALUE_SET& TimeSetOut, IGameControl* pGameControl);
 	bool DumpListKey(TIME_VALUE_SET& TimeSetOut, IGameControl* pGameControl);
