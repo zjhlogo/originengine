@@ -33,6 +33,10 @@ public:
 	static bool float2str(tstring& strOut, float fValue);
 
 	static bool strformat(tstring& strOut, const tchar* strFormat, ...);
+
+	static void toupper(tstring& strOut, const tstring& strIn);
+	static void tolower(tstring& strOut, const tstring& strIn);
+
 };
 
 #endif // __OEOS_H__

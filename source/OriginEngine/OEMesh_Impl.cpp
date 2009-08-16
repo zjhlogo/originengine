@@ -152,3 +152,9 @@ bool COEMesh_Impl::Create(const tstring& strFileName)
 
 	return true;
 }
+
+IOEMeshBone* COEMesh_Impl::GetRootBone() const
+{
+	if (m_vBone.empty()) return NULL;
+	return m_vBone[0];
+}

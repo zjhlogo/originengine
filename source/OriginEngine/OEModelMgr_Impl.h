@@ -16,6 +16,12 @@ public:
 	COEModelMgr_Impl();
 	virtual ~COEModelMgr_Impl();
 
+	virtual IOEModel* CreateModelFromFile(const tstring& strFileName);
+
+private:
+	void Init();
+	void Destroy();
+
 };
 
 #endif // __OEMODELMGR_IMPL_H__

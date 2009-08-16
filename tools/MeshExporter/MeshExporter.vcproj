@@ -4,6 +4,7 @@
 	Version="7.10"
 	Name="MeshExporter"
 	ProjectGUID="{974A94F3-86D6-4CAC-8560-C5C1CE798CCF}"
+	RootNamespace="MeshExporter"
 	Keyword="Win32Proj">
 	<Platforms>
 		<Platform
@@ -39,7 +40,7 @@
 				ModuleDefinitionFile="MeshExporter_D.def"
 				GenerateDebugInformation="TRUE"
 				SubSystem="2"
-				ImportLibrary="$(OutDir)/MeshExporter.lib"
+				ImportLibrary="$(OutDir)/$(TargetName).lib"
 				TargetMachine="1"/>
 			<Tool
 				Name="VCMIDLTool"/>
@@ -90,7 +91,7 @@
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
-				ImportLibrary="$(OutDir)/MeshExporter.lib"
+				ImportLibrary="$(OutDir)/$(TargetName).lib"
 				TargetMachine="1"/>
 			<Tool
 				Name="VCMIDLTool"/>
@@ -142,7 +143,7 @@
 				ModuleDefinitionFile="MeshExporter_UD.def"
 				GenerateDebugInformation="TRUE"
 				SubSystem="2"
-				ImportLibrary="$(OutDir)/MeshExporter.lib"
+				ImportLibrary="$(OutDir)/$(TargetName).lib"
 				TargetMachine="1"/>
 			<Tool
 				Name="VCMIDLTool"/>
@@ -193,7 +194,7 @@
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
-				ImportLibrary="$(OutDir)/MeshExporter.lib"
+				ImportLibrary="$(OutDir)/$(TargetName).lib"
 				TargetMachine="1"/>
 			<Tool
 				Name="VCMIDLTool"/>

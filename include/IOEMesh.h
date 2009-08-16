@@ -26,5 +26,7 @@ public:
 	virtual IOEMeshBone* GetBone(int nIndex) const = 0;
 	virtual IOEMeshBone* FindBone(const tstring& strName) const = 0;
 
+	virtual IOEMeshBone* GetRootBone() const = 0;
+
 };
 #endif // __IOEMESH_H__

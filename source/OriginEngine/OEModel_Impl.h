@@ -10,24 +10,38 @@
 
 #include <IOEModel.h>
 #include <OEInterfaces.h>
+#include <vector>
+#include <map>
+
+#include "AnimationTracker.h"
 
 class COEModel_Impl : public IOEModel
 {
 public:
+	typedef std::map<int, CAnimationTracker*> TRACKER_MAP;
+	typedef std::vector<CMatrix4x4> VMATRIX;
+
+public:
 	COEModel_Impl(const tstring& strFileName);
 	virtual ~COEModel_Impl();
+
+	virtual void Update(float fDetailTime);
+	virtual void Render(float fDetailTime);
 
 private:
 	void Init();
 	void Destroy();
 
-	virtual void Update(float fDetailTime);
-	virtual void Render(float fDetailTime);
-
 	bool Create(const tstring& strFileName);
+	int CalculateBoneCount(IOEMeshBone* pBone);
+	CAnimationTracker* LoopCreateTracker(IOEMeshBone* pBone, CAnimationTracker* pParentTracker = NULL);
+	CAnimationTracker* CreateTracker(IOEMeshBone* pBone, CAnimationTracker* pParentTracker = NULL);
 
 private:
 	IOEMesh* m_pMesh;
+	CAnimationTracker* m_pRootTracker;
+	TRACKER_MAP m_vTrackerMap;
+	VMATRIX m_vmatTransformed;
 
 };
 

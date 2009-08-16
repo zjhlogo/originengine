@@ -9,7 +9,7 @@
 #include "OED3DTexture_Impl.h"
 
 #include <OEInterfaces.h>
-#include <algorithm>
+#include <OEOS.h>
 
 COED3DTextureMgr_Impl::COED3DTextureMgr_Impl()
 {
@@ -36,8 +36,8 @@ void COED3DTextureMgr_Impl::Destroy()
 IOETexture* COED3DTextureMgr_Impl::CreateTextureFromFile(const tstring& strFileName)
 {
 	// transform string to lower
-	tstring strLowName = strFileName;
-	std::transform(strLowName.begin(), strLowName.end(), strLowName.begin(), tolower);
+	tstring strLowName;
+	COEOS::tolower(strLowName, strFileName);
 
 	// find from map, if exist just increase reference and return
 	TEXTURE_MAP::iterator itfound = m_TextureMap.find(strLowName);

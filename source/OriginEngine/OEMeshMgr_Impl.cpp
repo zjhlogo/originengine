@@ -7,7 +7,9 @@
  */
 #include "OEMeshMgr_Impl.h"
 #include "OEMesh_Impl.h"
+
 #include <OEInterfaces.h>
+#include <OEOS.h>
 
 COEMeshMgr_Impl::COEMeshMgr_Impl()
 {
@@ -28,12 +30,25 @@ void COEMeshMgr_Impl::Init()
 
 void COEMeshMgr_Impl::Destroy()
 {
-	// TODO: 
+	// TODO: check m_MeshMap whether is empty, and logout
 }
 
 IOEMesh* COEMeshMgr_Impl::CreateMeshFromFile(const tstring& strFileName)
 {
-	// TODO: check whether the mesh created
+	// transform string to lower
+	tstring strLowName;
+	COEOS::tolower(strLowName, strFileName);
+
+	// check whether the mesh created
+	MESH_MAP::iterator itfound = m_MeshMap.find(strLowName);
+	if (itfound != m_MeshMap.end())
+	{
+		IOEMesh* pMesh = itfound->second;
+		pMesh->IncRef();
+		return pMesh;
+	}
+
+	// create new
 	COEMesh_Impl* pMesh = new COEMesh_Impl(strFileName);
 	if (!pMesh || !pMesh->IsOK())
 	{
@@ -41,6 +56,8 @@ IOEMesh* COEMeshMgr_Impl::CreateMeshFromFile(const tstring& strFileName)
 		SAFE_RELEASE(pMesh);
 		return NULL;
 	}
+
+	m_MeshMap.insert(std::make_pair(strLowName, pMesh));
 
 	return pMesh;
 }
