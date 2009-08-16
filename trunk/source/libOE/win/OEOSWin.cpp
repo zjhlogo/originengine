@@ -9,6 +9,7 @@
 #include <OEHolder.h>
 
 #include <Windows.h>
+#include <algorithm>
 #include <vector>
 
 #include "../OEFileMgr_Impl.h"
@@ -181,4 +182,16 @@ bool COEOS::strformat(tstring& strOut, const tchar* strFormat, ...)
 	va_end(marker);
 
 	return true;
+}
+
+void COEOS::toupper(tstring& strOut, const tstring& strIn)
+{
+	strOut = strIn;
+	std::transform(strOut.begin(), strOut.end(), strOut.begin(), ::tolower);
+}
+
+void COEOS::tolower(tstring& strOut, const tstring& strIn)
+{
+	strOut = strIn;
+	std::transform(strOut.begin(), strOut.end(), strOut.begin(), ::toupper);
 }

@@ -32,6 +32,8 @@ public:
 	virtual IOEMeshBone* GetBone(int nIndex) const;
 	virtual IOEMeshBone* FindBone(const tstring& strName) const;
 
+	virtual IOEMeshBone* GetRootBone() const;
+
 private:
 	void Init();
 	void Destroy();

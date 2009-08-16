@@ -82,7 +82,11 @@ IOEMeshBone* COEMeshBone_Impl::GetChild(int nIndex) const
 bool COEMeshBone_Impl::SlerpMatrix(CMatrix4x4& matOut, float fTime, bool bLoop /*= true*/)
 {
 	int nFrameCount = (int)m_vFrame.size();
-	if (nFrameCount <= 0) return false;
+	if (nFrameCount <= 0)
+	{
+		matOut = m_matLocal;
+		return true;
+	}
 
 	if (fTime >= m_fTimeLength)
 	{
