@@ -12,8 +12,8 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="..\..\build\$(ProjectName)\$(ConfigurationName)"
-			IntermediateDirectory="..\..\build\$(ProjectName)\$(ConfigurationName)"
+			OutputDirectory="..\..\build\source\$(ProjectName)\$(ConfigurationName)"
+			IntermediateDirectory="..\..\build\source\$(ProjectName)\$(ConfigurationName)"
 			ConfigurationType="4"
 			CharacterSet="2">
 			<Tool
@@ -54,8 +54,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="..\..\build\$(ProjectName)\$(ConfigurationName)"
-			IntermediateDirectory="..\..\build\$(ProjectName)\$(ConfigurationName)"
+			OutputDirectory="..\..\build\source\$(ProjectName)\$(ConfigurationName)"
+			IntermediateDirectory="..\..\build\source\$(ProjectName)\$(ConfigurationName)"
 			ConfigurationType="4"
 			CharacterSet="2">
 			<Tool
@@ -93,8 +93,8 @@
 		</Configuration>
 		<Configuration
 			Name="Unicode Debug|Win32"
-			OutputDirectory="..\..\build\$(ProjectName)\$(ConfigurationName)"
-			IntermediateDirectory="..\..\build\$(ProjectName)\$(ConfigurationName)"
+			OutputDirectory="..\..\build\source\$(ProjectName)\$(ConfigurationName)"
+			IntermediateDirectory="..\..\build\source\$(ProjectName)\$(ConfigurationName)"
 			ConfigurationType="4"
 			CharacterSet="2">
 			<Tool
@@ -135,8 +135,8 @@
 		</Configuration>
 		<Configuration
 			Name="Unicode Release|Win32"
-			OutputDirectory="..\..\build\$(ProjectName)\$(ConfigurationName)"
-			IntermediateDirectory="..\..\build\$(ProjectName)\$(ConfigurationName)"
+			OutputDirectory="..\..\build\source\$(ProjectName)\$(ConfigurationName)"
+			IntermediateDirectory="..\..\build\source\$(ProjectName)\$(ConfigurationName)"
 			ConfigurationType="4"
 			CharacterSet="2">
 			<Tool
