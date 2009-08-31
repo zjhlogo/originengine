@@ -31,7 +31,7 @@ source
 
 
 V, 如何编译,运行,调试
-    目前只针对Windows平台, OriginEngine.sln 用于编译引擎, demo.sln 用于编译demo;
+    目前只针对Windows平台, source.sln 用于编译引擎, demo.sln 用于编译demo;
 
     以 demo_test 为列 调试程序时设置
 
