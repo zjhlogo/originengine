@@ -37,7 +37,7 @@ IOEXmlNode* COEXmlMgr_Impl::OpenXmlFile(const tstring& strFileName)
 	if (!pRootNode || !pRootNode->IsOK())
 	{
 		SAFE_RELEASE(pRootNode);
-		LOGOUT(_T("IOEXmlMgr::OpenXmlFile Failed \"%s\""), strFileName.c_str());
+		LOGOUT(t("IOEXmlMgr::OpenXmlFile Failed \"%s\""), strFileName.c_str());
 		return NULL;
 	}
 

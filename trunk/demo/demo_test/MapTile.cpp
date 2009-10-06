@@ -48,13 +48,13 @@ bool CMapTile::LoadMap(const ushort* pHeightField, int nID)
 
 	if (!m_pTexture)
 	{
-		m_pTexture = g_pOETextureMgr->CreateTextureFromFile(_T("grass.png"));
+		m_pTexture = g_pOETextureMgr->CreateTextureFromFile(t("grass.png"));
 		if (!m_pTexture) return false;
 	}
 
 	if (!m_pShader)
 	{
-		m_pShader = g_pOEShaderMgr->CreateShader(s_Decl, _T("terrain.fx"));
+		m_pShader = g_pOEShaderMgr->CreateShader(s_Decl, t("terrain.fx"));
 		if (!m_pShader) return false;
 	}
 
@@ -112,7 +112,7 @@ int CMapTile::GetID()
 
 void CMapTile::Render(float fDetailTime)
 {
-	m_pShader->SetTexture(_T("g_texBase"), m_pTexture);
+	m_pShader->SetTexture(t("g_texBase"), m_pTexture);
 
 	CMatrix4x4 matWorld;
 	CalcMatrix(matWorld, m_nID);
@@ -121,7 +121,7 @@ void CMapTile::Render(float fDetailTime)
 	g_pOERenderer->GetTransform(matViewProj, IOERenderer::TT_VIEW_PROJ);
 
 	CMatrix4x4 matWorldViewProj = matWorld*matViewProj;
-	m_pShader->SetMatrix(_T("g_matWorldViewProj"), matWorldViewProj);
+	m_pShader->SetMatrix(t("g_matWorldViewProj"), matWorldViewProj);
 
 	g_pOERenderer->SetShader(m_pShader);
 	g_pOERenderer->DrawTriList(m_pVerts, TILE_SIZE*TILE_SIZE, m_pIndis, (TILE_SIZE-1)*(TILE_SIZE-1)*6);

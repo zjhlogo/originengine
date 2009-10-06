@@ -1,72 +1,120 @@
 <?xml version="1.0" encoding="gb2312"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="7.10"
+	Version="9.00"
 	Name="OriginEngine"
 	ProjectGUID="{D075752D-2334-4F70-B398-75BEA302E0F7}"
-	Keyword="Win32Proj">
+	Keyword="Win32Proj"
+	TargetFrameworkVersion="131072"
+	>
 	<Platforms>
 		<Platform
-			Name="Win32"/>
+			Name="Win32"
+		/>
 	</Platforms>
+	<ToolFiles>
+	</ToolFiles>
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
 			OutputDirectory="..\..\build\source\$(ProjectName)\$(ConfigurationName)"
 			IntermediateDirectory="..\..\build\source\$(ProjectName)\$(ConfigurationName)"
 			ConfigurationType="2"
-			CharacterSet="2">
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
+			CharacterSet="2"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+			/>
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="..\..\include"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;ORIGINENGINE_EXPORTS"
-				MinimalRebuild="TRUE"
+				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
-				Detect64BitPortabilityProblems="TRUE"
-				DebugInformationFormat="4"/>
+				DebugInformationFormat="4"
+			/>
 			<Tool
-				Name="VCCustomBuildTool"/>
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
 			<Tool
 				Name="VCLinkerTool"
 				OutputFile="$(OutDir)/OriginEngine_D.dll"
 				LinkIncremental="2"
-				GenerateDebugInformation="TRUE"
+				GenerateDebugInformation="true"
 				SubSystem="2"
-				TargetMachine="1"/>
+				RandomizedBaseAddress="1"
+				DataExecutionPrevention="0"
+				TargetMachine="1"
+			/>
 			<Tool
-				Name="VCMIDLTool"/>
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCManifestTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCAppVerifierTool"
+			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="echo copy &quot;$(TargetPath)&quot; &quot;..\..\bin\&quot;
-copy &quot;$(TargetPath)&quot; &quot;..\..\bin\&quot;
-"/>
-			<Tool
-				Name="VCPreBuildEventTool"/>
-			<Tool
-				Name="VCPreLinkEventTool"/>
-			<Tool
-				Name="VCResourceCompilerTool"/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"/>
-			<Tool
-				Name="VCXMLDataGeneratorTool"/>
-			<Tool
-				Name="VCWebDeploymentTool"/>
-			<Tool
-				Name="VCManagedWrapperGeneratorTool"/>
-			<Tool
-				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+				CommandLine="echo copy &quot;$(TargetPath)&quot; &quot;..\..\bin\&quot;&#x0D;&#x0A;copy &quot;$(TargetPath)&quot; &quot;..\..\bin\&quot;&#x0D;&#x0A;"
+			/>
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
 			OutputDirectory="..\..\build\source\$(ProjectName)\$(ConfigurationName)"
 			IntermediateDirectory="..\..\build\source\$(ProjectName)\$(ConfigurationName)"
 			ConfigurationType="2"
-			CharacterSet="2">
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
+			CharacterSet="2"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+			/>
 			<Tool
 				Name="VCCLCompilerTool"
 				AdditionalIncludeDirectories="..\..\include"
@@ -74,100 +122,152 @@ copy &quot;$(TargetPath)&quot; &quot;..\..\bin\&quot;
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
-				Detect64BitPortabilityProblems="TRUE"
-				DebugInformationFormat="3"/>
+				DebugInformationFormat="3"
+			/>
 			<Tool
-				Name="VCCustomBuildTool"/>
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
 			<Tool
 				Name="VCLinkerTool"
 				OutputFile="$(OutDir)/OriginEngine.dll"
 				LinkIncremental="1"
-				GenerateDebugInformation="TRUE"
+				GenerateDebugInformation="true"
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
-				TargetMachine="1"/>
+				RandomizedBaseAddress="1"
+				DataExecutionPrevention="0"
+				TargetMachine="1"
+			/>
 			<Tool
-				Name="VCMIDLTool"/>
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCManifestTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCAppVerifierTool"
+			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="echo copy &quot;$(TargetPath)&quot; &quot;..\..\bin\&quot;
-copy &quot;$(TargetPath)&quot; &quot;..\..\bin\&quot;
-"/>
-			<Tool
-				Name="VCPreBuildEventTool"/>
-			<Tool
-				Name="VCPreLinkEventTool"/>
-			<Tool
-				Name="VCResourceCompilerTool"/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"/>
-			<Tool
-				Name="VCXMLDataGeneratorTool"/>
-			<Tool
-				Name="VCWebDeploymentTool"/>
-			<Tool
-				Name="VCManagedWrapperGeneratorTool"/>
-			<Tool
-				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+				CommandLine="echo copy &quot;$(TargetPath)&quot; &quot;..\..\bin\&quot;&#x0D;&#x0A;copy &quot;$(TargetPath)&quot; &quot;..\..\bin\&quot;&#x0D;&#x0A;"
+			/>
 		</Configuration>
 		<Configuration
 			Name="Unicode Debug|Win32"
 			OutputDirectory="..\..\build\source\$(ProjectName)\$(ConfigurationName)"
 			IntermediateDirectory="..\..\build\source\$(ProjectName)\$(ConfigurationName)"
 			ConfigurationType="2"
-			CharacterSet="1">
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
+			CharacterSet="1"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+			/>
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="..\..\include"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;ORIGINENGINE_EXPORTS"
-				MinimalRebuild="TRUE"
+				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
-				Detect64BitPortabilityProblems="TRUE"
-				DebugInformationFormat="4"/>
+				DebugInformationFormat="4"
+			/>
 			<Tool
-				Name="VCCustomBuildTool"/>
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
 			<Tool
 				Name="VCLinkerTool"
 				OutputFile="$(OutDir)/OriginEngine_UD.dll"
 				LinkIncremental="2"
-				GenerateDebugInformation="TRUE"
+				GenerateDebugInformation="true"
 				SubSystem="2"
-				TargetMachine="1"/>
+				RandomizedBaseAddress="1"
+				DataExecutionPrevention="0"
+				TargetMachine="1"
+			/>
 			<Tool
-				Name="VCMIDLTool"/>
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCManifestTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCAppVerifierTool"
+			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="echo copy &quot;$(TargetPath)&quot; &quot;..\..\bin\&quot;
-copy &quot;$(TargetPath)&quot; &quot;..\..\bin\&quot;
-"/>
-			<Tool
-				Name="VCPreBuildEventTool"/>
-			<Tool
-				Name="VCPreLinkEventTool"/>
-			<Tool
-				Name="VCResourceCompilerTool"/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"/>
-			<Tool
-				Name="VCXMLDataGeneratorTool"/>
-			<Tool
-				Name="VCWebDeploymentTool"/>
-			<Tool
-				Name="VCManagedWrapperGeneratorTool"/>
-			<Tool
-				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+				CommandLine="echo copy &quot;$(TargetPath)&quot; &quot;..\..\bin\&quot;&#x0D;&#x0A;copy &quot;$(TargetPath)&quot; &quot;..\..\bin\&quot;&#x0D;&#x0A;"
+			/>
 		</Configuration>
 		<Configuration
 			Name="Unicode Release|Win32"
 			OutputDirectory="..\..\build\source\$(ProjectName)\$(ConfigurationName)"
 			IntermediateDirectory="..\..\build\source\$(ProjectName)\$(ConfigurationName)"
 			ConfigurationType="2"
-			CharacterSet="1">
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
+			CharacterSet="1"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+			/>
 			<Tool
 				Name="VCCLCompilerTool"
 				AdditionalIncludeDirectories="..\..\include"
@@ -175,42 +275,51 @@ copy &quot;$(TargetPath)&quot; &quot;..\..\bin\&quot;
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
-				Detect64BitPortabilityProblems="TRUE"
-				DebugInformationFormat="3"/>
+				DebugInformationFormat="3"
+			/>
 			<Tool
-				Name="VCCustomBuildTool"/>
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
 			<Tool
 				Name="VCLinkerTool"
 				OutputFile="$(OutDir)/OriginEngineU.dll"
 				LinkIncremental="1"
-				GenerateDebugInformation="TRUE"
+				GenerateDebugInformation="true"
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
-				TargetMachine="1"/>
+				RandomizedBaseAddress="1"
+				DataExecutionPrevention="0"
+				TargetMachine="1"
+			/>
 			<Tool
-				Name="VCMIDLTool"/>
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCManifestTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCAppVerifierTool"
+			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="echo copy &quot;$(TargetPath)&quot; &quot;..\..\bin\&quot;
-copy &quot;$(TargetPath)&quot; &quot;..\..\bin\&quot;
-"/>
-			<Tool
-				Name="VCPreBuildEventTool"/>
-			<Tool
-				Name="VCPreLinkEventTool"/>
-			<Tool
-				Name="VCResourceCompilerTool"/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"/>
-			<Tool
-				Name="VCXMLDataGeneratorTool"/>
-			<Tool
-				Name="VCWebDeploymentTool"/>
-			<Tool
-				Name="VCManagedWrapperGeneratorTool"/>
-			<Tool
-				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+				CommandLine="echo copy &quot;$(TargetPath)&quot; &quot;..\..\bin\&quot;&#x0D;&#x0A;copy &quot;$(TargetPath)&quot; &quot;..\..\bin\&quot;&#x0D;&#x0A;"
+			/>
 		</Configuration>
 	</Configurations>
 	<References>
@@ -219,144 +328,189 @@ copy &quot;$(TargetPath)&quot; &quot;..\..\bin\&quot;
 		<Filter
 			Name="Source Files"
 			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx"
-			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}">
+			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
+			>
 			<File
-				RelativePath=".\AnimationTracker.cpp">
+				RelativePath=".\AnimationTracker.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\OEConfigFileMgr_Impl.cpp">
+				RelativePath=".\OEConfigFileMgr_Impl.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\OECore_Impl.cpp">
+				RelativePath=".\OECore_Impl.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\OEMesh_Impl.cpp">
+				RelativePath=".\OEMesh_Impl.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\OEMeshBone_Impl.cpp">
+				RelativePath=".\OEMeshBone_Impl.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\OEMeshMgr_Impl.cpp">
+				RelativePath=".\OEMeshMgr_Impl.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\OEMeshPiece_Impl.cpp">
+				RelativePath=".\OEMeshPiece_Impl.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\OEModel_Impl.cpp">
+				RelativePath=".\OEModel_Impl.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\OEModelMgr_Impl.cpp">
+				RelativePath=".\OEModelMgr_Impl.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\OEModule.cpp">
+				RelativePath=".\OEModule.cpp"
+				>
 			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
-			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}">
+			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
+			>
 			<File
-				RelativePath=".\AnimationTracker.h">
+				RelativePath=".\AnimationTracker.h"
+				>
 			</File>
 			<File
-				RelativePath=".\OEConfigFileMgr_Impl.h">
+				RelativePath=".\OEConfigFileMgr_Impl.h"
+				>
 			</File>
 			<File
-				RelativePath=".\OECore_Impl.h">
+				RelativePath=".\OECore_Impl.h"
+				>
 			</File>
 			<File
-				RelativePath=".\OEMesh_Impl.h">
+				RelativePath=".\OEMesh_Impl.h"
+				>
 			</File>
 			<File
-				RelativePath=".\OEMeshBone_Impl.h">
+				RelativePath=".\OEMeshBone_Impl.h"
+				>
 			</File>
 			<File
-				RelativePath=".\OEMeshMgr_Impl.h">
+				RelativePath=".\OEMeshMgr_Impl.h"
+				>
 			</File>
 			<File
-				RelativePath=".\OEMeshPiece_Impl.h">
+				RelativePath=".\OEMeshPiece_Impl.h"
+				>
 			</File>
 			<File
-				RelativePath=".\OEModel_Impl.h">
+				RelativePath=".\OEModel_Impl.h"
+				>
 			</File>
 			<File
-				RelativePath=".\OEModelMgr_Impl.h">
+				RelativePath=".\OEModelMgr_Impl.h"
+				>
 			</File>
 			<File
-				RelativePath=".\OEModule.h">
+				RelativePath=".\OEModule.h"
+				>
 			</File>
 		</Filter>
 		<Filter
 			Name="SDK Header Files"
-			Filter="">
+			>
 			<File
-				RelativePath="..\..\include\IOEApp.h">
+				RelativePath="..\..\include\IOEApp.h"
+				>
 			</File>
 			<File
-				RelativePath="..\..\include\IOEConfigFileMgr.h">
+				RelativePath="..\..\include\IOEConfigFileMgr.h"
+				>
 			</File>
 			<File
-				RelativePath="..\..\include\IOECore.h">
+				RelativePath="..\..\include\IOECore.h"
+				>
 			</File>
 			<File
-				RelativePath="..\..\include\IOEDevice.h">
+				RelativePath="..\..\include\IOEDevice.h"
+				>
 			</File>
 			<File
-				RelativePath="..\..\include\IOEMesh.h">
+				RelativePath="..\..\include\IOEMesh.h"
+				>
 			</File>
 			<File
-				RelativePath="..\..\include\IOEMeshBone.h">
+				RelativePath="..\..\include\IOEMeshBone.h"
+				>
 			</File>
 			<File
-				RelativePath="..\..\include\IOEMeshMgr.h">
+				RelativePath="..\..\include\IOEMeshMgr.h"
+				>
 			</File>
 			<File
-				RelativePath="..\..\include\IOEMeshPiece.h">
+				RelativePath="..\..\include\IOEMeshPiece.h"
+				>
 			</File>
 			<File
-				RelativePath="..\..\include\IOEModel.h">
+				RelativePath="..\..\include\IOEModel.h"
+				>
 			</File>
 			<File
-				RelativePath="..\..\include\IOEModelMgr.h">
+				RelativePath="..\..\include\IOEModelMgr.h"
+				>
 			</File>
 			<File
-				RelativePath="..\..\include\IOEObject.h">
+				RelativePath="..\..\include\IOEObject.h"
+				>
 			</File>
 			<File
-				RelativePath="..\..\include\IOERenderer.h">
+				RelativePath="..\..\include\IOERenderer.h"
+				>
 			</File>
 			<File
-				RelativePath="..\..\include\IOERenderer2D.h">
+				RelativePath="..\..\include\IOERenderer2D.h"
+				>
 			</File>
 			<File
-				RelativePath="..\..\include\IOEShader.h">
+				RelativePath="..\..\include\IOEShader.h"
+				>
 			</File>
 			<File
-				RelativePath="..\..\include\IOEShaderMgr.h">
+				RelativePath="..\..\include\IOEShaderMgr.h"
+				>
 			</File>
 			<File
-				RelativePath="..\..\include\IOETexture.h">
+				RelativePath="..\..\include\IOETexture.h"
+				>
 			</File>
 			<File
-				RelativePath="..\..\include\IOETextureMgr.h">
+				RelativePath="..\..\include\IOETextureMgr.h"
+				>
 			</File>
 			<File
-				RelativePath="..\..\include\IOEVertDecl.h">
+				RelativePath="..\..\include\IOEVertDecl.h"
+				>
 			</File>
 			<File
-				RelativePath="..\..\include\OEBasicType.h">
+				RelativePath="..\..\include\OEBasicType.h"
+				>
 			</File>
 			<File
-				RelativePath="..\..\include\OEConfig.h">
+				RelativePath="..\..\include\OEConfig.h"
+				>
 			</File>
 			<File
-				RelativePath="..\..\include\OEFmtMesh.h">
+				RelativePath="..\..\include\OEFmtMesh.h"
+				>
 			</File>
 			<File
-				RelativePath="..\..\include\OEHolder.h">
+				RelativePath="..\..\include\OEHolder.h"
+				>
 			</File>
 			<File
-				RelativePath="..\..\include\OEInterfaces.h">
+				RelativePath="..\..\include\OEInterfaces.h"
+				>
 			</File>
 		</Filter>
 	</Files>

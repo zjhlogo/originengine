@@ -50,28 +50,28 @@ COEHolder::~COEHolder()
 void COEHolder::SetupInterfaces()
 {
 	// 基础模块
-	AddInterface(_T("IOEFileMgr"), (void**)&g_pOEFileMgr);
-	AddInterface(_T("IOELogFileMgr"), (void**)&g_pOELogFileMgr);
-	AddInterface(_T("IOEXmlMgr"), (void**)&g_pOEXmlMgr);
+	AddInterface(t("IOEFileMgr"), (void**)&g_pOEFileMgr);
+	AddInterface(t("IOELogFileMgr"), (void**)&g_pOELogFileMgr);
+	AddInterface(t("IOEXmlMgr"), (void**)&g_pOEXmlMgr);
 
 	// 核心模块
-	AddInterface(_T("IOECore"), (void**)&g_pOECore);
-	AddInterface(_T("IOEConfigFileMgr"), (void**)&g_pOEConfigFileMgr);
-	AddInterface(_T("IOEMeshMgr"), (void**)&g_pOEMeshMgr);
+	AddInterface(t("IOECore"), (void**)&g_pOECore);
+	AddInterface(t("IOEConfigFileMgr"), (void**)&g_pOEConfigFileMgr);
+	AddInterface(t("IOEMeshMgr"), (void**)&g_pOEMeshMgr);
 
 	// 渲染模块
-	AddInterface(_T("IOEDevice"), (void**)&g_pOEDevice);
-	AddInterface(_T("IOERenderer"), (void**)&g_pOERenderer);
-	AddInterface(_T("IOETextureMgr"), (void**)&g_pOETextureMgr);
-	AddInterface(_T("IOEShaderMgr"), (void**)&g_pOEShaderMgr);
+	AddInterface(t("IOEDevice"), (void**)&g_pOEDevice);
+	AddInterface(t("IOERenderer"), (void**)&g_pOERenderer);
+	AddInterface(t("IOETextureMgr"), (void**)&g_pOETextureMgr);
+	AddInterface(t("IOEShaderMgr"), (void**)&g_pOEShaderMgr);
 
 	// UI模块
-	AddInterface(_T("IOEUIRenderer"), (void**)&g_pOEUIRenderer);
-	AddInterface(_T("IOEUIFontMgr"), (void**)&g_pOEUIFontMgr);
-	AddInterface(_T("IOEUIStringMgr"), (void**)&g_pOEUIStringMgr);
+	AddInterface(t("IOEUIRenderer"), (void**)&g_pOEUIRenderer);
+	AddInterface(t("IOEUIFontMgr"), (void**)&g_pOEUIFontMgr);
+	AddInterface(t("IOEUIStringMgr"), (void**)&g_pOEUIStringMgr);
 
 	// 用户层
-	AddInterface(_T("IOEApp"), (void**)&g_pOEApp);
+	AddInterface(t("IOEApp"), (void**)&g_pOEApp);
 }
 
 bool COEHolder::Initialize()

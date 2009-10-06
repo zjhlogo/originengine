@@ -9,6 +9,7 @@
 #define __IOELOGFILEMGR_H__
 
 #include "OEBasicType.h"
+#include <OEOS.h>
 
 class IOELogFileMgr
 {
@@ -16,13 +17,16 @@ public:
 	IOELogFileMgr() {};
 	virtual ~IOELogFileMgr() {};
 
-	virtual void LogOut(const tchar* pstrFormat, ...) = 0;
+	virtual void LogOut(const tstring& strLogMsg) = 0;
+	virtual tstring& GetStringBuffer() = 0;
 };
 
 extern IOELogFileMgr* g_pOELogFileMgr;
 
 #if (ENABLE_LOGOUT)
-#define LOGOUT g_pOELogFileMgr->LogOut
+#define LOGOUT(pstrFormat, ...)														\
+	COEOS::strformat(g_pOELogFileMgr->GetStringBuffer(), pstrFormat, __VA_ARGS__);	\
+	g_pOELogFileMgr->LogOut(g_pOELogFileMgr->GetStringBuffer())
 #else
 #define LOGOUT
 #endif

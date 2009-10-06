@@ -87,7 +87,7 @@ bool CWaterApp::Initialize()
 		}
 	}
 
-	m_pShader = g_pOEShaderMgr->CreateShader(s_Decl, _T("water.fx"));
+	m_pShader = g_pOEShaderMgr->CreateShader(s_Decl, t("water.fx"));
 	if (!m_pShader) return false;
 
 	m_pCamera = new CCamera();
@@ -124,16 +124,16 @@ void CWaterApp::Render(float fDetailTime)
 
 	CMatrix4x4 matWorldViewProj;
 	g_pOERenderer->GetTransform(matWorldViewProj, IOERenderer::TT_WORLD_VIEW_PROJ);
-	m_pShader->SetMatrix(_T("g_matWorldViewProj"), matWorldViewProj);
+	m_pShader->SetMatrix(t("g_matWorldViewProj"), matWorldViewProj);
 
 	s_fTime += (fDetailTime*m_pDlgWaveParam->GetTimeScale());
-	m_pShader->SetFloat(_T("fTime"), s_fTime);
+	m_pShader->SetFloat(t("fTime"), s_fTime);
 
-	m_pShader->SetVector(_T("vWaveFreq"), m_pDlgWaveParam->GetVecFreq()*m_pDlgWaveParam->GetFreqScale());
-	m_pShader->SetVector(_T("vWaveSpeed"), m_pDlgWaveParam->GetVecSpeed()*m_pDlgWaveParam->GetSpeedScale());
-	m_pShader->SetVector(_T("vWaveDirX"), m_pDlgWaveParam->GetVecDirX());
-	m_pShader->SetVector(_T("vWaveDirY"), m_pDlgWaveParam->GetVecDirY());
-	m_pShader->SetVector(_T("vWaveHeight"), m_pDlgWaveParam->GetVecHeight()*m_pDlgWaveParam->GetHeightScale());
+	m_pShader->SetVector(t("vWaveFreq"), m_pDlgWaveParam->GetVecFreq()*m_pDlgWaveParam->GetFreqScale());
+	m_pShader->SetVector(t("vWaveSpeed"), m_pDlgWaveParam->GetVecSpeed()*m_pDlgWaveParam->GetSpeedScale());
+	m_pShader->SetVector(t("vWaveDirX"), m_pDlgWaveParam->GetVecDirX());
+	m_pShader->SetVector(t("vWaveDirY"), m_pDlgWaveParam->GetVecDirY());
+	m_pShader->SetVector(t("vWaveHeight"), m_pDlgWaveParam->GetVecHeight()*m_pDlgWaveParam->GetHeightScale());
 
 	g_pOERenderer->SetShader(m_pShader);
 	g_pOERenderer->DrawTriList(m_pVerts, m_nVerts, m_pIndis, m_nIndis);

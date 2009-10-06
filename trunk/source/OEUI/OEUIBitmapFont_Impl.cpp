@@ -67,22 +67,22 @@ bool COEUIBitmapFont_Impl::Create(const tstring& strFileName)
 	m_pDocument = g_pOEXmlMgr->OpenXmlFile(strFileName);
 	if (!m_pDocument) return false;
 
-	IOEXmlNode* pRootNode = m_pDocument->FirstChild(_T("font"));
+	IOEXmlNode* pRootNode = m_pDocument->FirstChild(t("font"));
 	if (!pRootNode) return false;
 
-	IOEXmlNode* pCommonNode = pRootNode->FirstChild(_T("common"));
+	IOEXmlNode* pCommonNode = pRootNode->FirstChild(t("common"));
 	if (!pCommonNode) return false;
 	if (!ParseCommonInfo(pCommonNode)) return false;
 
-	IOEXmlNode* pPagesNode = pRootNode->FirstChild(_T("pages"));
+	IOEXmlNode* pPagesNode = pRootNode->FirstChild(t("pages"));
 	if (!pPagesNode) return false;
 	if (!CreateTextures(pPagesNode)) return false;
 
-	IOEXmlNode* pCharsInfo = pRootNode->FirstChild(_T("chars"));
+	IOEXmlNode* pCharsInfo = pRootNode->FirstChild(t("chars"));
 	if (!pCharsInfo) return false;
 	if (!CreateCharsInfo(pCharsInfo)) return false;
 
-	IOEXmlNode* pKerningsInfo = pRootNode->FirstChild(_T("kernings"));
+	IOEXmlNode* pKerningsInfo = pRootNode->FirstChild(t("kernings"));
 	if (!pKerningsInfo) return false;
 	if (!CreateKerningsInfo(pKerningsInfo)) return false;
 
@@ -92,8 +92,8 @@ bool COEUIBitmapFont_Impl::Create(const tstring& strFileName)
 
 bool COEUIBitmapFont_Impl::ParseCommonInfo(IOEXmlNode* pCommonNode)
 {
-	if (!pCommonNode->GetAttribute(m_fLineHeight, _T("lineHeight"))) return false;
-	if (!pCommonNode->GetAttribute(m_nPageCount, _T("pages"))) return false;
+	if (!pCommonNode->GetAttribute(m_fLineHeight, t("lineHeight"))) return false;
+	if (!pCommonNode->GetAttribute(m_nPageCount, t("pages"))) return false;
 	return true;
 }
 
@@ -101,12 +101,12 @@ bool COEUIBitmapFont_Impl::CreateTextures(IOEXmlNode* pPagesNode)
 {
 	DestroyTextures();
 
-	IOEXmlNode* pPageNode = pPagesNode->FirstChild(_T("page"));
+	IOEXmlNode* pPageNode = pPagesNode->FirstChild(t("page"));
 
-	for (int i = 0; i < m_nPageCount && pPageNode != NULL; ++i, pPageNode = pPageNode->NextSibling(_T("page")))
+	for (int i = 0; i < m_nPageCount && pPageNode != NULL; ++i, pPageNode = pPageNode->NextSibling(t("page")))
 	{
 		tstring strTexture;
-		if (!pPageNode->GetAttribute(strTexture, _T("file"))) return false;
+		if (!pPageNode->GetAttribute(strTexture, t("file"))) return false;
 
 		IOETexture* pTexture = g_pOETextureMgr->CreateTextureFromFile(strTexture);
 		if (!pTexture) return false;
@@ -132,24 +132,24 @@ bool COEUIBitmapFont_Impl::CreateCharsInfo(IOEXmlNode* pCharsNode)
 	DestroyCharsInfo();
 
 	int nCount = 0;
-	if (!pCharsNode->GetAttribute(nCount, _T("count"))) return false;
+	if (!pCharsNode->GetAttribute(nCount, t("count"))) return false;
 
-	IOEXmlNode* pCharNode = pCharsNode->FirstChild(_T("char"));
+	IOEXmlNode* pCharNode = pCharsNode->FirstChild(t("char"));
 
-	for (int i = 0; i < nCount && pCharNode != NULL; ++i, pCharNode = pCharNode->NextSibling(_T("char")))
+	for (int i = 0; i < nCount && pCharNode != NULL; ++i, pCharNode = pCharNode->NextSibling(t("char")))
 	{
 		CHAR_INFO CharInfo;
-		if (!pCharNode->GetAttribute(CharInfo.nID, _T("id"))) return false;
-		if (!pCharNode->GetAttribute(CharInfo.x, _T("x"))) return false;
-		if (!pCharNode->GetAttribute(CharInfo.y, _T("y"))) return false;
-		if (!pCharNode->GetAttribute(CharInfo.width, _T("width"))) return false;
-		if (!pCharNode->GetAttribute(CharInfo.height, _T("height"))) return false;
-		if (!pCharNode->GetAttribute(CharInfo.fOffsetX, _T("xoffset"))) return false;
-		if (!pCharNode->GetAttribute(CharInfo.fOffsetY, _T("yoffset"))) return false;
-		if (!pCharNode->GetAttribute(CharInfo.fAdvance, _T("xadvance"))) return false;
+		if (!pCharNode->GetAttribute(CharInfo.nID, t("id"))) return false;
+		if (!pCharNode->GetAttribute(CharInfo.x, t("x"))) return false;
+		if (!pCharNode->GetAttribute(CharInfo.y, t("y"))) return false;
+		if (!pCharNode->GetAttribute(CharInfo.width, t("width"))) return false;
+		if (!pCharNode->GetAttribute(CharInfo.height, t("height"))) return false;
+		if (!pCharNode->GetAttribute(CharInfo.fOffsetX, t("xoffset"))) return false;
+		if (!pCharNode->GetAttribute(CharInfo.fOffsetY, t("yoffset"))) return false;
+		if (!pCharNode->GetAttribute(CharInfo.fAdvance, t("xadvance"))) return false;
 
 		int nPage = 0;
-		if (!pCharNode->GetAttribute(nPage, _T("page"))) return false;
+		if (!pCharNode->GetAttribute(nPage, t("page"))) return false;
 		if (nPage >= (int)m_vTexture.size()) return false;
 
 		CharInfo.pTexture = m_vTexture[nPage];
@@ -176,18 +176,18 @@ bool COEUIBitmapFont_Impl::CreateKerningsInfo(IOEXmlNode* pKerningsNode)
 	DestroyKerningsInfo();
 
 	int nCount = 0;
-	if (!pKerningsNode->GetAttribute(nCount, _T("count"))) return false;
+	if (!pKerningsNode->GetAttribute(nCount, t("count"))) return false;
 
-	IOEXmlNode* pKerningNode = pKerningsNode->FirstChild(_T("kerning"));
+	IOEXmlNode* pKerningNode = pKerningsNode->FirstChild(t("kerning"));
 
-	for (int i = 0; i < nCount && pKerningNode != NULL; ++i, pKerningNode = pKerningNode->NextSibling(_T("kerning")))
+	for (int i = 0; i < nCount && pKerningNode != NULL; ++i, pKerningNode = pKerningNode->NextSibling(t("kerning")))
 	{
 		int nFirstID = 0;
 		int nSecondID = 0;
 		float fOffset = 0.0f;
-		if (!pKerningNode->GetAttribute(nFirstID, _T("first"))) return false;
-		if (!pKerningNode->GetAttribute(nSecondID, _T("second"))) return false;
-		if (!pKerningNode->GetAttribute(fOffset, _T("amount"))) return false;
+		if (!pKerningNode->GetAttribute(nFirstID, t("first"))) return false;
+		if (!pKerningNode->GetAttribute(nSecondID, t("second"))) return false;
+		if (!pKerningNode->GetAttribute(fOffset, t("amount"))) return false;
 
 		int nHaskKey = HashKerningID(nFirstID, nSecondID);
 

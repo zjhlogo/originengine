@@ -22,7 +22,7 @@ int main(int argc, char** argv)
 		CMs3dConv conv;
 		if (conv.LoadFromFile(strFileName))
 		{
-			strFileName.append(_T(".mesh"));
+			strFileName.append(t(".mesh"));
 			conv.DoConvert(strFileName);
 		}
 	}

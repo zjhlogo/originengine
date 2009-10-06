@@ -7,8 +7,6 @@
  */
 #include "OELogFileMgr_Impl.h"
 #include <OEOS.h>
-#include <stdarg.h>
-#include <time.h>
 
 COELogFileMgr_Impl::COELogFileMgr_Impl()
 {
@@ -25,7 +23,7 @@ COELogFileMgr_Impl::~COELogFileMgr_Impl()
 
 void COELogFileMgr_Impl::Init()
 {
-	m_strLogFileName = _T("log.txt");
+	m_strLogFileName = t("log.txt");
 	m_pLogFile = NULL;
 }
 
@@ -34,35 +32,32 @@ void COELogFileMgr_Impl::Destroy()
 	SAFE_RELEASE(m_pLogFile);
 }
 
-void COELogFileMgr_Impl::LogOut(const tchar* pstrFormat, ...)
+void COELogFileMgr_Impl::LogOut(const tstring& strLogMsg)
 {
-	static const int MAX_BUFF_COUNT = 1024*10;
-	static tchar s_strBuffer[MAX_BUFF_COUNT];
-
 	if (!m_pLogFile) return;
 
-	va_list marker;
-	va_start(marker, pstrFormat);
-	_vsntprintf(s_strBuffer, MAX_BUFF_COUNT, pstrFormat, marker);
-	va_end(marker);
-
-	time_t SysTime = time(NULL);
-	tm* pLocalTime = localtime(&SysTime);
+	COEOS::LOCAL_TIME LocalTime;
+	COEOS::TimeLocal(LocalTime, COEOS::TimeNow());
 
 	tstring strText;
-	COEOS::strformat(strText, _T("[%04d-%02d-%02d %02d:%02d:%02d]: %s\n"),
-		pLocalTime->tm_year+1900,
-		pLocalTime->tm_mon+1,
-		pLocalTime->tm_mday,
-		pLocalTime->tm_hour,
-		pLocalTime->tm_min,
-		pLocalTime->tm_sec,
-		s_strBuffer);
+	COEOS::strformat(strText, t("[%04d-%02d-%02d %02d:%02d:%02d]: %s\n"),
+		LocalTime.nYear,
+		LocalTime.nMonth,
+		LocalTime.nDayInMonth,
+		LocalTime.nHour,
+		LocalTime.nMinute,
+		LocalTime.nSecond,
+		strLogMsg.c_str());
 
 	std::string strAnsiText;
 	COEOS::tchar2char(strAnsiText, strText.c_str());
 
 	m_pLogFile->Write(strAnsiText.c_str(), (uint)strAnsiText.length());
+}
+
+tstring& COELogFileMgr_Impl::GetStringBuffer()
+{
+	return m_strBuffer;
 }
 
 bool COELogFileMgr_Impl::CreateLogFile(const tstring& strFileName)

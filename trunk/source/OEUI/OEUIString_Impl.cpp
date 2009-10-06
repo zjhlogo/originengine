@@ -124,7 +124,7 @@ bool COEUIString_Impl::CreateRenderChars()
 
 	for (int i = 0; i < nCount; ++i)
 	{
-		if (m_strText[i] == _T('\n'))
+		if (m_strText[i] == t('\n'))
 		{
 			fBaseOffsetX = 0.0f;
 			fBaseOffsetY += m_pFont->GetLineHeight();

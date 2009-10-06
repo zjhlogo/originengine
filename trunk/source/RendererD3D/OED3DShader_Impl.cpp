@@ -146,7 +146,7 @@ bool COED3DShader_Impl::SetTexture(const tstring& strParamName, IOETexture* pTex
 	COED3DTexture_Impl* pD3DTexture = (COED3DTexture_Impl*)pTexture;
 	if (FAILED(m_pEffect->SetTexture(strANSIName.c_str(), pD3DTexture->GetTexture())))
 	{
-		LOGOUT(_T("IOEShader::SetTexture Failed \"%s\""), strParamName.c_str());
+		LOGOUT(t("IOEShader::SetTexture Failed \"%s\""), strParamName.c_str());
 		return false;
 	}
 	return true;
@@ -159,7 +159,7 @@ bool COED3DShader_Impl::SetTechnique(const tstring& strParamName)
 
 	if (FAILED(m_pEffect->SetTechnique(strANSIName.c_str())))
 	{
-		LOGOUT(_T("IOEShader::SetTechnique Failed \"%s\""), strParamName.c_str());
+		LOGOUT(t("IOEShader::SetTechnique Failed \"%s\""), strParamName.c_str());
 		return false;
 	}
 
@@ -189,7 +189,7 @@ bool COED3DShader_Impl::Create(const IOEVertDecl::ELEMENT* pElement, const tstri
 	{
 		tstring strMsg;
 		COEOS::char2tchar(strMsg, (char*)pErrorBuffer->GetBufferPointer());
-		LOGOUT(_T("COED3DShader_Impl::Create Failed \"%s\""), strMsg.c_str());
+		LOGOUT(t("COED3DShader_Impl::Create Failed \"%s\""), strMsg.c_str());
 		SAFE_RELEASE(pErrorBuffer);
 	}
 
