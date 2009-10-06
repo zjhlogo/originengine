@@ -1,73 +1,121 @@
 <?xml version="1.0" encoding="gb2312"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="7.10"
+	Version="9.00"
 	Name="RendererD3D"
 	ProjectGUID="{AC354CD4-184C-4981-BB36-AA0FBD4A0704}"
-	Keyword="Win32Proj">
+	Keyword="Win32Proj"
+	TargetFrameworkVersion="131072"
+	>
 	<Platforms>
 		<Platform
-			Name="Win32"/>
+			Name="Win32"
+		/>
 	</Platforms>
+	<ToolFiles>
+	</ToolFiles>
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
 			OutputDirectory="..\..\build\source\$(ProjectName)\$(ConfigurationName)"
 			IntermediateDirectory="..\..\build\source\$(ProjectName)\$(ConfigurationName)"
 			ConfigurationType="2"
-			CharacterSet="2">
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
+			CharacterSet="2"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+			/>
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="..\..\include"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;RENDERERD3D_EXPORTS;D3D_DEBUG_INFO"
-				MinimalRebuild="TRUE"
+				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
-				Detect64BitPortabilityProblems="TRUE"
-				DebugInformationFormat="4"/>
+				DebugInformationFormat="4"
+			/>
 			<Tool
-				Name="VCCustomBuildTool"/>
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="d3d9.lib d3dx9.lib winmm.lib"
 				OutputFile="$(OutDir)/RendererD3D_D.dll"
 				LinkIncremental="2"
-				GenerateDebugInformation="TRUE"
+				GenerateDebugInformation="true"
 				SubSystem="2"
-				TargetMachine="1"/>
+				RandomizedBaseAddress="1"
+				DataExecutionPrevention="0"
+				TargetMachine="1"
+			/>
 			<Tool
-				Name="VCMIDLTool"/>
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCManifestTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCAppVerifierTool"
+			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="echo copy &quot;$(TargetPath)&quot; &quot;..\..\bin\&quot;
-copy &quot;$(TargetPath)&quot; &quot;..\..\bin\&quot;
-"/>
-			<Tool
-				Name="VCPreBuildEventTool"/>
-			<Tool
-				Name="VCPreLinkEventTool"/>
-			<Tool
-				Name="VCResourceCompilerTool"/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"/>
-			<Tool
-				Name="VCXMLDataGeneratorTool"/>
-			<Tool
-				Name="VCWebDeploymentTool"/>
-			<Tool
-				Name="VCManagedWrapperGeneratorTool"/>
-			<Tool
-				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+				CommandLine="echo copy &quot;$(TargetPath)&quot; &quot;..\..\bin\&quot;&#x0D;&#x0A;copy &quot;$(TargetPath)&quot; &quot;..\..\bin\&quot;&#x0D;&#x0A;"
+			/>
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
 			OutputDirectory="..\..\build\source\$(ProjectName)\$(ConfigurationName)"
 			IntermediateDirectory="..\..\build\source\$(ProjectName)\$(ConfigurationName)"
 			ConfigurationType="2"
-			CharacterSet="2">
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
+			CharacterSet="2"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+			/>
 			<Tool
 				Name="VCCLCompilerTool"
 				AdditionalIncludeDirectories="..\..\include"
@@ -75,102 +123,154 @@ copy &quot;$(TargetPath)&quot; &quot;..\..\bin\&quot;
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
-				Detect64BitPortabilityProblems="TRUE"
-				DebugInformationFormat="3"/>
+				DebugInformationFormat="3"
+			/>
 			<Tool
-				Name="VCCustomBuildTool"/>
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="d3d9.lib d3dx9.lib winmm.lib"
 				OutputFile="$(OutDir)/RendererD3D.dll"
 				LinkIncremental="1"
-				GenerateDebugInformation="TRUE"
+				GenerateDebugInformation="true"
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
-				TargetMachine="1"/>
+				RandomizedBaseAddress="1"
+				DataExecutionPrevention="0"
+				TargetMachine="1"
+			/>
 			<Tool
-				Name="VCMIDLTool"/>
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCManifestTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCAppVerifierTool"
+			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="echo copy &quot;$(TargetPath)&quot; &quot;..\..\bin\&quot;
-copy &quot;$(TargetPath)&quot; &quot;..\..\bin\&quot;
-"/>
-			<Tool
-				Name="VCPreBuildEventTool"/>
-			<Tool
-				Name="VCPreLinkEventTool"/>
-			<Tool
-				Name="VCResourceCompilerTool"/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"/>
-			<Tool
-				Name="VCXMLDataGeneratorTool"/>
-			<Tool
-				Name="VCWebDeploymentTool"/>
-			<Tool
-				Name="VCManagedWrapperGeneratorTool"/>
-			<Tool
-				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+				CommandLine="echo copy &quot;$(TargetPath)&quot; &quot;..\..\bin\&quot;&#x0D;&#x0A;copy &quot;$(TargetPath)&quot; &quot;..\..\bin\&quot;&#x0D;&#x0A;"
+			/>
 		</Configuration>
 		<Configuration
 			Name="Unicode Debug|Win32"
 			OutputDirectory="..\..\build\source\$(ProjectName)\$(ConfigurationName)"
 			IntermediateDirectory="..\..\build\source\$(ProjectName)\$(ConfigurationName)"
 			ConfigurationType="2"
-			CharacterSet="1">
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
+			CharacterSet="1"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+			/>
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="..\..\include"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;RENDERERD3D_EXPORTS;D3D_DEBUG_INFO"
-				MinimalRebuild="TRUE"
+				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
-				Detect64BitPortabilityProblems="TRUE"
-				DebugInformationFormat="4"/>
+				DebugInformationFormat="4"
+			/>
 			<Tool
-				Name="VCCustomBuildTool"/>
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="d3d9.lib d3dx9.lib winmm.lib"
 				OutputFile="$(OutDir)/RendererD3D_UD.dll"
 				LinkIncremental="2"
-				GenerateDebugInformation="TRUE"
+				GenerateDebugInformation="true"
 				SubSystem="2"
-				TargetMachine="1"/>
+				RandomizedBaseAddress="1"
+				DataExecutionPrevention="0"
+				TargetMachine="1"
+			/>
 			<Tool
-				Name="VCMIDLTool"/>
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCManifestTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCAppVerifierTool"
+			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="echo copy &quot;$(TargetPath)&quot; &quot;..\..\bin\&quot;
-copy &quot;$(TargetPath)&quot; &quot;..\..\bin\&quot;
-"/>
-			<Tool
-				Name="VCPreBuildEventTool"/>
-			<Tool
-				Name="VCPreLinkEventTool"/>
-			<Tool
-				Name="VCResourceCompilerTool"/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"/>
-			<Tool
-				Name="VCXMLDataGeneratorTool"/>
-			<Tool
-				Name="VCWebDeploymentTool"/>
-			<Tool
-				Name="VCManagedWrapperGeneratorTool"/>
-			<Tool
-				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+				CommandLine="echo copy &quot;$(TargetPath)&quot; &quot;..\..\bin\&quot;&#x0D;&#x0A;copy &quot;$(TargetPath)&quot; &quot;..\..\bin\&quot;&#x0D;&#x0A;"
+			/>
 		</Configuration>
 		<Configuration
 			Name="Unicode Release|Win32"
 			OutputDirectory="..\..\build\source\$(ProjectName)\$(ConfigurationName)"
 			IntermediateDirectory="..\..\build\source\$(ProjectName)\$(ConfigurationName)"
 			ConfigurationType="2"
-			CharacterSet="1">
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
+			CharacterSet="1"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+			/>
 			<Tool
 				Name="VCCLCompilerTool"
 				AdditionalIncludeDirectories="..\..\include"
@@ -178,43 +278,52 @@ copy &quot;$(TargetPath)&quot; &quot;..\..\bin\&quot;
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
-				Detect64BitPortabilityProblems="TRUE"
-				DebugInformationFormat="3"/>
+				DebugInformationFormat="3"
+			/>
 			<Tool
-				Name="VCCustomBuildTool"/>
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="d3d9.lib d3dx9.lib winmm.lib"
 				OutputFile="$(OutDir)/RendererD3DU.dll"
 				LinkIncremental="1"
-				GenerateDebugInformation="TRUE"
+				GenerateDebugInformation="true"
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
-				TargetMachine="1"/>
+				RandomizedBaseAddress="1"
+				DataExecutionPrevention="0"
+				TargetMachine="1"
+			/>
 			<Tool
-				Name="VCMIDLTool"/>
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCManifestTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCAppVerifierTool"
+			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="echo copy &quot;$(TargetPath)&quot; &quot;..\..\bin\&quot;
-copy &quot;$(TargetPath)&quot; &quot;..\..\bin\&quot;
-"/>
-			<Tool
-				Name="VCPreBuildEventTool"/>
-			<Tool
-				Name="VCPreLinkEventTool"/>
-			<Tool
-				Name="VCResourceCompilerTool"/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"/>
-			<Tool
-				Name="VCXMLDataGeneratorTool"/>
-			<Tool
-				Name="VCWebDeploymentTool"/>
-			<Tool
-				Name="VCManagedWrapperGeneratorTool"/>
-			<Tool
-				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+				CommandLine="echo copy &quot;$(TargetPath)&quot; &quot;..\..\bin\&quot;&#x0D;&#x0A;copy &quot;$(TargetPath)&quot; &quot;..\..\bin\&quot;&#x0D;&#x0A;"
+			/>
 		</Configuration>
 	</Configurations>
 	<References>
@@ -223,65 +332,85 @@ copy &quot;$(TargetPath)&quot; &quot;..\..\bin\&quot;
 		<Filter
 			Name="Source Files"
 			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx"
-			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}">
+			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
+			>
 			<File
-				RelativePath=".\D3DModule.cpp">
+				RelativePath=".\D3DModule.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\OED3DDevice_Impl.cpp">
+				RelativePath=".\OED3DDevice_Impl.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\OED3DRenderer_Impl.cpp">
+				RelativePath=".\OED3DRenderer_Impl.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\OED3DShader_Impl.cpp">
+				RelativePath=".\OED3DShader_Impl.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\OED3DShaderMgr_Impl.cpp">
+				RelativePath=".\OED3DShaderMgr_Impl.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\OED3DTexture_Impl.cpp">
+				RelativePath=".\OED3DTexture_Impl.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\OED3DTextureMgr_Impl.cpp">
+				RelativePath=".\OED3DTextureMgr_Impl.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\OED3DUtil.cpp">
+				RelativePath=".\OED3DUtil.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\OED3DVertDecl_Impl.cpp">
+				RelativePath=".\OED3DVertDecl_Impl.cpp"
+				>
 			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
-			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}">
+			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
+			>
 			<File
-				RelativePath=".\D3DModule.h">
+				RelativePath=".\D3DModule.h"
+				>
 			</File>
 			<File
-				RelativePath=".\OED3DDevice_Impl.h">
+				RelativePath=".\OED3DDevice_Impl.h"
+				>
 			</File>
 			<File
-				RelativePath=".\OED3DRenderer_Impl.h">
+				RelativePath=".\OED3DRenderer_Impl.h"
+				>
 			</File>
 			<File
-				RelativePath=".\OED3DShader_Impl.h">
+				RelativePath=".\OED3DShader_Impl.h"
+				>
 			</File>
 			<File
-				RelativePath=".\OED3DShaderMgr_Impl.h">
+				RelativePath=".\OED3DShaderMgr_Impl.h"
+				>
 			</File>
 			<File
-				RelativePath=".\OED3DTexture_Impl.h">
+				RelativePath=".\OED3DTexture_Impl.h"
+				>
 			</File>
 			<File
-				RelativePath=".\OED3DTextureMgr_Impl.h">
+				RelativePath=".\OED3DTextureMgr_Impl.h"
+				>
 			</File>
 			<File
-				RelativePath=".\OED3DUtil.h">
+				RelativePath=".\OED3DUtil.h"
+				>
 			</File>
 			<File
-				RelativePath=".\OED3DVertDecl_Impl.h">
+				RelativePath=".\OED3DVertDecl_Impl.h"
+				>
 			</File>
 		</Filter>
 	</Files>

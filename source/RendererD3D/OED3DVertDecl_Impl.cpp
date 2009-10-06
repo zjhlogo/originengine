@@ -104,7 +104,7 @@ bool COED3DVertDecl_Impl::Create(const ELEMENT* pElement)
 	HRESULT hr = g_pd3dDevice->CreateVertexDeclaration(s_D3DDecl, &m_pDecl);
 	if (FAILED(hr))
 	{
-		LOGOUT(_T("COED3DVertDecl_Impl::Create Failed"));
+		LOGOUT(t("COED3DVertDecl_Impl::Create Failed"));
 		return false;
 	}
 

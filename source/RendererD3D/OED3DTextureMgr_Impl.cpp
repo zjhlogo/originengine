@@ -52,7 +52,7 @@ IOETexture* COED3DTextureMgr_Impl::CreateTextureFromFile(const tstring& strFileN
 	COED3DTexture_Impl* pTexture = new COED3DTexture_Impl(strLowName);
 	if (!pTexture || !pTexture->IsOK())
 	{
-		LOGOUT(_T("IOETextureMgr::CreateTextureFromFile Failed \"%s\""), strLowName.c_str());
+		LOGOUT(t("IOETextureMgr::CreateTextureFromFile Failed \"%s\""), strLowName.c_str());
 		SAFE_RELEASE(pTexture);
 		return NULL;
 	}
@@ -67,7 +67,7 @@ IOETexture* COED3DTextureMgr_Impl::CreateTexture(int nWidth, int nHeight, IOETex
 	COED3DTexture_Impl* pTexture = new COED3DTexture_Impl(nWidth, nHeight, eFormat);
 	if (!pTexture || !pTexture->IsOK())
 	{
-		LOGOUT(_T("IOETextureMgr::CreateTextureFromFile Failed width=%d, height=%d, format=%d"), nWidth, nHeight, eFormat);
+		LOGOUT(t("IOETextureMgr::CreateTextureFromFile Failed width=%d, height=%d, format=%d"), nWidth, nHeight, eFormat);
 		SAFE_RELEASE(pTexture);
 		return NULL;
 	}

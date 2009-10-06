@@ -32,13 +32,13 @@ void CUIApp::Destroy()
 
 bool CUIApp::Initialize()
 {
-	m_pFont = g_pOEUIFontMgr->CreateBitmapFont(_T("12px_Tahoma.fnt"));
+	m_pFont = g_pOEUIFontMgr->CreateBitmapFont(t("12px_Tahoma.fnt"));
 	if (!m_pFont) return false;
 
 	m_pString = g_pOEUIStringMgr->CreateUIString(m_pFont);
 	if (!m_pString) return false;
 
-	m_pString->SetText(_T("HANDLE g_hTickEvent = ::CreateEvent(NULL, FALSE, FALSE, NULL);"));
+	m_pString->SetText(t("HANDLE g_hTickEvent = ::CreateEvent(NULL, FALSE, FALSE, NULL);"));
 
 	return true;
 }

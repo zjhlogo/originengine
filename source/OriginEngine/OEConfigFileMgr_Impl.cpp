@@ -22,7 +22,7 @@ COEConfigFileMgr_Impl::~COEConfigFileMgr_Impl()
 
 void COEConfigFileMgr_Impl::Init()
 {
-	m_strConfigFile = _T("Config.xml");
+	m_strConfigFile = t("Config.xml");
 	m_pDocument = NULL;
 	m_pRootNode = NULL;
 }

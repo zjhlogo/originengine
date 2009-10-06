@@ -475,28 +475,28 @@ void CDlgWaveParam::CopyToClipboard()
 	tstring strData;
 	tstring strBuffer;
 
-	COEOS::strformat(strBuffer, _T("\tm_vVecFreq = CVector4(%ff, %ff, %ff, %ff);\r\n"), m_vVecFreq.x, m_vVecFreq.y, m_vVecFreq.z, m_vVecFreq.w);
+	COEOS::strformat(strBuffer, t("\tm_vVecFreq = CVector4(%ff, %ff, %ff, %ff);\r\n"), m_vVecFreq.x, m_vVecFreq.y, m_vVecFreq.z, m_vVecFreq.w);
 	strData += strBuffer;
 
-	COEOS::strformat(strBuffer, _T("\tm_vVecSpeed = CVector4(%ff, %ff, %ff, %ff);\r\n"), m_vVecSpeed.x, m_vVecSpeed.y, m_vVecSpeed.z, m_vVecSpeed.w);
+	COEOS::strformat(strBuffer, t("\tm_vVecSpeed = CVector4(%ff, %ff, %ff, %ff);\r\n"), m_vVecSpeed.x, m_vVecSpeed.y, m_vVecSpeed.z, m_vVecSpeed.w);
 	strData += strBuffer;
 
-	COEOS::strformat(strBuffer, _T("\tm_vVecDir = CVector4(%ff, %ff, %ff, %ff);\r\n"), m_vVecDir.x, m_vVecDir.y, m_vVecDir.z, m_vVecDir.w);
+	COEOS::strformat(strBuffer, t("\tm_vVecDir = CVector4(%ff, %ff, %ff, %ff);\r\n"), m_vVecDir.x, m_vVecDir.y, m_vVecDir.z, m_vVecDir.w);
 	strData += strBuffer;
 
-	COEOS::strformat(strBuffer, _T("\tm_vVecHeight = CVector4(%ff, %ff, %ff, %ff);\r\n"), m_vVecHeight.x, m_vVecHeight.y, m_vVecHeight.z, m_vVecHeight.w);
+	COEOS::strformat(strBuffer, t("\tm_vVecHeight = CVector4(%ff, %ff, %ff, %ff);\r\n"), m_vVecHeight.x, m_vVecHeight.y, m_vVecHeight.z, m_vVecHeight.w);
 	strData += strBuffer;
 
-	COEOS::strformat(strBuffer, _T("\tm_fTimeScale = %ff;\r\n"), m_fTimeScale);
+	COEOS::strformat(strBuffer, t("\tm_fTimeScale = %ff;\r\n"), m_fTimeScale);
 	strData += strBuffer;
 
-	COEOS::strformat(strBuffer, _T("\tm_fFreqScale = %ff;\r\n"), m_fFreqScale);
+	COEOS::strformat(strBuffer, t("\tm_fFreqScale = %ff;\r\n"), m_fFreqScale);
 	strData += strBuffer;
 
-	COEOS::strformat(strBuffer, _T("\tm_fSpeedScale = %ff;\r\n"), m_fSpeedScale);
+	COEOS::strformat(strBuffer, t("\tm_fSpeedScale = %ff;\r\n"), m_fSpeedScale);
 	strData += strBuffer;
 
-	COEOS::strformat(strBuffer, _T("\tm_fHeightScale = %ff;\r\n"), m_fHeightScale);
+	COEOS::strformat(strBuffer, t("\tm_fHeightScale = %ff;\r\n"), m_fHeightScale);
 	strData += strBuffer;
 
 	if (!OpenClipboard(m_hWndDlg)) return;

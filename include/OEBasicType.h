@@ -8,9 +8,7 @@
 #ifndef __OEBASICTYPE_H__
 #define __OEBASICTYPE_H__
 
-#include <tchar.h>
 #include <string>
-
 #include "OEConfig.h"
 
 //typedef bool						bool;
@@ -29,11 +27,16 @@ typedef unsigned __int64			uint64;
 
 //typedef float						float;
 
-typedef TCHAR						tchar;
-
+typedef wchar_t						tchar;
 typedef std::basic_string<tchar>	tstring;
 
 //typedef NULL						NULL;
+
+#ifdef _UNICODE
+	#define t(x) L ## x
+#else
+	#define t(x) x
+#endif // _UNICODE
 
 #define SAFE_DELETE(x) if (x) {delete x; x = NULL;}
 #define SAFE_DELETE_ARRAY(x) if (x) {delete[] x; x = NULL;}

@@ -17,23 +17,23 @@
 
 	#ifdef _DEBUG
 		#ifdef _UNICODE
-			#define MODULE_ORIGINENGINE _T("OriginEngine_UD.dll")
-			#define MODULE_RENDERER _T("RendererD3D_UD.dll")
-			#define MODULE_UI _T("OEUI_UD.dll")
+			#define MODULE_ORIGINENGINE t("OriginEngine_UD.dll")
+			#define MODULE_RENDERER t("RendererD3D_UD.dll")
+			#define MODULE_UI t("OEUI_UD.dll")
 		#else
-			#define MODULE_ORIGINENGINE _T("OriginEngine_D.dll")
-			#define MODULE_RENDERER _T("RendererD3D_D.dll")
-			#define MODULE_UI _T("OEUI_D.dll")
+			#define MODULE_ORIGINENGINE t("OriginEngine_D.dll")
+			#define MODULE_RENDERER t("RendererD3D_D.dll")
+			#define MODULE_UI t("OEUI_D.dll")
 		#endif // _UNICODE
 	#else
 		#ifdef _UNICODE
-			#define MODULE_ORIGINENGINE _T("OriginEngineU.dll")
-			#define MODULE_RENDERER _T("RendererD3DU.dll")
-			#define MODULE_UI _T("OEUIU.dll")
+			#define MODULE_ORIGINENGINE t("OriginEngineU.dll")
+			#define MODULE_RENDERER t("RendererD3DU.dll")
+			#define MODULE_UI t("OEUIU.dll")
 		#else
-			#define MODULE_ORIGINENGINE _T("OriginEngine.dll")
-			#define MODULE_RENDERER _T("RendererD3D.dll")
-			#define MODULE_UI _T("OEUI.dll")
+			#define MODULE_ORIGINENGINE t("OriginEngine.dll")
+			#define MODULE_RENDERER t("RendererD3D.dll")
+			#define MODULE_UI t("OEUI.dll")
 		#endif // _UNICODE
 	#endif // _DEBUG
 

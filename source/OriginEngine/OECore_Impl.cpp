@@ -34,11 +34,11 @@ bool COECore_Impl::Initialize()
 {
 	if (!g_pOEDevice->CreateDevice())
 	{
-		LOGOUT(_T("IOECore::Initialize Failed"));
+		LOGOUT(t("IOECore::Initialize Failed"));
 		return false;
 	}
 
-	LOGOUT(_T("IOECore::Initialize OK"));
+	LOGOUT(t("IOECore::Initialize OK"));
 
 	return true;
 }

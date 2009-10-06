@@ -6,7 +6,6 @@
 *	purpose:	
 */
 #include "OEFile_Impl.h"
-#include <assert.h>
 
 COEFile_Impl::COEFile_Impl(const tstring& strFileName, uint nFlag)
 {
@@ -22,48 +21,49 @@ COEFile_Impl::~COEFile_Impl()
 void COEFile_Impl::Init()
 {
 	m_nFlag = 0;
-	m_pFile = NULL;
+	m_hFile = NULL;
 }
 
 void COEFile_Impl::Destroy()
 {
-	if (m_pFile)
-	{
-		fclose(m_pFile);
-		m_pFile = NULL;
-	}
+	COEOS::FileClose(m_hFile);
+	m_hFile = NULL;
 }
 
 uint COEFile_Impl::Read(void* pBuffOut, uint nSize)
 {
-	return (uint)fread(pBuffOut, 1, nSize, m_pFile);
+	return COEOS::FileRead(pBuffOut, nSize, m_hFile);
 }
 
 uint COEFile_Impl::Write(const void* pBuffIn, uint nSize)
 {
-	if (m_nFlag & OFF_WRITE) return (uint)fwrite(pBuffIn, 1, nSize, m_pFile);
+	if (m_nFlag & OFF_WRITE)
+	{
+		return COEOS::FileWrite(pBuffIn, nSize, m_hFile);
+	}
+
 	return 0;
 }
 
 uint COEFile_Impl::Seek(uint nOffset)
 {
-	return fseek(m_pFile, nOffset, SEEK_SET);
+	COEOS::FileSeek(m_hFile, nOffset, SEEK_SET);
+	return COEOS::FileTell(m_hFile);
 }
 
 uint COEFile_Impl::GetSize() const
 {
-	uint nResult = 0;
-	uint nPos = ftell(m_pFile);
-	fseek(m_pFile, 0, SEEK_END);
-	nResult = ftell(m_pFile);
-	fseek(m_pFile, nPos, SEEK_SET);
+	uint nBackupPos = COEOS::FileTell(m_hFile);
+	COEOS::FileSeek(m_hFile, 0, SEEK_END);
+	uint nSize = COEOS::FileTell(m_hFile);
+	COEOS::FileSeek(m_hFile, nBackupPos, SEEK_SET);
 
-	return nResult;
+	return nSize;
 }
 
 uint COEFile_Impl::Tell() const
 {
-	return ftell(m_pFile);
+	return COEOS::FileTell(m_hFile);
 }
 
 bool COEFile_Impl::Open(const tstring& strFileName, uint nFlag)
@@ -72,18 +72,18 @@ bool COEFile_Impl::Open(const tstring& strFileName, uint nFlag)
 
 	if (OFF_READ == m_nFlag)
 	{
-		m_pFile = _tfopen(strFileName.c_str(), _T("rb"));
+		m_hFile = COEOS::FileOpen(strFileName.c_str(), t("rb"));
 	}
 	else if (OFF_WRITE == m_nFlag)
 	{
-		m_pFile = _tfopen(strFileName.c_str(), _T("wb"));
+		m_hFile = COEOS::FileOpen(strFileName.c_str(), t("wb"));
 	}
-	else if (OFF_READ|OFF_WRITE == m_nFlag)
+	else if ((OFF_READ|OFF_WRITE) == m_nFlag)
 	{
-		m_pFile = _tfopen(strFileName.c_str(), _T("rwb"));
+		m_hFile = COEOS::FileOpen(strFileName.c_str(), t("rwb"));
 	}
 
-	if (!m_pFile) return false;
+	if (!m_hFile) return false;
 
 	return true;
 }

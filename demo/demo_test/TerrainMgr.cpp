@@ -47,7 +47,7 @@ bool CTerrainMgr::LoadTerrain()
 		assert(m_pMapTileBuff[i]);
 	}
 
-	m_pMapFile = g_pOEFileMgr->OpenFile(_T("terrain.raw"));
+	m_pMapFile = g_pOEFileMgr->OpenFile(t("terrain.raw"));
 	if (!m_pMapFile) return false;
 
 	return true;

@@ -10,6 +10,7 @@
 #define __OEFILE_IMPL_H__
 
 #include <IOEFile.h>
+#include <OEOS.h>
 
 class COEFile_Impl : public IOEFile
 {
@@ -30,7 +31,7 @@ private:
 	bool Open(const tstring& strFileName, uint nFlag);
 
 private:
-	FILE* m_pFile;
+	COEOS::OEFILE m_hFile;
 	uint m_nFlag;
 
 };

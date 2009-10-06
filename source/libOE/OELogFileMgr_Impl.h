@@ -17,7 +17,8 @@ public:
 	COELogFileMgr_Impl();
 	virtual ~COELogFileMgr_Impl();
 
-	virtual void LogOut(const tchar* pstrFormat, ...);
+	virtual void LogOut(const tstring& strLogMsg);
+	virtual tstring& GetStringBuffer();
 
 private:
 	void Init();
@@ -27,6 +28,7 @@ private:
 
 private:
 	tstring m_strLogFileName;
+	tstring m_strBuffer;
 	IOEFile* m_pLogFile;
 
 };

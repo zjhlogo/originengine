@@ -55,7 +55,7 @@ bool CMeshApp::Initialize()
 	m_pSimpleShape = new CSimpleShape();
 	if (!m_pSimpleShape || !m_pSimpleShape->Initialize()) return false;
 
-	m_pMesh = g_pOEMeshMgr->CreateMeshFromFile(_T("bone.mesh"));
+	m_pMesh = g_pOEMeshMgr->CreateMeshFromFile(t("bone.mesh"));
 	if (!m_pMesh) return false;
 
 	return true;

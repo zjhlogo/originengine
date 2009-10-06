@@ -9,6 +9,9 @@
 #include <OEHolder.h>
 
 #include <Windows.h>
+#include <tchar.h>
+#include <time.h>
+
 #include <algorithm>
 #include <vector>
 
@@ -50,9 +53,9 @@ void COEOS::Terminate()
 	SAFE_DELETE(g_pOEFileMgr_Impl);
 }
 
-#define MODULE_INIT_FUNC_NAME _T("OEModuleInit")
-#define MODULE_TERM_FUNC_NAME _T("OEModuleTerm")
-#define MODULE_SYNC_FUNC_NAME _T("OEModuleSyncInterfaces")
+#define MODULE_INIT_FUNC_NAME t("OEModuleInit")
+#define MODULE_TERM_FUNC_NAME t("OEModuleTerm")
+#define MODULE_SYNC_FUNC_NAME t("OEModuleSyncInterfaces")
 
 typedef bool (*FUNC_MODULE_INIT)(COEHolder& Holder);
 typedef void (*FUNC_MODULE_TERM)(COEHolder& Holder);
@@ -156,7 +159,7 @@ bool COEOS::str2float(float& fValue, const tchar* pstrIn)
 bool COEOS::int2str(tstring& strOut, int nValue)
 {
 	static tchar s_strBuffer[1024];
-	_sntprintf(s_strBuffer, 1024, _T("%d"), nValue);
+	_sntprintf_s(s_strBuffer, 1024, t("%d"), nValue);
 	strOut = s_strBuffer;
 	return true;
 }
@@ -164,7 +167,7 @@ bool COEOS::int2str(tstring& strOut, int nValue)
 bool COEOS::float2str(tstring& strOut, float fValue)
 {
 	static tchar s_strBuffer[1024];
-	_sntprintf(s_strBuffer, 1024, _T("%f"), fValue);
+	_sntprintf_s(s_strBuffer, 1024, t("%f"), fValue);
 	strOut = s_strBuffer;
 	return true;
 }
@@ -177,7 +180,7 @@ bool COEOS::strformat(tstring& strOut, const tchar* strFormat, ...)
 	va_list marker;
 	va_start(marker, strFormat);
 
-	int nLength = _vsntprintf(s_strBuff, MAX_BUFF_COUNT, strFormat, marker);
+	int nLength = _vsntprintf_s(s_strBuff, MAX_BUFF_COUNT, strFormat, marker);
 	strOut = s_strBuff;
 	va_end(marker);
 
@@ -194,4 +197,56 @@ void COEOS::tolower(tstring& strOut, const tstring& strIn)
 {
 	strOut = strIn;
 	std::transform(strOut.begin(), strOut.end(), strOut.begin(), ::toupper);
+}
+
+COEOS::OEFILE COEOS::FileOpen(const tstring& strFile, const tstring& strOption)
+{
+	FILE* pFile = NULL;
+	_tfopen_s(&pFile, strFile.c_str(), strOption.c_str());
+	return (OEFILE)pFile;
+}
+
+void COEOS::FileClose(OEFILE hFile)
+{
+	if (hFile) fclose((FILE*)hFile);
+}
+
+void COEOS::FileSeek(OEFILE hFile, int nOffset, uint nOrigin)
+{
+	fseek((FILE*)hFile, nOffset, nOrigin);
+}
+
+uint COEOS::FileTell(OEFILE hFile)
+{
+	return ftell((FILE*)hFile);
+}
+
+uint COEOS::FileRead(void* pDataOut, uint nSize, OEFILE hFile)
+{
+	return fread(pDataOut, 1, nSize, (FILE*)hFile);
+}
+
+uint COEOS::FileWrite(const void* pDataIn, uint nSize, OEFILE hFile)
+{
+	return fwrite(pDataIn, 1, nSize, (FILE*)hFile);
+}
+
+uint64 COEOS::TimeNow()
+{
+	return time(NULL);
+}
+
+void COEOS::TimeLocal(LOCAL_TIME& LocalTime, uint64 nTimeStamp)
+{
+	tm tmLocal;
+	localtime_s(&tmLocal, (time_t*)&nTimeStamp);
+
+	LocalTime.nYear = tmLocal.tm_year + 1900;
+	LocalTime.nMonth = tmLocal.tm_mon + 1;
+	LocalTime.nDayInYear = tmLocal.tm_yday;
+	LocalTime.nDayInMonth = tmLocal.tm_mday;
+	LocalTime.nDayInWeek = tmLocal.tm_wday;
+	LocalTime.nHour = tmLocal.tm_hour;
+	LocalTime.nMinute = tmLocal.tm_min;
+	LocalTime.nSecond = tmLocal.tm_sec;
 }

@@ -38,7 +38,7 @@ IOEFile* COEFileMgr_Impl::OpenFile(const tstring& strFileName, uint nFlag /* = I
 	COEFile_Impl *pFile = new COEFile_Impl(strFileName, nFlag);
 	if (!pFile || !pFile->IsOK())
 	{
-		LOGOUT(_T("IOEFileMgr::OpenFile Failed \"%s\""), strFileName.c_str());
+		LOGOUT(t("IOEFileMgr::OpenFile Failed \"%s\""), strFileName.c_str());
 		SAFE_RELEASE(pFile);
 		return NULL;
 	}
