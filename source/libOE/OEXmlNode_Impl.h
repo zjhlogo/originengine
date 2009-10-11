@@ -9,27 +9,27 @@
 #define __OEXMLNODE_IMPL_H__
 
 #include <IOEXmlNode.h>
-#include "../../3rdsrc/tinyxml/tinyxml.h"
-
-#include <map>
+#include "OEXmlAttribute_Impl.h"
 
 class COEXmlNode_Impl : public IOEXmlNode
 {
 public:
-	typedef std::map<TiXmlElement*, IOEXmlNode*> XMLNODE_MAP;
-
-public:
 	COEXmlNode_Impl(const tstring& strFileName);
-	COEXmlNode_Impl(TiXmlElement* pTiElement, COEXmlNode_Impl* pParentNode);
-	~COEXmlNode_Impl();
+	virtual ~COEXmlNode_Impl();
 
-	virtual bool GetAttribute(int& nValue, const tstring& strAttrName);
-	virtual bool GetAttribute(float& fValue, const tstring& strAttrName);
-	virtual bool GetAttribute(tstring& strValue, const tstring& strAttrName);
+	virtual const tstring& GetName();
+	virtual void SetName(const tstring& strName);
 
-	virtual bool SetAttribute(const tstring& strAttrName, int nValue);
-	virtual bool SetAttribute(const tstring& strAttrName, float fValue);
-	virtual bool SetAttribute(const tstring& strAttrName, const tstring& strAttrValue);
+	virtual bool GetAttribute(int& nValue, const tstring& strName);
+	virtual bool GetAttribute(float& fValue, const tstring& strName);
+	virtual bool GetAttribute(tstring& strValue, const tstring& strName);
+
+	virtual void SetAttribute(const tstring& strName, int nValue);
+	virtual void SetAttribute(const tstring& strName, float fValue);
+	virtual void SetAttribute(const tstring& strName, const tstring& strValue);
+
+	virtual IOEXmlAttribute* FirstAttribute();
+	virtual IOEXmlAttribute* FirstAttribute(const tstring& strName);
 
 	virtual bool GetText(int& nValue);
 	virtual bool GetText(float& fValue);
@@ -40,29 +40,38 @@ public:
 	virtual bool SetText(const tstring& strText);
 
 	virtual IOEXmlNode* FirstChild();
-	virtual IOEXmlNode* FirstChild(const tstring& strNodeName);
+	virtual IOEXmlNode* FirstChild(const tstring& strName);
+	virtual IOEXmlNode* EndChild();
 
 	virtual IOEXmlNode* NextSibling();
-	virtual IOEXmlNode* NextSibling(const tstring& strNodeName);
+	virtual IOEXmlNode* NextSibling(const tstring& strName);
+	virtual IOEXmlNode* EndSibling();
 
-	virtual void Release();
+	virtual IOEXmlNode* InsertChild(const tstring& strName, INSERT_NODE_BEHAVE eBehave = INB_NEXT);
+	virtual IOEXmlNode* InsertChild(const IOEXmlNode* pNodeChild, INSERT_NODE_BEHAVE eBehave = INB_NEXT);
+
+	virtual IOEXmlNode* InsertSibling(const tstring& strName, INSERT_NODE_BEHAVE eBehave = INB_NEXT);
+	virtual IOEXmlNode* InsertSibling(const IOEXmlNode* pNodeBrother, INSERT_NODE_BEHAVE eBehave = INB_NEXT);
+
+	void SetValue(const tstring& strValue);
+	void LinkAttribute(COEXmlAttribute_Impl* pAttribute);
+	void LinkChild(COEXmlNode_Impl* pNodeChild);
+	void LinkSibling(COEXmlNode_Impl* pNodeSibling);
+	void UnlinkAll();
 
 private:
 	void Init();
 	void Destroy();
 
-	bool Create(const tstring& strFileName);
-	bool Create(TiXmlElement* pTiElement, COEXmlNode_Impl* pParentNode);
-
-	void CreateChildMap();
-	void DestroyChildMap();
-
-	IOEXmlNode* ToXmlNode(TiXmlElement* pTiElement);
+	COEXmlAttribute_Impl* CreateEndAttribute(const tstring& strName);
+	COEXmlNode_Impl* EndSibling(COEXmlNode_Impl* pNode);
 
 private:
-	COEXmlNode_Impl* m_pParent;
-	TiXmlNode* m_pTiNode;
-	XMLNODE_MAP m_ChildMap;
+	tstring m_strName;
+	tstring m_strText;
+	COEXmlAttribute_Impl* m_pAttribute;
+	COEXmlNode_Impl* m_pNodeChild;
+	COEXmlNode_Impl* m_pNodeSibling;
 
 };
 

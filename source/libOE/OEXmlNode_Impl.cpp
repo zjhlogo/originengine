@@ -9,16 +9,11 @@
 #include <OEOS.h>
 #include <OEInterfaces.h>
 
-COEXmlNode_Impl::COEXmlNode_Impl(const tstring& strFileName)
+COEXmlNode_Impl::COEXmlNode_Impl(const tstring& strName)
 {
 	Init();
-	m_bOK = Create(strFileName);
-}
-
-COEXmlNode_Impl::COEXmlNode_Impl(TiXmlElement* pTiElement, COEXmlNode_Impl* pParentNode)
-{
-	Init();
-	m_bOK = Create(pTiElement, pParentNode);
+	SetName(strName);
+	m_bOK = true;
 }
 
 COEXmlNode_Impl::~COEXmlNode_Impl()
@@ -28,317 +23,361 @@ COEXmlNode_Impl::~COEXmlNode_Impl()
 
 void COEXmlNode_Impl::Init()
 {
-	m_pParent = NULL;
-	m_pTiNode = NULL;
+	m_pAttribute = NULL;
+	m_pNodeChild = NULL;
+	m_pNodeSibling = NULL;
 }
 
 void COEXmlNode_Impl::Destroy()
 {
-	DestroyChildMap();
-	if (m_pTiNode->Type() == TiXmlNode::DOCUMENT)
+	COEXmlAttribute_Impl* pAttribute = m_pAttribute;
+	while (pAttribute)
 	{
-		SAFE_DELETE(m_pTiNode);
+		COEXmlAttribute_Impl* pAttributeDel = pAttribute;
+		pAttribute = pAttribute->GetNextSibling();
+		SAFE_RELEASE(pAttributeDel);
 	}
-}
 
-bool COEXmlNode_Impl::GetAttribute(int& nValue, const tstring& strAttrName)
-{
-	std::string strANSIName;
-	if (!COEOS::tchar2char(strANSIName, strAttrName.c_str())) return false;
-
-	TiXmlElement* pTiElement = m_pTiNode->ToElement();
-	if (!pTiElement) return false;
-
-	if (pTiElement->Attribute(strANSIName.c_str(), &nValue)) return true;
-	return false;
-}
-
-bool COEXmlNode_Impl::GetAttribute(float& fValue, const tstring& strAttrName)
-{
-	std::string strANSIName;
-	if (!COEOS::tchar2char(strANSIName, strAttrName.c_str())) return false;
-
-	TiXmlElement* pTiElement = m_pTiNode->ToElement();
-	if (!pTiElement) return false;
-
-	double fdValue = 0.0f;
-	if (pTiElement->Attribute(strANSIName.c_str(), &fdValue))
+	COEXmlNode_Impl* pNodeChild = m_pNodeChild;
+	while (pNodeChild)
 	{
-		fValue = (float)fdValue;
-		return true;
+		COEXmlNode_Impl* pNodeChildDel = pNodeChild;
+		pNodeChild = pNodeChild->m_pNodeSibling;
+		SAFE_RELEASE(pNodeChildDel);
 	}
-	return false;
+
+	m_pAttribute = NULL;
+	m_pNodeChild = NULL;
+	m_pNodeSibling = NULL;
 }
 
-bool COEXmlNode_Impl::GetAttribute(tstring& strValue, const tstring& strAttrName)
+const tstring& COEXmlNode_Impl::GetName()
 {
-	std::string strANSIName;
-	if (!COEOS::tchar2char(strANSIName, strAttrName.c_str())) return false;
-
-	TiXmlElement* pTiElement = m_pTiNode->ToElement();
-	if (!pTiElement) return false;
-
-	const char* pszValue = pTiElement->Attribute(strANSIName.c_str());
-	if (pszValue)
-	{
-		COEOS::char2tchar(strValue, pszValue);
-		return true;
-	}
-	return false;
+	return m_strName;
 }
 
-bool COEXmlNode_Impl::SetAttribute(const tstring& strAttrName, int nValue)
+void COEXmlNode_Impl::SetName(const tstring& strName)
 {
-	std::string strANSIName;
-	if (!COEOS::tchar2char(strANSIName, strAttrName.c_str())) return false;
+	m_strName = strName;
+}
 
-	TiXmlElement* pTiElement = m_pTiNode->ToElement();
-	if (!pTiElement) return false;
+bool COEXmlNode_Impl::GetAttribute(int& nValue, const tstring& strName)
+{
+	IOEXmlAttribute* pAttribute = FirstAttribute(strName);
+	if (!pAttribute) return false;
 
-	pTiElement->SetAttribute(strANSIName.c_str(), nValue);
+	return COEOS::str2int(nValue, pAttribute->GetValue().c_str());
+}
+
+bool COEXmlNode_Impl::GetAttribute(float& fValue, const tstring& strName)
+{
+	IOEXmlAttribute* pAttribute = FirstAttribute(strName);
+	if (!pAttribute) return false;
+
+	return COEOS::str2float(fValue, pAttribute->GetValue().c_str());
+}
+
+bool COEXmlNode_Impl::GetAttribute(tstring& strValue, const tstring& strName)
+{
+	IOEXmlAttribute* pAttribute = FirstAttribute(strName);
+	if (!pAttribute) return false;
+
+	strValue = pAttribute->GetValue();
 	return true;
 }
 
-bool COEXmlNode_Impl::SetAttribute(const tstring& strAttrName, float fValue)
+void COEXmlNode_Impl::SetAttribute(const tstring& strName, int nValue)
 {
-	std::string strANSIName;
-	if (!COEOS::tchar2char(strANSIName, strAttrName.c_str())) return false;
+	IOEXmlAttribute* pAttribute = FirstAttribute(strName);
+	if (!pAttribute)
+	{
+		pAttribute = CreateEndAttribute(strName);
+		if (!pAttribute) return;
+	}
 
-	TiXmlElement* pTiElement = m_pTiNode->ToElement();
-	if (!pTiElement) return false;
-
-	pTiElement->SetDoubleAttribute(strANSIName.c_str(), (double)fValue);
-	return true;
+	tstring strTemp;
+	COEOS::int2str(strTemp, nValue);
+	pAttribute->SetValue(strTemp);
 }
 
-bool COEXmlNode_Impl::SetAttribute(const tstring& strAttrName, const tstring& strAttrValue)
+void COEXmlNode_Impl::SetAttribute(const tstring& strName, float fValue)
 {
-	std::string strANSIName;
-	if (!COEOS::tchar2char(strANSIName, strAttrName.c_str())) return false;
+	IOEXmlAttribute* pAttribute = FirstAttribute(strName);
+	if (!pAttribute)
+	{
+		pAttribute = CreateEndAttribute(strName);
+		if (!pAttribute) return;
+	}
 
-	std::string strANSIValue;
-	if (!COEOS::tchar2char(strANSIValue, strAttrValue.c_str())) return false;
+	tstring strTemp;
+	COEOS::float2str(strTemp, fValue);
+	pAttribute->SetValue(strTemp);
+}
 
-	TiXmlElement* pTiElement = m_pTiNode->ToElement();
-	if (!pTiElement) return false;
+void COEXmlNode_Impl::SetAttribute(const tstring& strName, const tstring& strValue)
+{
+	IOEXmlAttribute* pAttribute = FirstAttribute(strName);
+	if (!pAttribute)
+	{
+		pAttribute = CreateEndAttribute(strName);
+		if (!pAttribute) return;
+	}
 
-	pTiElement->SetAttribute(strANSIName.c_str(), strANSIValue.c_str());
-	return true;
+	pAttribute->SetValue(strValue);
+}
+
+IOEXmlAttribute* COEXmlNode_Impl::FirstAttribute()
+{
+	return m_pAttribute;
+}
+
+IOEXmlAttribute* COEXmlNode_Impl::FirstAttribute(const tstring& strName)
+{
+	COEXmlAttribute_Impl* pAttribute = m_pAttribute;
+
+	while (pAttribute)
+	{
+		if (pAttribute->GetName() == strName) return pAttribute;
+		pAttribute = pAttribute->GetNextSibling();
+	}
+
+	return NULL;
 }
 
 bool COEXmlNode_Impl::GetText(int& nValue)
 {
-	TiXmlElement* pTiElement = m_pTiNode->ToElement();
-	if (!pTiElement) return false;
-
-	const char* pszText = pTiElement->GetText();
-	if (!pszText) return false;
-
-	tstring strText;
-	if (!COEOS::char2tchar(strText, pszText)) return false;
-
-	return COEOS::str2int(nValue, strText.c_str());
+	if (!m_pNodeChild || !m_pNodeChild->m_strName.empty()) return false;
+	return COEOS::str2int(nValue, m_pNodeChild->m_strText.c_str());
 }
 
 bool COEXmlNode_Impl::GetText(float& fValue)
 {
-	TiXmlElement* pTiElement = m_pTiNode->ToElement();
-	if (!pTiElement) return false;
-
-	const char* pszText = pTiElement->GetText();
-	if (!pszText) return false;
-
-	tstring strText;
-	if (!COEOS::char2tchar(strText, pszText)) return false;
-
-	return COEOS::str2float(fValue, strText.c_str());
+	if (!m_pNodeChild || !m_pNodeChild->m_strName.empty()) return false;
+	return COEOS::str2float(fValue, m_pNodeChild->m_strText.c_str());
 }
 
 bool COEXmlNode_Impl::GetText(tstring& strText)
 {
-	TiXmlElement* pTiElement = m_pTiNode->ToElement();
-	if (!pTiElement) return false;
-
-	const char* pszText = pTiElement->GetText();
-	if (!pszText) return false;
-
-	return COEOS::char2tchar(strText, pszText);
+	if (!m_pNodeChild || !m_pNodeChild->m_strName.empty()) return false;
+	strText = m_pNodeChild->m_strText;
+	return true;
 }
 
 bool COEXmlNode_Impl::SetText(int nValue)
 {
-	tstring strValue;
-	if (!COEOS::int2str(strValue, nValue)) return false;
+	if (m_pNodeChild && !m_pNodeChild->m_strName.empty()) return false;
 
-	std::string strANSIText;
-	if (!COEOS::tchar2char(strANSIText, strValue.c_str())) return false;
-
-	TiXmlElement* pTiElement = m_pTiNode->ToElement();
-	if (!pTiElement) return false;
-
-	TiXmlNode* pNode = pTiElement->FirstChild();
-	if (!pNode)
+	if (!m_pNodeChild)
 	{
-		TiXmlText* pNewText = new TiXmlText(strANSIText.c_str());
-		pTiElement->LinkEndChild(pNewText);
-		CreateChildMap();
-		return true;
+		InsertChild(EMPTY_STRING);
+		if (!m_pNodeChild) return false;
 	}
 
-	pNode->SetValue(strANSIText.c_str());
+	COEOS::int2str(m_pNodeChild->m_strText, nValue);
 	return true;
 }
 
 bool COEXmlNode_Impl::SetText(float fValue)
 {
-	tstring strValue;
-	if (!COEOS::float2str(strValue, fValue)) return false;
+	if (m_pNodeChild && !m_pNodeChild->m_strName.empty()) return false;
 
-	std::string strANSIText;
-	if (!COEOS::tchar2char(strANSIText, strValue.c_str())) return false;
-
-	TiXmlElement* pTiElement = m_pTiNode->ToElement();
-	if (!pTiElement) return false;
-
-	TiXmlNode* pNode = pTiElement->FirstChild();
-	if (!pNode)
+	if (!m_pNodeChild)
 	{
-		TiXmlText* pNewText = new TiXmlText(strANSIText.c_str());
-		pTiElement->LinkEndChild(pNewText);
-		CreateChildMap();
-		return true;
+		InsertChild(EMPTY_STRING);
+		if (!m_pNodeChild) return false;
 	}
 
-	pNode->SetValue(strANSIText.c_str());
+	COEOS::float2str(m_pNodeChild->m_strText, fValue);
 	return true;
 }
 
 bool COEXmlNode_Impl::SetText(const tstring& strText)
 {
-	std::string strANSIText;
-	if (!COEOS::tchar2char(strANSIText, strText.c_str())) return false;
+	if (m_pNodeChild && !m_pNodeChild->GetName().empty()) return false;
 
-	TiXmlElement* pTiElement = m_pTiNode->ToElement();
-	if (!pTiElement) return false;
-
-	TiXmlNode* pNode = pTiElement->FirstChild();
-	if (!pNode)
+	if (!m_pNodeChild)
 	{
-		TiXmlText* pNewText = new TiXmlText(strANSIText.c_str());
-		pTiElement->LinkEndChild(pNewText);
-		CreateChildMap();
-		return true;
+		InsertChild(EMPTY_STRING);
+		if (!m_pNodeChild) return false;
 	}
 
-	pNode->SetValue(strANSIText.c_str());
+	m_pNodeChild->m_strText = strText;
 	return true;
 }
 
 IOEXmlNode* COEXmlNode_Impl::FirstChild()
 {
-	return ToXmlNode(m_pTiNode->FirstChildElement());
+	return m_pNodeChild;
 }
 
-IOEXmlNode* COEXmlNode_Impl::FirstChild(const tstring& strNodeName)
+IOEXmlNode* COEXmlNode_Impl::FirstChild(const tstring& strName)
 {
-	std::string strANSIName;
-	if (!COEOS::tchar2char(strANSIName, strNodeName.c_str())) return NULL;
+	if (!m_pNodeChild) return NULL;
+	if (m_pNodeChild->m_strName == strName) return m_pNodeChild;
+	return m_pNodeChild->NextSibling(strName);
+}
 
-	return ToXmlNode(m_pTiNode->FirstChildElement(strANSIName.c_str()));
+IOEXmlNode* COEXmlNode_Impl::EndChild()
+{
+	return EndSibling(m_pNodeChild);
 }
 
 IOEXmlNode* COEXmlNode_Impl::NextSibling()
 {
-	if (!m_pParent) return NULL;
-
-	TiXmlElement* pTiElement = m_pTiNode->NextSiblingElement();
-	if (!pTiElement) return NULL;
-
-	return m_pParent->ToXmlNode(pTiElement);
+	return m_pNodeSibling;
 }
 
-IOEXmlNode* COEXmlNode_Impl::NextSibling(const tstring& strNodeName)
+IOEXmlNode* COEXmlNode_Impl::NextSibling(const tstring& strName)
 {
-	if (!m_pParent) return NULL;
-
-	std::string strANSIName;
-	if (!COEOS::tchar2char(strANSIName, strNodeName.c_str())) return NULL;
-
-	TiXmlElement* pTiElement = m_pTiNode->NextSiblingElement(strANSIName.c_str());
-	if (!pTiElement) return NULL;
-
-	return m_pParent->ToXmlNode(pTiElement);
-}
-
-void COEXmlNode_Impl::Release()
-{
-	assert(m_pTiNode->Type() == TiXmlNode::DOCUMENT);
-	if (m_pTiNode->Type() == TiXmlNode::DOCUMENT)
+	COEXmlNode_Impl* pNodeSibling = m_pNodeSibling;
+	while (pNodeSibling)
 	{
-		IOEXmlNode::Release();
+		if (pNodeSibling->m_strName == strName) return pNodeSibling;
+		pNodeSibling = pNodeSibling->m_pNodeSibling;
 	}
-}
-
-bool COEXmlNode_Impl::Create(const tstring& strFileName)
-{
-	IOEFile* pFile = g_pOEFileMgr->OpenFile(strFileName);
-	if (!pFile) return false;
-
-	uint nSize = pFile->GetSize();
-	char* pBuffer = new char[nSize];
-	pFile->Read(pBuffer, nSize);
-	SAFE_RELEASE(pFile);
-
-	TiXmlDocument* pDocument = new TiXmlDocument();
-	pDocument->Parse((const char*)pBuffer);
-	SAFE_DELETE_ARRAY(pBuffer);
-
-	if (pDocument->Error())
-	{
-		SAFE_DELETE(pDocument);
-		return false;
-	}
-
-	m_pTiNode = pDocument;
-	CreateChildMap();
-	return true;
-}
-
-bool COEXmlNode_Impl::Create(TiXmlElement* pTiElement, COEXmlNode_Impl* pParentNode)
-{
-	m_pTiNode = pTiElement;
-	m_pParent = pParentNode;
-	CreateChildMap();
-	return true;
-}
-
-void COEXmlNode_Impl::CreateChildMap()
-{
-	DestroyChildMap();
-
-	TiXmlElement* pTiElementChild = m_pTiNode->FirstChildElement();
-	while (pTiElementChild)
-	{
-		COEXmlNode_Impl* pNewNode = new COEXmlNode_Impl(pTiElementChild, this);
-		m_ChildMap.insert(std::make_pair(pTiElementChild, pNewNode));
-		pTiElementChild = pTiElementChild->NextSiblingElement();
-	}
-}
-
-void COEXmlNode_Impl::DestroyChildMap()
-{
-	for (XMLNODE_MAP::iterator it = m_ChildMap.begin(); it != m_ChildMap.end(); ++it)
-	{
-		IOEXmlNode* pXmlNode = it->second;
-		SAFE_DELETE(pXmlNode);
-	}
-	m_ChildMap.clear();
-}
-
-IOEXmlNode* COEXmlNode_Impl::ToXmlNode(TiXmlElement* pTiElement)
-{
-	COEXmlNode_Impl::XMLNODE_MAP::iterator itfound = m_ChildMap.find(pTiElement);
-	if (itfound != m_ChildMap.end()) return itfound->second;
 
 	return NULL;
+}
+
+IOEXmlNode* COEXmlNode_Impl::EndSibling()
+{
+	return EndSibling(this);
+}
+
+IOEXmlNode* COEXmlNode_Impl::InsertChild(const tstring& strName, INSERT_NODE_BEHAVE eBehave /*= INB_NEXT*/)
+{
+	COEXmlNode_Impl* pNodeChild = (COEXmlNode_Impl*)g_pOEXmlMgr->CreateNode(strName);
+	if (!pNodeChild) return NULL;
+
+	switch (eBehave)
+	{
+	case INB_PREVIOUS:
+		{
+			pNodeChild->m_pNodeSibling = m_pNodeChild;
+			m_pNodeChild = pNodeChild;
+		}
+		break;
+	case INB_NEXT:
+		{
+			COEXmlNode_Impl* pEndChild = EndSibling(m_pNodeChild);
+			if (pEndChild)
+			{
+				pEndChild->m_pNodeSibling = pNodeChild;
+			}
+			else
+			{
+				m_pNodeChild = pNodeChild;
+			}
+		}
+		break;
+	}
+
+	return pNodeChild;
+}
+
+IOEXmlNode* COEXmlNode_Impl::InsertChild(const IOEXmlNode* pNodeChild, INSERT_NODE_BEHAVE eBehave /*= INB_NEXT*/)
+{
+	// TODO: 
+	return NULL;
+}
+
+IOEXmlNode* COEXmlNode_Impl::InsertSibling(const tstring& strName, INSERT_NODE_BEHAVE eBehave /*= INB_NEXT*/)
+{
+	COEXmlNode_Impl* pNodeChild = (COEXmlNode_Impl*)g_pOEXmlMgr->CreateNode(strName);
+	if (!pNodeChild) return NULL;
+
+	switch (eBehave)
+	{
+	case INB_PREVIOUS:
+		{
+			// TODO: 
+		}
+		break;
+	case INB_NEXT:
+		{
+			pNodeChild->m_pNodeSibling = m_pNodeSibling;
+			m_pNodeSibling = pNodeChild;
+		}
+		break;
+	}
+
+	return pNodeChild;
+}
+
+IOEXmlNode* COEXmlNode_Impl::InsertSibling(const IOEXmlNode* pNodeBrother, INSERT_NODE_BEHAVE eBehave /*= INB_NEXT*/)
+{
+	// TODO: 
+	return NULL;
+}
+
+void COEXmlNode_Impl::SetValue(const tstring& strValue)
+{
+	m_strText = strValue;
+}
+
+void COEXmlNode_Impl::LinkAttribute(COEXmlAttribute_Impl* pAttribute)
+{
+	if (!m_pAttribute)
+	{
+		m_pAttribute = pAttribute;
+	}
+	else
+	{
+		m_pAttribute->LinkSibling(pAttribute);
+	}
+}
+
+void COEXmlNode_Impl::LinkChild(COEXmlNode_Impl* pNodeChild)
+{
+	COEXmlNode_Impl* pEndChild = EndSibling(m_pNodeChild);
+	if (pEndChild)
+	{
+		pEndChild->m_pNodeSibling = pNodeChild;
+	}
+	else
+	{
+		m_pNodeChild = pNodeChild;
+	}
+}
+
+void COEXmlNode_Impl::LinkSibling(COEXmlNode_Impl* pNodeSibling)
+{
+	COEXmlNode_Impl* pEndSibling = EndSibling(this);
+	pEndSibling->m_pNodeSibling = pNodeSibling;
+}
+
+void COEXmlNode_Impl::UnlinkAll()
+{
+	m_pAttribute = NULL;
+	m_pNodeChild = NULL;
+	m_pNodeSibling = NULL;
+}
+
+COEXmlAttribute_Impl* COEXmlNode_Impl::CreateEndAttribute(const tstring& strName)
+{
+	COEXmlAttribute_Impl* pAttribute = (COEXmlAttribute_Impl*)g_pOEXmlMgr->CreateAttribute(strName);
+	if (!pAttribute) return NULL;
+
+	if (!m_pAttribute)
+	{
+		m_pAttribute->LinkSibling(pAttribute);
+	}
+	else
+	{
+		m_pAttribute = pAttribute;
+	}
+
+	return pAttribute;
+}
+
+COEXmlNode_Impl* COEXmlNode_Impl::EndSibling(COEXmlNode_Impl* pNode)
+{
+	if (!pNode) return NULL;
+
+	COEXmlNode_Impl* pEndSibling = pNode;
+	while (pEndSibling->m_pNodeSibling)
+	{
+		pEndSibling = pEndSibling->m_pNodeSibling;
+	}
+	return pEndSibling;
 }

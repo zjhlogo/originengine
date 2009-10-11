@@ -27,16 +27,17 @@ typedef unsigned __int64			uint64;
 
 //typedef float						float;
 
-typedef wchar_t						tchar;
-typedef std::basic_string<tchar>	tstring;
-
 //typedef NULL						NULL;
 
 #ifdef _UNICODE
 	#define t(x) L ## x
+	typedef wchar_t tchar;
 #else
 	#define t(x) x
+	typedef char tchar;
 #endif // _UNICODE
+
+typedef std::basic_string<tchar>	tstring;
 
 #define SAFE_DELETE(x) if (x) {delete x; x = NULL;}
 #define SAFE_DELETE_ARRAY(x) if (x) {delete[] x; x = NULL;}

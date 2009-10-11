@@ -23,19 +23,18 @@ COEConfigFileMgr_Impl::~COEConfigFileMgr_Impl()
 void COEConfigFileMgr_Impl::Init()
 {
 	m_strConfigFile = t("Config.xml");
-	m_pDocument = NULL;
-	m_pRootNode = NULL;
+	m_pXmlDocument = NULL;
 }
 
 void COEConfigFileMgr_Impl::Destroy()
 {
-	SAFE_RELEASE(m_pDocument);
-	m_pRootNode = NULL;
+	SAFE_RELEASE(m_pXmlDocument);
 }
 
 bool COEConfigFileMgr_Impl::GetValue(int& nValue, const tstring& strParamName, int nDefaultValue /* = 0 */)
 {
-	IOEXmlNode* pNode = m_pRootNode->FirstChild(strParamName);
+	IOEXmlNode* pRootNode = m_pXmlDocument->GetRootNode();
+	IOEXmlNode* pNode = pRootNode->FirstChild(strParamName);
 	if (!pNode)
 	{
 		nValue = nDefaultValue;
@@ -53,7 +52,8 @@ bool COEConfigFileMgr_Impl::GetValue(int& nValue, const tstring& strParamName, i
 
 bool COEConfigFileMgr_Impl::GetValue(float& fValue, const tstring& strParamName, float fDefaultValue /* = 0.0f */)
 {
-	IOEXmlNode* pNode = m_pRootNode->FirstChild(strParamName);
+	IOEXmlNode* pRootNode = m_pXmlDocument->GetRootNode();
+	IOEXmlNode* pNode = pRootNode->FirstChild(strParamName);
 	if (!pNode)
 	{
 		fValue = fDefaultValue;
@@ -71,7 +71,8 @@ bool COEConfigFileMgr_Impl::GetValue(float& fValue, const tstring& strParamName,
 
 bool COEConfigFileMgr_Impl::GetValue(tstring& strValue, const tstring& strParamName, const tstring& strDefaultValue /* = EMPTY_STRING */)
 {
-	IOEXmlNode* pNode = m_pRootNode->FirstChild(strParamName);
+	IOEXmlNode* pRootNode = m_pXmlDocument->GetRootNode();
+	IOEXmlNode* pNode = pRootNode->FirstChild(strParamName);
 	if (!pNode)
 	{
 		strValue = strDefaultValue;
@@ -89,12 +90,7 @@ bool COEConfigFileMgr_Impl::GetValue(tstring& strValue, const tstring& strParamN
 
 bool COEConfigFileMgr_Impl::LoadConfigFile(const tstring& strFileName)
 {
-	SAFE_RELEASE(m_pDocument);
-	m_pRootNode = NULL;
+	if (!m_pXmlDocument) m_pXmlDocument = g_pOEXmlMgr->CreateDocument();
 
-	m_pDocument = g_pOEXmlMgr->OpenXmlFile(strFileName);
-	if (!m_pDocument) return false;
-
-	m_pRootNode = m_pDocument->FirstChild();
-	return true;
+	return m_pXmlDocument->LoadFile(strFileName);
 }

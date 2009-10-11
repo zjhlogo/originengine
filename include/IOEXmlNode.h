@@ -9,20 +9,34 @@
 #define __IOEXMLNODE_H__
 
 #include "IOEObject.h"
+#include "IOEXmlAttribute.h"
 
 class IOEXmlNode : public IOEObject
 {
 public:
+	enum INSERT_NODE_BEHAVE
+	{
+		INB_PREVIOUS,
+		INB_NEXT,
+	};
+
+public:
 	IOEXmlNode() {};
 	virtual ~IOEXmlNode() {};
 
-	virtual bool GetAttribute(int& nValue, const tstring& strAttrName) = 0;
-	virtual bool GetAttribute(float& fValue, const tstring& strAttrName) = 0;
-	virtual bool GetAttribute(tstring& strValue, const tstring& strAttrName) = 0;
+	virtual const tstring& GetName() = 0;
+	virtual void SetName(const tstring& strName) = 0;
 
-	virtual bool SetAttribute(const tstring& strAttrName, int nValue) = 0;
-	virtual bool SetAttribute(const tstring& strAttrName, float fValue) = 0;
-	virtual bool SetAttribute(const tstring& strAttrName, const tstring& strAttrValue) = 0;
+	virtual bool GetAttribute(int& nValue, const tstring& strName) = 0;
+	virtual bool GetAttribute(float& fValue, const tstring& strName) = 0;
+	virtual bool GetAttribute(tstring& strValue, const tstring& strName) = 0;
+
+	virtual void SetAttribute(const tstring& strName, int nValue) = 0;
+	virtual void SetAttribute(const tstring& strName, float fValue) = 0;
+	virtual void SetAttribute(const tstring& strName, const tstring& strValue) = 0;
+
+	virtual IOEXmlAttribute* FirstAttribute() = 0;
+	virtual IOEXmlAttribute* FirstAttribute(const tstring& strName) = 0;
 
 	virtual bool GetText(int& nValue) = 0;
 	virtual bool GetText(float& fValue) = 0;
@@ -33,10 +47,18 @@ public:
 	virtual bool SetText(const tstring& strText) = 0;
 
 	virtual IOEXmlNode* FirstChild() = 0;
-	virtual IOEXmlNode* FirstChild(const tstring& strNodeName) = 0;
+	virtual IOEXmlNode* FirstChild(const tstring& strName) = 0;
+	virtual IOEXmlNode* EndChild() = 0;
 
 	virtual IOEXmlNode* NextSibling() = 0;
-	virtual IOEXmlNode* NextSibling(const tstring& strNodeName) = 0;
+	virtual IOEXmlNode* NextSibling(const tstring& strName) = 0;
+	virtual IOEXmlNode* EndSibling() = 0;
+
+	virtual IOEXmlNode* InsertChild(const tstring& strName, INSERT_NODE_BEHAVE eBehave = INB_NEXT) = 0;
+	virtual IOEXmlNode* InsertChild(const IOEXmlNode* pNodeChild, INSERT_NODE_BEHAVE eBehave = INB_NEXT) = 0;
+
+	virtual IOEXmlNode* InsertSibling(const tstring& strName, INSERT_NODE_BEHAVE eBehave = INB_NEXT) = 0;
+	virtual IOEXmlNode* InsertSibling(const IOEXmlNode* pNodeBrother, INSERT_NODE_BEHAVE eBehave = INB_NEXT) = 0;
 
 };
 #endif // __IOEXMLNODE_H__
