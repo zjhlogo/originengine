@@ -9,7 +9,7 @@
 #define __OEUIBITMAPFONT_IMPL_H__
 
 #include <OEUI/IOEUIFont.h>
-#include <IOEXmlNode.h>
+#include <OEInterfaces.h>
 
 #include <vector>
 #include <map>
@@ -49,7 +49,7 @@ private:
 	int HashKerningID(int nFirstID, int nSecondID) const;
 
 private:
-	IOEXmlNode* m_pDocument;
+	IOEXmlDocument* m_pXmlDocument;
 	float m_fLineHeight;
 	int m_nPageCount;
 

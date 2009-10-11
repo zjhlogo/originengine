@@ -156,20 +156,18 @@ bool COEOS::str2float(float& fValue, const tchar* pstrIn)
 	return true;
 }
 
-bool COEOS::int2str(tstring& strOut, int nValue)
+void COEOS::int2str(tstring& strOut, int nValue)
 {
 	static tchar s_strBuffer[1024];
 	_sntprintf_s(s_strBuffer, 1024, t("%d"), nValue);
 	strOut = s_strBuffer;
-	return true;
 }
 
-bool COEOS::float2str(tstring& strOut, float fValue)
+void COEOS::float2str(tstring& strOut, float fValue)
 {
 	static tchar s_strBuffer[1024];
 	_sntprintf_s(s_strBuffer, 1024, t("%f"), fValue);
 	strOut = s_strBuffer;
-	return true;
 }
 
 bool COEOS::strformat(tstring& strOut, const tchar* strFormat, ...)

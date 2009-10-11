@@ -6,7 +6,6 @@
  * \author zjhlogo (zjhlogo@163.com)
  */
 #include "OEUIBitmapFont_Impl.h"
-#include <OEInterfaces.h>
 
 COEUIBitmapFont_Impl::COEUIBitmapFont_Impl(const tstring& strFileName)
 {
@@ -21,14 +20,14 @@ COEUIBitmapFont_Impl::~COEUIBitmapFont_Impl()
 
 void COEUIBitmapFont_Impl::Init()
 {
-	m_pDocument = NULL;
+	m_pXmlDocument = NULL;
 	m_fLineHeight = 0.0f;
 	m_nPageCount = 0;
 }
 
 void COEUIBitmapFont_Impl::Destroy()
 {
-	SAFE_RELEASE(m_pDocument);
+	SAFE_RELEASE(m_pXmlDocument);
 	DestroyTextures();
 	DestroyKerningsInfo();
 	DestroyCharsInfo();
@@ -64,11 +63,13 @@ float COEUIBitmapFont_Impl::GetKerning(int nFirstID, int nSecondID) const
 
 bool COEUIBitmapFont_Impl::Create(const tstring& strFileName)
 {
-	m_pDocument = g_pOEXmlMgr->OpenXmlFile(strFileName);
-	if (!m_pDocument) return false;
+	m_pXmlDocument = g_pOEXmlMgr->CreateDocument();
+	if (!m_pXmlDocument) return false;
 
-	IOEXmlNode* pRootNode = m_pDocument->FirstChild(t("font"));
-	if (!pRootNode) return false;
+	if (!m_pXmlDocument->LoadFile(strFileName)) return false;
+
+	IOEXmlNode* pRootNode = m_pXmlDocument->GetRootNode();
+	if (!pRootNode || pRootNode->GetName() != t("font")) return false;
 
 	IOEXmlNode* pCommonNode = pRootNode->FirstChild(t("common"));
 	if (!pCommonNode) return false;
@@ -86,7 +87,7 @@ bool COEUIBitmapFont_Impl::Create(const tstring& strFileName)
 	if (!pKerningsInfo) return false;
 	if (!CreateKerningsInfo(pKerningsInfo)) return false;
 
-	SAFE_RELEASE(m_pDocument);
+	SAFE_RELEASE(m_pXmlDocument);
 	return true;
 }
 

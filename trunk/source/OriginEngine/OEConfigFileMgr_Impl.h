@@ -29,8 +29,7 @@ private:
 
 private:
 	tstring m_strConfigFile;
-	IOEXmlNode* m_pDocument;
-	IOEXmlNode* m_pRootNode;
+	IOEXmlDocument* m_pXmlDocument;
 
 };
 

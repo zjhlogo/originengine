@@ -41,8 +41,8 @@ public:
 	static bool str2float(float& fValue, const tchar* pstrIn);
 	static bool tchar2char(std::string& strOut, const tchar* pstrIn);
 	static bool char2tchar(tstring& strOut, const char* pstrIn);
-	static bool int2str(tstring& strOut, int nValue);
-	static bool float2str(tstring& strOut, float fValue);
+	static void int2str(tstring& strOut, int nValue);
+	static void float2str(tstring& strOut, float fValue);
 	static bool strformat(tstring& strOut, const tchar* strFormat, ...);
 	static void toupper(tstring& strOut, const tstring& strIn);
 	static void tolower(tstring& strOut, const tstring& strIn);
