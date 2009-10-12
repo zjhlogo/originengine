@@ -14,6 +14,7 @@
 IOEFileMgr* g_pOEFileMgr = NULL;
 IOELogFileMgr* g_pOELogFileMgr = NULL;
 IOEXmlMgr* g_pOEXmlMgr = NULL;
+IOEMessageMgr* g_pOEMessageMgr = NULL;
 
 // 核心模块
 IOECore* g_pOECore = NULL;
@@ -53,6 +54,7 @@ void COEHolder::SetupInterfaces()
 	AddInterface(t("IOEFileMgr"), (void**)&g_pOEFileMgr);
 	AddInterface(t("IOELogFileMgr"), (void**)&g_pOELogFileMgr);
 	AddInterface(t("IOEXmlMgr"), (void**)&g_pOEXmlMgr);
+	AddInterface(t("IOEMessageMgr"), (void**)&g_pOEMessageMgr);
 
 	// 核心模块
 	AddInterface(t("IOECore"), (void**)&g_pOECore);

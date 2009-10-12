@@ -14,6 +14,7 @@
 #include "IOEFileMgr.h"
 #include "IOELogFileMgr.h"
 #include "IOEXmlMgr.h"
+#include "IOEMessageMgr.h"
 
 // ºËÐÄÄ£¿é
 #include "IOECore.h"

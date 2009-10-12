@@ -61,7 +61,6 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				AdditionalDependencies="../../3rdsrc/tinyxml/tinyxmld.lib"
 				OutputFile="$(OutDir)/libOE_D.lib"
 			/>
 			<Tool
@@ -123,7 +122,6 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				AdditionalDependencies="../../3rdsrc/tinyxml/tinyxml.lib"
 				OutputFile="$(OutDir)/libOE.lib"
 			/>
 			<Tool
@@ -188,7 +186,6 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				AdditionalDependencies="../../3rdsrc/tinyxml/tinyxmld.lib"
 				OutputFile="$(OutDir)/libOE_UD.lib"
 			/>
 			<Tool
@@ -250,7 +247,6 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				AdditionalDependencies="../../3rdsrc/tinyxml/tinyxml.lib"
 				OutputFile="$(OutDir)/libOEU.lib"
 			/>
 			<Tool
@@ -287,6 +283,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\OEDataBufferRead.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\OEDataBufferWrite.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\OEFile_Impl.cpp"
 				>
 			</File>
@@ -300,6 +304,14 @@
 			</File>
 			<File
 				RelativePath=".\OELogFileMgr_Impl.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\OEMessage.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\OEMessageMgr_Impl.cpp"
 				>
 			</File>
 			<File
@@ -349,6 +361,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\include\OEDataBufferRead.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\include\OEDataBufferWrite.h"
+				>
+			</File>
+			<File
 				RelativePath=".\OEFile_Impl.h"
 				>
 			</File>
@@ -362,6 +382,14 @@
 			</File>
 			<File
 				RelativePath=".\OELogFileMgr_Impl.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\include\OEMessage.h"
+				>
+			</File>
+			<File
+				RelativePath=".\OEMessageMgr_Impl.h"
 				>
 			</File>
 			<File
@@ -414,6 +442,10 @@
 			</File>
 			<File
 				RelativePath="..\..\include\IOELogFileMgr.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\include\IOEMessageMgr.h"
 				>
 			</File>
 			<File
