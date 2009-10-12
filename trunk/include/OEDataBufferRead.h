@@ -13,8 +13,16 @@
 class COEDataBufferRead
 {
 public:
-	COEDataBufferRead();
+	COEDataBufferRead(const void* pBuffer, uint nSize);
 	~COEDataBufferRead();
+
+	bool Read(void* pDataOut, uint nSize);
+	void Reset();
+
+private:
+	const void* m_pBuffer;
+	uint m_nSize;
+	uint m_nCurrPos;
 
 };
 #endif // __OEDATABUFFERREAD_H__
