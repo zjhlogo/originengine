@@ -281,7 +281,7 @@ bool CMeshExporter::SaveToFile(const tstring& strFileName)
 
 		std::string strName;
 		COEOS::tchar2char(strName, m_vSkinMesh[i].strName.c_str());
-		strncpy(Piece.szName, strName.c_str(), COEFmtMesh::PIECE_NAME_SIZE);
+		strncpy_s(Piece.szName, strName.c_str(), COEFmtMesh::PIECE_NAME_SIZE);
 
 		Piece.nPieceMask = COEFmtMesh::PM_VISIBLE;
 		Piece.nVertexDataMask = COEFmtMesh::VDM_XYZ | COEFmtMesh::VDM_BONE;
@@ -301,7 +301,7 @@ bool CMeshExporter::SaveToFile(const tstring& strFileName)
 
 		std::string strName;
 		COEOS::tchar2char(strName, m_vBoneInfo[i].strName.c_str());
-		strncpy(Bone.szName, strName.c_str(), COEFmtMesh::BONE_NAME_SIZE);
+		strncpy_s(Bone.szName, strName.c_str(), COEFmtMesh::BONE_NAME_SIZE);
 
 		Bone.nParentIndex = m_vBoneInfo[i].nParentID;
 
