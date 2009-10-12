@@ -9,6 +9,7 @@
 #define __IOEOBJECT_H__
 
 #include "OEBasicType.h"
+#include "OEDataBufferRead.h"
 
 class IOEObject
 {
@@ -54,4 +55,7 @@ protected:
 	int m_nRef;
 
 };
+
+typedef bool (IOEObject::*FUNC_MESSAGE)(uint nMsgID, COEDataBufferRead* pDBRead);
+
 #endif // __IOEOBJECT_H__

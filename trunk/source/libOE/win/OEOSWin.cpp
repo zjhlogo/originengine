@@ -18,10 +18,12 @@
 #include "../OEFileMgr_Impl.h"
 #include "../OELogFileMgr_Impl.h"
 #include "../OEXmlMgr_Impl.h"
+#include "../OEMessageMgr_Impl.h"
 
 COEFileMgr_Impl* g_pOEFileMgr_Impl = NULL;
 COELogFileMgr_Impl* g_pOELogFileMgr_Impl = NULL;
 COEXmlMgr_Impl* g_pOEXmlMgr_Impl = NULL;
+COEMessageMgr_Impl* g_pOEMessageMgr_Impl = NULL;
 
 bool COEOS::Initialize()
 {
@@ -43,11 +45,18 @@ bool COEOS::Initialize()
 		if (!g_pOEXmlMgr_Impl) return false;
 	}
 
+	if (!g_pOEMessageMgr_Impl)
+	{
+		g_pOEMessageMgr_Impl = new COEMessageMgr_Impl();
+		if (!g_pOEMessageMgr_Impl) return false;
+	}
+
 	return true;
 }
 
 void COEOS::Terminate()
 {
+	SAFE_DELETE(g_pOEMessageMgr_Impl);
 	SAFE_DELETE(g_pOEXmlMgr_Impl);
 	SAFE_DELETE(g_pOELogFileMgr_Impl);
 	SAFE_DELETE(g_pOEFileMgr_Impl);
