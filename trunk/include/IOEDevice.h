@@ -8,10 +8,10 @@
 #ifndef __IOEDEVICE_H__
 #define __IOEDEVICE_H__
 
-#include "OEBasicType.h"
+#include "IOEObject.h"
 #include "IOEVertDecl.h"
 
-class IOEDevice
+class IOEDevice : public IOEObject
 {
 public:
 	IOEDevice() {};

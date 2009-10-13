@@ -17,13 +17,25 @@ COEUIStringMgr_Impl* g_pOEUIStringMgr_Impl = NULL;
 bool CreateSingleton()
 {
 	g_pOEUIRenderer_Impl = new COEUIRenderer_Impl();
-	if (!g_pOEUIRenderer_Impl) return false;
+	if (!g_pOEUIRenderer_Impl || !g_pOEUIRenderer_Impl->IsOK())
+	{
+		SAFE_DELETE(g_pOEUIRenderer_Impl);
+		return false;
+	}
 
 	g_pOEUIFontMgr_Impl = new COEUIFontMgr_Impl();
-	if (!g_pOEUIFontMgr_Impl) return false;
+	if (!g_pOEUIFontMgr_Impl || !g_pOEUIFontMgr_Impl->IsOK())
+	{
+		SAFE_DELETE(g_pOEUIFontMgr_Impl);
+		return false;
+	}
 
 	g_pOEUIStringMgr_Impl = new COEUIStringMgr_Impl();
-	if (!g_pOEUIStringMgr_Impl) return false;
+	if (!g_pOEUIStringMgr_Impl || !g_pOEUIStringMgr_Impl->IsOK())
+	{
+		SAFE_DELETE(g_pOEUIStringMgr_Impl);
+		return false;
+	}
 
 	return true;
 }

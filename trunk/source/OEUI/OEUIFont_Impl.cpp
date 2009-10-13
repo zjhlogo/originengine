@@ -10,6 +10,7 @@
 COEUIFont_Impl::COEUIFont_Impl()
 {
 	Init();
+	m_bOK = true;
 }
 
 COEUIFont_Impl::~COEUIFont_Impl()

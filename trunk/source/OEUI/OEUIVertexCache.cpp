@@ -6,6 +6,9 @@
  * \author zjhlogo (zjhlogo@163.com)
  */
 #include "OEUIVertexCache.h"
+
+#include <IOERenderer.h>
+
 #include <assert.h>
 
 COEUIVertexCache::COEUIVertexCache(uint nVertsCacheSize, uint nIndisCacheCount)

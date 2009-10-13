@@ -9,13 +9,15 @@
 #include "OEUIFont_Impl.h"
 #include "OEUIBitmapFont_Impl.h"
 
-#include <OEInterfaces.h>
+#include <IOELogFileMgr.h>
+
 #include <algorithm>
 
 COEUIFontMgr_Impl::COEUIFontMgr_Impl()
 {
 	g_pOEUIFontMgr = this;
 	Init();
+	m_bOK = true;
 }
 
 COEUIFontMgr_Impl::~COEUIFontMgr_Impl()

@@ -6,12 +6,16 @@
  * \author zjhlogo (zjhlogo@163.com)
  */
 #include "OECore_Impl.h"
-#include <OEInterfaces.h>
+#include <OEMessageID.h>
+#include <IOEDevice.h>
+#include <IOELogFileMgr.h>
+#include <IOEMessageMgr.h>
 
 COECore_Impl::COECore_Impl()
 {
 	g_pOECore = this;
 	Init();
+	m_bOK = true;
 }
 
 COECore_Impl::~COECore_Impl()
@@ -63,4 +67,16 @@ void COECore_Impl::End()
 	m_bRunning = false;
 
 	g_pOEDevice->EndPerform();
+}
+
+void COECore_Impl::Update()
+{
+	// dispatch the receive message
+	g_pOEMessageMgr->DispatchRecvMessage();
+
+	// send perform once message
+	COEMessage msg(OMI_PERFORM_ONCE);
+	float fCurrFPS = g_pOEDevice->GetFPS();
+	msg.Write(fCurrFPS);
+	g_pOEMessageMgr->SendMessage(&msg);
 }

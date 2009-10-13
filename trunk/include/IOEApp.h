@@ -8,9 +8,9 @@
 #ifndef __IOEAPP_H__
 #define __IOEAPP_H__
 
-#include "OEBasicType.h"
+#include "IOEObject.h"
 
-class IOEApp
+class IOEApp : public IOEObject
 {
 public:
 	IOEApp();

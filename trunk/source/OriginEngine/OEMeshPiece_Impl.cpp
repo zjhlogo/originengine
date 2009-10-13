@@ -6,7 +6,10 @@
  * \author zjhlogo (zjhlogo@163.com)
  */
 #include "OEMeshPiece_Impl.h"
+
+#include <IOEDevice.h>
 #include <OEOS.h>
+
 #include <vector>
 
 COEMeshPiece_Impl::COEMeshPiece_Impl(const COEFmtMesh::PIECE& Piece, IOEFile* pFile)

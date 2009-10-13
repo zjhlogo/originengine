@@ -31,6 +31,19 @@ bool COEDataBufferWrite::Write(const void* pBuffer, uint nSize)
 	return true;
 }
 
+bool COEDataBufferWrite::Write(COEDataBufferRead* pDBRead, uint nSize)
+{
+	if (m_nCurrPos + nSize > m_vBuffer.size())
+	{
+		int nNewSize = ((m_nCurrPos + nSize)/EXPAND_SIZE+1)*EXPAND_SIZE;
+		m_vBuffer.resize(nNewSize);
+	}
+
+	pDBRead->Read(&m_vBuffer[m_nCurrPos], nSize);
+	m_nCurrPos += nSize;
+	return true;
+}
+
 void COEDataBufferWrite::Reset()
 {
 	m_nCurrPos = 0;

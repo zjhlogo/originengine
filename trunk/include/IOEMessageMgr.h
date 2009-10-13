@@ -12,13 +12,15 @@
 #include "IOEObject.h"
 #include "OEMessage.h"
 
-class IOEMessageMgr
+class IOEMessageMgr : public IOEObject
 {
 public:
 	IOEMessageMgr(){};
 	virtual ~IOEMessageMgr(){};
 
 	virtual bool SendMessage(COEMessage* pMsg) = 0;
+	virtual void DispatchRecvMessage() = 0;
+
 	virtual bool RegisterMessage(uint nMsgID, IOEObject* pHandler, FUNC_MESSAGE pFunc) = 0;
 	virtual bool UnregisterMessage(uint nMsgID, IOEObject* pHandler) = 0;
 };

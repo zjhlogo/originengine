@@ -464,6 +464,10 @@
 				RelativePath="..\..\include\IOEXmlNode.h"
 				>
 			</File>
+			<File
+				RelativePath="..\..\include\OEMessageID.h"
+				>
+			</File>
 		</Filter>
 	</Files>
 	<Globals>

@@ -6,6 +6,8 @@
  * \author zjhlogo (zjhlogo@163.com)
  */
 #include "OEMesh_Impl.h"
+
+#include <IOEFileMgr.h>
 #include <OEFmtMesh.h>
 
 COEMesh_Impl::COEMesh_Impl(const tstring& strFileName)

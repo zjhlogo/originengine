@@ -7,12 +7,14 @@
  */
 #include "OEUIStringMgr_Impl.h"
 #include "OEUIString_Impl.h"
-#include <OEInterfaces.h>
+
+#include <IOELogFileMgr.h>
 
 COEUIStringMgr_Impl::COEUIStringMgr_Impl()
 {
 	g_pOEUIStringMgr = this;
 	Init();
+	m_bOK = true;
 }
 
 COEUIStringMgr_Impl::~COEUIStringMgr_Impl()

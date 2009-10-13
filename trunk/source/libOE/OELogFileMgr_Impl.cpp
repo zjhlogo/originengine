@@ -6,13 +6,15 @@
  * \author zjhlogo (zjhlogo@163.com)
  */
 #include "OELogFileMgr_Impl.h"
+
+#include <IOEFileMgr.h>
 #include <OEOS.h>
 
 COELogFileMgr_Impl::COELogFileMgr_Impl()
 {
 	g_pOELogFileMgr = this;
 	Init();
-	CreateLogFile(m_strLogFileName);
+	m_bOK = CreateLogFile(m_strLogFileName);
 }
 
 COELogFileMgr_Impl::~COELogFileMgr_Impl()

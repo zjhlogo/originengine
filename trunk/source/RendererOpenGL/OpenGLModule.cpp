@@ -8,17 +8,23 @@
 #include "OpenGLModule.h"
 #include "OEOpenGLDevice_Impl.h"
 
+COEOpenGLDevice_Impl* g_pOEOpenGLDevice_Impl = NULL;
+
 bool CreateSingleton()
 {
-	COEOpenGLDevice_Impl* pOEOpenGLDevice_Impl = new COEOpenGLDevice_Impl();
-	if (!pOEOpenGLDevice_Impl) return false;
+	g_pOEOpenGLDevice_Impl = new COEOpenGLDevice_Impl();
+	if (!g_pOEOpenGLDevice_Impl || !g_pOEOpenGLDevice_Impl->IsOK())
+	{
+		SAFE_DELETE(g_pOEOpenGLDevice_Impl);
+		return false;
+	}
 
 	return true;
 }
 
 void DestroySingleton()
 {
-	SAFE_DELETE(g_pOEDevice);
+	SAFE_DELETE(g_pOEOpenGLDevice_Impl);
 }
 
 bool OEModuleInit(COEHolder& Holder)

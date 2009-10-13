@@ -9,7 +9,8 @@
 #include "OED3DTexture_Impl.h"
 #include "OED3DUtil.h"
 
-#include <OEInterfaces.h>
+#include <IOELogFileMgr.h>
+#include <IOEDevice.h>
 #include <OEOS.h>
 
 extern IDirect3DDevice9* g_pd3dDevice;

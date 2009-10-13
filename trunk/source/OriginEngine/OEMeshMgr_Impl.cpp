@@ -8,13 +8,14 @@
 #include "OEMeshMgr_Impl.h"
 #include "OEMesh_Impl.h"
 
-#include <OEInterfaces.h>
+#include <IOELogFileMgr.h>
 #include <OEOS.h>
 
 COEMeshMgr_Impl::COEMeshMgr_Impl()
 {
 	g_pOEMeshMgr = this;
 	Init();
+	m_bOK = true;
 }
 
 COEMeshMgr_Impl::~COEMeshMgr_Impl()

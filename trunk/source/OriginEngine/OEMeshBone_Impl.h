@@ -9,8 +9,10 @@
 #define __OEMESHBONE_IMPL_H__
 
 #include <IOEMeshBone.h>
+
+#include <IOEFile.h>
 #include <OEFmtMesh.h>
-#include <OEInterfaces.h>
+
 #include <vector>
 
 class COEMeshBone_Impl : public IOEMeshBone

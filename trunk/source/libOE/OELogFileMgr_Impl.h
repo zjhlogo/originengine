@@ -9,7 +9,8 @@
 #define __OELOGFILEMGR_IMPL_H__
 
 #include <IOELogFileMgr.h>
-#include <OEInterfaces.h>
+
+#include <IOEFile.h>
 
 class COELogFileMgr_Impl : public IOELogFileMgr
 {

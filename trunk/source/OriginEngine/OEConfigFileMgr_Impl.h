@@ -9,7 +9,7 @@
 #define __OECONFIGFILEMGR_IMPL_H__
 
 #include <IOEConfigFileMgr.h>
-#include <OEInterfaces.h>
+#include <IOEXmlDocument.h>
 
 class COEConfigFileMgr_Impl : public IOEConfigFileMgr
 {

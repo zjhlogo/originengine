@@ -22,6 +22,8 @@ public:
 	virtual void Run();
 	virtual void End();
 
+	virtual void Update();
+
 private:
 	void Init();
 	void Destroy();

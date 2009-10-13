@@ -9,6 +9,7 @@
 #define __OEDATABUFFERWRITE_H__
 
 #include "OEBasicType.h"
+#include "OEDataBufferRead.h"
 #include <vector>
 
 class COEDataBufferWrite
@@ -26,6 +27,7 @@ public:
 	~COEDataBufferWrite();
 
 	bool Write(const void* pBuffer, uint nSize);
+	bool Write(COEDataBufferRead* pDBRead, uint nSize);
 	void Reset();
 
 	const void* GetBuffer();

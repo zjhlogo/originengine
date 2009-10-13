@@ -8,14 +8,14 @@
 #ifndef __IOERENDERER_H__
 #define __IOERENDERER_H__
 
-#include "OEBasicType.h"
+#include "IOEObject.h"
 #include "IOEVertDecl.h"
 #include "IOETexture.h"
 #include "IOEShader.h"
 
 #include "OEMath/OEMath.h"
 
-class IOERenderer
+class IOERenderer : public IOEObject
 {
 public:
 	enum TRANSFORM_TYPE

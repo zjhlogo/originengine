@@ -50,23 +50,28 @@ private:
 	void PerformOnce(float fDetailTime);
 	void InitializeD3D();
 
+	void ResetFPS(float fLastTime);
+	void CalculateFPS();
+	void RenderFPS();
+
 	static LRESULT CALLBACK MainWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
 private:
 	int m_nWindowWidth;
 	int m_nWindowHeight;
+	tstring m_strClassName;
 	tstring m_strWindowName;
-
-	float m_fMaxFPS;
-	float m_fCurrFPS;
-	float m_fLastFPSTime;
-	int m_nFPSCount;
 
 	float m_fPrevTime;
 	float m_fCurrTime;
 
 	VOED3D_VERTDECL m_vD3DVertDecl;
 
+	// fps
+	float m_fMaxFPS;
+	float m_fCurrFPS;
+	float m_fLastFPSTime;
+	int m_nFPSCount;
 	IOEUIFont* m_pFontFPS;
 	IOEUIString* m_pStringFPS;
 };

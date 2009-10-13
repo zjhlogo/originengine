@@ -8,9 +8,12 @@
 #include "OEModelMgr_Impl.h"
 #include "OEModel_Impl.h"
 
+#include <IOELogFileMgr.h>
+
 COEModelMgr_Impl::COEModelMgr_Impl()
 {
 	Init();
+	m_bOK = true;
 }
 
 COEModelMgr_Impl::~COEModelMgr_Impl()

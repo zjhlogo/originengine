@@ -9,7 +9,9 @@
 #define __OEUIBITMAPFONT_IMPL_H__
 
 #include <OEUI/IOEUIFont.h>
-#include <OEInterfaces.h>
+
+#include <IOEXmlDocument.h>
+#include <IOEXmlNode.h>
 
 #include <vector>
 #include <map>

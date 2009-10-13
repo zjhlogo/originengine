@@ -19,16 +19,32 @@ COED3DShaderMgr_Impl* g_pOED3DShaderMgr_Impl = NULL;
 bool CreateSingleton()
 {
 	g_pOED3DDevice_Impl = new COED3DDevice_Impl();
-	if (!g_pOED3DDevice_Impl) return false;
+	if (!g_pOED3DDevice_Impl || !g_pOED3DDevice_Impl->IsOK())
+	{
+		SAFE_DELETE(g_pOED3DDevice_Impl);
+		return false;
+	}
 
 	g_pOED3DRenderer_Impl = new COED3DRenderer_Impl();
-	if (!g_pOED3DRenderer_Impl) return false;
+	if (!g_pOED3DRenderer_Impl || !g_pOED3DRenderer_Impl->IsOK())
+	{
+		SAFE_DELETE(g_pOED3DRenderer_Impl);
+		return false;
+	}
 
 	g_pOED3DTextureMgr_Impl = new COED3DTextureMgr_Impl();
-	if (!g_pOED3DTextureMgr_Impl) return false;
+	if (!g_pOED3DTextureMgr_Impl || !g_pOED3DTextureMgr_Impl->IsOK())
+	{
+		SAFE_DELETE(g_pOED3DTextureMgr_Impl);
+		return false;
+	}
 
 	g_pOED3DShaderMgr_Impl = new COED3DShaderMgr_Impl();
-	if (!g_pOED3DShaderMgr_Impl) return false;
+	if (!g_pOED3DShaderMgr_Impl || !g_pOED3DShaderMgr_Impl->IsOK())
+	{
+		SAFE_DELETE(g_pOED3DShaderMgr_Impl);
+		return false;
+	}
 
 	return true;
 }

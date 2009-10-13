@@ -10,11 +10,24 @@
 COEOpenGLDevice_Impl::COEOpenGLDevice_Impl()
 {
 	g_pOEDevice = this;
+	Init();
+	m_bOK = true;
 }
 
 COEOpenGLDevice_Impl::~COEOpenGLDevice_Impl()
 {
+	Destroy();
 	g_pOEDevice = NULL;
+}
+
+void COEOpenGLDevice_Impl::Init()
+{
+	// TODO: 
+}
+
+void COEOpenGLDevice_Impl::Destroy()
+{
+	// TODO: 
 }
 
 bool COEOpenGLDevice_Impl::CreateDevice()

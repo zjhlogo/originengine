@@ -8,13 +8,14 @@
 #include "OED3DShaderMgr_Impl.h"
 #include "OED3DShader_Impl.h"
 
-#include <OEInterfaces.h>
+#include <IOELogFileMgr.h>
 #include <algorithm>
 
 COED3DShaderMgr_Impl::COED3DShaderMgr_Impl()
 {
 	g_pOEShaderMgr = this;
 	Init();
+	m_bOK = true;
 }
 
 COED3DShaderMgr_Impl::~COED3DShaderMgr_Impl()

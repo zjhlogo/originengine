@@ -8,13 +8,14 @@
 #include "OED3DTextureMgr_Impl.h"
 #include "OED3DTexture_Impl.h"
 
-#include <OEInterfaces.h>
+#include <IOELogFileMgr.h>
 #include <OEOS.h>
 
 COED3DTextureMgr_Impl::COED3DTextureMgr_Impl()
 {
 	g_pOETextureMgr = this;
 	Init();
+	m_bOK = true;
 }
 
 COED3DTextureMgr_Impl::~COED3DTextureMgr_Impl()

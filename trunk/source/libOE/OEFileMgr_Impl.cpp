@@ -8,13 +8,14 @@
 #include "OEFileMgr_Impl.h"
 #include "OEFile_Impl.h"
 
-#include <OEInterfaces.h>
+#include <IOELogFileMgr.h>
 #include <assert.h>
 
 COEFileMgr_Impl::COEFileMgr_Impl()
 {
 	g_pOEFileMgr = this;
 	Init();
+	m_bOK = true;
 }
 
 COEFileMgr_Impl::~COEFileMgr_Impl()

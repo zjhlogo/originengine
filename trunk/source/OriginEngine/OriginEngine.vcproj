@@ -493,19 +493,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\include\OEBasicType.h"
-				>
-			</File>
-			<File
 				RelativePath="..\..\include\OEConfig.h"
 				>
 			</File>
 			<File
 				RelativePath="..\..\include\OEFmtMesh.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\include\OEHolder.h"
 				>
 			</File>
 			<File
