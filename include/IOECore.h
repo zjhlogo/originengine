@@ -8,9 +8,9 @@
 #ifndef __IOECORE_H__
 #define __IOECORE_H__
 
-#include "OEBasicType.h"
+#include "IOEObject.h"
 
-class IOECore
+class IOECore : public IOEObject
 {
 public:
 	IOECore() {};
@@ -22,6 +22,7 @@ public:
 	virtual void Run() = 0;
 	virtual void End() = 0;
 
+	virtual void Update() = 0;
 };
 
 extern IOECore* g_pOECore;

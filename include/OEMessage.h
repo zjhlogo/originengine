@@ -16,16 +16,20 @@
 class COEMessage
 {
 public:
+	enum OPERATE_MODE
+	{
+		OM_UNKNOWN,
+		OM_READ,
+		OM_WRITE,
+	};
+
+public:
 	COEMessage(uint nMsgID);
 	COEMessage(COEDataBufferRead* pDBRead);
 	~COEMessage();
 
 	uint GetMsgID();
 	bool ToBuffer(COEDataBufferWrite* pDBWrite);
-
-protected:
-	virtual bool PackData();
-	virtual bool UnpackData();
 
 	template <typename T> bool Read(T& DataType);
 	bool ReadString(tstring& strOut);
@@ -35,15 +39,35 @@ protected:
 	bool WriteString(const tstring& strIn);
 	bool WriteBuffer(const void* pBuffer, uint nSize);
 
+protected:
+	virtual bool PackData();
+	virtual bool UnpackData();
+
 private:
+	bool ReadExtendData();
+	bool WriteExtendData();
+
+private:
+	OPERATE_MODE m_eOpMode;
 	uint m_nMsgID;
 	COEDataBufferRead* m_pDBRead;
 	COEDataBufferWrite* m_pDBWrite;
+
+	COEDataBufferRead* m_pNewDBRead;
+	COEDataBufferWrite m_DBWrite;
 
 };
 
 template <typename T> bool COEMessage::Read(T& DataType)
 {
+	if (m_eOpMode != OM_READ) return false;
+
+	if (!m_pDBRead)
+	{
+		assert(false);
+		return false;
+	}
+
 	if (!m_pDBRead->Read(&DataType, sizeof(DataType)))
 	{
 		assert(false);
@@ -55,6 +79,14 @@ template <typename T> bool COEMessage::Read(T& DataType)
 
 template <typename T> bool COEMessage::Write(const T& DataType)
 {
+	if (m_eOpMode != OM_WRITE) return false;
+
+	if (!m_pDBWrite)
+	{
+		assert(false);
+		return false;
+	}
+
 	if (!m_pDBWrite->Write(&DataType, sizeof(DataType)))
 	{
 		assert(false);

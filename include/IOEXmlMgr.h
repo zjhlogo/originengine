@@ -8,11 +8,12 @@
 #ifndef __IOEXMLMGR_H__
 #define __IOEXMLMGR_H__
 
+#include "IOEObject.h"
 #include "IOEXmlDocument.h"
 #include "IOEXmlNode.h"
 #include "IOEXmlAttribute.h"
 
-class IOEXmlMgr
+class IOEXmlMgr : public IOEObject
 {
 public:
 	IOEXmlMgr() {};

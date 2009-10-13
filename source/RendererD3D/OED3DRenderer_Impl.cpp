@@ -15,6 +15,7 @@ COED3DRenderer_Impl::COED3DRenderer_Impl()
 {
 	g_pOERenderer = this;
 	Init();
+	m_bOK = true;
 }
 
 COED3DRenderer_Impl::~COED3DRenderer_Impl()

@@ -7,6 +7,7 @@
  */
 #include "OEMessageMgr_Impl.h"
 
+#include <OEMessageID.h>
 #include <OEDataBufferRead.h>
 #include <OEDataBufferWrite.h>
 
@@ -14,6 +15,7 @@ COEMessageMgr_Impl::COEMessageMgr_Impl()
 {
 	g_pOEMessageMgr = this;
 	Init();
+	m_bOK = true;
 }
 
 COEMessageMgr_Impl::~COEMessageMgr_Impl()
@@ -51,7 +53,7 @@ bool COEMessageMgr_Impl::SendMessage(COEMessage* pMsg)
 	return true;
 }
 
-void COEMessageMgr_Impl::HandleReceive()
+void COEMessageMgr_Impl::DispatchRecvMessage()
 {
 	// TODO: thread lock
 

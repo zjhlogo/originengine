@@ -8,9 +8,10 @@
 #ifndef __IOEMESHMGR_H__
 #define __IOEMESHMGR_H__
 
+#include "IOEObject.h"
 #include "IOEMesh.h"
 
-class IOEMeshMgr
+class IOEMeshMgr : public IOEObject
 {
 public:
 	IOEMeshMgr() {};

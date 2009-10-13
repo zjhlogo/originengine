@@ -7,7 +7,8 @@
  */
 #include "OEXmlDocument_Impl.h"
 #include "XmlGenerator.h"
-#include <OEInterfaces.h>
+
+#include <IOEFileMgr.h>
 
 COEXmlDocument_Impl::COEXmlDocument_Impl()
 {

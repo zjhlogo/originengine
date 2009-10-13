@@ -6,6 +6,7 @@
  * \author zjhlogo (zjhlogo@163.com)
  */
 #include "OEModel_Impl.h"
+#include <IOEMeshMgr.h>
 
 COEModel_Impl::COEModel_Impl(const tstring& strFileName)
 {

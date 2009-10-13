@@ -44,11 +44,4 @@ extern const tstring EMPTY_STRING;
 #define SAFE_DELETE_ARRAY(x) if (x) {delete[] x; x = NULL;}
 #define SAFE_RELEASE(x) if (x) {x->Release(); x = NULL;}
 
-enum OE_MESSAGE_ID
-{
-	OMI_UNKNOWN = 0,
-
-	OMI_USER = 10000,
-};
-
 #endif // __OEBASICTYPE_H__

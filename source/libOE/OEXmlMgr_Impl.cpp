@@ -9,12 +9,14 @@
 #include "OEXmlAttribute_Impl.h"
 #include "OEXmlNode_Impl.h"
 #include "OEXmlDocument_Impl.h"
-#include <OEInterfaces.h>
+
+#include <IOELogFileMgr.h>
 
 COEXmlMgr_Impl::COEXmlMgr_Impl()
 {
 	g_pOEXmlMgr = this;
 	Init();
+	m_bOK = true;
 }
 
 COEXmlMgr_Impl::~COEXmlMgr_Impl()

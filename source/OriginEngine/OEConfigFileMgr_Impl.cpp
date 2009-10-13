@@ -6,12 +6,13 @@
  * \author zjhlogo (zjhlogo@163.com)
  */
 #include "OEConfigFileMgr_Impl.h"
+#include <IOEXmlMgr.h>
 
 COEConfigFileMgr_Impl::COEConfigFileMgr_Impl()
 {
 	g_pOEConfigFileMgr = this;
 	Init();
-	LoadConfigFile(m_strConfigFile);
+	m_bOK = LoadConfigFile(m_strConfigFile);
 }
 
 COEConfigFileMgr_Impl::~COEConfigFileMgr_Impl()

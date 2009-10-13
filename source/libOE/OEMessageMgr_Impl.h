@@ -33,7 +33,7 @@ public:
 	virtual ~COEMessageMgr_Impl();
 
 	virtual bool SendMessage(COEMessage* pMsg);
-	virtual void HandleReceive();
+	virtual void DispatchRecvMessage();
 
 	virtual bool RegisterMessage(uint nMsgID, IOEObject* pHandler, FUNC_MESSAGE pFunc);
 	virtual bool UnregisterMessage(uint nMsgID, IOEObject* pHandler);

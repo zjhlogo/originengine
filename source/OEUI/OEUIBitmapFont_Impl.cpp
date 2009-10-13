@@ -7,6 +7,9 @@
  */
 #include "OEUIBitmapFont_Impl.h"
 
+#include <IOEXmlMgr.h>
+#include <IOETextureMgr.h>
+
 COEUIBitmapFont_Impl::COEUIBitmapFont_Impl(const tstring& strFileName)
 {
 	Init();

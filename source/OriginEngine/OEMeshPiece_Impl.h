@@ -9,8 +9,10 @@
 #define __OEMESHPIECE_IMPL_H__
 
 #include <IOEMeshPiece.h>
+
+#include <IOEFile.h>
+#include <IOEVertDecl.h>
 #include <OEFmtMesh.h>
-#include <OEInterfaces.h>
 
 class COEMeshPiece_Impl : public IOEMeshPiece
 {

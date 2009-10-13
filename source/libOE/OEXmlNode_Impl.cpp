@@ -7,7 +7,8 @@
  */
 #include "OEXmlNode_Impl.h"
 #include <OEOS.h>
-#include <OEInterfaces.h>
+
+#include <IOEXmlMgr.h>
 
 COEXmlNode_Impl::COEXmlNode_Impl(const tstring& strName)
 {

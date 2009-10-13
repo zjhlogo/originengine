@@ -7,11 +7,12 @@
  */
 #include <IOEApp.h>
 #include <OEHolder.h>
-#include <OEInterfaces.h>
+#include <IOECore.h>
 
 IOEApp::IOEApp()
 {
 	g_pOEApp = this;
+	m_bOK = true;
 }
 
 IOEApp::~IOEApp()
@@ -25,12 +26,12 @@ void IOEApp::Run()
 	{
 		if (g_pOECore->Initialize())
 		{
-			if (this->Initialize())
+			if (Initialize())
 			{
 				g_pOECore->Run();
 			}
 
-			this->Terminate();
+			Terminate();
 		}
 
 		g_pOECore->Terminate();

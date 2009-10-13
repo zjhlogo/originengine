@@ -8,11 +8,12 @@
 #ifndef __IOEUIRENDERER_H__
 #define __IOEUIRENDERER_H__
 
+#include "IOEObject.h"
 #include "OEUIType.h"
 #include "../IOEVertDecl.h"
 #include "../IOETexture.h"
 
-class IOEUIRenderer
+class IOEUIRenderer : public IOEObject
 {
 public:
 	IOEUIRenderer() {};

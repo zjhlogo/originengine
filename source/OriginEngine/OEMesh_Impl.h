@@ -11,7 +11,7 @@
 #include <IOEMesh.h>
 #include "OEMeshPiece_Impl.h"
 #include "OEMeshBone_Impl.h"
-#include <OEInterfaces.h>
+
 #include <vector>
 
 class COEMesh_Impl : public IOEMesh

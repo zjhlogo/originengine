@@ -8,9 +8,10 @@
 #ifndef __IOEUIFONTMGR_H__
 #define __IOEUIFONTMGR_H__
 
+#include "IOEObject.h"
 #include "IOEUIFont.h"
 
-class IOEUIFontMgr
+class IOEUIFontMgr : public IOEObject
 {
 public:
 	IOEUIFontMgr() {};

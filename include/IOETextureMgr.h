@@ -8,9 +8,10 @@
 #ifndef __IOETEXTUREMGR_H__
 #define __IOETEXTUREMGR_H__
 
+#include "IOEObject.h"
 #include "IOETexture.h"
 
-class IOETextureMgr
+class IOETextureMgr : public IOEObject
 {
 public:
 	IOETextureMgr() {};

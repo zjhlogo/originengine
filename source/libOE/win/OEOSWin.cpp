@@ -30,25 +30,41 @@ bool COEOS::Initialize()
 	if (!g_pOEFileMgr_Impl)
 	{
 		g_pOEFileMgr_Impl = new COEFileMgr_Impl();
-		if (!g_pOEFileMgr_Impl) return false;
+		if (!g_pOEFileMgr_Impl || !g_pOEFileMgr_Impl->IsOK())
+		{
+			SAFE_DELETE(g_pOEFileMgr_Impl);
+			return false;
+		}
 	}
 
 	if (!g_pOELogFileMgr_Impl)
 	{
 		g_pOELogFileMgr_Impl = new COELogFileMgr_Impl();
-		if (!g_pOELogFileMgr_Impl) return false;
+		if (!g_pOELogFileMgr_Impl || !g_pOELogFileMgr_Impl->IsOK())
+		{
+			SAFE_DELETE(g_pOELogFileMgr_Impl);
+			return false;
+		}
 	}
 
 	if (!g_pOEXmlMgr_Impl)
 	{
 		g_pOEXmlMgr_Impl = new COEXmlMgr_Impl();
-		if (!g_pOEXmlMgr_Impl) return false;
+		if (!g_pOEXmlMgr_Impl || !g_pOEXmlMgr_Impl->IsOK())
+		{
+			SAFE_DELETE(g_pOEXmlMgr_Impl);
+			return false;
+		}
 	}
 
 	if (!g_pOEMessageMgr_Impl)
 	{
 		g_pOEMessageMgr_Impl = new COEMessageMgr_Impl();
-		if (!g_pOEMessageMgr_Impl) return false;
+		if (!g_pOEMessageMgr_Impl || !g_pOEMessageMgr_Impl->IsOK())
+		{
+			SAFE_DELETE(g_pOEMessageMgr_Impl);
+			return false;
+		}
 	}
 
 	return true;

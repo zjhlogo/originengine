@@ -6,13 +6,16 @@
  * \author zjhlogo (zjhlogo@163.com)
  */
 #include "OEUIRenderer_Impl.h"
-#include <OEInterfaces.h>
+
+#include <IOEDevice.h>
+
 #include <assert.h>
 
 COEUIRenderer_Impl::COEUIRenderer_Impl()
 {
 	g_pOEUIRenderer = this;
 	Init();
+	m_bOK = true;
 }
 
 COEUIRenderer_Impl::~COEUIRenderer_Impl()

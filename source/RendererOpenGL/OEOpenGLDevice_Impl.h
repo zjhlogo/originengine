@@ -28,6 +28,10 @@ public:
 
 	virtual bool GetDeviceParam(void* pData, const tstring& strParamName);
 
+private:
+	void Init();
+	void Destroy();
+
 };
 
 #endif // __OEOPENGLDEVICE_IMPL_H__

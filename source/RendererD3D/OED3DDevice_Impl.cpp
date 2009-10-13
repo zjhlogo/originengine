@@ -8,7 +8,12 @@
 #include "OED3DDevice_Impl.h"
 
 #include <OEMath/OEMath.h>
-#include <OEInterfaces.h>
+#include <IOEConfigFileMgr.h>
+#include <IOELogFileMgr.h>
+#include <IOECore.h>
+#include <IOEApp.h>
+#include <IOERenderer.h>
+
 #include <OEOS.h>
 
 // TODO: wrapped it
@@ -16,10 +21,25 @@ IDirect3D9* g_pD3D = NULL;
 IDirect3DDevice9* g_pd3dDevice = NULL;
 HWND g_hWnd = NULL;
 
+static const tchar NODE_WINDOW_WIDTH[] = t("WindowWidth");
+static const tchar NODE_WINDOW_HEIGHT[] = t("WindowHeight");
+static const tchar NODE_CLASS_NAME[] = t("ClassName");
+static const tchar NODE_WINDOW_NAME[] = t("WindowName");
+static const tchar NODE_MAX_FPS[] = t("MaxFPS");
+
+static const int WINDOW_WIDTH = 800;
+static const int WINDOW_HEIGHT = 600;
+static const tchar CLASS_NAME[] = t("OriginEngine");
+static const tchar WINDOW_NAME[] = t("Origin Engine");
+static const float MAX_FPS = 60.0f;
+
+static const tstring PARAM_HWIND = t("HWIND");
+
 COED3DDevice_Impl::COED3DDevice_Impl()
 {
 	g_pOEDevice = this;
 	Init();
+	m_bOK = true;
 }
 
 COED3DDevice_Impl::~COED3DDevice_Impl()
@@ -31,19 +51,19 @@ COED3DDevice_Impl::~COED3DDevice_Impl()
 void COED3DDevice_Impl::Init()
 {
 	// read from config file
-	g_pOEConfigFileMgr->GetValue(m_nWindowWidth, t("WindowWidth"), 800);
-	g_pOEConfigFileMgr->GetValue(m_nWindowHeight, t("WindowHeight"), 600);
-	g_pOEConfigFileMgr->GetValue(m_strWindowName, t("WindowTitle"), t("Origin Engine"));
-	g_pOEConfigFileMgr->GetValue(m_fMaxFPS, t("MaxFPS"), 60.0f);
-
-	m_fCurrFPS = 0.0f;
-	m_fLastFPSTime = 0.0f;
-	m_nFPSCount = 0;
+	g_pOEConfigFileMgr->GetValue(m_nWindowWidth, NODE_WINDOW_WIDTH, WINDOW_WIDTH);
+	g_pOEConfigFileMgr->GetValue(m_nWindowHeight, NODE_WINDOW_HEIGHT, WINDOW_HEIGHT);
+	g_pOEConfigFileMgr->GetValue(m_strClassName, NODE_CLASS_NAME, CLASS_NAME);
+	g_pOEConfigFileMgr->GetValue(m_strWindowName, NODE_WINDOW_NAME, WINDOW_NAME);
+	g_pOEConfigFileMgr->GetValue(m_fMaxFPS, NODE_MAX_FPS, MAX_FPS);
 
 	m_fPrevTime = 0.0f;
 	m_fCurrTime = 0.0f;
 	m_vD3DVertDecl.clear();
 
+	m_fCurrFPS = 0.0f;
+	m_fLastFPSTime = 0.0f;
+	m_nFPSCount = 0;
 	m_pFontFPS = NULL;
 	m_pStringFPS = NULL;
 }
@@ -102,10 +122,12 @@ void COED3DDevice_Impl::StartPerform()
 	if (nDelay < 1) nDelay = 1;
 	MMRESULT hEventTimer = timeSetEvent(nDelay, 1, (LPTIMECALLBACK)hTickEvent, 0, TIME_PERIODIC|TIME_CALLBACK_EVENT_SET);
 
+	// reset time
 	m_fPrevTime = (float)timeGetTime()/1000.0f;
 	m_fCurrTime = m_fPrevTime;
-	m_fLastFPSTime = m_fPrevTime;
-	m_nFPSCount = 0;
+
+	// reset fps
+	ResetFPS(m_fCurrTime);
 
 	MSG msg;
 	memset(&msg, 0, sizeof(msg));
@@ -114,26 +136,15 @@ void COED3DDevice_Impl::StartPerform()
 	{
 		if(WAIT_OBJECT_0 == MsgWaitForMultipleObjects(1, &hTickEvent, FALSE, 1000, QS_ALLINPUT))
 		{
+			g_pOECore->Update();
+
+			// calculate time
 			m_fCurrTime = (float)timeGetTime()/1000.0f;
 			PerformOnce(m_fCurrTime - m_fPrevTime);
 			m_fPrevTime = m_fCurrTime;
 
 			// calculate fps
-			++m_nFPSCount;
-			float fDetailFPS = m_fCurrTime - m_fLastFPSTime;
-			if (fDetailFPS > 1.0f)
-			{
-				m_fCurrFPS = m_nFPSCount/fDetailFPS;
-				m_nFPSCount = 0;
-				m_fLastFPSTime = m_fCurrTime;
-
-				if (m_pStringFPS)
-				{
-					tstring strText;
-					COEOS::strformat(strText, t("%.2f FPS"), m_fCurrFPS);
-					m_pStringFPS->SetText(strText);
-				}
-			}
+			CalculateFPS();
 		}
 		else
 		{
@@ -197,7 +208,7 @@ IOEVertDecl* COED3DDevice_Impl::CreateVertDecl(const IOEVertDecl::ELEMENT* pElem
 
 bool COED3DDevice_Impl::GetDeviceParam(void* pData, const tstring& strParamName)
 {
-	if (strParamName == t("HWND"))
+	if (strParamName == PARAM_HWIND)
 	{
 		*(HWND*)pData = g_hWnd;
 		return true;
@@ -222,7 +233,7 @@ bool COED3DDevice_Impl::InternalCreateWindow()
 		LoadCursor(NULL, IDC_ARROW),		// Handle to the class cursor
 		(HBRUSH)COLOR_WINDOW,				// Handle to the class background brush
 		NULL,								// resource name of the class menu
-		t("OriginEngine"),					// Pointer to a null-terminated string or is an atom
+		m_strClassName.c_str(),				// Pointer to a null-terminated string or is an atom
 		LoadIcon(NULL, IDI_APPLICATION)};	// Handle to a small icon that is associated with the window class
 	RegisterClassEx(&wc);
 
@@ -237,7 +248,7 @@ bool COED3DDevice_Impl::InternalCreateWindow()
 	uint nAdjustHeight = rc.bottom - rc.top;
 
 	// create the window
-	g_hWnd = CreateWindow(t("OriginEngine"),
+	g_hWnd = CreateWindow(m_strClassName.c_str(),
 		m_strWindowName.c_str(),
 		dwStyle,
 		(nScreenWidth-nAdjustWidth)/2,
@@ -350,15 +361,72 @@ void COED3DDevice_Impl::PerformOnce(float fDetailTime)
 		g_pOERenderer->SetSampleFilter(IOERenderer::SF_LINEAR);
 		g_pOEApp->Render(fDetailTime);
 
-		// render screen
-		g_pOERenderer->SetSampleFilter(IOERenderer::SF_POINT);
-		g_pOERenderer->SetFillMode(IOERenderer::FM_SOLID);
-		if (m_pStringFPS) m_pStringFPS->Render(CPoint(0, 0));
-		g_pOEUIRenderer->FlushAll();
+		// render fps
+		RenderFPS();
 
 		g_pd3dDevice->EndScene();
 		g_pd3dDevice->Present(NULL, NULL, NULL, NULL);
 	}
+}
+
+void COED3DDevice_Impl::InitializeD3D()
+{
+	// initialize
+	CMatrix4x4 matWorld;
+	matWorld.Identity();
+	g_pOERenderer->SetTransform(IOERenderer::TT_WORLD, matWorld);
+
+	CMatrix4x4 matView;
+	COEMath::BuildLookAtMatrixLH(matView, CVector3(0.0f, 3.0f, -5.0f), CVector3(0.0f, 0.0f, 0.0f), CVector3(0.0f, 1.0f, 0.0f));
+	g_pOERenderer->SetTransform(IOERenderer::TT_VIEW, matView);
+
+	CMatrix4x4 matProj;
+	COEMath::BuildProjectMatrixLH(matProj, OEMATH_PI/4.0f, (float)m_nWindowWidth/(float)m_nWindowHeight, 1.0f, 10000.0f);
+	g_pOERenderer->SetTransform(IOERenderer::TT_PROJECTION, matProj);
+
+	g_pOERenderer->EnableLight(false);
+}
+
+void COED3DDevice_Impl::ResetFPS(float fLastTime)
+{
+	m_fLastFPSTime = fLastTime;
+	m_nFPSCount = 0;
+}
+
+void COED3DDevice_Impl::CalculateFPS()
+{
+	++m_nFPSCount;
+	float fDetailFPS = m_fCurrTime - m_fLastFPSTime;
+	if (fDetailFPS > 1.0f)
+	{
+		m_fCurrFPS = m_nFPSCount/fDetailFPS;
+		m_nFPSCount = 0;
+		m_fLastFPSTime = m_fCurrTime;
+
+		if (m_pStringFPS)
+		{
+			tstring strText;
+			COEOS::strformat(strText, t("%.2f FPS"), m_fCurrFPS);
+			m_pStringFPS->SetText(strText);
+		}
+	}
+}
+
+void COED3DDevice_Impl::RenderFPS()
+{
+	if (!m_pFontFPS)
+	{
+		SAFE_RELEASE(m_pStringFPS);
+		SAFE_RELEASE(m_pFontFPS);
+
+		m_pFontFPS = g_pOEUIFontMgr->CreateBitmapFont(t("12px_Tahoma.fnt"));
+		m_pStringFPS = g_pOEUIStringMgr->CreateUIString(m_pFontFPS);
+	}
+
+	g_pOERenderer->SetSampleFilter(IOERenderer::SF_POINT);
+	g_pOERenderer->SetFillMode(IOERenderer::FM_SOLID);
+	if (m_pStringFPS) m_pStringFPS->Render(CPoint(0, 0));
+	g_pOEUIRenderer->FlushAll();
 }
 
 LRESULT CALLBACK COED3DDevice_Impl::MainWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
@@ -416,26 +484,4 @@ LRESULT CALLBACK COED3DDevice_Impl::MainWndProc(HWND hWnd, UINT uMsg, WPARAM wPa
 	}
 
 	return 0;
-}
-
-void COED3DDevice_Impl::InitializeD3D()
-{
-	// initialize
-	CMatrix4x4 matWorld;
-	matWorld.Identity();
-	g_pOERenderer->SetTransform(IOERenderer::TT_WORLD, matWorld);
-
-	CMatrix4x4 matView;
-	COEMath::BuildLookAtMatrixLH(matView, CVector3(0.0f, 3.0f, -5.0f), CVector3(0.0f, 0.0f, 0.0f), CVector3(0.0f, 1.0f, 0.0f));
-	g_pOERenderer->SetTransform(IOERenderer::TT_VIEW, matView);
-
-	CMatrix4x4 matProj;
-	COEMath::BuildProjectMatrixLH(matProj, OEMATH_PI/4.0f, (float)m_nWindowWidth/(float)m_nWindowHeight, 1.0f, 10000.0f);
-	g_pOERenderer->SetTransform(IOERenderer::TT_PROJECTION, matProj);
-
-	g_pOERenderer->EnableLight(false);
-
-	// FPS
-	m_pFontFPS = g_pOEUIFontMgr->CreateBitmapFont(t("12px_Tahoma.fnt"));
-	m_pStringFPS = g_pOEUIStringMgr->CreateUIString(m_pFontFPS);
 }

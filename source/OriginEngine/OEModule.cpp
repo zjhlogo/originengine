@@ -22,13 +22,25 @@ COEMeshMgr_Impl* g_pOEMeshMgr_Impl = NULL;
 bool CreateSingleton()
 {
 	g_pOECore_Impl = new COECore_Impl();
-	if (!g_pOECore_Impl) return false;
+	if (!g_pOECore_Impl || !g_pOECore_Impl->IsOK())
+	{
+		SAFE_DELETE(g_pOECore_Impl);
+		return false;
+	}
 
 	g_pOEConfigFileMgr_Impl = new COEConfigFileMgr_Impl();
-	if (!g_pOEConfigFileMgr_Impl) return false;
+	if (!g_pOEConfigFileMgr_Impl || !g_pOEConfigFileMgr_Impl->IsOK())
+	{
+		SAFE_DELETE(g_pOEConfigFileMgr_Impl);
+		return false;
+	}
 
 	g_pOEMeshMgr_Impl = new COEMeshMgr_Impl();
-	if (!g_pOEMeshMgr_Impl) return false;
+	if (!g_pOEMeshMgr_Impl || !g_pOEMeshMgr_Impl->IsOK())
+	{
+		SAFE_DELETE(g_pOEMeshMgr_Impl);
+		return false;
+	}
 
 	return true;
 }

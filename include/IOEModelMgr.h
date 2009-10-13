@@ -8,9 +8,10 @@
 #ifndef __IOEMODELMGR_H__
 #define __IOEMODELMGR_H__
 
+#include "IOEObject.h"
 #include "IOEModel.h"
 
-class IOEModelMgr
+class IOEModelMgr : public IOEObject
 {
 public:
 	IOEModelMgr() {};

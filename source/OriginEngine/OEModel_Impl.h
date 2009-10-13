@@ -9,11 +9,12 @@
 #define __OEMODEL_IMPL_H__
 
 #include <IOEModel.h>
-#include <OEInterfaces.h>
-#include <vector>
-#include <map>
 
 #include "AnimationTracker.h"
+#include <IOEMesh.h>
+
+#include <vector>
+#include <map>
 
 class COEModel_Impl : public IOEModel
 {

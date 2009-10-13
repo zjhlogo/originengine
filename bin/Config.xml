@@ -2,6 +2,7 @@
 <Config>
 	<WindowWidth>800</WindowWidth>
 	<WindowHeight>600</WindowHeight>
-	<WindowTitle>Origin Engine</WindowTitle>
+	<ClassName>OriginEngine</ClassName>
+	<WindowName>Origin Engine</WindowName>
 	<MaxFPS>60</MaxFPS>
 </Config>
