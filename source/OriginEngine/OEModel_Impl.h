@@ -10,8 +10,8 @@
 
 #include <IOEModel.h>
 
-#include "AnimationTracker.h"
 #include <IOEMesh.h>
+#include "AnimationTracker.h"
 
 #include <vector>
 #include <map>

@@ -9,7 +9,6 @@
 #define __OEMESHPIECE_IMPL_H__
 
 #include <IOEMeshPiece.h>
-
 #include <IOEFile.h>
 #include <IOEVertDecl.h>
 #include <OEFmtMesh.h>
@@ -21,6 +20,10 @@ public:
 	virtual ~COEMeshPiece_Impl();
 
 	virtual const tstring& GetName() const;
+	virtual int GetNumVerts() const;
+	virtual int GetNumIndis() const;
+	virtual void* GetVerts() const;
+	virtual ushort* GetIndis() const;
 
 private:
 	void Init();

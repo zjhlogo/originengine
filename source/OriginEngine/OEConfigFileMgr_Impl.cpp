@@ -8,6 +8,8 @@
 #include "OEConfigFileMgr_Impl.h"
 #include <IOEXmlMgr.h>
 
+#include <IOEXmlMgr.h>
+
 COEConfigFileMgr_Impl::COEConfigFileMgr_Impl()
 {
 	g_pOEConfigFileMgr = this;

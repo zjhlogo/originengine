@@ -362,7 +362,13 @@ void COED3DDevice_Impl::PerformOnce(float fDetailTime)
 		g_pOEApp->Render(fDetailTime);
 
 		// render fps
-		RenderFPS();
+		g_pOERenderer->SetSampleFilter(IOERenderer::SF_POINT);
+		g_pOERenderer->SetFillMode(IOERenderer::FM_SOLID);
+		g_pOERenderer->SetShader(NULL);
+		g_pOERenderer->SetVertDecl(NULL);
+		g_pOERenderer->SetTexture(NULL);
+		if (m_pStringFPS) m_pStringFPS->Render(CPoint(0, 0));
+		g_pOEUIRenderer->FlushAll();
 
 		g_pd3dDevice->EndScene();
 		g_pd3dDevice->Present(NULL, NULL, NULL, NULL);

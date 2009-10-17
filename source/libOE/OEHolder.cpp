@@ -6,6 +6,7 @@
  * \author zjhlogo (zjhlogo@163.com)
  */
 #include <OEHolder.h>
+#include <OEOS.h>
 
 // 基础模块
 #include <IOEFileMgr.h>
@@ -31,8 +32,6 @@
 
 // 用户层
 #include <IOEApp.h>
-
-#include <OEOS.h>
 
 // 基础模块
 IOEFileMgr* g_pOEFileMgr = NULL;

@@ -44,6 +44,26 @@ const tstring& COEMeshPiece_Impl::GetName() const
 	return m_strName;
 }
 
+int COEMeshPiece_Impl::GetNumVerts() const
+{
+	return m_nVerts;
+}
+
+int COEMeshPiece_Impl::GetNumIndis() const
+{
+	return m_nIndis;
+}
+
+void* COEMeshPiece_Impl::GetVerts() const
+{
+	return m_pVerts;
+}
+
+ushort* COEMeshPiece_Impl::GetIndis() const
+{
+	return m_pIndis;
+}
+
 bool COEMeshPiece_Impl::Create(const COEFmtMesh::PIECE& Piece, IOEFile* pFile)
 {
 	COEOS::char2tchar(m_strName, Piece.szName);

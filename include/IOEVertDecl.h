@@ -26,6 +26,7 @@ public:
 		T_FLOAT3,
 		T_FLOAT4,
 		T_COLOR,
+		T_UBYTE4,
 		T_MAX,
 	};
 
@@ -37,6 +38,8 @@ public:
 		U_NORMAL,
 		U_TEXCOORD,
 		U_COLOR,
+		U_BLENDWEIGHT,
+		U_BLENDINDICES,
 		U_MAX,
 	};
 

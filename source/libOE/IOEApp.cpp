@@ -6,8 +6,8 @@
  * \author zjhlogo (zjhlogo@163.com)
  */
 #include <IOEApp.h>
-#include <OEHolder.h>
 #include <IOECore.h>
+#include <OEHolder.h>
 
 IOEApp::IOEApp()
 {

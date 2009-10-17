@@ -24,7 +24,11 @@ void CMeshApp::Init()
 	m_pSimpleShape = NULL;
 
 	m_pDecl = NULL;
+	m_pDecl2 = NULL;
 	m_pMesh = NULL;
+
+	m_pShader = NULL;
+	m_pTexBase = NULL;
 
 	m_bLButtonDown = false;
 	m_nMouseDetailX = 0;
@@ -46,8 +50,26 @@ bool CMeshApp::Initialize()
 		IOEVertDecl::T_UNKNOWN, IOEVertDecl::U_UNKNOWN, 0,
 	};
 
+	static const IOEVertDecl::ELEMENT s_Decl2[] =
+	{
+		IOEVertDecl::T_FLOAT3, IOEVertDecl::U_POSITION, 0,
+		IOEVertDecl::T_FLOAT2, IOEVertDecl::U_TEXCOORD, 0,
+		IOEVertDecl::T_UBYTE4, IOEVertDecl::U_BLENDINDICES, 0,
+		IOEVertDecl::T_FLOAT4, IOEVertDecl::U_BLENDWEIGHT, 0,
+		IOEVertDecl::T_UNKNOWN, IOEVertDecl::U_UNKNOWN, 0,
+	};
+
 	m_pDecl = g_pOEDevice->CreateVertDecl(s_Decl);
 	if (!m_pDecl) return false;
+
+	m_pDecl2 = g_pOEDevice->CreateVertDecl(s_Decl2);
+	if (!m_pDecl2) return false;
+
+	m_pShader = g_pOEShaderMgr->CreateShader(s_Decl2, t("mesh.fx"));
+	if (!m_pShader) return false;
+
+	m_pTexBase = g_pOETextureMgr->CreateTextureFromFile(t("mesh.jpg"));
+	if (!m_pTexBase) return false;
 
 	m_pCamera = new CCamera();
 	if (!m_pCamera) return false;
@@ -55,14 +77,19 @@ bool CMeshApp::Initialize()
 	m_pSimpleShape = new CSimpleShape();
 	if (!m_pSimpleShape || !m_pSimpleShape->Initialize()) return false;
 
-	m_pMesh = g_pOEMeshMgr->CreateMeshFromFile(t("bone.mesh"));
+	m_pMesh = g_pOEMeshMgr->CreateMeshFromFile(t("mesh.MESH"));
 	if (!m_pMesh) return false;
+
+	int nBones = m_pMesh->GetNumBones();
 
 	return true;
 }
 
 void CMeshApp::Terminate()
 {
+	SAFE_RELEASE(m_pTexBase);
+	SAFE_RELEASE(m_pShader);
+	SAFE_RELEASE(m_pDecl2);
 	SAFE_RELEASE(m_pDecl);
 	SAFE_RELEASE(m_pMesh);
 	SAFE_DELETE(m_pSimpleShape);
@@ -78,31 +105,40 @@ void CMeshApp::Update(float fDetailTime)
 
 void CMeshApp::Render(float fDetailTime)
 {
-	static VERTEX s_Verts[4] = 
-	{
-		{0.0f, 0.0f, 0.0f, 0xFF00FF00},
-		{0.0f, 10.0f, 0.0f, 0xFF00FF00},
-		{10.0f, 10.0f, 0.0f, 0xFF00FF00},
-		{10.0f, 20.0f, 0.0f, 0xFF00FF00},
-	};
+	//static VERTEX s_Verts[4] = 
+	//{
+	//	{0.0f, 0.0f, 0.0f, 0xFF00FF00},
+	//	{0.0f, 10.0f, 0.0f, 0xFF00FF00},
+	//	{10.0f, 10.0f, 0.0f, 0xFF00FF00},
+	//	{10.0f, 20.0f, 0.0f, 0xFF00FF00},
+	//};
 
-	static ushort s_Indis[4] = {0, 1, 2, 3};
+	//static ushort s_Indis[4] = {0, 1, 2, 3};
 
-	static float s_fTotalTime = 0.0f;
+	//static float s_fTotalTime = 0.0f;
 
-	s_fTotalTime += fDetailTime;
-	CVector3 vLightPos;
-	vLightPos.x = cos(s_fTotalTime)*10.0f;
-	vLightPos.y = 5.0f;
-	vLightPos.z = sin(s_fTotalTime)*10.0f;
+	//s_fTotalTime += fDetailTime;
+	//CVector3 vLightPos;
+	//vLightPos.x = cos(s_fTotalTime)*10.0f;
+	//vLightPos.y = 5.0f;
+	//vLightPos.z = sin(s_fTotalTime)*10.0f;
 
-	m_pSimpleShape->DrawCube(g_pOERenderer, vLightPos);
+	//m_pSimpleShape->DrawCube(g_pOERenderer, vLightPos);
 
-	RebuildBoneVerts(s_fTotalTime);
+	//RebuildBoneVerts(s_fTotalTime);
 
-	g_pOERenderer->SetVertDecl(m_pDecl);
-	//g_pOERenderer->DrawLineStrip(s_Verts, 4, s_Indis, 4);
-	g_pOERenderer->DrawLineStrip(&m_vVerts[0], (uint)m_vVerts.size(), &m_vIndis[0], (uint)m_vIndis.size());
+	//g_pOERenderer->SetVertDecl(m_pDecl);
+	////g_pOERenderer->DrawLineStrip(s_Verts, 4, s_Indis, 4);
+	//g_pOERenderer->DrawLineStrip(&m_vVerts[0], (uint)m_vVerts.size(), &m_vIndis[0], (uint)m_vIndis.size());
+
+	CMatrix4x4 matWorldViewProj;
+	g_pOERenderer->GetTransform(matWorldViewProj, IOERenderer::TT_WORLD_VIEW_PROJ);
+	m_pShader->SetMatrix(t("g_matWorldViewProj"), matWorldViewProj);
+	m_pShader->SetTexture(t("g_texBase"), m_pTexBase);
+	g_pOERenderer->SetShader(m_pShader);
+
+	IOEMeshPiece* pPiece = m_pMesh->GetPiece(0);
+	g_pOERenderer->DrawTriList(pPiece->GetVerts(), pPiece->GetNumVerts(), pPiece->GetIndis(), pPiece->GetNumIndis());
 }
 
 void CMeshApp::OnLButtonDown(int x, int y)

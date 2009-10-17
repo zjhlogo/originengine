@@ -32,6 +32,8 @@ public:
 
 	virtual bool SetMatrix(const tstring& strParamName, const CMatrix4x4& matIn);
 	virtual bool GetMatrix(CMatrix4x4& matOut, const tstring& strParamName);
+	virtual bool SetMatrixArray(const tstring& strParamName, const CMatrix4x4* pmatIn, uint nCount);
+	virtual bool GetMatrixArray(CMatrix4x4* pmatOut, uint nCount, const tstring& strParamName);
 
 	virtual bool SetTexture(const tstring& strParamName, IOETexture* pTexture);
 	virtual bool SetTechnique(const tstring& strParamName);
