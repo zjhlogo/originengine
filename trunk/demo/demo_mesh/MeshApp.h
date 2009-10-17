@@ -64,7 +64,11 @@ private:
 	CSimpleShape* m_pSimpleShape;
 
 	IOEVertDecl* m_pDecl;
+	IOEVertDecl* m_pDecl2;
 	IOEMesh* m_pMesh;
+
+	IOEShader* m_pShader;
+	IOETexture* m_pTexBase;
 
 	VVERTEX m_vVerts;
 	VUSHORT m_vIndis;

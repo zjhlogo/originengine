@@ -6,10 +6,10 @@
  * \author zjhlogo (zjhlogo@163.com)
  */
 #include "OECore_Impl.h"
-#include <OEMessageID.h>
 #include <IOEDevice.h>
 #include <IOELogFileMgr.h>
 #include <IOEMessageMgr.h>
+#include <OEMessageID.h>
 
 COECore_Impl::COECore_Impl()
 {

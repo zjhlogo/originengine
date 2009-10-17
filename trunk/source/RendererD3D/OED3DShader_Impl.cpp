@@ -9,8 +9,8 @@
 #include "OED3DTexture_Impl.h"
 #include "OED3DUtil.h"
 
-#include <IOELogFileMgr.h>
 #include <IOEDevice.h>
+#include <IOELogFileMgr.h>
 #include <OEOS.h>
 
 extern IDirect3DDevice9* g_pd3dDevice;
@@ -137,6 +137,23 @@ bool COED3DShader_Impl::GetMatrix(CMatrix4x4& matOut, const tstring& strParamNam
 
 	COED3DUtil::ToOEMatrix(matOut, matD3D);
 	return true;
+}
+
+bool COED3DShader_Impl::SetMatrixArray(const tstring& strParamName, const CMatrix4x4* pmatIn, uint nCount)
+{
+	std::string strANSIName;
+	if (!COEOS::tchar2char(strANSIName, strParamName.c_str())) return false;
+
+	D3DXMATRIX matD3D;
+	if (FAILED(m_pEffect->SetMatrixArray(strANSIName.c_str(), (const D3DXMATRIX*)pmatIn, nCount))) return false;
+
+	return true;
+}
+
+bool COED3DShader_Impl::GetMatrixArray(CMatrix4x4* pmatOut, uint nCount, const tstring& strParamName)
+{
+	// TODO: 
+	return false;
 }
 
 bool COED3DShader_Impl::SetTexture(const tstring& strParamName, IOETexture* pTexture)

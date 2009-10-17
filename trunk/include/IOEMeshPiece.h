@@ -17,6 +17,10 @@ public:
 	virtual ~IOEMeshPiece() {};
 
 	virtual const tstring& GetName() const = 0;
+	virtual int GetNumVerts() const = 0;
+	virtual int GetNumIndis() const = 0;
+	virtual void* GetVerts() const = 0;
+	virtual ushort* GetIndis() const = 0;
 
 };
 

@@ -6,6 +6,8 @@
  * \author zjhlogo (zjhlogo@163.com)
  */
 #include "OEUIBitmapFont_Impl.h"
+#include <IOEXmlMgr.h>
+#include <IOETextureMgr.h>
 
 #include <IOEXmlMgr.h>
 #include <IOETextureMgr.h>

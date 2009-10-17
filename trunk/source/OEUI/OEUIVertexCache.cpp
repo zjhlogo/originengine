@@ -8,7 +8,6 @@
 #include "OEUIVertexCache.h"
 
 #include <IOERenderer.h>
-
 #include <assert.h>
 
 COEUIVertexCache::COEUIVertexCache(uint nVertsCacheSize, uint nIndisCacheCount)

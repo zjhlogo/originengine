@@ -15,6 +15,7 @@
 #define yyFlexLexer xmlFlexLexer
 #include <FlexLexer.h>
 
+
 static xmlFlexLexer g_xmlFlexLexer;
 
 CXmlGenerator::TV_STRING CXmlGenerator::m_vString;

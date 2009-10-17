@@ -53,11 +53,12 @@ D3DDECLTYPE COED3DUtil::ToD3DVertType(IOEVertDecl::TYPE eType)
 	static const D3DDECLTYPE DECLARE_MAP[IOEVertDecl::T_MAX] =
 	{
 		D3DDECLTYPE_UNUSED,
-		D3DDECLTYPE_FLOAT1,  // 1D float expanded to (value, 0., 0., 1.)
-		D3DDECLTYPE_FLOAT2,  // 2D float expanded to (value, value, 0., 1.)
-		D3DDECLTYPE_FLOAT3,  // 3D float expanded to (value, value, value, 1.)
-		D3DDECLTYPE_FLOAT4,  // 4D float
-		D3DDECLTYPE_D3DCOLOR,
+		D3DDECLTYPE_FLOAT1,		// 1D float expanded to (value, 0., 0., 1.)
+		D3DDECLTYPE_FLOAT2,		// 2D float expanded to (value, value, 0., 1.)
+		D3DDECLTYPE_FLOAT3,		// 3D float expanded to (value, value, value, 1.)
+		D3DDECLTYPE_FLOAT4,		// 4D float
+		D3DDECLTYPE_D3DCOLOR,	// 4D packed unsigned bytes mapped to 0. to 1. range Input is in D3DCOLOR format (ARGB) expanded to (R, G, B, A)
+		D3DDECLTYPE_UBYTE4,		// 4D unsigned byte
 	};
 
 	assert(eType >= 0 && eType < IOEVertDecl::T_MAX);
@@ -74,7 +75,7 @@ IOEVertDecl::TYPE COED3DUtil::ToOEVertType(D3DDECLTYPE eType)
 		IOEVertDecl::T_FLOAT3,
 		IOEVertDecl::T_FLOAT4,
 		IOEVertDecl::T_COLOR,
-		IOEVertDecl::T_UNKNOWN,
+		IOEVertDecl::T_UBYTE4,
 		IOEVertDecl::T_UNKNOWN,
 		IOEVertDecl::T_UNKNOWN,
 		IOEVertDecl::T_UNKNOWN,
@@ -103,6 +104,8 @@ D3DDECLUSAGE COED3DUtil::ToD3DVertUsage(IOEVertDecl::USAGE eUsage)
 		D3DDECLUSAGE_NORMAL,        // 3
 		D3DDECLUSAGE_TEXCOORD,      // 5
 		D3DDECLUSAGE_COLOR,         // 10
+		D3DDECLUSAGE_BLENDWEIGHT,	// 1
+		D3DDECLUSAGE_BLENDINDICES,	// 2
 	};
 
 	assert(eUsage >= 0 && eUsage < IOEVertDecl::U_MAX);
@@ -115,8 +118,8 @@ IOEVertDecl::USAGE COED3DUtil::ToOEVertUsage(D3DDECLUSAGE eUsage)
 	static const IOEVertDecl::USAGE USAGE_MAP[MAP_SIZE] =
 	{
 		IOEVertDecl::U_POSITION,
-		IOEVertDecl::U_UNKNOWN,
-		IOEVertDecl::U_UNKNOWN,
+		IOEVertDecl::U_BLENDWEIGHT,
+		IOEVertDecl::U_BLENDINDICES,
 		IOEVertDecl::U_NORMAL,
 		IOEVertDecl::U_UNKNOWN,
 		IOEVertDecl::U_TEXCOORD,
@@ -144,6 +147,7 @@ int COED3DUtil::GetVertTypeSize(IOEVertDecl::TYPE eType)
 		sizeof(float)*3,	// 3D float expanded to (value, value, value, 1.)
 		sizeof(float)*4,	// 4D float
 		sizeof(uint),		// color
+		sizeof(float)*4,	// ubyte4
 	};
 
 	assert(eType >= 0 && eType < IOEVertDecl::T_MAX);

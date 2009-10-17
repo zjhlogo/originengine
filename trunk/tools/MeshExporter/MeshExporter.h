@@ -45,7 +45,7 @@ public:
 	typedef struct VERTEX_tag
 	{
 		Point3 pos;
-		//float u, v;
+		Point2 tex;
 		//float nx, ny, nz;
 		VSKIN Skins;
 	} VERTEX;

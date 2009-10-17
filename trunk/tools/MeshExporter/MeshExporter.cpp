@@ -229,7 +229,7 @@ bool CMeshExporter::SaveToFile(const tstring& strFileName)
 
 	// calculate verts offset
 	VFILE_BLOCK vVertsBlock;
-	uint nElementSize = sizeof(float)*3+sizeof(int)*4+sizeof(float)*4;
+	uint nElementSize = sizeof(float)*3+sizeof(float)*2+sizeof(float)*4+sizeof(float)*4;
 	for (int i = 0; i < nNumMesh; ++i)
 	{
 		FILE_BLOCK FileBlock;
@@ -284,7 +284,7 @@ bool CMeshExporter::SaveToFile(const tstring& strFileName)
 		strncpy_s(Piece.szName, strName.c_str(), COEFmtMesh::PIECE_NAME_SIZE);
 
 		Piece.nPieceMask = COEFmtMesh::PM_VISIBLE;
-		Piece.nVertexDataMask = COEFmtMesh::VDM_XYZ | COEFmtMesh::VDM_BONE;
+		Piece.nVertexDataMask = COEFmtMesh::VDM_XYZ | COEFmtMesh::VDM_UV | COEFmtMesh::VDM_BONE;
 		Piece.nMaterialID = 0;														// TODO: 
 		Piece.nNumVerts = (int)m_vSkinMesh[i].vVerts.size();
 		Piece.nOffVerts = vVertsBlock[i].nOffset;
@@ -329,13 +329,13 @@ bool CMeshExporter::SaveToFile(const tstring& strFileName)
 		for (int j = 0; j < nNumVerts; ++j)
 		{
 			VERTEX& Vertex = m_vSkinMesh[i].vVerts[j];
-			float fPos[3];
-			fPos[0] = Vertex.pos.x;
-			fPos[1] = Vertex.pos.y;
-			fPos[2] = Vertex.pos.z;
-			pFile->Write(fPos, sizeof(fPos));
+			pFile->Write(&Vertex.pos.x, sizeof(float));
+			pFile->Write(&Vertex.pos.y, sizeof(float));
+			pFile->Write(&Vertex.pos.z, sizeof(float));
 
 			// TODO: add more data
+			pFile->Write(&Vertex.tex.x, sizeof(float));
+			pFile->Write(&Vertex.tex.y, sizeof(float));
 
 			int arrBoneID[4] = {0};
 			float arrWeight[4] = {0.0f};
@@ -347,8 +347,8 @@ bool CMeshExporter::SaveToFile(const tstring& strFileName)
 				arrBoneID[k] = Vertex.Skins[k].nBoneIndex;
 				arrWeight[k] = Vertex.Skins[k].fWeight;
 			}
-			pFile->Write(arrBoneID, sizeof(int)*4);
-			pFile->Write(arrWeight, sizeof(float)*4);
+			pFile->Write(arrBoneID, sizeof(arrBoneID));
+			pFile->Write(arrWeight, sizeof(arrWeight));
 		}
 	}
 
@@ -397,7 +397,10 @@ bool CMeshExporter::DumpSkinMesh(SKIN_MESH& SkinMeshOut, IGameNode* pGameNode)
 	for(int i = 0; i < nNumVerts; ++i)
 	{
 		VERTEX Vertex;
+
 		pGameMesh->GetVertex(i, Vertex.pos, true);
+		pGameMesh->GetTexVertex(i, Vertex.tex);
+
 		SkinMeshOut.vVerts.push_back(Vertex);
 	}
 
