@@ -130,14 +130,14 @@ bool COEMeshPiece_Impl::CreateVertDecl(uint nVertexDataMask)
 	if (nVertexDataMask & COEFmtMesh::VDM_BONE)
 	{
 		IOEVertDecl::ELEMENT Element;
-		Element.eType = IOEVertDecl::T_FLOAT4;
-		Element.eUsage = IOEVertDecl::U_TEXCOORD;
-		Element.nIndex = 1;
+		Element.eType = IOEVertDecl::T_UBYTE4;
+		Element.eUsage = IOEVertDecl::U_BLENDINDICES;
+		Element.nIndex = 0;
 		vDecl.push_back(Element);
 
 		Element.eType = IOEVertDecl::T_FLOAT4;
-		Element.eUsage = IOEVertDecl::U_TEXCOORD;
-		Element.nIndex = 2;
+		Element.eUsage = IOEVertDecl::U_BLENDWEIGHT;
+		Element.nIndex = 0;
 		vDecl.push_back(Element);
 	}
 

@@ -17,6 +17,7 @@
 #include <map>
 
 #include <IOEFileMgr.h>
+#include <OEFmtMesh.h>
 
 class CMeshExporter : public SceneExport
 {
@@ -32,7 +33,7 @@ public:
 		IGameNode* pParentGameNode;
 	} NODE_INFO;
 
-	typedef std::vector<NODE_INFO> VNODE_INFO;
+	typedef std::vector<NODE_INFO> TV_NODE_INFO;
 
 	typedef struct SKIN_tag
 	{
@@ -40,34 +41,43 @@ public:
 		float fWeight;
 	} SKIN;
 
-	typedef std::vector<SKIN> VSKIN;
+	typedef std::vector<SKIN> TV_SKIN;
+
+	typedef struct VERTEX_SLOT_tag
+	{
+		bool bUsed;
+		uint nVertIndex;
+		uint nTexIndex;
+	} VERTEX_SLOT;
 
 	typedef struct VERTEX_tag
 	{
+		VERTEX_SLOT Slot;
+
 		Point3 pos;
 		Point2 tex;
 		//float nx, ny, nz;
-		VSKIN Skins;
+		TV_SKIN Skins;
 	} VERTEX;
 
-	typedef std::vector<VERTEX> VVERTEX;
+	typedef std::vector<VERTEX> TV_VERTEX;
 
 	typedef struct FACE_tag
 	{
 		int nVertIndex[3];
 	} FACE;
 
-	typedef std::vector<FACE> VFACE;
+	typedef std::vector<FACE> TV_FACE;
 
 	typedef struct SKIN_MESH_tag
 	{
 		tstring strName;
 		GMatrix matLocal;
-		VVERTEX vVerts;
-		VFACE vFaces;
+		TV_VERTEX vVerts;
+		TV_FACE vFaces;
 	} SKIN_MESH;
 
-	typedef std::vector<SKIN_MESH> VSKIN_MESH;
+	typedef std::vector<SKIN_MESH> TV_SKIN_MESH;
 
 	typedef struct FRAME_INFO_tag
 	{
@@ -75,7 +85,7 @@ public:
 		GMatrix matAnim;
 	} FRAME_INFO;
 
-	typedef std::vector<FRAME_INFO> VFRAME_INFO;
+	typedef std::vector<FRAME_INFO> TV_FRAME_INFO;
 
 	typedef struct BONE_INFO_tag
 	{
@@ -87,21 +97,13 @@ public:
 		int nParentID;
 
 		GMatrix matLocal;
-		VFRAME_INFO vFrameInfo;
+		TV_FRAME_INFO vFrameInfo;
 	} BONE_INFO;
 
-	typedef std::vector<BONE_INFO> VBONE_INFO;
-	typedef std::map<int, int> BONE_INFO_MAP;
+	typedef std::vector<BONE_INFO> TV_BONE_INFO;
+	typedef std::map<int, int> TM_BONE_INFO;
 
-	typedef std::set<TimeValue> TIME_VALUE_SET;
-
-	typedef struct FILE_BLOCK_tag
-	{
-		uint nOffset;
-		uint nSize;
-	} FILE_BLOCK;
-
-	typedef std::vector<FILE_BLOCK> VFILE_BLOCK;
+	typedef std::set<TimeValue> TS_TIME_VALUE;
 
 public:
 	CMeshExporter();
@@ -135,32 +137,34 @@ private:
 	bool DumpSkinMesh(SKIN_MESH& SkinMeshOut, IGameNode* pGameNode);
 	bool DumpSkinVerts(SKIN_MESH& SkinMeshOut, IGameSkin* pGameSkin);
 
-	bool DumpController(VFRAME_INFO& vFrameInfoOut, IGameNode* pGameNode);
-	bool DumpPositionController(TIME_VALUE_SET& TimeSetOut, IGameControl* pGameControl);
-	bool DumpRotationController(TIME_VALUE_SET& TimeSetOut, IGameControl* pGameControl);
-	bool DumpScaleController(TIME_VALUE_SET& TimeSetOut, IGameControl* pGameControl);
+	bool DumpController(TV_FRAME_INFO& vFrameInfoOut, IGameNode* pGameNode);
+	bool DumpPositionController(TS_TIME_VALUE& TimeSetOut, IGameControl* pGameControl);
+	bool DumpRotationController(TS_TIME_VALUE& TimeSetOut, IGameControl* pGameControl);
+	bool DumpScaleController(TS_TIME_VALUE& TimeSetOut, IGameControl* pGameControl);
 
-	bool DumpMaxStdPosKey(TIME_VALUE_SET& TimeSetOut, IGameControl* pGameControl);
-	bool DumpBipedPosKey(TIME_VALUE_SET& TimeSetOut, IGameControl* pGameControl);
-	bool DumpIndependentPosKey(TIME_VALUE_SET& TimeSetOut, IGameControl* pGameControl);
+	bool DumpMaxStdPosKey(TS_TIME_VALUE& TimeSetOut, IGameControl* pGameControl);
+	bool DumpBipedPosKey(TS_TIME_VALUE& TimeSetOut, IGameControl* pGameControl);
+	bool DumpIndependentPosKey(TS_TIME_VALUE& TimeSetOut, IGameControl* pGameControl);
 
-	bool DumpMaxStdRotKey(TIME_VALUE_SET& TimeSetOut, IGameControl* pGameControl);
-	bool DumpBipedRotKey(TIME_VALUE_SET& TimeSetOut, IGameControl* pGameControl);
-	bool DumpEulerRotKey(TIME_VALUE_SET& TimeSetOut, IGameControl* pGameControl);
+	bool DumpMaxStdRotKey(TS_TIME_VALUE& TimeSetOut, IGameControl* pGameControl);
+	bool DumpBipedRotKey(TS_TIME_VALUE& TimeSetOut, IGameControl* pGameControl);
+	bool DumpEulerRotKey(TS_TIME_VALUE& TimeSetOut, IGameControl* pGameControl);
 
-	bool DumpMaxStdScaleKey(TIME_VALUE_SET& TimeSetOut, IGameControl* pGameControl);
-	bool DumpBipedScaleKey(TIME_VALUE_SET& TimeSetOut, IGameControl* pGameControl);
+	bool DumpMaxStdScaleKey(TS_TIME_VALUE& TimeSetOut, IGameControl* pGameControl);
+	bool DumpBipedScaleKey(TS_TIME_VALUE& TimeSetOut, IGameControl* pGameControl);
 
-	bool DumpConstraintKey(TIME_VALUE_SET& TimeSetOut, IGameControl* pGameControl);
-	bool DumpListKey(TIME_VALUE_SET& TimeSetOut, IGameControl* pGameControl);
+	bool DumpConstraintKey(TS_TIME_VALUE& TimeSetOut, IGameControl* pGameControl);
+	bool DumpListKey(TS_TIME_VALUE& TimeSetOut, IGameControl* pGameControl);
+
+	void GMatrix2BoneTransform(COEFmtMesh::BONE_TRANSFORM& BoneTrans, const GMatrix& matTrans);
 
 private:
-	VNODE_INFO m_vMeshNode;
-	VNODE_INFO m_vBoneNode;
-	VSKIN_MESH m_vSkinMesh;
-	VBONE_INFO m_vBoneInfo;
-	BONE_INFO_MAP m_vBoneInfoMap;
-	TIME_VALUE_SET m_TimeValueSet;
+	TV_NODE_INFO m_vMeshNode;
+	TV_NODE_INFO m_vBoneNode;
+	TV_SKIN_MESH m_vSkinMesh;
+	TV_BONE_INFO m_vBoneInfo;
+	TM_BONE_INFO m_vBoneInfoMap;
+	TS_TIME_VALUE m_TimeValueSet;
 
 };
 #endif // __MESHEXPORTER_H__

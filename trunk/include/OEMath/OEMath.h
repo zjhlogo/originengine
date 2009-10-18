@@ -34,8 +34,15 @@ public:
 	static void BuildQuaternionFromMatrix(CQuaternion& qOut, const CMatrix4x4& matIn);
 	static void BuildMatrixFromQuaternion(CMatrix4x4& matOut, const CQuaternion& qIn);
 
+	static void VectorLerp(CVector3& vOut, const CVector3& v1, const CVector3& v2, float t);
 	static void MatrixLerp(CMatrix4x4& matOut, const CMatrix4x4& mat1, const CMatrix4x4& mat2, float t);
 	static void QuaternionSlerp(CQuaternion& qOut, const CQuaternion& q1, const CQuaternion& q2, float t);
+
+	static void SetMatrixTranslation(CMatrix4x4& matOut, const CVector3& vPos);
+	static void GetMatrixTranslation(CVector3& vPosOut, const CMatrix4x4& matIn);
+
+	static void SetMatrixScale(CMatrix4x4& matOut, const CVector3& vScale);
+	static void GetMatrixScale(CVector3& vScaleOut, const CMatrix4x4& matIn);
 
 	static float Max(float a, float b);
 	static float Min(float a, float b);

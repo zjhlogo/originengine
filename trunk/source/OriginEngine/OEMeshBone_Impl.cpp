@@ -92,7 +92,9 @@ bool COEMeshBone_Impl::SlerpMatrix(CMatrix4x4& matOut, float fTime, bool bLoop /
 	{
 		if (!bLoop)
 		{
-			matOut = m_vFrame[nFrameCount-1].matTransform;
+			COEMath::BuildMatrixFromQuaternion(matOut, m_vFrame[nFrameCount-1].vRotation);
+			COEMath::SetMatrixTranslation(matOut, m_vFrame[nFrameCount-1].vPos);
+			COEMath::SetMatrixScale(matOut, m_vFrame[nFrameCount-1].vScale);
 			return true;
 		}
 
@@ -103,7 +105,9 @@ bool COEMeshBone_Impl::SlerpMatrix(CMatrix4x4& matOut, float fTime, bool bLoop /
 	{
 		if (!bLoop)
 		{
-			matOut = m_vFrame[0].matTransform;
+			COEMath::BuildMatrixFromQuaternion(matOut, m_vFrame[0].vRotation);
+			COEMath::SetMatrixTranslation(matOut, m_vFrame[0].vPos);
+			COEMath::SetMatrixScale(matOut, m_vFrame[0].vScale);
 			return true;
 		}
 
@@ -125,26 +129,26 @@ bool COEMeshBone_Impl::SlerpMatrix(CMatrix4x4& matOut, float fTime, bool bLoop /
 
 	if (nPrevIndex == nNextIndex)
 	{
-		matOut = m_vFrame[nPrevIndex].matTransform;
+		COEMath::BuildMatrixFromQuaternion(matOut, m_vFrame[nPrevIndex].vRotation);
+		COEMath::SetMatrixTranslation(matOut, m_vFrame[nPrevIndex].vPos);
+		COEMath::SetMatrixScale(matOut, m_vFrame[nPrevIndex].vScale);
 		return true;
 	}
 
-	//float t = (fTime - m_vFrame[nPrevIndex].fTime) / (m_vFrame[nNextIndex].fTime - m_vFrame[nPrevIndex].fTime);
-	//COEMath::MatrixLerp(matOut, m_vFrame[nPrevIndex].matTransform, m_vFrame[nNextIndex].matTransform, t);
-
-	CQuaternion q1;
-	CQuaternion q2;
-	COEMath::BuildQuaternionFromMatrix(q1, m_vFrame[nPrevIndex].matTransform);
-	COEMath::BuildQuaternionFromMatrix(q2, m_vFrame[nNextIndex].matTransform);
-
-	CQuaternion q;
+	CQuaternion rRot;
 	float t = (fTime - m_vFrame[nPrevIndex].fTime) / (m_vFrame[nNextIndex].fTime - m_vFrame[nPrevIndex].fTime);
-	COEMath::QuaternionSlerp(q, q1, q2, t);
+	COEMath::QuaternionSlerp(rRot, m_vFrame[nPrevIndex].vRotation, m_vFrame[nNextIndex].vRotation, t);
 
-	COEMath::BuildMatrixFromQuaternion(matOut, q);
-	matOut.m[12] = (1.0f-t)*m_vFrame[nPrevIndex].matTransform.m[12] + t*m_vFrame[nNextIndex].matTransform.m[12];
-	matOut.m[13] = (1.0f-t)*m_vFrame[nPrevIndex].matTransform.m[13] + t*m_vFrame[nNextIndex].matTransform.m[13];
-	matOut.m[14] = (1.0f-t)*m_vFrame[nPrevIndex].matTransform.m[14] + t*m_vFrame[nNextIndex].matTransform.m[14];
+	CVector3 vPos;
+	COEMath::VectorLerp(vPos, m_vFrame[nPrevIndex].vPos, m_vFrame[nNextIndex].vPos, t);
+
+	CVector3 vScale;
+	COEMath::VectorLerp(vScale, m_vFrame[nPrevIndex].vScale, m_vFrame[nNextIndex].vScale, t);
+
+	COEMath::BuildMatrixFromQuaternion(matOut, rRot);
+	COEMath::SetMatrixTranslation(matOut, vPos);
+	COEMath::SetMatrixScale(matOut, vScale);
+
 	return true;
 }
 
@@ -185,13 +189,48 @@ bool COEMeshBone_Impl::Create(const COEFmtMesh::BONE& Bone, int nID, IOEFile* pF
 	m_nID = nID;
 	m_nParentID = Bone.nParentIndex;
 	m_fTimeLength = Bone.fTimeLength;
-	memcpy(m_matLocal.m, Bone.matLocal, sizeof(m_matLocal.m));
 
-	if (Bone.nNumBoneFrame)
+	m_vPos.x = Bone.BoneTrans.vPos[0];
+	m_vPos.y = Bone.BoneTrans.vPos[1];
+	m_vPos.z = Bone.BoneTrans.vPos[2];
+
+	m_vScale.x = Bone.BoneTrans.vScale[0];
+	m_vScale.y = Bone.BoneTrans.vScale[1];
+	m_vScale.z = Bone.BoneTrans.vScale[2];
+
+	m_vRot.x = Bone.BoneTrans.vRotation[0];
+	m_vRot.y = Bone.BoneTrans.vRotation[1];
+	m_vRot.z = Bone.BoneTrans.vRotation[2];
+	m_vRot.w = Bone.BoneTrans.vRotation[3];
+
+	COEMath::BuildMatrixFromQuaternion(m_matLocal, m_vRot);
+	COEMath::SetMatrixTranslation(m_matLocal, m_vPos);
+	COEMath::SetMatrixScale(m_matLocal, m_vScale);
+
+	pFile->Seek(Bone.nOffBoneFrame);
+	m_vFrame.clear();
+	for (int i = 0; i < Bone.nNumBoneFrame; ++i)
 	{
-		m_vFrame.resize(Bone.nNumBoneFrame);
-		pFile->Seek(Bone.nOffBoneFrame);
-		pFile->Read(&m_vFrame[0], sizeof(COEFmtMesh::BONE_FRAME)*Bone.nNumBoneFrame);
+		COEFmtMesh::BONE_FRAME BoneFrame;
+		pFile->Read(&BoneFrame, sizeof(BoneFrame));
+
+		BONE_FRAME InlBoneFrame;
+		InlBoneFrame.fTime = BoneFrame.fTime;
+
+		InlBoneFrame.vPos.x = BoneFrame.BoneTrans.vPos[0];
+		InlBoneFrame.vPos.y = BoneFrame.BoneTrans.vPos[1];
+		InlBoneFrame.vPos.z = BoneFrame.BoneTrans.vPos[2];
+
+		InlBoneFrame.vScale.x = BoneFrame.BoneTrans.vScale[0];
+		InlBoneFrame.vScale.y = BoneFrame.BoneTrans.vScale[1];
+		InlBoneFrame.vScale.z = BoneFrame.BoneTrans.vScale[2];
+
+		InlBoneFrame.vRotation.x = BoneFrame.BoneTrans.vRotation[0];
+		InlBoneFrame.vRotation.y = BoneFrame.BoneTrans.vRotation[1];
+		InlBoneFrame.vRotation.z = BoneFrame.BoneTrans.vRotation[2];
+		InlBoneFrame.vRotation.w = BoneFrame.BoneTrans.vRotation[3];
+
+		m_vFrame.push_back(InlBoneFrame);
 	}
 
 	return true;

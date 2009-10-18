@@ -7,7 +7,6 @@
  */
 #include "MeshExporter.h"
 #include <OEOS.h>
-#include <OEFmtMesh.h>
 
 CMeshExporter::CMeshExporter()
 {
@@ -161,7 +160,7 @@ bool CMeshExporter::CollectNodes(IGameNode* pGameNode, IGameNode* pParentGameNod
 
 bool CMeshExporter::BuildMeshsInfo()
 {
-	for (VNODE_INFO::iterator it = m_vMeshNode.begin(); it != m_vMeshNode.end(); ++it)
+	for (TV_NODE_INFO::iterator it = m_vMeshNode.begin(); it != m_vMeshNode.end(); ++it)
 	{
 		NODE_INFO& NodeInfo = (*it);
 
@@ -178,7 +177,7 @@ bool CMeshExporter::BuildMeshsInfo()
 
 bool CMeshExporter::BuildBonesInfo()
 {
-	for (VNODE_INFO::iterator it = m_vBoneNode.begin(); it != m_vBoneNode.end(); ++it)
+	for (TV_NODE_INFO::iterator it = m_vBoneNode.begin(); it != m_vBoneNode.end(); ++it)
 	{
 		NODE_INFO& NodeInfo = (*it);
 
@@ -196,10 +195,10 @@ bool CMeshExporter::BuildBonesInfo()
 		m_vBoneInfoMap.insert(std::make_pair(BoneInfo.nNodeID, BoneInfo.nID));
 	}
 
-	for (VBONE_INFO::iterator it = m_vBoneInfo.begin(); it != m_vBoneInfo.end(); ++it)
+	for (TV_BONE_INFO::iterator it = m_vBoneInfo.begin(); it != m_vBoneInfo.end(); ++it)
 	{
 		BONE_INFO& BoneInfo = (*it);
-		BONE_INFO_MAP::iterator itfound = m_vBoneInfoMap.find(BoneInfo.nParentNodeID);
+		TM_BONE_INFO::iterator itfound = m_vBoneInfoMap.find(BoneInfo.nParentNodeID);
 		if (itfound != m_vBoneInfoMap.end())
 		{
 			BoneInfo.nParentID = itfound->second;
@@ -221,51 +220,6 @@ bool CMeshExporter::SaveToFile(const tstring& strFileName)
 	int nNumMesh = (int)m_vSkinMesh.size();
 	int nNumBone = (int)m_vBoneInfo.size();
 
-	uint nSizeOfHeader = sizeof(COEFmtMesh::FILE_HEADER);
-	uint nSizeOfMeshs = sizeof(COEFmtMesh::PIECE)*nNumMesh;
-	uint nSizeOfBones = sizeof(COEFmtMesh::BONE)*nNumBone;
-
-	uint nCurrPos = nSizeOfHeader+nSizeOfMeshs+nSizeOfBones;
-
-	// calculate verts offset
-	VFILE_BLOCK vVertsBlock;
-	uint nElementSize = sizeof(float)*3+sizeof(float)*2+sizeof(float)*4+sizeof(float)*4;
-	for (int i = 0; i < nNumMesh; ++i)
-	{
-		FILE_BLOCK FileBlock;
-		FileBlock.nOffset = nCurrPos;
-		FileBlock.nSize = nElementSize*(uint)m_vSkinMesh[i].vVerts.size();
-		vVertsBlock.push_back(FileBlock);
-
-		nCurrPos += FileBlock.nSize;
-	}
-
-	// calculate indis offset
-	VFILE_BLOCK vIndisBlock;
-	nElementSize = sizeof(ushort)*3;
-	for (int i = 0; i < nNumMesh; ++i)
-	{
-		FILE_BLOCK FileBlock;
-		FileBlock.nOffset = nCurrPos;
-		FileBlock.nSize = nElementSize*(uint)m_vSkinMesh[i].vFaces.size();
-		vIndisBlock.push_back(FileBlock);
-
-		nCurrPos += FileBlock.nSize;
-	}
-
-	// calculate bones offset
-	VFILE_BLOCK vBoneBlock;
-	nElementSize = sizeof(float)+sizeof(float)*16;
-	for (int i = 0; i < nNumBone; ++i)
-	{
-		FILE_BLOCK FileBlock;
-		FileBlock.nOffset = nCurrPos;
-		FileBlock.nSize = nElementSize*(uint)m_vBoneInfo[i].vFrameInfo.size();
-		vBoneBlock.push_back(FileBlock);
-
-		nCurrPos += FileBlock.nSize;
-	}
-
 	// write header
 	COEFmtMesh::FILE_HEADER Header;
 	Header.nMagicNumber = COEFmtMesh::MAGIC_NUMBER;
@@ -274,69 +228,59 @@ bool CMeshExporter::SaveToFile(const tstring& strFileName)
 	Header.nNumBones = nNumBone;
 	pFile->Write(&Header, sizeof(Header));
 
-	// write piece list
+	// make room for piece list
+	uint nPieceListPos = pFile->Tell();
+	std::vector<COEFmtMesh::PIECE> vPiece;
+	if (nNumMesh > 0)
+	{
+		vPiece.resize(nNumMesh);
+		pFile->Write(&vPiece[0], sizeof(COEFmtMesh::PIECE)*nNumMesh);
+	}
+
+	// make room for bone list
+	uint nBoneListPos = pFile->Tell();
+	std::vector<COEFmtMesh::BONE> vBone;
+	if (nNumBone > 0)
+	{
+		vBone.resize(nNumBone);
+		pFile->Write(&vBone[0], sizeof(COEFmtMesh::BONE)*nNumBone);
+	}
+
+	// write mesh
 	for (int i = 0; i < nNumMesh; ++i)
 	{
-		COEFmtMesh::PIECE Piece;
-
 		std::string strName;
 		COEOS::tchar2char(strName, m_vSkinMesh[i].strName.c_str());
-		strncpy_s(Piece.szName, strName.c_str(), COEFmtMesh::PIECE_NAME_SIZE);
+		strncpy_s(vPiece[i].szName, strName.c_str(), COEFmtMesh::PIECE_NAME_SIZE);
 
-		Piece.nPieceMask = COEFmtMesh::PM_VISIBLE;
-		Piece.nVertexDataMask = COEFmtMesh::VDM_XYZ | COEFmtMesh::VDM_UV | COEFmtMesh::VDM_BONE;
-		Piece.nMaterialID = 0;														// TODO: 
-		Piece.nNumVerts = (int)m_vSkinMesh[i].vVerts.size();
-		Piece.nOffVerts = vVertsBlock[i].nOffset;
-		Piece.nNumIndis = (int)m_vSkinMesh[i].vFaces.size()*3;
-		Piece.nOffIndis = vIndisBlock[i].nOffset;
+		vPiece[i].nPieceMask = COEFmtMesh::PM_VISIBLE;
+		vPiece[i].nVertexDataMask = COEFmtMesh::VDM_XYZ | COEFmtMesh::VDM_UV | COEFmtMesh::VDM_BONE;
+		vPiece[i].nMaterialID = 0;										// TODO: 
 
-		pFile->Write(&Piece, sizeof(Piece));
-	}
+		// write vertex data offset
+		vPiece[i].nNumVerts = (int)m_vSkinMesh[i].vVerts.size();
+		vPiece[i].nOffVerts = pFile->Tell();
 
-	// write bone list
-	for (int i = 0; i < nNumBone; ++i)
-	{
-		COEFmtMesh::BONE Bone;
-
-		std::string strName;
-		COEOS::tchar2char(strName, m_vBoneInfo[i].strName.c_str());
-		strncpy_s(Bone.szName, strName.c_str(), COEFmtMesh::BONE_NAME_SIZE);
-
-		Bone.nParentIndex = m_vBoneInfo[i].nParentID;
-
-		if (!m_vBoneInfo[i].vFrameInfo.empty())
-		{
-			TimeValue TimeTick = m_vBoneInfo[i].vFrameInfo.rbegin()->Time;
-			Bone.fTimeLength = TicksToSec(TimeTick);
-		}
-		else
-		{
-			Bone.fTimeLength = 0.0f;
-		}
-
-		memcpy(Bone.matLocal, m_vBoneInfo[i].matLocal.GetAddr(), sizeof(float)*16);
-
-		Bone.nNumBoneFrame = (int)m_vBoneInfo[i].vFrameInfo.size();
-		Bone.nOffBoneFrame = vBoneBlock[i].nOffset;
-		pFile->Write(&Bone, sizeof(Bone));
-	}
-
-	// write vertex data
-	for (int i = 0; i < nNumMesh; ++i)
-	{
+		// write vertex data
 		int nNumVerts = (int)m_vSkinMesh[i].vVerts.size();
 		for (int j = 0; j < nNumVerts; ++j)
 		{
 			VERTEX& Vertex = m_vSkinMesh[i].vVerts[j];
-			pFile->Write(&Vertex.pos.x, sizeof(float));
-			pFile->Write(&Vertex.pos.y, sizeof(float));
-			pFile->Write(&Vertex.pos.z, sizeof(float));
 
-			// TODO: add more data
-			pFile->Write(&Vertex.tex.x, sizeof(float));
-			pFile->Write(&Vertex.tex.y, sizeof(float));
+			// position
+			float vPos[3];
+			vPos[0] = Vertex.pos.x;
+			vPos[1] = Vertex.pos.y;
+			vPos[2] = Vertex.pos.z;
+			pFile->Write(vPos, sizeof(vPos));
 
+			// uv
+			float vUV[2];
+			vUV[0] = Vertex.tex.x;
+			vUV[1] = Vertex.tex.y;
+			pFile->Write(vUV, sizeof(vUV));
+
+			// bone weight, index
 			int arrBoneID[4] = {0};
 			float arrWeight[4] = {0.0f};
 
@@ -349,12 +293,15 @@ bool CMeshExporter::SaveToFile(const tstring& strFileName)
 			}
 			pFile->Write(arrBoneID, sizeof(arrBoneID));
 			pFile->Write(arrWeight, sizeof(arrWeight));
-		}
-	}
 
-	// write index data
-	for (int i = 0; i < nNumMesh; ++i)
-	{
+			// TODO: add more data
+		}
+
+		// write index data offset
+		vPiece[i].nNumIndis = (int)m_vSkinMesh[i].vFaces.size()*3;
+		vPiece[i].nOffIndis = pFile->Tell();
+
+		// write index data
 		int nNumFaces = (int)m_vSkinMesh[i].vFaces.size();
 		for (int j = 0; j < nNumFaces; ++j)
 		{
@@ -369,14 +316,49 @@ bool CMeshExporter::SaveToFile(const tstring& strFileName)
 	// write bone data
 	for (int i = 0; i < nNumBone; ++i)
 	{
+		// bone list info
+		std::string strName;
+		COEOS::tchar2char(strName, m_vBoneInfo[i].strName.c_str());
+		strncpy_s(vBone[i].szName, strName.c_str(), COEFmtMesh::BONE_NAME_SIZE);
+		vBone[i].nParentIndex = m_vBoneInfo[i].nParentID;
+		if (!m_vBoneInfo[i].vFrameInfo.empty())
+		{
+			TimeValue TimeTick = m_vBoneInfo[i].vFrameInfo.rbegin()->Time;
+			vBone[i].fTimeLength = TicksToSec(TimeTick);
+		}
+		else
+		{
+			vBone[i].fTimeLength = 0.0f;
+		}
+		GMatrix2BoneTransform(vBone[i].BoneTrans, m_vBoneInfo[i].matLocal);
+		vBone[i].nNumBoneFrame = (int)m_vBoneInfo[i].vFrameInfo.size();
+		vBone[i].nOffBoneFrame = pFile->Tell();
+
+		// bone data
 		int nNumFrame = (int)m_vBoneInfo[i].vFrameInfo.size();
 		for (int j = 0; j < nNumFrame; ++j)
 		{
 			FRAME_INFO& FrameInfo = m_vBoneInfo[i].vFrameInfo[j];
-			float fTime = TicksToSec(FrameInfo.Time);
-			pFile->Write(&fTime, sizeof(float));
-			pFile->Write(FrameInfo.matAnim.GetAddr(), sizeof(float)*16);
+
+			COEFmtMesh::BONE_FRAME BoneFrame;
+			BoneFrame.fTime = TicksToSec(FrameInfo.Time);
+			GMatrix2BoneTransform(BoneFrame.BoneTrans, FrameInfo.matAnim);
+			pFile->Write(&BoneFrame, sizeof(BoneFrame));
 		}
+	}
+
+	// write true piece list
+	pFile->Seek(nPieceListPos);
+	if (nNumMesh > 0)
+	{
+		pFile->Write(&vPiece[0], sizeof(COEFmtMesh::PIECE)*nNumMesh);
+	}
+
+	// write true bone list
+	pFile->Seek(nBoneListPos);
+	if (nNumBone > 0)
+	{
+		pFile->Write(&vBone[0], sizeof(COEFmtMesh::BONE)*nNumBone);
 	}
 
 	SAFE_RELEASE(pFile);
@@ -392,16 +374,19 @@ bool CMeshExporter::DumpSkinMesh(SKIN_MESH& SkinMeshOut, IGameNode* pGameNode)
 	pGameMesh->SetCreateOptimizedNormalList();
 	if (!pGameMesh->InitializeData()) return false;
 
-	// vertices
+	// init vertex slots
 	int nNumVerts = pGameMesh->GetNumberOfVerts();
-	for(int i = 0; i < nNumVerts; ++i)
+	VERTEX EmptyVertex;
+	EmptyVertex.Slot.bUsed = false;
+	EmptyVertex.Slot.nVertIndex = 0;
+	EmptyVertex.Slot.nTexIndex = 0;
+	EmptyVertex.pos.Set(0.0f, 0.0f, 0.0f);
+	EmptyVertex.tex.Set(0.0f, 0.0f);
+	EmptyVertex.Skins.clear();
+
+	for (int i = 0; i < nNumVerts; ++i)
 	{
-		VERTEX Vertex;
-
-		pGameMesh->GetVertex(i, Vertex.pos, true);
-		pGameMesh->GetTexVertex(i, Vertex.tex);
-
-		SkinMeshOut.vVerts.push_back(Vertex);
+		SkinMeshOut.vVerts.push_back(EmptyVertex);
 	}
 
 	// faces
@@ -409,11 +394,45 @@ bool CMeshExporter::DumpSkinMesh(SKIN_MESH& SkinMeshOut, IGameNode* pGameNode)
 	for (int i = 0; i < nNumFaces; ++i)
 	{
 		FaceEx* pFace = pGameMesh->GetFace(i);
+
 		FACE Face;
-		Face.nVertIndex[0] = pFace->vert[0];
-		Face.nVertIndex[1] = pFace->vert[1];
-		Face.nVertIndex[2] = pFace->vert[2];
+
+		for (int j = 0; j < 3; ++j)
+		{
+			uint nVertIndex = pFace->vert[j];
+			if (SkinMeshOut.vVerts[nVertIndex].Slot.bUsed
+				&& SkinMeshOut.vVerts[nVertIndex].Slot.nTexIndex != pFace->texCoord[j])
+			{
+				// add new slot
+				nVertIndex = SkinMeshOut.vVerts.size();
+				SkinMeshOut.vVerts.push_back(EmptyVertex);
+				SkinMeshOut.vVerts[nVertIndex].Slot.bUsed = true;
+				SkinMeshOut.vVerts[nVertIndex].Slot.nVertIndex = pFace->vert[j];
+				SkinMeshOut.vVerts[nVertIndex].Slot.nTexIndex = pFace->texCoord[j];
+			}
+			else if (!SkinMeshOut.vVerts[nVertIndex].Slot.bUsed)
+			{
+				// set this slot
+				SkinMeshOut.vVerts[nVertIndex].Slot.bUsed = true;
+				SkinMeshOut.vVerts[nVertIndex].Slot.nVertIndex = pFace->vert[j];
+				SkinMeshOut.vVerts[nVertIndex].Slot.nTexIndex = pFace->texCoord[j];
+			}
+
+			Face.nVertIndex[j] = nVertIndex;
+		}
+
 		SkinMeshOut.vFaces.push_back(Face);
+	}
+
+	// setup vertex data
+	int nNewNumVerts = SkinMeshOut.vVerts.size();
+	for (int i = 0; i < nNewNumVerts; ++i)
+	{
+		VERTEX& LocalVert = SkinMeshOut.vVerts[i];
+
+		pGameMesh->GetVertex(LocalVert.Slot.nVertIndex, LocalVert.pos, true);
+		pGameMesh->GetTexVertex(LocalVert.Slot.nTexIndex, LocalVert.tex);
+		LocalVert.tex.y += 1.0f;
 	}
 
 	// skins
@@ -433,21 +452,20 @@ bool CMeshExporter::DumpSkinMesh(SKIN_MESH& SkinMeshOut, IGameNode* pGameNode)
 
 bool CMeshExporter::DumpSkinVerts(SKIN_MESH& SkinMeshOut, IGameSkin* pGameSkin)
 {
-	int nNumSkinVerts = pGameSkin->GetNumOfSkinnedVerts();
-	assert(nNumSkinVerts == SkinMeshOut.vVerts.size());
+	int nNumSkinVerts = SkinMeshOut.vVerts.size();
 
 	for (int i = 0; i < nNumSkinVerts; ++i)
 	{
-		int nNumBone = pGameSkin->GetNumberOfBones(i);
+		int nNumBone = pGameSkin->GetNumberOfBones(SkinMeshOut.vVerts[i].Slot.nVertIndex);
 		for (int j = 0; j < nNumBone; ++j)
 		{
-			int nNodeID = pGameSkin->GetBoneID(i, j);
-			BONE_INFO_MAP::iterator it = m_vBoneInfoMap.find(nNodeID);
+			int nNodeID = pGameSkin->GetBoneID(SkinMeshOut.vVerts[i].Slot.nVertIndex, j);
+			TM_BONE_INFO::iterator it = m_vBoneInfoMap.find(nNodeID);
 			if (it == m_vBoneInfoMap.end()) continue;
 
 			SKIN Skin;
 			Skin.nBoneIndex = it->second;
-			Skin.fWeight = pGameSkin->GetWeight(i, j);
+			Skin.fWeight = pGameSkin->GetWeight(SkinMeshOut.vVerts[i].Slot.nVertIndex, j);
 			SkinMeshOut.vVerts[i].Skins.push_back(Skin);
 		}
 	}
@@ -455,11 +473,11 @@ bool CMeshExporter::DumpSkinVerts(SKIN_MESH& SkinMeshOut, IGameSkin* pGameSkin)
 	return true;
 }
 
-bool CMeshExporter::DumpController(VFRAME_INFO& vFrameInfoOut, IGameNode* pGameNode)
+bool CMeshExporter::DumpController(TV_FRAME_INFO& vFrameInfoOut, IGameNode* pGameNode)
 {
 	IGameControl* pGameControl = pGameNode->GetIGameControl();
 
-	TIME_VALUE_SET TimeValueSet;
+	TS_TIME_VALUE TimeValueSet;
 
 	// export position controller
 	if (pGameControl->IsAnimated(IGAME_POS)) DumpPositionController(TimeValueSet, pGameControl);
@@ -474,7 +492,7 @@ bool CMeshExporter::DumpController(VFRAME_INFO& vFrameInfoOut, IGameNode* pGameN
 	IGameKeyTab TMKey;
 	pGameControl->GetFullSampledKeys(TMKey, 1, IGAME_TM, true);
 
-	TIME_VALUE_SET::const_iterator it = TimeValueSet.begin();
+	TS_TIME_VALUE::const_iterator it = TimeValueSet.begin();
 	int nCount = TMKey.Count();
 
 	for (int i = 0; i < nCount; ++i)
@@ -493,7 +511,7 @@ bool CMeshExporter::DumpController(VFRAME_INFO& vFrameInfoOut, IGameNode* pGameN
 	return true;
 }
 
-bool CMeshExporter::DumpPositionController(TIME_VALUE_SET& TimeSetOut, IGameControl* pGameControl)
+bool CMeshExporter::DumpPositionController(TS_TIME_VALUE& TimeSetOut, IGameControl* pGameControl)
 {
 	IGameControl::MaxControlType eControlType = pGameControl->GetControlType(IGAME_POS);
 	switch (eControlType)
@@ -539,7 +557,7 @@ bool CMeshExporter::DumpPositionController(TIME_VALUE_SET& TimeSetOut, IGameCont
 	return true;
 }
 
-bool CMeshExporter::DumpRotationController(TIME_VALUE_SET& TimeSetOut, IGameControl* pGameControl)
+bool CMeshExporter::DumpRotationController(TS_TIME_VALUE& TimeSetOut, IGameControl* pGameControl)
 {
 	IGameControl::MaxControlType eControlType = pGameControl->GetControlType(IGAME_ROT);
 	switch (eControlType)
@@ -585,7 +603,7 @@ bool CMeshExporter::DumpRotationController(TIME_VALUE_SET& TimeSetOut, IGameCont
 	return true;
 }
 
-bool CMeshExporter::DumpScaleController(TIME_VALUE_SET& TimeSetOut, IGameControl* pGameControl)
+bool CMeshExporter::DumpScaleController(TS_TIME_VALUE& TimeSetOut, IGameControl* pGameControl)
 {
 	IGameControl::MaxControlType eControlType = pGameControl->GetControlType(IGAME_SCALE);
 
@@ -614,7 +632,7 @@ bool CMeshExporter::DumpScaleController(TIME_VALUE_SET& TimeSetOut, IGameControl
 	return true;
 }
 
-bool CMeshExporter::DumpMaxStdPosKey(TIME_VALUE_SET& TimeSetOut, IGameControl* pGameControl)
+bool CMeshExporter::DumpMaxStdPosKey(TS_TIME_VALUE& TimeSetOut, IGameControl* pGameControl)
 {
 	IGameKeyTab PosKey;
 	if (pGameControl->GetBezierKeys(PosKey, IGAME_POS))
@@ -643,7 +661,7 @@ bool CMeshExporter::DumpMaxStdPosKey(TIME_VALUE_SET& TimeSetOut, IGameControl* p
 	return true;
 }
 
-bool CMeshExporter::DumpBipedPosKey(TIME_VALUE_SET& TimeSetOut, IGameControl* pGameControl)
+bool CMeshExporter::DumpBipedPosKey(TS_TIME_VALUE& TimeSetOut, IGameControl* pGameControl)
 {
 	Control* pControl = pGameControl->GetMaxControl(IGAME_POS);
 
@@ -657,7 +675,7 @@ bool CMeshExporter::DumpBipedPosKey(TIME_VALUE_SET& TimeSetOut, IGameControl* pG
 	return true;
 }
 
-bool CMeshExporter::DumpIndependentPosKey(TIME_VALUE_SET& TimeSetOut, IGameControl* pGameControl)
+bool CMeshExporter::DumpIndependentPosKey(TS_TIME_VALUE& TimeSetOut, IGameControl* pGameControl)
 {
 	IGameKeyTab PosKey;
 	if (pGameControl->GetBezierKeys(PosKey, IGAME_POS_X))
@@ -735,7 +753,7 @@ bool CMeshExporter::DumpIndependentPosKey(TIME_VALUE_SET& TimeSetOut, IGameContr
 	return true;
 }
 
-bool CMeshExporter::DumpMaxStdRotKey(TIME_VALUE_SET& TimeSetOut, IGameControl* pGameControl)
+bool CMeshExporter::DumpMaxStdRotKey(TS_TIME_VALUE& TimeSetOut, IGameControl* pGameControl)
 {
 	IGameKeyTab RotKey;
 	if (pGameControl->GetBezierKeys(RotKey, IGAME_ROT))
@@ -778,7 +796,7 @@ bool CMeshExporter::DumpMaxStdRotKey(TIME_VALUE_SET& TimeSetOut, IGameControl* p
 	return true;
 }
 
-bool CMeshExporter::DumpBipedRotKey(TIME_VALUE_SET& TimeSetOut, IGameControl* pGameControl)
+bool CMeshExporter::DumpBipedRotKey(TS_TIME_VALUE& TimeSetOut, IGameControl* pGameControl)
 {
 	Control* pControl = pGameControl->GetMaxControl(IGAME_ROT);
 
@@ -792,7 +810,7 @@ bool CMeshExporter::DumpBipedRotKey(TIME_VALUE_SET& TimeSetOut, IGameControl* pG
 	return true;
 }
 
-bool CMeshExporter::DumpEulerRotKey(TIME_VALUE_SET& TimeSetOut, IGameControl* pGameControl)
+bool CMeshExporter::DumpEulerRotKey(TS_TIME_VALUE& TimeSetOut, IGameControl* pGameControl)
 {
 	IGameKeyTab RotKey;
 
@@ -871,7 +889,7 @@ bool CMeshExporter::DumpEulerRotKey(TIME_VALUE_SET& TimeSetOut, IGameControl* pG
 	return true;
 }
 
-bool CMeshExporter::DumpMaxStdScaleKey(TIME_VALUE_SET& TimeSetOut, IGameControl* pGameControl)
+bool CMeshExporter::DumpMaxStdScaleKey(TS_TIME_VALUE& TimeSetOut, IGameControl* pGameControl)
 {
 	IGameKeyTab ScaleKey;
 	if (pGameControl->GetBezierKeys(ScaleKey, IGAME_SCALE))
@@ -889,7 +907,7 @@ bool CMeshExporter::DumpMaxStdScaleKey(TIME_VALUE_SET& TimeSetOut, IGameControl*
 	return true;
 }
 
-bool CMeshExporter::DumpBipedScaleKey(TIME_VALUE_SET& TimeSetOut, IGameControl* pGameControl)
+bool CMeshExporter::DumpBipedScaleKey(TS_TIME_VALUE& TimeSetOut, IGameControl* pGameControl)
 {
 	Control* pControl = pGameControl->GetMaxControl(IGAME_SCALE);
 
@@ -903,7 +921,7 @@ bool CMeshExporter::DumpBipedScaleKey(TIME_VALUE_SET& TimeSetOut, IGameControl* 
 	return true;
 }
 
-bool CMeshExporter::DumpConstraintKey(TIME_VALUE_SET& TimeSetOut, IGameControl* pGameControl)
+bool CMeshExporter::DumpConstraintKey(TS_TIME_VALUE& TimeSetOut, IGameControl* pGameControl)
 {
 	//IGameConstraint* pGameConstraint = pGameControl->GetConstraint(IGAME_POS);
 
@@ -927,7 +945,7 @@ bool CMeshExporter::DumpConstraintKey(TIME_VALUE_SET& TimeSetOut, IGameControl* 
 	return true;
 }
 
-bool CMeshExporter::DumpListKey(TIME_VALUE_SET& TimeSetOut, IGameControl* pGameControl)
+bool CMeshExporter::DumpListKey(TS_TIME_VALUE& TimeSetOut, IGameControl* pGameControl)
 {
 	int nCount = pGameControl->GetNumOfListSubControls(IGAME_POS);
 	for (int i = 0; i < nCount; ++i)
@@ -954,4 +972,24 @@ bool CMeshExporter::DumpListKey(TIME_VALUE_SET& TimeSetOut, IGameControl* pGameC
 	}
 
 	return true;
+}
+
+void CMeshExporter::GMatrix2BoneTransform(COEFmtMesh::BONE_TRANSFORM& BoneTrans, const GMatrix& matTrans)
+{
+	Point3 vPos = matTrans.Translation();
+	Point3 vScale = matTrans.Scaling();
+	Quat rRot = matTrans.Rotation();
+
+	BoneTrans.vPos[0] = vPos.x;
+	BoneTrans.vPos[1] = vPos.y;
+	BoneTrans.vPos[2] = vPos.z;
+
+	BoneTrans.vScale[0] = vScale.x;
+	BoneTrans.vScale[1] = vScale.y;
+	BoneTrans.vScale[2] = vScale.z;
+
+	BoneTrans.vRotation[0] = rRot.x;
+	BoneTrans.vRotation[1] = rRot.y;
+	BoneTrans.vRotation[2] = rRot.z;
+	BoneTrans.vRotation[3] = rRot.w;
 }
