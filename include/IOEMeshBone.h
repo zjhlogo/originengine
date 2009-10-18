@@ -17,7 +17,9 @@ public:
 	typedef struct BONE_FRAME_tag
 	{
 		float fTime;
-		CMatrix4x4 matTransform;
+		CVector3 vPos;
+		CVector3 vScale;
+		CQuaternion vRotation;
 	} BONE_FRAME;
 
 public:

@@ -115,26 +115,28 @@ void CMeshApp::Render(float fDetailTime)
 
 	//static ushort s_Indis[4] = {0, 1, 2, 3};
 
-	//static float s_fTotalTime = 0.0f;
+	static float s_fTotalTime = 0.0f;
 
-	//s_fTotalTime += fDetailTime;
-	//CVector3 vLightPos;
-	//vLightPos.x = cos(s_fTotalTime)*10.0f;
-	//vLightPos.y = 5.0f;
-	//vLightPos.z = sin(s_fTotalTime)*10.0f;
+	s_fTotalTime += fDetailTime;
+	CVector3 vLightPos;
+	vLightPos.x = cos(s_fTotalTime)*10.0f;
+	vLightPos.y = 5.0f;
+	vLightPos.z = sin(s_fTotalTime)*10.0f;
 
 	//m_pSimpleShape->DrawCube(g_pOERenderer, vLightPos);
 
-	//RebuildBoneVerts(s_fTotalTime);
+	RebuildBoneVerts(s_fTotalTime);
 
-	//g_pOERenderer->SetVertDecl(m_pDecl);
-	////g_pOERenderer->DrawLineStrip(s_Verts, 4, s_Indis, 4);
-	//g_pOERenderer->DrawLineStrip(&m_vVerts[0], (uint)m_vVerts.size(), &m_vIndis[0], (uint)m_vIndis.size());
+	g_pOERenderer->SetFillMode(IOERenderer::FM_WIREFRAME);
+	g_pOERenderer->SetVertDecl(m_pDecl);
+	//g_pOERenderer->DrawLineStrip(s_Verts, 4, s_Indis, 4);
+	g_pOERenderer->DrawLineStrip(&m_vVerts[0], (uint)m_vVerts.size(), &m_vIndis[0], (uint)m_vIndis.size());
 
 	CMatrix4x4 matWorldViewProj;
 	g_pOERenderer->GetTransform(matWorldViewProj, IOERenderer::TT_WORLD_VIEW_PROJ);
 	m_pShader->SetMatrix(t("g_matWorldViewProj"), matWorldViewProj);
 	m_pShader->SetTexture(t("g_texBase"), m_pTexBase);
+	m_pShader->SetMatrixArray(t("g_matBoneMatrix"), &m_matBones[0], m_matBones.size());
 	g_pOERenderer->SetShader(m_pShader);
 
 	IOEMeshPiece* pPiece = m_pMesh->GetPiece(0);
@@ -206,6 +208,9 @@ void CMeshApp::RebuildBoneVerts(float fTime)
 	m_vVerts.clear();
 	m_vIndis.clear();
 
+	int nNumBones = m_pMesh->GetNumBones();
+	m_matBones.resize(nNumBones);
+
 	CMatrix4x4 matWorld;
 	IOEMeshBone* pBone = m_pMesh->GetBone(0);
 	BuildBoneVerts(m_vVerts, m_vIndis, fTime, pBone, matWorld, -1);
@@ -218,6 +223,16 @@ void CMeshApp::BuildBoneVerts(VVERTEX& vVerts, VUSHORT& vIndis, float fTime, IOE
 	CMatrix4x4 matLocal;
 	pBone->SlerpMatrix(matLocal, fTime, true);
 	CMatrix4x4 matWorld = matLocal * matParent;
+
+	int nBoneIndex = pBone->GetID();
+	if (nBoneIndex >= 0 && nBoneIndex < (int)m_matBones.size())
+	{
+		m_matBones[nBoneIndex] = matParent;
+	}
+	else
+	{
+		assert(false);
+	}
 
 	VERTEX Vertex;
 	Vertex.x = matWorld.m[12];

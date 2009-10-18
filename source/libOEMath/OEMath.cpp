@@ -12,6 +12,29 @@ const float OEMATH_G = -32.174f;				// acceleration due to gravity, ft/s^2
 const float OEMATH_RHO = 0.0023769f;			// desity of air at sea level, slugs/ft^3
 const float OEMATH_TOL = 1E-5f;					// float type tolerance
 
+CMatrix4x4 operator *(const CMatrix4x4& m1, const CMatrix4x4& m2)
+{
+	return CMatrix4x4(m1.m[0]*m2.m[0] + m1.m[1]*m2.m[4] + m1.m[2]*m2.m[8] + m1.m[3]*m2.m[12],
+					  m1.m[0]*m2.m[1] + m1.m[1]*m2.m[5] + m1.m[2]*m2.m[9] + m1.m[3]*m2.m[13],
+					  m1.m[0]*m2.m[2] + m1.m[1]*m2.m[6] + m1.m[2]*m2.m[10] + m1.m[3]*m2.m[14],
+					  m1.m[0]*m2.m[3] + m1.m[1]*m2.m[7] + m1.m[2]*m2.m[11] + m1.m[3]*m2.m[15],
+
+					  m1.m[4]*m2.m[0] + m1.m[5]*m2.m[4] + m1.m[6]*m2.m[8] + m1.m[7]*m2.m[12],
+					  m1.m[4]*m2.m[1] + m1.m[5]*m2.m[5] + m1.m[6]*m2.m[9] + m1.m[7]*m2.m[13],
+					  m1.m[4]*m2.m[2] + m1.m[5]*m2.m[6] + m1.m[6]*m2.m[10] + m1.m[7]*m2.m[14],
+					  m1.m[4]*m2.m[3] + m1.m[5]*m2.m[7] + m1.m[6]*m2.m[11] + m1.m[7]*m2.m[15],
+
+					  m1.m[8]*m2.m[0] + m1.m[9]*m2.m[4] + m1.m[10]*m2.m[8] + m1.m[11]*m2.m[12],
+					  m1.m[8]*m2.m[1] + m1.m[9]*m2.m[5] + m1.m[10]*m2.m[9] + m1.m[11]*m2.m[13],
+					  m1.m[8]*m2.m[2] + m1.m[9]*m2.m[6] + m1.m[10]*m2.m[10] + m1.m[11]*m2.m[14],
+					  m1.m[8]*m2.m[3] + m1.m[9]*m2.m[7] + m1.m[10]*m2.m[11] + m1.m[11]*m2.m[15],
+
+					  m1.m[12]*m2.m[0] + m1.m[13]*m2.m[4] + m1.m[14]*m2.m[8] + m1.m[15]*m2.m[12],
+					  m1.m[12]*m2.m[1] + m1.m[13]*m2.m[5] + m1.m[14]*m2.m[9] + m1.m[15]*m2.m[13],
+					  m1.m[12]*m2.m[2] + m1.m[13]*m2.m[6] + m1.m[14]*m2.m[10] + m1.m[15]*m2.m[14],
+					  m1.m[12]*m2.m[3] + m1.m[13]*m2.m[7] + m1.m[14]*m2.m[11] + m1.m[15]*m2.m[15]);
+}
+
 void COEMath::BuildLookAtMatrixLH(CMatrix4x4& matOut, const CVector3& vEye, const CVector3& vAt, const CVector3& vUp)
 {
 	CVector3 vAxisZ = vAt-vEye;
@@ -162,6 +185,16 @@ void COEMath::BuildMatrixFromQuaternion(CMatrix4x4& matOut, const CQuaternion& q
 	matOut.m[13] = 0.0f;
 	matOut.m[14] = 0.0f;
 	matOut.m[15] = 1.0f;
+}
+
+void COEMath::VectorLerp(CVector3& vOut, const CVector3& v1, const CVector3& v2, float t)
+{
+	float k0 = 1.0f - t;
+	float k1 = t;
+
+	vOut.x = k0*v1.x + k1*v2.x;
+	vOut.y = k0*v1.y + k1*v2.y;
+	vOut.z = k0*v1.z + k1*v2.z;
 }
 
 void COEMath::MatrixLerp(CMatrix4x4& matOut, const CMatrix4x4& mat1, const CMatrix4x4& mat2, float t)

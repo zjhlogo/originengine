@@ -65,10 +65,17 @@ public:
 	} PIECE;
 
 	// 3, following the nNumBones of BONE
+	typedef struct BONE_TRANSFORM_tag
+	{
+		float vPos[3];
+		float vScale[3];
+		float vRotation[4];
+	} BONE_TRANSFORM;
+
 	typedef struct BONE_FRAME_tag
 	{
 		float fTime;
-		float matTransform[16];
+		BONE_TRANSFORM BoneTrans;
 	} BONE_FRAME;
 
 	typedef struct BONE_tag
@@ -76,7 +83,7 @@ public:
 		char szName[BONE_NAME_SIZE];
 		int nParentIndex;
 		float fTimeLength;
-		float matLocal[16];
+		BONE_TRANSFORM BoneTrans;
 		int nNumBoneFrame;
 		uint nOffBoneFrame;
 	} BONE;

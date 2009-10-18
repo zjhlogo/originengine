@@ -61,6 +61,11 @@ private:
 	VMESH_BONE m_vChildren;
 
 	float m_fTimeLength;
+
+	CVector3 m_vPos;
+	CVector3 m_vScale;
+	CQuaternion m_vRot;
+
 	CMatrix4x4 m_matLocal;
 
 	VBONE_FRAME m_vFrame;

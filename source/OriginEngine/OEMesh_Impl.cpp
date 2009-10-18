@@ -140,7 +140,7 @@ bool COEMesh_Impl::Create(const tstring& strFileName)
 		m_vBone.push_back(pMeshBone);
 	}
 
-	// create parent/child relation
+	// create relation ship
 	for (int i = 0; i < Header.nNumBones; ++i)
 	{
 		int nParentID = m_vBone[i]->GetParentID();

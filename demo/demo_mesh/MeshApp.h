@@ -32,6 +32,7 @@ public:
 
 	typedef std::vector<VERTEX> VVERTEX;
 	typedef std::vector<ushort> VUSHORT;
+	typedef std::vector<CMatrix4x4> TV_MATRIX;
 
 public:
 	CMeshApp();
@@ -77,6 +78,8 @@ private:
 	int m_nMouseDetailX;
 	int m_nMouseDetailY;
 	bool m_KeyDown[KEY_COUNT];
+
+	TV_MATRIX m_matBones;
 
 };
 
