@@ -1,129 +1,58 @@
 /*!
- * \file Ms3dConv.cpp
- * \date 30-7-2009 20:22:10
+ * \file Ms3dConv_Impl.cpp
+ * \date 10-20-2009 15:21:33
  * 
  * 
  * \author zjhlogo (zjhlogo@163.com)
  */
-#include "Ms3dConv.h"
+#include "Ms3dConv_Impl.h"
+#include "FmtMs3d.h"
+
 #include <IOEFileMgr.h>
-#include <vector>
+#include <OEFmtMesh.h>
+
 #include <map>
 #include <math.h>
 
-#pragma pack(1)
-
-#ifndef byte
-typedef unsigned char byte;
-#endif // byte
-
-#ifndef word
-typedef unsigned short word;
-#endif // word
-
-typedef struct
-{
-	char    id[10];                                     // always "MS3D000000"
-	int     version;                                    // 4
-} ms3d_header_t;
-
-typedef struct
-{
-	byte    flags;                                      // SELECTED | SELECTED2 | HIDDEN
-	float   vertex[3];                                  //
-	char    boneId;                                     // -1 = no bone
-	byte    referenceCount;
-} ms3d_vertex_t;
-
-typedef struct
-{
-	word    flags;                                      // SELECTED | SELECTED2 | HIDDEN
-	word    vertexIndices[3];                           //
-	float   vertexNormals[3][3];                        //
-	float   s[3];                                       //
-	float   t[3];                                       //
-	byte    smoothingGroup;                             // 1 - 32
-	byte    groupIndex;                                 //
-} ms3d_triangle_t;
-
-typedef struct
-{
-	byte            flags;                              // SELECTED | HIDDEN
-	char            name[32];                           //
-	word            numtriangles;                       //
-	word*			triangleIndices;					// the groups group the triangles
-	char            materialIndex;                      // -1 = no material
-} ms3d_group_t;
-
-typedef struct
-{
-	char            name[32];                           //
-	float           ambient[4];                         //
-	float           diffuse[4];                         //
-	float           specular[4];                        //
-	float           emissive[4];                        //
-	float           shininess;                          // 0.0f - 128.0f
-	float           transparency;                       // 0.0f - 1.0f
-	char            mode;                               // 0, 1, 2 is unused now
-	char            texture[128];                        // texture.bmp
-	char            alphamap[128];                       // alpha.bmp
-} ms3d_material_t;
-
-typedef struct
-{
-	float           time;                               // time in seconds
-	float           rotation[3];                        // x, y, z angles
-} ms3d_keyframe_rot_t;
-
-typedef struct
-{
-	float           time;                               // time in seconds
-	float           position[3];                        // local position
-} ms3d_keyframe_pos_t;
-
-typedef struct
-{
-	byte            flags;                              // SELECTED | DIRTY
-	char            name[32];                           //
-	char            parentName[32];                     //
-	float           rotation[3];                        // local reference matrix
-	float           position[3];
-
-	word            numKeyFramesRot;                    //
-	word            numKeyFramesTrans;                  //
-
-	ms3d_keyframe_rot_t* keyFramesRot;      // local animation matrices
-	ms3d_keyframe_pos_t* keyFramesTrans;  // local animation matrices
-} ms3d_joint_t;
-
-#pragma pack()
-
-CMs3dConv::CMs3dConv()
+CMs3dConv_Impl::CMs3dConv_Impl()
 {
 	Init();
 }
 
-CMs3dConv::~CMs3dConv()
+CMs3dConv_Impl::~CMs3dConv_Impl()
 {
 	Destroy();
 }
 
-void CMs3dConv::Init()
+void CMs3dConv_Impl::Init()
 {
 	// TODO: 
 }
 
-void CMs3dConv::Destroy()
+void CMs3dConv_Impl::Destroy()
 {
 	// TODO: 
 }
 
-bool CMs3dConv::LoadFromFile(const tstring& strFileName)
+bool CMs3dConv_Impl::DoConvert(const tstring& strFileIn, const tstring& strFileOut)
+{
+	if (!LoadFromFile(strFileIn)) return false;
+	if (!SaveToFile(strFileOut)) return false;
+	return true;
+}
+
+bool CMs3dConv_Impl::CanConvert(const tstring& strFileExt)
+{
+	if (strFileExt == t("ms3d")) return true;
+	return false;
+}
+
+bool CMs3dConv_Impl::LoadFromFile(const tstring& strFile)
 {
 	m_vVertices.clear();
 	m_vIndices.clear();
 
-	IOEFile* pFile = g_pOEFileMgr->OpenFile(strFileName);
+	IOEFile* pFile = g_pOEFileMgr->OpenFile(strFile);
 	if (!pFile) return false;
 
 	ms3d_header_t header;
@@ -302,9 +231,10 @@ bool CMs3dConv::LoadFromFile(const tstring& strFileName)
 	return true;
 }
 
-bool CMs3dConv::DoConvert(const tstring& strFileName)
+bool CMs3dConv_Impl::SaveToFile(const tstring& strFile)
 {
-	IOEFile* pFile = g_pOEFileMgr->OpenFile(strFileName, IOEFile::OFF_WRITE);
+	IOEFile* pFile = g_pOEFileMgr->OpenFile(strFile, IOEFile::OFF_WRITE);
+	if (!pFile) return false;
 
 	int nNumVertices = (int)m_vVertices.size();
 	pFile->Write(&nNumVertices, sizeof(nNumVertices));
