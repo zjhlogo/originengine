@@ -333,7 +333,11 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\BaseConv.cpp"
+				RelativePath=".\ConvMgr.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\IBaseConv.cpp"
 				>
 			</File>
 			<File
@@ -341,7 +345,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Ms3dConv.cpp"
+				RelativePath=".\Ms3dConv_Impl.cpp"
 				>
 			</File>
 		</Filter>
@@ -351,7 +355,11 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath=".\BaseConv.h"
+				RelativePath=".\ConvMgr.h"
+				>
+			</File>
+			<File
+				RelativePath=".\IBaseConv.h"
 				>
 			</File>
 			<File
@@ -359,7 +367,15 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Ms3dConv.h"
+				RelativePath=".\Ms3dConv_Impl.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="Format Files"
+			>
+			<File
+				RelativePath=".\FmtMs3d.h"
 				>
 			</File>
 		</Filter>
