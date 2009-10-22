@@ -32,6 +32,7 @@ public:
 
 	virtual float GetTimeLength() const = 0;
 	virtual const CMatrix4x4& GetLocalMatrix() const = 0;
+	virtual const CMatrix4x4& GetWorldMatrix() const = 0;
 
 	virtual int GetFrameCount() const = 0;
 	virtual const BONE_FRAME* GetFrame(int nIndex) const = 0;

@@ -63,6 +63,23 @@ inline void COEMath::GetMatrixScale(CVector3& vScaleOut, const CMatrix4x4& matIn
 	vScaleOut.z = sqrtf(matIn.m[8]*matIn.m[8] + matIn.m[9]*matIn.m[9] + matIn.m[10]*matIn.m[10]);
 }
 
+inline void COEMath::InverseTranslateVector(CVector3& vInOut, const CMatrix4x4& matIn)
+{
+	vInOut.x = vInOut.x - matIn.m[12];
+	vInOut.y = vInOut.y - matIn.m[13];
+	vInOut.z = vInOut.z - matIn.m[14];
+}
+
+inline void COEMath::InverseRotateVector(CVector3& vInOut, const CMatrix4x4& matIn)
+{
+	CVector3 vTemp;
+	vTemp.x = vInOut.x*matIn.m[0] + vInOut.y*matIn.m[1] + vInOut.z*matIn.m[2];
+	vTemp.y = vInOut.x*matIn.m[4] + vInOut.y*matIn.m[5] + vInOut.z*matIn.m[6];
+	vTemp.z = vInOut.x*matIn.m[8] + vInOut.y*matIn.m[9] + vInOut.z*matIn.m[10];
+
+	vInOut = vTemp;
+}
+
 inline float COEMath::Max(float a, float b)
 {
 	return a > b ? a : b;

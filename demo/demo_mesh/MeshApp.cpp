@@ -68,7 +68,7 @@ bool CMeshApp::Initialize()
 	m_pShader = g_pOEShaderMgr->CreateShader(s_Decl2, t("mesh.fx"));
 	if (!m_pShader) return false;
 
-	m_pTexBase = g_pOETextureMgr->CreateTextureFromFile(t("mesh.jpg"));
+	m_pTexBase = g_pOETextureMgr->CreateTextureFromFile(t("grid16.png"));
 	if (!m_pTexBase) return false;
 
 	m_pCamera = new CCamera();
@@ -77,10 +77,11 @@ bool CMeshApp::Initialize()
 	m_pSimpleShape = new CSimpleShape();
 	if (!m_pSimpleShape || !m_pSimpleShape->Initialize()) return false;
 
-	m_pMesh = g_pOEMeshMgr->CreateMeshFromFile(t("mesh.MESH"));
+	m_pMesh = g_pOEMeshMgr->CreateMeshFromFile(t("Zombie.mesh"));
 	if (!m_pMesh) return false;
 
-	int nBones = m_pMesh->GetNumBones();
+	g_pOERenderer->SetCullMode(IOERenderer::CMT_NONE);
+	BindInitializePose(m_pMesh);
 
 	return true;
 }
@@ -125,18 +126,18 @@ void CMeshApp::Render(float fDetailTime)
 
 	//m_pSimpleShape->DrawCube(g_pOERenderer, vLightPos);
 
-	RebuildBoneVerts(s_fTotalTime);
+	//RebuildBoneVerts(s_fTotalTime);
 
-	g_pOERenderer->SetFillMode(IOERenderer::FM_WIREFRAME);
-	g_pOERenderer->SetVertDecl(m_pDecl);
-	//g_pOERenderer->DrawLineStrip(s_Verts, 4, s_Indis, 4);
-	g_pOERenderer->DrawLineStrip(&m_vVerts[0], (uint)m_vVerts.size(), &m_vIndis[0], (uint)m_vIndis.size());
+	//g_pOERenderer->SetFillMode(IOERenderer::FM_WIREFRAME);
+	//g_pOERenderer->SetVertDecl(m_pDecl);
+	////g_pOERenderer->DrawLineStrip(s_Verts, 4, s_Indis, 4);
+	//g_pOERenderer->DrawLineStrip(&m_vVerts[0], (uint)m_vVerts.size(), &m_vIndis[0], (uint)m_vIndis.size());
 
 	CMatrix4x4 matWorldViewProj;
 	g_pOERenderer->GetTransform(matWorldViewProj, IOERenderer::TT_WORLD_VIEW_PROJ);
 	m_pShader->SetMatrix(t("g_matWorldViewProj"), matWorldViewProj);
 	m_pShader->SetTexture(t("g_texBase"), m_pTexBase);
-	m_pShader->SetMatrixArray(t("g_matBoneMatrix"), &m_matBones[0], m_matBones.size());
+	//m_pShader->SetMatrixArray(t("g_matBoneMatrix"), &m_matBones[0], m_matBones.size());
 	g_pOERenderer->SetShader(m_pShader);
 
 	IOEMeshPiece* pPiece = m_pMesh->GetPiece(0);
@@ -254,4 +255,54 @@ void CMeshApp::BuildBoneVerts(VVERTEX& vVerts, VUSHORT& vIndis, float fTime, IOE
 	{
 		BuildBoneVerts(vVerts, vIndis, fTime, pBone->GetChild(i), matWorld, nSelfIndex);
 	}
+}
+
+void CMeshApp::BindInitializePose(IOEMesh* pMesh)
+{
+	int nNumBones = pMesh->GetNumBones();
+	std::vector<CMatrix4x4> vBones;
+	std::vector<CMatrix4x4> vBonesOffset;
+	vBones.resize(nNumBones);
+	vBonesOffset.resize(nNumBones);
+
+	for (int i = 0; i < nNumBones; ++i)
+	{
+		IOEMeshBone* pBone = pMesh->GetBone(i);
+		IOEMeshBone* pBoneParent = pBone->GetParent();
+		if (pBoneParent)
+		{
+			CMatrix4x4 matLocal = pBone->GetLocalMatrix() * vBones[pBoneParent->GetID()];
+			vBones[i] = matLocal;
+		}
+		else
+		{
+			vBones[i] = pBone->GetLocalMatrix();
+		}
+
+		vBonesOffset[i] = vBones[i] * vBones[i];
+	}
+
+	//IOEMeshPiece* pPiece = pMesh->GetPiece(0);
+	//int nNumVerts = pPiece->GetNumVerts();
+	//VERTEX_PIECE* pCurrVert = (VERTEX_PIECE*)pPiece->GetVerts();
+	//for (int i = 0; i < nNumVerts; ++i)
+	//{
+	//	int nBoneIndex = pCurrVert[i].nBoneIndex[0];
+
+	//	//if (nBoneIndex == 0)
+	//	//{
+	//		CVector3 vPos;
+	//		vPos.x = pCurrVert[i].x;
+	//		vPos.y = pCurrVert[i].y;
+	//		vPos.z = pCurrVert[i].z;
+
+	//		//vPos = vPos * vBonesOffset[nBoneIndex];
+	//		COEMath::InverseTranslateVector(vPos, vBones[nBoneIndex]);
+	//		COEMath::InverseRotateVector(vPos, vBones[nBoneIndex]);
+
+	//		pCurrVert[i].x = vPos.x;
+	//		pCurrVert[i].y = vPos.y;
+	//		pCurrVert[i].z = vPos.z;
+	//	//}
+	//}
 }

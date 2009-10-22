@@ -44,6 +44,9 @@ public:
 	static void SetMatrixScale(CMatrix4x4& matOut, const CVector3& vScale);
 	static void GetMatrixScale(CVector3& vScaleOut, const CMatrix4x4& matIn);
 
+	static void InverseTranslateVector(CVector3& vInOut, const CMatrix4x4& matIn);
+	static void InverseRotateVector(CVector3& vInOut, const CMatrix4x4& matIn);
+
 	static float Max(float a, float b);
 	static float Min(float a, float b);
 };

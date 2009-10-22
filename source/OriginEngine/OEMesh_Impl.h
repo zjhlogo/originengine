@@ -38,7 +38,7 @@ private:
 	void Init();
 	void Destroy();
 
-	bool Create(const tstring& strFileName);
+	bool Create(const tstring& strFile);
 
 private:
 	VMESH_PIECE m_vPiece;
