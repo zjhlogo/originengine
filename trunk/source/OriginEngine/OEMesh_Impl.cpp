@@ -85,9 +85,9 @@ IOEMeshBone* COEMesh_Impl::FindBone(const tstring& strName) const
 	return NULL;
 }
 
-bool COEMesh_Impl::Create(const tstring& strFileName)
+bool COEMesh_Impl::Create(const tstring& strFile)
 {
-	IOEFile* pFile = g_pOEFileMgr->OpenFile(strFileName);
+	IOEFile* pFile = g_pOEFileMgr->OpenFile(strFile);
 	if (!pFile) return false;
 
 	COEFmtMesh::FILE_HEADER Header;

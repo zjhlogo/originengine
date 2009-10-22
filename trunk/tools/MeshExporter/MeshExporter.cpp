@@ -217,37 +217,37 @@ bool CMeshExporter::SaveToFile(const tstring& strFileName)
 	IOEFile* pFile = g_pOEFileMgr->OpenFile(strFileName, IOEFile::OFF_WRITE);
 	if (!pFile) return false;
 
-	int nNumMesh = (int)m_vSkinMesh.size();
-	int nNumBone = (int)m_vBoneInfo.size();
+	int nNumMeshes = (int)m_vSkinMesh.size();
+	int nNumBones = (int)m_vBoneInfo.size();
 
 	// write header
 	COEFmtMesh::FILE_HEADER Header;
 	Header.nMagicNumber = COEFmtMesh::MAGIC_NUMBER;
 	Header.nVersion = COEFmtMesh::CURRENT_VERSION;
-	Header.nNumPieces = nNumMesh;
-	Header.nNumBones = nNumBone;
+	Header.nNumPieces = nNumMeshes;
+	Header.nNumBones = nNumBones;
 	pFile->Write(&Header, sizeof(Header));
 
 	// make room for piece list
 	uint nPieceListPos = pFile->Tell();
 	std::vector<COEFmtMesh::PIECE> vPiece;
-	if (nNumMesh > 0)
+	if (nNumMeshes > 0)
 	{
-		vPiece.resize(nNumMesh);
-		pFile->Write(&vPiece[0], sizeof(COEFmtMesh::PIECE)*nNumMesh);
+		vPiece.resize(nNumMeshes);
+		pFile->Write(&vPiece[0], sizeof(COEFmtMesh::PIECE)*nNumMeshes);
 	}
 
 	// make room for bone list
 	uint nBoneListPos = pFile->Tell();
 	std::vector<COEFmtMesh::BONE> vBone;
-	if (nNumBone > 0)
+	if (nNumBones > 0)
 	{
-		vBone.resize(nNumBone);
-		pFile->Write(&vBone[0], sizeof(COEFmtMesh::BONE)*nNumBone);
+		vBone.resize(nNumBones);
+		pFile->Write(&vBone[0], sizeof(COEFmtMesh::BONE)*nNumBones);
 	}
 
 	// write mesh
-	for (int i = 0; i < nNumMesh; ++i)
+	for (int i = 0; i < nNumMeshes; ++i)
 	{
 		std::string strName;
 		COEOS::tchar2char(strName, m_vSkinMesh[i].strName.c_str());
@@ -314,7 +314,7 @@ bool CMeshExporter::SaveToFile(const tstring& strFileName)
 	}
 
 	// write bone data
-	for (int i = 0; i < nNumBone; ++i)
+	for (int i = 0; i < nNumBones; ++i)
 	{
 		// bone list info
 		std::string strName;
@@ -349,16 +349,16 @@ bool CMeshExporter::SaveToFile(const tstring& strFileName)
 
 	// write true piece list
 	pFile->Seek(nPieceListPos);
-	if (nNumMesh > 0)
+	if (nNumMeshes > 0)
 	{
-		pFile->Write(&vPiece[0], sizeof(COEFmtMesh::PIECE)*nNumMesh);
+		pFile->Write(&vPiece[0], sizeof(COEFmtMesh::PIECE)*nNumMeshes);
 	}
 
 	// write true bone list
 	pFile->Seek(nBoneListPos);
-	if (nNumBone > 0)
+	if (nNumBones > 0)
 	{
-		pFile->Write(&vBone[0], sizeof(COEFmtMesh::BONE)*nNumBone);
+		pFile->Write(&vBone[0], sizeof(COEFmtMesh::BONE)*nNumBones);
 	}
 
 	SAFE_RELEASE(pFile);

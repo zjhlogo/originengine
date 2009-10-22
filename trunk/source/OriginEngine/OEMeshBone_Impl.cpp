@@ -57,6 +57,11 @@ const CMatrix4x4& COEMeshBone_Impl::GetLocalMatrix() const
 	return m_matLocal;
 }
 
+const CMatrix4x4& COEMeshBone_Impl::GetWorldMatrix() const
+{
+	return m_matWorld;
+}
+
 int COEMeshBone_Impl::GetFrameCount() const
 {
 	return (int)m_vFrame.size();
@@ -163,7 +168,11 @@ void COEMeshBone_Impl::SetParent(COEMeshBone_Impl* pParent)
 
 	if (m_pParent) m_pParent->RemoveChild(this);
 	m_pParent = pParent;
-	if (m_pParent) m_pParent->AddChild(this);
+	if (m_pParent)
+	{
+		m_pParent->AddChild(this);
+		m_matWorld *= m_pParent->GetWorldMatrix();
+	}
 }
 
 void COEMeshBone_Impl::AddChild(COEMeshBone_Impl* pChild)
@@ -206,6 +215,8 @@ bool COEMeshBone_Impl::Create(const COEFmtMesh::BONE& Bone, int nID, IOEFile* pF
 	COEMath::BuildMatrixFromQuaternion(m_matLocal, m_vRot);
 	COEMath::SetMatrixTranslation(m_matLocal, m_vPos);
 	COEMath::SetMatrixScale(m_matLocal, m_vScale);
+
+	m_matWorld = m_matLocal;
 
 	pFile->Seek(Bone.nOffBoneFrame);
 	m_vFrame.clear();

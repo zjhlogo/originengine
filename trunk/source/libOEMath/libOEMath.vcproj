@@ -329,6 +329,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\include\OEMath\OEMath.inl"
+				>
+			</File>
+			<File
 				RelativePath="..\..\include\OEMath\Quaternion.inl"
 				>
 			</File>

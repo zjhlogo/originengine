@@ -30,6 +30,14 @@ public:
 		uint nColor;
 	} VERTEX;
 
+	typedef struct VERTEX_PIECE_tag
+	{
+		float x, y, z;
+		float u, v;
+		int nBoneIndex[4];
+		float fBoneWeight[4];
+	} VERTEX_PIECE;
+
 	typedef std::vector<VERTEX> VVERTEX;
 	typedef std::vector<ushort> VUSHORT;
 	typedef std::vector<CMatrix4x4> TV_MATRIX;
@@ -59,6 +67,8 @@ private:
 
 	void RebuildBoneVerts(float fTime);
 	void BuildBoneVerts(VVERTEX& vVerts, VUSHORT& vIndis, float fTime, IOEMeshBone* pBone, const CMatrix4x4& matParent, int nParentVertIndex);
+
+	void BindInitializePose(IOEMesh* pMesh);
 
 private:
 	CCamera* m_pCamera;

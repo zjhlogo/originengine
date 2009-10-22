@@ -31,6 +31,7 @@ public:
 
 	virtual float GetTimeLength() const;
 	virtual const CMatrix4x4& GetLocalMatrix() const;
+	virtual const CMatrix4x4& GetWorldMatrix() const;
 
 	virtual int GetFrameCount() const;
 	virtual const BONE_FRAME* GetFrame(int nIndex) const;
@@ -67,6 +68,7 @@ private:
 	CQuaternion m_vRot;
 
 	CMatrix4x4 m_matLocal;
+	CMatrix4x4 m_matWorld;
 
 	VBONE_FRAME m_vFrame;
 
