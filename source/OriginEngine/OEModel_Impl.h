@@ -9,8 +9,9 @@
 #define __OEMODEL_IMPL_H__
 
 #include <IOEModel.h>
-
-#include <IOEMesh.h>
+#include <IOEShader.h>
+#include <IOETexture.h>
+#include <IOEXmlNode.h>
 
 #include <vector>
 #include <map>
@@ -18,10 +19,23 @@
 class COEModel_Impl : public IOEModel
 {
 public:
-	typedef std::vector<CMatrix4x4> VMATRIX;
+	typedef struct MATERIAL_tag
+	{
+		int nID;
+		int nVertDecl;
+		tstring strShaderFile;
+		tstring strTextureFile;
+		IOEShader* pShader;
+		IOETexture* pTexture;
+		// TODO: some additional parameter
+	} MATERIAL;
+
+	typedef std::vector<MATERIAL> TV_MATERIAL;
+
+	typedef std::vector<CMatrix4x4> TV_MATRIX;
 
 public:
-	COEModel_Impl(const tstring& strFileName);
+	COEModel_Impl(const tstring& strFile);
 	virtual ~COEModel_Impl();
 
 	virtual void Update(float fDetailTime);
@@ -34,13 +48,21 @@ public:
 private:
 	void Init();
 	void Destroy();
+	void ClearMaterials();
 
-	bool Create(const tstring& strFileName);
+	bool Create(const tstring& strFile);
+	bool CreateMesh(IOEXmlNode* pXmlMesh);
+	bool CreateMaterials(IOEXmlNode* pXmlMaterials);
+
+	IOEShader* CreateShader(int nVertDecl, const tstring& strShaderFile);
 
 private:
 	IOEMesh* m_pMesh;
-	VMATRIX m_vmatSkin;
+
+	TV_MATRIX m_vmatSkin;
 	float m_fTotalTime;
+
+	TV_MATERIAL m_vMaterial;
 
 };
 

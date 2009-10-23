@@ -384,6 +384,7 @@ bool CMeshExporter::DumpSkinMesh(SKIN_MESH& SkinMeshOut, IGameNode* pGameNode)
 	EmptyVertex.tex.Set(0.0f, 0.0f);
 	EmptyVertex.Skins.clear();
 
+	// make room for verts
 	for (int i = 0; i < nNumVerts; ++i)
 	{
 		SkinMeshOut.vVerts.push_back(EmptyVertex);
@@ -430,7 +431,7 @@ bool CMeshExporter::DumpSkinMesh(SKIN_MESH& SkinMeshOut, IGameNode* pGameNode)
 	{
 		VERTEX& LocalVert = SkinMeshOut.vVerts[i];
 
-		pGameMesh->GetVertex(LocalVert.Slot.nVertIndex, LocalVert.pos, true);
+		pGameMesh->GetVertex(LocalVert.Slot.nVertIndex, LocalVert.pos, false);
 		pGameMesh->GetTexVertex(LocalVert.Slot.nTexIndex, LocalVert.tex);
 		LocalVert.tex.y += 1.0f;
 	}

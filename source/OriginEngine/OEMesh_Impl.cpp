@@ -28,16 +28,16 @@ void COEMesh_Impl::Init()
 
 void COEMesh_Impl::Destroy()
 {
-	for (VMESH_PIECE::iterator it = m_vPiece.begin(); it != m_vPiece.end(); ++it)
+	for (TV_PIECE::iterator it = m_vPiece.begin(); it != m_vPiece.end(); ++it)
 	{
-		IOEMeshPiece* pMeshPiece = (*it);
+		IOEPiece* pMeshPiece = (*it);
 		SAFE_RELEASE(pMeshPiece);
 	}
 	m_vPiece.clear();
 
-	for (VMESH_BONE::iterator it = m_vBone.begin(); it != m_vBone.end(); ++it)
+	for (TV_BONE::iterator it = m_vBone.begin(); it != m_vBone.end(); ++it)
 	{
-		IOEMeshBone* pMeshBone = (*it);
+		IOEBone* pMeshBone = (*it);
 		SAFE_RELEASE(pMeshBone);
 	}
 	m_vBone.clear();
@@ -48,15 +48,15 @@ int COEMesh_Impl::GetNumPieces() const
 	return (int)m_vPiece.size();
 }
 
-IOEMeshPiece* COEMesh_Impl::GetPiece(int nIndex) const
+IOEPiece* COEMesh_Impl::GetPiece(int nIndex) const
 {
 	if (nIndex < 0 || nIndex >= (int)m_vPiece.size()) return NULL;
 	return m_vPiece[nIndex];
 }
 
-IOEMeshPiece* COEMesh_Impl::FindPiece(const tstring& strName) const
+IOEPiece* COEMesh_Impl::FindPiece(const tstring& strName) const
 {
-	for (VMESH_PIECE::const_iterator it = m_vPiece.begin(); it != m_vPiece.end(); ++it)
+	for (TV_PIECE::const_iterator it = m_vPiece.begin(); it != m_vPiece.end(); ++it)
 	{
 		if ((*it)->GetName() == strName) return (*it);
 	}
@@ -69,15 +69,15 @@ int COEMesh_Impl::GetNumBones() const
 	return (int)m_vBone.size();
 }
 
-IOEMeshBone* COEMesh_Impl::GetBone(int nIndex) const
+IOEBone* COEMesh_Impl::GetBone(int nIndex) const
 {
 	if (nIndex < 0 || nIndex >= (int)m_vBone.size()) return NULL;
 	return m_vBone[nIndex];
 }
 
-IOEMeshBone* COEMesh_Impl::FindBone(const tstring& strName) const
+IOEBone* COEMesh_Impl::FindBone(const tstring& strName) const
 {
-	for (VMESH_BONE::const_iterator it = m_vBone.begin(); it != m_vBone.end(); ++it)
+	for (TV_BONE::const_iterator it = m_vBone.begin(); it != m_vBone.end(); ++it)
 	{
 		if ((*it)->GetName() == strName) return (*it);
 	}
@@ -119,7 +119,7 @@ bool COEMesh_Impl::Create(const tstring& strFile)
 	// create pieces
 	for (int i = 0; i < Header.nNumPieces; ++i)
 	{
-		COEMeshPiece_Impl* pMeshPiece = new COEMeshPiece_Impl(vPieces[i], pFile);
+		COEPiece_Impl* pMeshPiece = new COEPiece_Impl(vPieces[i], pFile);
 		if (!pMeshPiece || !pMeshPiece->IsOK())
 		{
 			SAFE_RELEASE(pMeshPiece);
@@ -131,7 +131,7 @@ bool COEMesh_Impl::Create(const tstring& strFile)
 	// create bones
 	for (int i = 0; i < Header.nNumBones; ++i)
 	{
-		COEMeshBone_Impl* pMeshBone = new COEMeshBone_Impl(vBones[i], i, pFile);
+		COEBone_Impl* pMeshBone = new COEBone_Impl(vBones[i], i, pFile);
 		if (!pMeshBone || !pMeshBone->IsOK())
 		{
 			SAFE_RELEASE(pMeshBone);
@@ -157,7 +157,7 @@ bool COEMesh_Impl::Create(const tstring& strFile)
 	return true;
 }
 
-IOEMeshBone* COEMesh_Impl::GetRootBone() const
+IOEBone* COEMesh_Impl::GetRootBone() const
 {
 	if (m_vBone.empty()) return NULL;
 	return m_vBone[0];

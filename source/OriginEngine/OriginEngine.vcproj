@@ -331,7 +331,7 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\AnimationTracker.cpp"
+				RelativePath=".\OEBone_Impl.cpp"
 				>
 			</File>
 			<File
@@ -347,15 +347,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\OEMeshBone_Impl.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\OEMeshMgr_Impl.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\OEMeshPiece_Impl.cpp"
 				>
 			</File>
 			<File
@@ -370,6 +362,10 @@
 				RelativePath=".\OEModule.cpp"
 				>
 			</File>
+			<File
+				RelativePath=".\OEPiece_Impl.cpp"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -377,7 +373,7 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath=".\AnimationTracker.h"
+				RelativePath=".\OEBone_Impl.h"
 				>
 			</File>
 			<File
@@ -393,15 +389,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\OEMeshBone_Impl.h"
-				>
-			</File>
-			<File
 				RelativePath=".\OEMeshMgr_Impl.h"
-				>
-			</File>
-			<File
-				RelativePath=".\OEMeshPiece_Impl.h"
 				>
 			</File>
 			<File
@@ -416,12 +404,20 @@
 				RelativePath=".\OEModule.h"
 				>
 			</File>
+			<File
+				RelativePath=".\OEPiece_Impl.h"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="SDK Header Files"
 			>
 			<File
 				RelativePath="..\..\include\IOEApp.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\include\IOEBone.h"
 				>
 			</File>
 			<File
@@ -441,15 +437,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\include\IOEMeshBone.h"
-				>
-			</File>
-			<File
 				RelativePath="..\..\include\IOEMeshMgr.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\include\IOEMeshPiece.h"
 				>
 			</File>
 			<File
@@ -462,6 +450,10 @@
 			</File>
 			<File
 				RelativePath="..\..\include\IOEObject.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\include\IOEPiece.h"
 				>
 			</File>
 			<File

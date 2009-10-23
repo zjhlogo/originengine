@@ -17,6 +17,8 @@ public:
 	virtual ~COEXmlMgr_Impl();
 
 	virtual IOEXmlDocument* CreateDocument();
+	virtual IOEXmlDocument* CreateDocument(const tstring& strFile);
+
 	virtual IOEXmlNode* CreateNode(const tstring& strName);
 	virtual IOEXmlAttribute* CreateAttribute(const tstring& strName);
 

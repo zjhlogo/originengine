@@ -55,7 +55,7 @@ public:
 		uint nPieceMask;				// see PIECE_MASK
 		uint nVertexDataMask;			// see VERTEX_DATA_MASK
 
-		int nMaterialID;				// see material.xml
+		int nMaterialID;				// see material id
 
 		int nNumVerts;
 		uint nOffVerts;					// sizeof(VERTEX)*nNumVerts

@@ -1,25 +1,28 @@
 /*!
- * \file OEMeshPiece_Impl.h
- * \date 8-8-2009 21:29:42
+ * \file OEPiece_Impl.h
+ * \date 10-23-2009 13:59:49
  * 
  * 
  * \author zjhlogo (zjhlogo@163.com)
  */
-#ifndef __OEMESHPIECE_IMPL_H__
-#define __OEMESHPIECE_IMPL_H__
+#ifndef __OEPIECE_IMPL_H__
+#define __OEPIECE_IMPL_H__
 
-#include <IOEMeshPiece.h>
+#include <IOEPiece.h>
 #include <IOEFile.h>
-#include <IOEVertDecl.h>
 #include <OEFmtMesh.h>
 
-class COEMeshPiece_Impl : public IOEMeshPiece
+class COEPiece_Impl : public IOEPiece
 {
 public:
-	COEMeshPiece_Impl(const COEFmtMesh::PIECE& Piece, IOEFile* pFile);
-	virtual ~COEMeshPiece_Impl();
+	COEPiece_Impl(const COEFmtMesh::PIECE& Piece, IOEFile* pFile);
+	virtual ~COEPiece_Impl();
 
 	virtual const tstring& GetName() const;
+
+	virtual int GetMaterialID() const;
+	virtual int GetVertDecl() const;
+
 	virtual int GetNumVerts() const;
 	virtual int GetNumIndis() const;
 	virtual void* GetVerts() const;
@@ -30,11 +33,11 @@ private:
 	void Destroy();
 
 	bool Create(const COEFmtMesh::PIECE& Piece, IOEFile* pFile);
-	bool CreateVertDecl(uint nVertexDataMask);
 
 private:
 	tstring m_strName;
-	IOEVertDecl* m_pDecl;
+	int m_nMaterialID;
+	int m_nVertDecl;
 
 	int m_nVerts;
 	int m_nIndis;
@@ -42,5 +45,4 @@ private:
 	ushort* m_pIndis;
 
 };
-
-#endif // __OEMESHPIECE_IMPL_H__
+#endif // __OEPIECE_IMPL_H__

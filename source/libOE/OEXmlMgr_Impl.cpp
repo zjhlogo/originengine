@@ -48,6 +48,21 @@ IOEXmlDocument* COEXmlMgr_Impl::CreateDocument()
 	return pXmlDocument;
 }
 
+IOEXmlDocument* COEXmlMgr_Impl::CreateDocument(const tstring& strFile)
+{
+	IOEXmlDocument* pXmlDocument = CreateDocument();
+	if (!pXmlDocument) return NULL;
+
+	if (!pXmlDocument->LoadFile(strFile))
+	{
+		SAFE_RELEASE(pXmlDocument);
+		LOGOUT(t("IOEXmlMgr::CreateDocument Load File Failed"));
+		return NULL;
+	}
+
+	return pXmlDocument;
+}
+
 IOEXmlNode* COEXmlMgr_Impl::CreateNode(const tstring& strName)
 {
 	COEXmlNode_Impl *pXmlNode = new COEXmlNode_Impl(strName);

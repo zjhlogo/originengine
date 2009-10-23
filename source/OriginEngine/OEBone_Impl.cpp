@@ -1,83 +1,83 @@
 /*!
- * \file OEMeshBone_Impl.cpp
- * \date 8-8-2009 22:04:13
+ * \file OEBone_Impl.cpp
+ * \date 10-23-2009 13:56:31
  * 
  * 
  * \author zjhlogo (zjhlogo@163.com)
  */
-#include "OEMeshBone_Impl.h"
+#include "OEBone_Impl.h"
 #include <OEOS.h>
 
-COEMeshBone_Impl::COEMeshBone_Impl(const COEFmtMesh::BONE& Bone, int nID, IOEFile* pFile)
+COEBone_Impl::COEBone_Impl(const COEFmtMesh::BONE& Bone, int nID, IOEFile* pFile)
 {
 	Init();
 	m_bOK = Create(Bone, nID, pFile);
 }
 
-COEMeshBone_Impl::~COEMeshBone_Impl()
+COEBone_Impl::~COEBone_Impl()
 {
 	Destroy();
 }
 
-void COEMeshBone_Impl::Init()
+void COEBone_Impl::Init()
 {
 	m_nID = COEFmtMesh::INVALID_BONE_ID;
 	m_nParentID = COEFmtMesh::INVALID_BONE_ID;
 	m_fTimeLength = 0.0f;
 }
 
-void COEMeshBone_Impl::Destroy()
+void COEBone_Impl::Destroy()
 {
 	m_vFrame.clear();
 }
 
-const tstring& COEMeshBone_Impl::GetName() const
+const tstring& COEBone_Impl::GetName() const
 {
 	return m_strName;
 }
 
-int COEMeshBone_Impl::GetID() const
+int COEBone_Impl::GetID() const
 {
 	return m_nID;
 }
 
-int COEMeshBone_Impl::GetParentID() const
+int COEBone_Impl::GetParentID() const
 {
 	return m_nParentID;
 }
 
-float COEMeshBone_Impl::GetTimeLength() const
+float COEBone_Impl::GetTimeLength() const
 {
 	return m_fTimeLength;
 }
 
-const CMatrix4x4& COEMeshBone_Impl::GetLocalMatrix() const
+const CMatrix4x4& COEBone_Impl::GetLocalMatrix() const
 {
 	return m_matLocal;
 }
 
-const CMatrix4x4& COEMeshBone_Impl::GetWorldMatrix() const
+const CMatrix4x4& COEBone_Impl::GetWorldMatrix() const
 {
 	return m_matWorld;
 }
 
-const CMatrix4x4& COEMeshBone_Impl::GetWorldMatrixInv() const
+const CMatrix4x4& COEBone_Impl::GetWorldMatrixInv() const
 {
 	return m_matWorldInv;
 }
 
-int COEMeshBone_Impl::GetFrameCount() const
+int COEBone_Impl::GetFrameCount() const
 {
 	return (int)m_vFrame.size();
 }
 
-const IOEMeshBone::BONE_FRAME* COEMeshBone_Impl::GetFrame(int nIndex) const
+const IOEBone::BONE_FRAME* COEBone_Impl::GetFrame(int nIndex) const
 {
 	if (nIndex < 0 || nIndex >= (int)m_vFrame.size()) return NULL;
 	return &m_vFrame[nIndex];
 }
 
-bool COEMeshBone_Impl::SlerpMatrix(CMatrix4x4& matOut, float fTime, bool bLoop /*= true*/)
+bool COEBone_Impl::SlerpMatrix(CMatrix4x4& matOut, float fTime, bool bLoop /*= true*/)
 {
 	int nFrameCount = (int)m_vFrame.size();
 	if (nFrameCount <= 0)
@@ -150,13 +150,13 @@ bool COEMeshBone_Impl::SlerpMatrix(CMatrix4x4& matOut, float fTime, bool bLoop /
 	return true;
 }
 
-void COEMeshBone_Impl::SetWorldMatrix(const CMatrix4x4& matWorld)
+void COEBone_Impl::SetWorldMatrix(const CMatrix4x4& matWorld)
 {
 	m_matWorld = matWorld;
 	m_matWorldInv = m_matWorld.Inverse();
 }
 
-bool COEMeshBone_Impl::Create(const COEFmtMesh::BONE& Bone, int nID, IOEFile* pFile)
+bool COEBone_Impl::Create(const COEFmtMesh::BONE& Bone, int nID, IOEFile* pFile)
 {
 	COEOS::char2tchar(m_strName, Bone.szName);
 	m_nID = nID;
