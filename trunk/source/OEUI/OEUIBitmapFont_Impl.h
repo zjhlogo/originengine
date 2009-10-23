@@ -24,7 +24,7 @@ public:
 	typedef std::vector<IOETexture*> VOETEXTURE;
 
 public:
-	COEUIBitmapFont_Impl(const tstring& strFileName);
+	COEUIBitmapFont_Impl(const tstring& strFile);
 	virtual ~COEUIBitmapFont_Impl();
 
 	virtual float GetLineHeight() const;
@@ -35,7 +35,7 @@ private:
 	void Init();
 	void Destroy();
 
-	bool Create(const tstring& strFileName);
+	bool Create(const tstring& strFile);
 
 	bool ParseCommonInfo(IOEXmlNode* pCommonNode);
 

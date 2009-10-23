@@ -1,28 +1,27 @@
 /*!
- * \file OEMeshBone_Impl.h
- * \date 8-8-2009 22:03:21
+ * \file OEBone_Impl.h
+ * \date 10-23-2009 13:56:24
  * 
  * 
  * \author zjhlogo (zjhlogo@163.com)
  */
-#ifndef __OEMESHBONE_IMPL_H__
-#define __OEMESHBONE_IMPL_H__
+#ifndef __OEBONE_IMPL_H__
+#define __OEBONE_IMPL_H__
 
-#include <IOEMeshBone.h>
-
+#include <IOEBone.h>
 #include <IOEFile.h>
 #include <OEFmtMesh.h>
 
 #include <vector>
 
-class COEMeshBone_Impl : public IOEMeshBone
+class COEBone_Impl : public IOEBone
 {
 public:
 	typedef std::vector<BONE_FRAME> VBONE_FRAME;
 
 public:
-	COEMeshBone_Impl(const COEFmtMesh::BONE& Bone, int nID, IOEFile* pFile);
-	virtual ~COEMeshBone_Impl();
+	COEBone_Impl(const COEFmtMesh::BONE& Bone, int nID, IOEFile* pFile);
+	virtual ~COEBone_Impl();
 
 	virtual const tstring& GetName() const;
 	virtual int GetID() const;
@@ -59,5 +58,4 @@ private:
 	VBONE_FRAME m_vFrame;
 
 };
-
-#endif // __OEMESHBONE_IMPL_H__
+#endif // __OEBONE_IMPL_H__

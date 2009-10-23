@@ -1,27 +1,30 @@
 /*!
- * \file IOEMeshPiece.h
- * \date 8-8-2009 21:26:31
+ * \file IOEPiece.h
+ * \date 10-23-2009 13:59:28
  * 
  * 
  * \author zjhlogo (zjhlogo@163.com)
  */
-#ifndef __IOEMESHPIECE_H__
-#define __IOEMESHPIECE_H__
+#ifndef __IOEPIECE_H__
+#define __IOEPIECE_H__
 
 #include "IOEObject.h"
 
-class IOEMeshPiece : public IOEObject
+class IOEPiece : public IOEObject
 {
 public:
-	IOEMeshPiece() {};
-	virtual ~IOEMeshPiece() {};
+	IOEPiece() {};
+	virtual ~IOEPiece() {};
 
 	virtual const tstring& GetName() const = 0;
+
+	virtual int GetMaterialID() const = 0;
+	virtual int GetVertDecl() const = 0;
+
 	virtual int GetNumVerts() const = 0;
 	virtual int GetNumIndis() const = 0;
 	virtual void* GetVerts() const = 0;
 	virtual ushort* GetIndis() const = 0;
 
 };
-
-#endif // __IOEMESHPIECE_H__
+#endif // __IOEPIECE_H__

@@ -12,10 +12,10 @@
 #include <IOEXmlMgr.h>
 #include <IOETextureMgr.h>
 
-COEUIBitmapFont_Impl::COEUIBitmapFont_Impl(const tstring& strFileName)
+COEUIBitmapFont_Impl::COEUIBitmapFont_Impl(const tstring& strFile)
 {
 	Init();
-	m_bOK = Create(strFileName);
+	m_bOK = Create(strFile);
 }
 
 COEUIBitmapFont_Impl::~COEUIBitmapFont_Impl()
@@ -66,12 +66,10 @@ float COEUIBitmapFont_Impl::GetKerning(int nFirstID, int nSecondID) const
 	return 0.0f;
 }
 
-bool COEUIBitmapFont_Impl::Create(const tstring& strFileName)
+bool COEUIBitmapFont_Impl::Create(const tstring& strFile)
 {
-	m_pXmlDocument = g_pOEXmlMgr->CreateDocument();
+	m_pXmlDocument = g_pOEXmlMgr->CreateDocument(strFile);
 	if (!m_pXmlDocument) return false;
-
-	if (!m_pXmlDocument->LoadFile(strFileName)) return false;
 
 	IOEXmlNode* pRootNode = m_pXmlDocument->GetRootNode();
 	if (!pRootNode || pRootNode->GetName() != t("font")) return false;

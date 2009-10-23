@@ -20,6 +20,7 @@ public:
 	virtual ~IOEXmlMgr() {};
 
 	virtual IOEXmlDocument* CreateDocument() = 0;
+	virtual IOEXmlDocument* CreateDocument(const tstring& strFile) = 0;
 	virtual IOEXmlNode* CreateNode(const tstring& strName) = 0;
 	virtual IOEXmlAttribute* CreateAttribute(const tstring& strName) = 0;
 

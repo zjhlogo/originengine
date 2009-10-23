@@ -93,7 +93,11 @@ bool COEConfigFileMgr_Impl::GetValue(tstring& strValue, const tstring& strParamN
 
 bool COEConfigFileMgr_Impl::LoadConfigFile(const tstring& strFileName)
 {
-	if (!m_pXmlDocument) m_pXmlDocument = g_pOEXmlMgr->CreateDocument();
+	if (!m_pXmlDocument)
+	{
+		m_pXmlDocument = g_pOEXmlMgr->CreateDocument(strFileName);
+		if (!m_pXmlDocument) return false;
+	}
 
-	return m_pXmlDocument->LoadFile(strFileName);
+	return true;
 }
