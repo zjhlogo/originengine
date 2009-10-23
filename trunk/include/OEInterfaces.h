@@ -20,6 +20,7 @@
 #include "IOECore.h"
 #include "IOEConfigFileMgr.h"
 #include "IOEMeshMgr.h"
+#include "IOEModelMgr.h"
 
 // äÖÈ¾Ä£¿é
 #include "IOEDevice.h"

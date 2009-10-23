@@ -7,6 +7,7 @@
  */
 #include "OEModel_Impl.h"
 #include <IOEMeshMgr.h>
+#include <OEFmtMesh.h>
 
 COEModel_Impl::COEModel_Impl(const tstring& strFileName)
 {
@@ -22,28 +23,62 @@ COEModel_Impl::~COEModel_Impl()
 void COEModel_Impl::Init()
 {
 	m_pMesh = NULL;
-	m_pRootTracker = NULL;
+	m_fTotalTime = 0.0f;
 }
 
 void COEModel_Impl::Destroy()
 {
-	SAFE_RELEASE(m_pMesh);
-	for (TRACKER_MAP::iterator it = m_vTrackerMap.begin(); it != m_vTrackerMap.end(); ++it)
-	{
-		CAnimationTracker* pTracker = it->second;
-		SAFE_DELETE(pTracker);
-	}
-	m_vTrackerMap.clear();
+	// TODO: 
 }
 
 void COEModel_Impl::Update(float fDetailTime)
 {
-	m_pRootTracker->Update(fDetailTime);
+	m_fTotalTime += fDetailTime;
+
+	CMatrix4x4 matAnim;
+	int nNumBones = m_pMesh->GetNumBones();
+	for (int i = 0; i < nNumBones; ++i)
+	{
+		IOEMeshBone* pMeshBone = m_pMesh->GetBone(i);
+
+		pMeshBone->SlerpMatrix(matAnim, m_fTotalTime);
+		const CMatrix4x4& matLocal = pMeshBone->GetLocalMatrix();
+
+		m_vmatSkin[i] = matAnim * matLocal;
+
+		int nParentID = pMeshBone->GetParentID();
+		if (nParentID != COEFmtMesh::INVALID_BONE_ID)
+		{
+			m_vmatSkin[i] *= m_vmatSkin[nParentID];
+		}
+	}
+
+	for (int i = 0; i < nNumBones; ++i)
+	{
+		IOEMeshBone* pMeshBone = m_pMesh->GetBone(i);
+		m_vmatSkin[i] = pMeshBone->GetWorldMatrixInv() * m_vmatSkin[i];
+	}
 }
 
 void COEModel_Impl::Render(float fDetailTime)
 {
 	// TODO: 
+}
+
+IOEMesh* COEModel_Impl::GetMesh()
+{
+	return m_pMesh;
+}
+
+int COEModel_Impl::GetNumMatrixPalette()
+{
+	return m_vmatSkin.size();
+}
+
+CMatrix4x4* COEModel_Impl::GetMatrixPalette()
+{
+	if (m_vmatSkin.empty()) return NULL;
+	return &m_vmatSkin[0];
 }
 
 bool COEModel_Impl::Create(const tstring& strFileName)
@@ -54,55 +89,8 @@ bool COEModel_Impl::Create(const tstring& strFileName)
 	IOEMeshBone* pRootBone = m_pMesh->GetRootBone();
 	if (!pRootBone) return true;
 
-	int nTotalCount = CalculateBoneCount(pRootBone);
-	m_vmatTransformed.resize(nTotalCount);
-
-	m_pRootTracker = LoopCreateTracker(pRootBone, NULL);
+	int nNumBones = m_pMesh->GetNumBones();
+	m_vmatSkin.resize(nNumBones);
 
 	return true;
-}
-
-int COEModel_Impl::CalculateBoneCount(IOEMeshBone* pBone)
-{
-	int nTotalBoneCount = 1;
-
-	int nNumChildren = pBone->GetNumChildren();
-	for (int i = 0; i < nNumChildren; ++i)
-	{
-		IOEMeshBone* pChildBone = pBone->GetChild(i);
-		nTotalBoneCount += CalculateBoneCount(pChildBone);
-	}
-
-	return nTotalBoneCount;
-}
-
-CAnimationTracker* COEModel_Impl::LoopCreateTracker(IOEMeshBone* pBone, CAnimationTracker* pParentTracker /*= NULL*/)
-{
-	CAnimationTracker* pTracker = CreateTracker(pBone, pParentTracker);
-	if (!pTracker) return NULL;
-
-	int nNumChildren = pBone->GetNumChildren();
-	for (int i = 0; i < nNumChildren; ++i)
-	{
-		IOEMeshBone* pChildBone = pBone->GetChild(i);
-		CAnimationTracker* pChildTracker = LoopCreateTracker(pChildBone, pTracker);
-		if (!pChildTracker) return NULL;
-	}
-
-	return pTracker;
-}
-
-CAnimationTracker* COEModel_Impl::CreateTracker(IOEMeshBone* pBone, CAnimationTracker* pParentTracker /*= NULL*/)
-{
-	int nIndex = pBone->GetID();
-
-	CAnimationTracker* pTracker = new CAnimationTracker(pBone, &m_vmatTransformed[nIndex], pParentTracker);
-	if (!pTracker || !pTracker->IsOK())
-	{
-		SAFE_DELETE(pTracker);
-		return NULL;
-	}
-
-	m_vTrackerMap.insert(std::make_pair(pBone->GetID(), pTracker));
-	return pTracker;
 }

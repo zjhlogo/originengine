@@ -23,7 +23,6 @@ void COEMeshBone_Impl::Init()
 {
 	m_nID = COEFmtMesh::INVALID_BONE_ID;
 	m_nParentID = COEFmtMesh::INVALID_BONE_ID;
-	m_pParent = NULL;
 	m_fTimeLength = 0.0f;
 }
 
@@ -42,9 +41,9 @@ int COEMeshBone_Impl::GetID() const
 	return m_nID;
 }
 
-IOEMeshBone* COEMeshBone_Impl::GetParent() const
+int COEMeshBone_Impl::GetParentID() const
 {
-	return m_pParent;
+	return m_nParentID;
 }
 
 float COEMeshBone_Impl::GetTimeLength() const
@@ -62,6 +61,11 @@ const CMatrix4x4& COEMeshBone_Impl::GetWorldMatrix() const
 	return m_matWorld;
 }
 
+const CMatrix4x4& COEMeshBone_Impl::GetWorldMatrixInv() const
+{
+	return m_matWorldInv;
+}
+
 int COEMeshBone_Impl::GetFrameCount() const
 {
 	return (int)m_vFrame.size();
@@ -71,17 +75,6 @@ const IOEMeshBone::BONE_FRAME* COEMeshBone_Impl::GetFrame(int nIndex) const
 {
 	if (nIndex < 0 || nIndex >= (int)m_vFrame.size()) return NULL;
 	return &m_vFrame[nIndex];
-}
-
-int COEMeshBone_Impl::GetNumChildren() const
-{
-	return (int)m_vChildren.size();
-}
-
-IOEMeshBone* COEMeshBone_Impl::GetChild(int nIndex) const
-{
-	if (nIndex < 0 || nIndex >= (int)m_vChildren.size()) return NULL;
-	return m_vChildren[nIndex];
 }
 
 bool COEMeshBone_Impl::SlerpMatrix(CMatrix4x4& matOut, float fTime, bool bLoop /*= true*/)
@@ -157,39 +150,10 @@ bool COEMeshBone_Impl::SlerpMatrix(CMatrix4x4& matOut, float fTime, bool bLoop /
 	return true;
 }
 
-int COEMeshBone_Impl::GetParentID() const
+void COEMeshBone_Impl::SetWorldMatrix(const CMatrix4x4& matWorld)
 {
-	return m_nParentID;
-}
-
-void COEMeshBone_Impl::SetParent(COEMeshBone_Impl* pParent)
-{
-	if (m_pParent == pParent) return;
-
-	if (m_pParent) m_pParent->RemoveChild(this);
-	m_pParent = pParent;
-	if (m_pParent)
-	{
-		m_pParent->AddChild(this);
-		m_matWorld *= m_pParent->GetWorldMatrix();
-	}
-}
-
-void COEMeshBone_Impl::AddChild(COEMeshBone_Impl* pChild)
-{
-	m_vChildren.push_back(pChild);
-}
-
-void COEMeshBone_Impl::RemoveChild(COEMeshBone_Impl* pChild)
-{
-	for (VMESH_BONE::iterator it = m_vChildren.begin(); it != m_vChildren.end(); ++it)
-	{
-		if (pChild == (*it))
-		{
-			m_vChildren.erase(it);
-			return;
-		}
-	}
+	m_matWorld = matWorld;
+	m_matWorldInv = m_matWorld.Inverse();
 }
 
 bool COEMeshBone_Impl::Create(const COEFmtMesh::BONE& Bone, int nID, IOEFile* pFile)
@@ -199,24 +163,26 @@ bool COEMeshBone_Impl::Create(const COEFmtMesh::BONE& Bone, int nID, IOEFile* pF
 	m_nParentID = Bone.nParentIndex;
 	m_fTimeLength = Bone.fTimeLength;
 
-	m_vPos.x = Bone.BoneTrans.vPos[0];
-	m_vPos.y = Bone.BoneTrans.vPos[1];
-	m_vPos.z = Bone.BoneTrans.vPos[2];
+	CVector3 vPos;
+	CVector3 vScale;
+	CQuaternion rRot;
 
-	m_vScale.x = Bone.BoneTrans.vScale[0];
-	m_vScale.y = Bone.BoneTrans.vScale[1];
-	m_vScale.z = Bone.BoneTrans.vScale[2];
+	vPos.x = Bone.BoneTrans.vPos[0];
+	vPos.y = Bone.BoneTrans.vPos[1];
+	vPos.z = Bone.BoneTrans.vPos[2];
 
-	m_vRot.x = Bone.BoneTrans.vRotation[0];
-	m_vRot.y = Bone.BoneTrans.vRotation[1];
-	m_vRot.z = Bone.BoneTrans.vRotation[2];
-	m_vRot.w = Bone.BoneTrans.vRotation[3];
+	vScale.x = Bone.BoneTrans.vScale[0];
+	vScale.y = Bone.BoneTrans.vScale[1];
+	vScale.z = Bone.BoneTrans.vScale[2];
 
-	COEMath::BuildMatrixFromQuaternion(m_matLocal, m_vRot);
-	COEMath::SetMatrixTranslation(m_matLocal, m_vPos);
-	COEMath::SetMatrixScale(m_matLocal, m_vScale);
+	rRot.x = Bone.BoneTrans.vRotation[0];
+	rRot.y = Bone.BoneTrans.vRotation[1];
+	rRot.z = Bone.BoneTrans.vRotation[2];
+	rRot.w = Bone.BoneTrans.vRotation[3];
 
-	m_matWorld = m_matLocal;
+	COEMath::BuildMatrixFromQuaternion(m_matLocal, rRot);
+	COEMath::SetMatrixTranslation(m_matLocal, vPos);
+	COEMath::SetMatrixScale(m_matLocal, vScale);
 
 	pFile->Seek(Bone.nOffBoneFrame);
 	m_vFrame.clear();

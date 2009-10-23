@@ -483,37 +483,13 @@ bool CMs3dConv_Impl::SaveToFile(const tstring& strFile)
 
 void CMs3dConv_Impl::Ms3dRot2OERot(COEFmtMesh::BONE_TRANSFORM& TransOut, const float* rRot)
 {
-	CMatrix4x4 matRot;
+	CQuaternion qOut;
+	COEMath::BuildQuaternionFromEuler(qOut, rRot[0], rRot[1], rRot[2]);
 
-	float cr = cosf(rRot[0]);
-	float sr = sinf(rRot[0]);
-	float cp = cosf(rRot[1]);
-	float sp = sinf(rRot[1]);
-	float cy = cosf(rRot[2]);
-	float sy = sinf(rRot[2]);
-
-	matRot.m[0] = cp*cy;
-	matRot.m[1] = cp*sy;
-	matRot.m[2] = -sp;
-
-	float srsp = sr*sp;
-	float crsp = cr*sp;
-
-	matRot.m[4] = srsp*cy - cr*sy;
-	matRot.m[5] = srsp*sy + cr*cy;
-	matRot.m[6] = sr*cp;
-
-	matRot.m[8] = crsp*cy + sr*sy;
-	matRot.m[9] = crsp*cy - sr*cy;
-	matRot.m[10] = cr*cp;
-
-	CQuaternion qRot;
-	COEMath::BuildQuaternionFromMatrix(qRot, matRot);
-
-	TransOut.vRotation[0] = qRot.x;
-	TransOut.vRotation[1] = qRot.y;
-	TransOut.vRotation[2] = qRot.z;
-	TransOut.vRotation[3] = qRot.w;
+	TransOut.vRotation[0] = qOut.x;
+	TransOut.vRotation[1] = qOut.y;
+	TransOut.vRotation[2] = qOut.z;
+	TransOut.vRotation[3] = qOut.w;
 }
 
 void CMs3dConv_Impl::Ms3dPos2OEPos(COEFmtMesh::BONE_TRANSFORM& TransOut, const float* vPos)

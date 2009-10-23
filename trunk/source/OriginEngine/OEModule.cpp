@@ -9,6 +9,7 @@
 #include "OECore_Impl.h"
 #include "OEConfigFileMgr_Impl.h"
 #include "OEMeshMgr_Impl.h"
+#include "OEModelMgr_Impl.h"
 
 #include <OEOS.h>
 
@@ -18,6 +19,7 @@ static COEOS::OEMODULE g_hModuleUI = NULL;
 COECore_Impl* g_pOECore_Impl = NULL;
 COEConfigFileMgr_Impl* g_pOEConfigFileMgr_Impl = NULL;
 COEMeshMgr_Impl* g_pOEMeshMgr_Impl = NULL;
+COEModelMgr_Impl* g_pOEModelMgr_Impl = NULL;
 
 bool CreateSingleton()
 {
@@ -42,14 +44,22 @@ bool CreateSingleton()
 		return false;
 	}
 
+	g_pOEModelMgr_Impl = new COEModelMgr_Impl();
+	if (!g_pOEModelMgr_Impl || !g_pOEModelMgr_Impl->IsOK())
+	{
+		SAFE_DELETE(g_pOEModelMgr_Impl);
+		return false;
+	}
+
 	return true;
 }
 
 void DestroySingleton()
 {
-	SAFE_DELETE(g_pOECore_Impl);
+	SAFE_DELETE(g_pOEModelMgr_Impl);
 	SAFE_DELETE(g_pOEMeshMgr_Impl);
 	SAFE_DELETE(g_pOEConfigFileMgr_Impl);
+	SAFE_DELETE(g_pOECore_Impl);
 }
 
 bool OEModuleInit(COEHolder& Holder)

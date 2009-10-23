@@ -12,6 +12,7 @@
 
 COEModelMgr_Impl::COEModelMgr_Impl()
 {
+	g_pOEModelMgr = this;
 	Init();
 	m_bOK = true;
 }
@@ -19,6 +20,7 @@ COEModelMgr_Impl::COEModelMgr_Impl()
 COEModelMgr_Impl::~COEModelMgr_Impl()
 {
 	Destroy();
+	g_pOEModelMgr = NULL;
 }
 
 void COEModelMgr_Impl::Init()
