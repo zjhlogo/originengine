@@ -19,7 +19,6 @@ class COEMeshBone_Impl : public IOEMeshBone
 {
 public:
 	typedef std::vector<BONE_FRAME> VBONE_FRAME;
-	typedef std::vector<COEMeshBone_Impl*> VMESH_BONE;
 
 public:
 	COEMeshBone_Impl(const COEFmtMesh::BONE& Bone, int nID, IOEFile* pFile);
@@ -27,48 +26,35 @@ public:
 
 	virtual const tstring& GetName() const;
 	virtual int GetID() const;
-	virtual IOEMeshBone* GetParent() const;
+	virtual int GetParentID() const;
 
 	virtual float GetTimeLength() const;
 	virtual const CMatrix4x4& GetLocalMatrix() const;
 	virtual const CMatrix4x4& GetWorldMatrix() const;
+	virtual const CMatrix4x4& GetWorldMatrixInv() const;
 
 	virtual int GetFrameCount() const;
 	virtual const BONE_FRAME* GetFrame(int nIndex) const;
 
-	virtual int GetNumChildren() const;
-	virtual IOEMeshBone* GetChild(int nIndex) const;
-
 	virtual bool SlerpMatrix(CMatrix4x4& matOut, float fTime, bool bLoop = true);
-
-	int GetParentID() const;
-	void SetParent(COEMeshBone_Impl* pParent);
+	void SetWorldMatrix(const CMatrix4x4& matWorld);
 
 private:
 	void Init();
 	void Destroy();
-
-	void AddChild(COEMeshBone_Impl* pChild);
-	void RemoveChild(COEMeshBone_Impl* pChild);
 
 	bool Create(const COEFmtMesh::BONE& Bone, int nID, IOEFile* pFile);
 
 private:
 	tstring m_strName;
 	int m_nID;
-
 	int m_nParentID;
-	COEMeshBone_Impl* m_pParent;
-	VMESH_BONE m_vChildren;
 
 	float m_fTimeLength;
 
-	CVector3 m_vPos;
-	CVector3 m_vScale;
-	CQuaternion m_vRot;
-
 	CMatrix4x4 m_matLocal;
 	CMatrix4x4 m_matWorld;
+	CMatrix4x4 m_matWorldInv;
 
 	VBONE_FRAME m_vFrame;
 

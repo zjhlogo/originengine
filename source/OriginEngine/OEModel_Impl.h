@@ -11,7 +11,6 @@
 #include <IOEModel.h>
 
 #include <IOEMesh.h>
-#include "AnimationTracker.h"
 
 #include <vector>
 #include <map>
@@ -19,7 +18,6 @@
 class COEModel_Impl : public IOEModel
 {
 public:
-	typedef std::map<int, CAnimationTracker*> TRACKER_MAP;
 	typedef std::vector<CMatrix4x4> VMATRIX;
 
 public:
@@ -29,20 +27,20 @@ public:
 	virtual void Update(float fDetailTime);
 	virtual void Render(float fDetailTime);
 
+	virtual IOEMesh* GetMesh();
+	virtual int GetNumMatrixPalette();
+	virtual CMatrix4x4* GetMatrixPalette();
+
 private:
 	void Init();
 	void Destroy();
 
 	bool Create(const tstring& strFileName);
-	int CalculateBoneCount(IOEMeshBone* pBone);
-	CAnimationTracker* LoopCreateTracker(IOEMeshBone* pBone, CAnimationTracker* pParentTracker = NULL);
-	CAnimationTracker* CreateTracker(IOEMeshBone* pBone, CAnimationTracker* pParentTracker = NULL);
 
 private:
 	IOEMesh* m_pMesh;
-	CAnimationTracker* m_pRootTracker;
-	TRACKER_MAP m_vTrackerMap;
-	VMATRIX m_vmatTransformed;
+	VMATRIX m_vmatSkin;
+	float m_fTotalTime;
 
 };
 

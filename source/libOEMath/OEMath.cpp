@@ -187,6 +187,35 @@ void COEMath::BuildMatrixFromQuaternion(CMatrix4x4& matOut, const CQuaternion& q
 	matOut.m[15] = 1.0f;
 }
 
+void COEMath::BuildQuaternionFromEuler(CQuaternion& qOut, float fRoll, float fPitch, float fYaw)
+{
+	//from : http://www.azure.com.cn
+	//根据欧拉转动计算四元数的变换如下:
+	//q = qyaw qpitch qroll
+
+	//其中
+	//qroll = [cos(y/2), (sin(y/2), 0, 0)];
+	//qpitch = [cos(q/2), (0, sin(q/2), 0)];
+	//qyaw = [cos(f/2), (0, 0, sin(f/2)];
+
+	//计算求四元数时使用到的所有三角值
+	float cr = cosf(fRoll / 2.0f);
+	float cp = cosf(fPitch / 2.0f);
+	float cy = cosf(fYaw / 2.0f);
+
+	float sr = sinf(fRoll / 2.0f);
+	float sp = sinf(fPitch / 2.0f);
+	float sy = sinf(fYaw / 2.0f);
+	float cpcy = cp * cy;
+	float spsy = sp * sy;
+
+	//组合这些值,生成四元数的向量和w
+	qOut.x = sr*cpcy - cr*spsy;
+	qOut.y = cr*sp*cy + sr*cp*sy;
+	qOut.z = cr*cp*sy - sr*sp*cy;
+	qOut.w = cr*cpcy + sr*spsy;
+}
+
 void COEMath::VectorLerp(CVector3& vOut, const CVector3& v1, const CVector3& v2, float t)
 {
 	float k0 = 1.0f - t;

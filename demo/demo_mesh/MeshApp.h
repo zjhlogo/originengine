@@ -65,10 +65,8 @@ private:
 	bool UpdateMovement(float fDetailTime);
 	bool UpdateRotation(float fDetailTime);
 
-	void RebuildBoneVerts(float fTime);
-	void BuildBoneVerts(VVERTEX& vVerts, VUSHORT& vIndis, float fTime, IOEMeshBone* pBone, const CMatrix4x4& matParent, int nParentVertIndex);
-
-	void BindInitializePose(IOEMesh* pMesh);
+	//void RebuildBoneVerts(float fTime);
+	//void BuildBoneVerts(VVERTEX& vVerts, VUSHORT& vIndis, float fTime, IOEMeshBone* pBone, const CMatrix4x4& matParent, int nParentVertIndex);
 
 private:
 	CCamera* m_pCamera;
@@ -76,7 +74,7 @@ private:
 
 	IOEVertDecl* m_pDecl;
 	IOEVertDecl* m_pDecl2;
-	IOEMesh* m_pMesh;
+	IOEModel* m_pModel;
 
 	IOEShader* m_pShader;
 	IOETexture* m_pTexBase;

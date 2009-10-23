@@ -18,6 +18,7 @@
 #include <IOECore.h>
 #include <IOEConfigFileMgr.h>
 #include <IOEMeshMgr.h>
+#include <IOEModelMgr.h>
 
 // äÖÈ¾Ä£¿é
 #include <IOEDevice.h>
@@ -43,6 +44,7 @@ IOEMessageMgr* g_pOEMessageMgr = NULL;
 IOECore* g_pOECore = NULL;
 IOEConfigFileMgr* g_pOEConfigFileMgr = NULL;
 IOEMeshMgr* g_pOEMeshMgr = NULL;
+IOEModelMgr* g_pOEModelMgr = NULL;
 
 // äÖÈ¾Ä£¿é
 IOEDevice* g_pOEDevice = NULL;
@@ -83,6 +85,7 @@ void COEHolder::SetupInterfaces()
 	AddInterface(t("IOECore"), (void**)&g_pOECore);
 	AddInterface(t("IOEConfigFileMgr"), (void**)&g_pOEConfigFileMgr);
 	AddInterface(t("IOEMeshMgr"), (void**)&g_pOEMeshMgr);
+	AddInterface(t("IOEModelMgr"), (void**)&g_pOEModelMgr);
 
 	// äÖÈ¾Ä£¿é
 	AddInterface(t("IOEDevice"), (void**)&g_pOEDevice);
