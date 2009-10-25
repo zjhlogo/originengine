@@ -1,5 +1,5 @@
 float4x4 g_matWorldViewProj;
-float4x4 g_matBoneMatrix[61] : WORLDMATRIXARRAY;
+float4x4 g_matBoneMatrix[50] : WORLDMATRIXARRAY;
 
 texture g_texBase;
 

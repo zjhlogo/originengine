@@ -23,7 +23,7 @@ COEMesh_Impl::~COEMesh_Impl()
 
 void COEMesh_Impl::Init()
 {
-	// TODO: 
+	m_fTimeLength = 0.0f;
 }
 
 void COEMesh_Impl::Destroy()
@@ -138,6 +138,8 @@ bool COEMesh_Impl::Create(const tstring& strFile)
 			return false;
 		}
 		m_vBone.push_back(pMeshBone);
+
+		if (m_fTimeLength < pMeshBone->GetTimeLength()) m_fTimeLength = pMeshBone->GetTimeLength();
 	}
 
 	// build bone matrix
@@ -161,4 +163,9 @@ IOEBone* COEMesh_Impl::GetRootBone() const
 {
 	if (m_vBone.empty()) return NULL;
 	return m_vBone[0];
+}
+
+float COEMesh_Impl::GetTimeLength() const
+{
+	return m_fTimeLength;
 }

@@ -27,6 +27,7 @@ public:
 	virtual IOEBone* FindBone(const tstring& strName) const = 0;
 
 	virtual IOEBone* GetRootBone() const = 0;
+	virtual float GetTimeLength() const = 0;
 
 };
 #endif // __IOEMESH_H__

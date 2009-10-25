@@ -53,14 +53,26 @@ void COEModel_Impl::Update(float fDetailTime)
 {
 	m_fTotalTime += fDetailTime;
 
+	float fTimeLength = m_pMesh->GetTimeLength();
+	if (m_fTotalTime > fTimeLength || m_fTotalTime < 0.0f)
+	{
+		m_fTotalTime -= floorf(m_fTotalTime/fTimeLength)*fTimeLength;
+	}
+
 	CMatrix4x4 matAnim;
 	int nNumBones = m_pMesh->GetNumBones();
 	for (int i = 0; i < nNumBones; ++i)
 	{
 		IOEBone* pMeshBone = m_pMesh->GetBone(i);
 
-		pMeshBone->SlerpMatrix(m_vmatSkin[i], m_fTotalTime);
-		const CMatrix4x4& matLocal = pMeshBone->GetLocalMatrix();
+		if (m_fTotalTime > pMeshBone->GetTimeLength())
+		{
+			pMeshBone->SlerpMatrix(m_vmatSkin[i], m_fTotalTime, false);
+		}
+		else
+		{
+			pMeshBone->SlerpMatrix(m_vmatSkin[i], m_fTotalTime, true);
+		}
 
 		int nParentID = pMeshBone->GetParentID();
 		if (nParentID != COEFmtMesh::INVALID_BONE_ID)
@@ -94,6 +106,9 @@ void COEModel_Impl::Render(float fDetailTime)
 		m_vMaterial[nMaterialID].pShader->SetTexture(t("g_texBase"), m_vMaterial[nMaterialID].pTexture);
 		m_vMaterial[nMaterialID].pShader->SetMatrixArray(t("g_matBoneMatrix"), &m_vmatSkin[0], m_vmatSkin.size());
 		g_pOERenderer->SetShader(m_vMaterial[nMaterialID].pShader);
+
+		//SoftSkinned(pPiece, m_vmatSkin);
+		//g_pOERenderer->DrawTriList(&m_vVerts[0], m_vVerts.size(), pPiece->GetIndis(), pPiece->GetNumIndis());
 
 		g_pOERenderer->DrawTriList(pPiece->GetVerts(), pPiece->GetNumVerts(), pPiece->GetIndis(), pPiece->GetNumIndis());
 	}
@@ -262,4 +277,31 @@ IOEShader* COEModel_Impl::CreateShader(int nVertDecl, const tstring& strShaderFi
 	vDecl.push_back(Element);
 
 	return g_pOEShaderMgr->CreateShader(&vDecl[0], strShaderFile);
+}
+
+void COEModel_Impl::SoftSkinned(IOEPiece* pPiece, TV_MATRIX& vmatSkin)
+{
+	int nNumVerts = pPiece->GetNumVerts();
+	if (m_vVerts.size() < nNumVerts) m_vVerts.resize(nNumVerts);
+
+	VERTEX* pVertSrc = (VERTEX*)pPiece->GetVerts();
+
+	for (int i = 0; i < nNumVerts; ++i)
+	{
+		CVector3 vPos(pVertSrc->x, pVertSrc->y, pVertSrc->z);
+		CVector3 vPosSkinned(0.0f, 0.0f, 0.0f);
+
+		vPosSkinned += vPos * vmatSkin[pVertSrc->nBoneIndex[0]] * pVertSrc->fWeight[0];
+		vPosSkinned += vPos * vmatSkin[pVertSrc->nBoneIndex[1]] * pVertSrc->fWeight[1];
+		vPosSkinned += vPos * vmatSkin[pVertSrc->nBoneIndex[2]] * pVertSrc->fWeight[2];
+		vPosSkinned += vPos * vmatSkin[pVertSrc->nBoneIndex[3]] * pVertSrc->fWeight[3];
+
+		m_vVerts[i].x = vPosSkinned.x;
+		m_vVerts[i].y = vPosSkinned.y;
+		m_vVerts[i].z = vPosSkinned.z;
+		m_vVerts[i].u = pVertSrc->u;
+		m_vVerts[i].v = pVertSrc->v;
+
+		++pVertSrc;
+	}
 }
