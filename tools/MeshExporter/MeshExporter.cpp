@@ -102,7 +102,10 @@ int CMeshExporter::DoExport(const TCHAR* name, ExpInterface* ei, Interface* i, B
 	BuildMeshsInfo();
 
 	// save to file
-	SaveToFile(name);
+	tstring strFile;
+	COEOS::GetFileName(strFile, name);
+	strFile += t(".mesh");
+	SaveToFile(strFile);
 
 	pIGame->ReleaseIGame();
 	pIGame = NULL;
@@ -167,7 +170,7 @@ bool CMeshExporter::BuildMeshsInfo()
 		SKIN_MESH SkinMesh;
 		SkinMesh.strName = NodeInfo.pGameNode->GetName();
 		SkinMesh.matLocal = NodeInfo.pGameNode->GetLocalTM();
-		bool bOK = DumpSkinMesh(SkinMesh, NodeInfo.pGameNode);
+		bool bOK = DumpMesh(SkinMesh, NodeInfo.pGameNode);
 		// TODO: check bOK
 		m_vSkinMesh.push_back(SkinMesh);
 	}
@@ -234,6 +237,7 @@ bool CMeshExporter::SaveToFile(const tstring& strFileName)
 	if (nNumMeshes > 0)
 	{
 		vPiece.resize(nNumMeshes);
+		memset(&vPiece[0], 0, sizeof(COEFmtMesh::PIECE)*nNumMeshes);
 		pFile->Write(&vPiece[0], sizeof(COEFmtMesh::PIECE)*nNumMeshes);
 	}
 
@@ -243,6 +247,7 @@ bool CMeshExporter::SaveToFile(const tstring& strFileName)
 	if (nNumBones > 0)
 	{
 		vBone.resize(nNumBones);
+		memset(&vBone[0], 0, sizeof(COEFmtMesh::BONE)*nNumBones);
 		pFile->Write(&vBone[0], sizeof(COEFmtMesh::BONE)*nNumBones);
 	}
 
@@ -251,50 +256,44 @@ bool CMeshExporter::SaveToFile(const tstring& strFileName)
 	{
 		std::string strName;
 		COEOS::tchar2char(strName, m_vSkinMesh[i].strName.c_str());
-		strncpy_s(vPiece[i].szName, strName.c_str(), COEFmtMesh::PIECE_NAME_SIZE);
+		strncpy_s(vPiece[i].szName, COEFmtMesh::PIECE_NAME_SIZE, strName.c_str(), _TRUNCATE);
 
 		vPiece[i].nPieceMask = COEFmtMesh::PM_VISIBLE;
 		vPiece[i].nVertexDataMask = COEFmtMesh::VDM_XYZ | COEFmtMesh::VDM_UV | COEFmtMesh::VDM_BONE;
 		vPiece[i].nMaterialID = 0;										// TODO: 
 
 		// write vertex data offset
-		vPiece[i].nNumVerts = (int)m_vSkinMesh[i].vVerts.size();
+		vPiece[i].nNumVerts = (int)m_vSkinMesh[i].vVertSlots.size();
 		vPiece[i].nOffVerts = pFile->Tell();
 
 		// write vertex data
-		int nNumVerts = (int)m_vSkinMesh[i].vVerts.size();
+		int nNumVerts = (int)m_vSkinMesh[i].vVertSlots.size();
 		for (int j = 0; j < nNumVerts; ++j)
 		{
-			VERTEX& Vertex = m_vSkinMesh[i].vVerts[j];
+			VERTEX_SLOT& VertSlot = m_vSkinMesh[i].vVertSlots[j];
+
+			FILE_VERTEX FileVert;
+			memset(&FileVert, 0, sizeof(FileVert));
 
 			// position
-			float vPos[3];
-			vPos[0] = Vertex.pos.x;
-			vPos[1] = Vertex.pos.y;
-			vPos[2] = Vertex.pos.z;
-			pFile->Write(vPos, sizeof(vPos));
+			FileVert.x = VertSlot.pos.x;
+			FileVert.y = VertSlot.pos.y;
+			FileVert.z = VertSlot.pos.z;
 
 			// uv
-			float vUV[2];
-			vUV[0] = Vertex.tex.x;
-			vUV[1] = Vertex.tex.y;
-			pFile->Write(vUV, sizeof(vUV));
+			FileVert.u = VertSlot.tex.x;
+			FileVert.v = VertSlot.tex.y;
 
 			// bone weight, index
-			int arrBoneID[4] = {0};
-			float arrWeight[4] = {0.0f};
-
-			int nSkinCount = (int)Vertex.Skins.size();
+			int nSkinCount = (int)VertSlot.Skins.size();
 			if (nSkinCount > 4) nSkinCount = 4;
 			for (int k = 0; k < nSkinCount; ++k)
 			{
-				arrBoneID[k] = Vertex.Skins[k].nBoneIndex;
-				arrWeight[k] = Vertex.Skins[k].fWeight;
+				FileVert.nBoneIndex[k] = VertSlot.Skins[k].nBoneIndex;
+				FileVert.fWeight[k] = VertSlot.Skins[k].fWeight;
 			}
-			pFile->Write(arrBoneID, sizeof(arrBoneID));
-			pFile->Write(arrWeight, sizeof(arrWeight));
 
-			// TODO: add more data
+			pFile->Write(&FileVert, sizeof(FileVert));
 		}
 
 		// write index data offset
@@ -319,7 +318,7 @@ bool CMeshExporter::SaveToFile(const tstring& strFileName)
 		// bone list info
 		std::string strName;
 		COEOS::tchar2char(strName, m_vBoneInfo[i].strName.c_str());
-		strncpy_s(vBone[i].szName, strName.c_str(), COEFmtMesh::BONE_NAME_SIZE);
+		strncpy_s(vBone[i].szName, COEFmtMesh::BONE_NAME_SIZE, strName.c_str(), _TRUNCATE);
 		vBone[i].nParentIndex = m_vBoneInfo[i].nParentID;
 		if (!m_vBoneInfo[i].vFrameInfo.empty())
 		{
@@ -365,7 +364,7 @@ bool CMeshExporter::SaveToFile(const tstring& strFileName)
 	return true;
 }
 
-bool CMeshExporter::DumpSkinMesh(SKIN_MESH& SkinMeshOut, IGameNode* pGameNode)
+bool CMeshExporter::DumpMesh(SKIN_MESH& SkinMeshOut, IGameNode* pGameNode)
 {
 	IGameObject* pGameObject = pGameNode->GetIGameObject();
 	if (pGameObject->GetIGameType() != IGameObject::IGAME_MESH) return false;
@@ -376,18 +375,19 @@ bool CMeshExporter::DumpSkinMesh(SKIN_MESH& SkinMeshOut, IGameNode* pGameNode)
 
 	// init vertex slots
 	int nNumVerts = pGameMesh->GetNumberOfVerts();
-	VERTEX EmptyVertex;
-	EmptyVertex.Slot.bUsed = false;
-	EmptyVertex.Slot.nVertIndex = 0;
-	EmptyVertex.Slot.nTexIndex = 0;
-	EmptyVertex.pos.Set(0.0f, 0.0f, 0.0f);
-	EmptyVertex.tex.Set(0.0f, 0.0f);
-	EmptyVertex.Skins.clear();
+	VERTEX_SLOT EmptySlot;
+	EmptySlot.bUsed = false;
+	EmptySlot.nVertIndex = 0;
+	EmptySlot.nTexIndex = 0;
+	EmptySlot.vClone.clear();
+	EmptySlot.pos.Set(0.0f, 0.0f, 0.0f);
+	EmptySlot.tex.Set(0.0f, 0.0f);
+	EmptySlot.Skins.clear();
 
 	// make room for verts
 	for (int i = 0; i < nNumVerts; ++i)
 	{
-		SkinMeshOut.vVerts.push_back(EmptyVertex);
+		SkinMeshOut.vVertSlots.push_back(EmptySlot);
 	}
 
 	// faces
@@ -401,22 +401,48 @@ bool CMeshExporter::DumpSkinMesh(SKIN_MESH& SkinMeshOut, IGameNode* pGameNode)
 		for (int j = 0; j < 3; ++j)
 		{
 			uint nVertIndex = pFace->vert[j];
-			if (SkinMeshOut.vVerts[nVertIndex].Slot.bUsed
-				&& SkinMeshOut.vVerts[nVertIndex].Slot.nTexIndex != pFace->texCoord[j])
+			uint nTexIndex = pFace->texCoord[j];
+
+			if (SkinMeshOut.vVertSlots[nVertIndex].bUsed)
 			{
-				// add new slot
-				nVertIndex = SkinMeshOut.vVerts.size();
-				SkinMeshOut.vVerts.push_back(EmptyVertex);
-				SkinMeshOut.vVerts[nVertIndex].Slot.bUsed = true;
-				SkinMeshOut.vVerts[nVertIndex].Slot.nVertIndex = pFace->vert[j];
-				SkinMeshOut.vVerts[nVertIndex].Slot.nTexIndex = pFace->texCoord[j];
+				bool bAddNew = true;
+				if (SkinMeshOut.vVertSlots[nVertIndex].nTexIndex == nTexIndex)
+				{
+					bAddNew = false;
+				}
+				else
+				{
+					TV_INT& vClone = SkinMeshOut.vVertSlots[nVertIndex].vClone;
+					for (TV_INT::iterator it = vClone.begin(); it != vClone.end(); ++it)
+					{
+						if (SkinMeshOut.vVertSlots[*it].nTexIndex == nTexIndex)
+						{
+							bAddNew = false;
+							nVertIndex = (*it);
+							break;
+						}
+					}
+				}
+
+				if (bAddNew)
+				{
+					// add new slot
+					int nNewVertIndex = SkinMeshOut.vVertSlots.size();
+					SkinMeshOut.vVertSlots.push_back(EmptySlot);
+					SkinMeshOut.vVertSlots[nNewVertIndex].bUsed = true;
+					SkinMeshOut.vVertSlots[nNewVertIndex].nVertIndex = nVertIndex;
+					SkinMeshOut.vVertSlots[nNewVertIndex].nTexIndex = nTexIndex;
+
+					SkinMeshOut.vVertSlots[nVertIndex].vClone.push_back(nNewVertIndex);
+					nVertIndex = nNewVertIndex;
+				}
 			}
-			else if (!SkinMeshOut.vVerts[nVertIndex].Slot.bUsed)
+			else
 			{
 				// set this slot
-				SkinMeshOut.vVerts[nVertIndex].Slot.bUsed = true;
-				SkinMeshOut.vVerts[nVertIndex].Slot.nVertIndex = pFace->vert[j];
-				SkinMeshOut.vVerts[nVertIndex].Slot.nTexIndex = pFace->texCoord[j];
+				SkinMeshOut.vVertSlots[nVertIndex].bUsed = true;
+				SkinMeshOut.vVertSlots[nVertIndex].nVertIndex = nVertIndex;
+				SkinMeshOut.vVertSlots[nVertIndex].nTexIndex = nTexIndex;
 			}
 
 			Face.nVertIndex[j] = nVertIndex;
@@ -426,14 +452,14 @@ bool CMeshExporter::DumpSkinMesh(SKIN_MESH& SkinMeshOut, IGameNode* pGameNode)
 	}
 
 	// setup vertex data
-	int nNewNumVerts = SkinMeshOut.vVerts.size();
+	int nNewNumVerts = SkinMeshOut.vVertSlots.size();
 	for (int i = 0; i < nNewNumVerts; ++i)
 	{
-		VERTEX& LocalVert = SkinMeshOut.vVerts[i];
+		VERTEX_SLOT& LocalSlot = SkinMeshOut.vVertSlots[i];
 
-		pGameMesh->GetVertex(LocalVert.Slot.nVertIndex, LocalVert.pos, false);
-		pGameMesh->GetTexVertex(LocalVert.Slot.nTexIndex, LocalVert.tex);
-		LocalVert.tex.y += 1.0f;
+		pGameMesh->GetVertex(LocalSlot.nVertIndex, LocalSlot.pos, false);
+		pGameMesh->GetTexVertex(LocalSlot.nTexIndex, LocalSlot.tex);
+		LocalSlot.tex.y += 1.0f;
 	}
 
 	// skins
@@ -444,31 +470,40 @@ bool CMeshExporter::DumpSkinMesh(SKIN_MESH& SkinMeshOut, IGameNode* pGameNode)
 		if (!pGameModifier->IsSkin()) continue;
 		IGameSkin* pGameSkin = (IGameSkin*)pGameModifier;
 
-		bool bOK = DumpSkinVerts(SkinMeshOut, pGameSkin);
+		bool bOK = DumpSkin(SkinMeshOut, pGameSkin);
 		// TODO: check bOK
 	}
 
 	return true;
 }
 
-bool CMeshExporter::DumpSkinVerts(SKIN_MESH& SkinMeshOut, IGameSkin* pGameSkin)
+bool CMeshExporter::DumpSkin(SKIN_MESH& SkinMeshOut, IGameSkin* pGameSkin)
 {
-	int nNumSkinVerts = SkinMeshOut.vVerts.size();
+	int nNumSkinVerts = pGameSkin->GetNumOfSkinnedVerts();
 
 	for (int i = 0; i < nNumSkinVerts; ++i)
 	{
-		int nNumBone = pGameSkin->GetNumberOfBones(SkinMeshOut.vVerts[i].Slot.nVertIndex);
+		int nNumBone = pGameSkin->GetNumberOfBones(i);
 		for (int j = 0; j < nNumBone; ++j)
 		{
-			int nNodeID = pGameSkin->GetBoneID(SkinMeshOut.vVerts[i].Slot.nVertIndex, j);
+			int nNodeID = pGameSkin->GetBoneID(i, j);
 			TM_BONE_INFO::iterator it = m_vBoneInfoMap.find(nNodeID);
 			if (it == m_vBoneInfoMap.end()) continue;
 
 			SKIN Skin;
 			Skin.nBoneIndex = it->second;
-			Skin.fWeight = pGameSkin->GetWeight(SkinMeshOut.vVerts[i].Slot.nVertIndex, j);
-			SkinMeshOut.vVerts[i].Skins.push_back(Skin);
+			Skin.fWeight = pGameSkin->GetWeight(i, j);
+			SkinMeshOut.vVertSlots[i].Skins.push_back(Skin);
 		}
+
+		SortSkin(SkinMeshOut.vVertSlots[i].Skins);
+	}
+
+	int nNumAdditionVerts = SkinMeshOut.vVertSlots.size();
+	for (int i = nNumSkinVerts; i < nNumAdditionVerts; ++i)
+	{
+		int nOldIndex = SkinMeshOut.vVertSlots[i].nVertIndex;
+		SkinMeshOut.vVertSlots[i].Skins = SkinMeshOut.vVertSlots[nOldIndex].Skins;
 	}
 
 	return true;
@@ -977,13 +1012,35 @@ bool CMeshExporter::DumpListKey(TS_TIME_VALUE& TimeSetOut, IGameControl* pGameCo
 
 void CMeshExporter::GMatrix2BoneTransform(COEFmtMesh::BONE_TRANSFORM& BoneTrans, const GMatrix& matTrans)
 {
-	Point3 vPos = matTrans.Translation();
-	Point3 vScale = matTrans.Scaling();
-	Quat rRot = matTrans.Rotation();
+	CMatrix4x4 matRot;
+	matRot.m[0] = matTrans[0][0];
+	matRot.m[1] = matTrans[0][1];
+	matRot.m[2] = matTrans[0][2];
+	matRot.m[3] = matTrans[0][3];
 
-	BoneTrans.vPos[0] = vPos.x;
-	BoneTrans.vPos[1] = vPos.y;
-	BoneTrans.vPos[2] = vPos.z;
+	matRot.m[4] = matTrans[1][0];
+	matRot.m[5] = matTrans[1][1];
+	matRot.m[6] = matTrans[1][2];
+	matRot.m[7] = matTrans[1][3];
+
+	matRot.m[8] = matTrans[2][0];
+	matRot.m[9] = matTrans[2][1];
+	matRot.m[10] = matTrans[2][2];
+	matRot.m[11] = matTrans[2][3];
+
+	matRot.m[12] = matTrans[3][0];
+	matRot.m[13] = matTrans[3][1];
+	matRot.m[14] = matTrans[3][2];
+	matRot.m[15] = matTrans[3][3];
+
+	CQuaternion rRot;
+	COEMath::BuildQuaternionFromMatrix(rRot, matRot);
+
+	Point3 vScale = matTrans.Scaling();
+
+	BoneTrans.vPos[0] = matTrans[3][0];
+	BoneTrans.vPos[1] = matTrans[3][1];
+	BoneTrans.vPos[2] = matTrans[3][2];
 
 	BoneTrans.vScale[0] = vScale.x;
 	BoneTrans.vScale[1] = vScale.y;
@@ -993,4 +1050,25 @@ void CMeshExporter::GMatrix2BoneTransform(COEFmtMesh::BONE_TRANSFORM& BoneTrans,
 	BoneTrans.vRotation[1] = rRot.y;
 	BoneTrans.vRotation[2] = rRot.z;
 	BoneTrans.vRotation[3] = rRot.w;
+}
+
+void CMeshExporter::SortSkin(TV_SKIN& vSkin)
+{
+	int nNumSkins = vSkin.size();
+
+	for (int i = 0; i < nNumSkins-1; ++i)
+	{
+		int nChoose = i;
+		for (int j = i+1; j < nNumSkins; ++j)
+		{
+			if (vSkin[j].fWeight > vSkin[nChoose].fWeight) nChoose = j;
+		}
+
+		if (nChoose != i)
+		{
+			SKIN Skin = vSkin[i];
+			vSkin[i] = vSkin[nChoose];
+			vSkin[nChoose] = Skin;
+		}
+	}
 }

@@ -43,24 +43,21 @@ public:
 
 	typedef std::vector<SKIN> TV_SKIN;
 
+	typedef std::vector<int> TV_INT;
+
 	typedef struct VERTEX_SLOT_tag
 	{
 		bool bUsed;
 		uint nVertIndex;
 		uint nTexIndex;
-	} VERTEX_SLOT;
-
-	typedef struct VERTEX_tag
-	{
-		VERTEX_SLOT Slot;
+		TV_INT vClone;
 
 		Point3 pos;
 		Point2 tex;
-		//float nx, ny, nz;
 		TV_SKIN Skins;
-	} VERTEX;
+	} VERTEX_SLOT;
 
-	typedef std::vector<VERTEX> TV_VERTEX;
+	typedef std::vector<VERTEX_SLOT> TV_VERTEX_SLOT;
 
 	typedef struct FACE_tag
 	{
@@ -73,7 +70,7 @@ public:
 	{
 		tstring strName;
 		GMatrix matLocal;
-		TV_VERTEX vVerts;
+		TV_VERTEX_SLOT vVertSlots;
 		TV_FACE vFaces;
 	} SKIN_MESH;
 
@@ -102,8 +99,15 @@ public:
 
 	typedef std::vector<BONE_INFO> TV_BONE_INFO;
 	typedef std::map<int, int> TM_BONE_INFO;
-
 	typedef std::set<TimeValue> TS_TIME_VALUE;
+
+	typedef struct FILE_VERTEX_tag
+	{
+		float x, y, z;
+		float u, v;
+		uchar nBoneIndex[4];
+		float fWeight[4];
+	} FILE_VERTEX;
 
 public:
 	CMeshExporter();
@@ -134,8 +138,8 @@ private:
 
 	bool SaveToFile(const tstring& strFileName);
 
-	bool DumpSkinMesh(SKIN_MESH& SkinMeshOut, IGameNode* pGameNode);
-	bool DumpSkinVerts(SKIN_MESH& SkinMeshOut, IGameSkin* pGameSkin);
+	bool DumpMesh(SKIN_MESH& SkinMeshOut, IGameNode* pGameNode);
+	bool DumpSkin(SKIN_MESH& SkinMeshOut, IGameSkin* pGameSkin);
 
 	bool DumpController(TV_FRAME_INFO& vFrameInfoOut, IGameNode* pGameNode);
 	bool DumpPositionController(TS_TIME_VALUE& TimeSetOut, IGameControl* pGameControl);
@@ -157,6 +161,7 @@ private:
 	bool DumpListKey(TS_TIME_VALUE& TimeSetOut, IGameControl* pGameControl);
 
 	void GMatrix2BoneTransform(COEFmtMesh::BONE_TRANSFORM& BoneTrans, const GMatrix& matTrans);
+	void SortSkin(TV_SKIN& vSkin);
 
 private:
 	TV_NODE_INFO m_vMeshNode;

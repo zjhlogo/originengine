@@ -14,7 +14,7 @@ COELogFileMgr_Impl::COELogFileMgr_Impl()
 {
 	g_pOELogFileMgr = this;
 	Init();
-	m_bOK = CreateLogFile(m_strLogFileName);
+	m_bOK = true;
 }
 
 COELogFileMgr_Impl::~COELogFileMgr_Impl()
@@ -25,8 +25,9 @@ COELogFileMgr_Impl::~COELogFileMgr_Impl()
 
 void COELogFileMgr_Impl::Init()
 {
-	m_strLogFileName = t("log.txt");
+	m_strFile = t("log.txt");
 	m_pLogFile = NULL;
+	m_bFirstCreate = true;
 }
 
 void COELogFileMgr_Impl::Destroy()
@@ -34,9 +35,23 @@ void COELogFileMgr_Impl::Destroy()
 	SAFE_RELEASE(m_pLogFile);
 }
 
+void COELogFileMgr_Impl::SetLogFile(const tstring& strFile)
+{
+	SAFE_RELEASE(m_pLogFile);
+	m_strFile = strFile;
+	m_bFirstCreate = true;
+}
+
 void COELogFileMgr_Impl::LogOut(const tstring& strLogMsg)
 {
-	if (!m_pLogFile) return;
+	if (!m_pLogFile && !m_bFirstCreate) return;
+
+	if (!m_pLogFile)
+	{
+		m_bFirstCreate = false;
+		m_bOK = CreateLogFile(m_strFile);
+		if (!m_bOK || !m_pLogFile) return;
+	}
 
 	COEOS::LOCAL_TIME LocalTime;
 	COEOS::TimeLocal(LocalTime, COEOS::TimeNow());

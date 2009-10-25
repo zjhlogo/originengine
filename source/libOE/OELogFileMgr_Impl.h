@@ -18,6 +18,7 @@ public:
 	COELogFileMgr_Impl();
 	virtual ~COELogFileMgr_Impl();
 
+	virtual void SetLogFile(const tstring& strFile);
 	virtual void LogOut(const tstring& strLogMsg);
 	virtual tstring& GetStringBuffer();
 
@@ -28,9 +29,10 @@ private:
 	bool CreateLogFile(const tstring& strFileName);
 
 private:
-	tstring m_strLogFileName;
+	tstring m_strFile;
 	tstring m_strBuffer;
 	IOEFile* m_pLogFile;
+	bool m_bFirstCreate;
 
 };
 #endif // __OELOGFILEMGR_IMPL_H__

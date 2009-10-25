@@ -50,6 +50,14 @@ public:
 	} BONE_INFO;
 	typedef std::vector<BONE_INFO> TV_BONE_INFO;
 
+	typedef struct FILE_VERTEX_tag
+	{
+		float x, y, z;
+		float u, v;
+		uchar nBoneIndex[4];
+		float fWeight[4];
+	} FILE_VERTEX;
+
 public:
 	CMs3dConv_Impl();
 	virtual ~CMs3dConv_Impl();

@@ -17,6 +17,7 @@ public:
 	IOELogFileMgr() {};
 	virtual ~IOELogFileMgr() {};
 
+	virtual void SetLogFile(const tstring& strFile) = 0;
 	virtual void LogOut(const tstring& strLogMsg) = 0;
 	virtual tstring& GetStringBuffer() = 0;
 };
@@ -24,11 +25,11 @@ public:
 extern IOELogFileMgr* g_pOELogFileMgr;
 
 #if (ENABLE_LOGOUT)
-#define LOGOUT(pstrFormat, ...)														\
+	#define LOGOUT(pstrFormat, ...)														\
 	COEOS::strformat(g_pOELogFileMgr->GetStringBuffer(), pstrFormat, __VA_ARGS__);	\
 	g_pOELogFileMgr->LogOut(g_pOELogFileMgr->GetStringBuffer())
 #else
-#define LOGOUT
+	#define LOGOUT(pstrFormat, ...) 0
 #endif
 
 #endif // __IOELOGFILEMGR_H__

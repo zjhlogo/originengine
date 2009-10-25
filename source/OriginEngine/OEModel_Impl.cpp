@@ -59,10 +59,8 @@ void COEModel_Impl::Update(float fDetailTime)
 	{
 		IOEBone* pMeshBone = m_pMesh->GetBone(i);
 
-		pMeshBone->SlerpMatrix(matAnim, m_fTotalTime);
+		pMeshBone->SlerpMatrix(m_vmatSkin[i], m_fTotalTime);
 		const CMatrix4x4& matLocal = pMeshBone->GetLocalMatrix();
-
-		m_vmatSkin[i] = matAnim * matLocal;
 
 		int nParentID = pMeshBone->GetParentID();
 		if (nParentID != COEFmtMesh::INVALID_BONE_ID)
