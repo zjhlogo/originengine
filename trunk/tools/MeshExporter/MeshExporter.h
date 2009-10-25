@@ -87,8 +87,8 @@ public:
 	typedef struct BONE_INFO_tag
 	{
 		tstring strName;
-		int nNodeID;
-		int nParentNodeID;
+		IGameNode* pNode;
+		IGameNode* pParentNode;
 
 		int nID;
 		int nParentID;
@@ -98,7 +98,7 @@ public:
 	} BONE_INFO;
 
 	typedef std::vector<BONE_INFO> TV_BONE_INFO;
-	typedef std::map<int, int> TM_BONE_INFO;
+	typedef std::map<IGameNode*, int> TM_BONE_INFO;
 	typedef std::set<TimeValue> TS_TIME_VALUE;
 
 	typedef struct FILE_VERTEX_tag

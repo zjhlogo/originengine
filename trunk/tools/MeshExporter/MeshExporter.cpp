@@ -155,6 +155,7 @@ bool CMeshExporter::CollectNodes(IGameNode* pGameNode, IGameNode* pParentGameNod
 	for (int i = 0; i < nChildCount; ++i)
 	{
 		bool bOK = CollectNodes(pGameNode->GetNodeChild(i), pGameNode);
+		assert(bOK);
 		// TODO: check bOK
 	}
 
@@ -171,6 +172,7 @@ bool CMeshExporter::BuildMeshsInfo()
 		SkinMesh.strName = NodeInfo.pGameNode->GetName();
 		SkinMesh.matLocal = NodeInfo.pGameNode->GetLocalTM();
 		bool bOK = DumpMesh(SkinMesh, NodeInfo.pGameNode);
+		assert(bOK);
 		// TODO: check bOK
 		m_vSkinMesh.push_back(SkinMesh);
 	}
@@ -186,29 +188,32 @@ bool CMeshExporter::BuildBonesInfo()
 
 		BONE_INFO BoneInfo;
 		BoneInfo.strName = NodeInfo.pGameNode->GetName();
-		BoneInfo.nNodeID = NodeInfo.pGameNode->GetNodeID();
-		BoneInfo.nParentNodeID = 0;
-		if (NodeInfo.pParentGameNode) BoneInfo.nParentNodeID = NodeInfo.pParentGameNode->GetNodeID();
+		BoneInfo.pNode = NodeInfo.pGameNode;
+		BoneInfo.pParentNode = NodeInfo.pParentGameNode;
 		BoneInfo.nID = (int)m_vBoneInfo.size();
 		BoneInfo.nParentID = COEFmtMesh::INVALID_BONE_ID;
 		BoneInfo.matLocal = NodeInfo.pGameNode->GetLocalTM();
 		bool bOK = DumpController(BoneInfo.vFrameInfo, NodeInfo.pGameNode);
+		assert(bOK);
 		// TODO: check bOK
 		m_vBoneInfo.push_back(BoneInfo);
-		m_vBoneInfoMap.insert(std::make_pair(BoneInfo.nNodeID, BoneInfo.nID));
+		m_vBoneInfoMap.insert(std::make_pair(BoneInfo.pNode, BoneInfo.nID));
 	}
 
 	for (TV_BONE_INFO::iterator it = m_vBoneInfo.begin(); it != m_vBoneInfo.end(); ++it)
 	{
 		BONE_INFO& BoneInfo = (*it);
-		TM_BONE_INFO::iterator itfound = m_vBoneInfoMap.find(BoneInfo.nParentNodeID);
+		if (BoneInfo.pParentNode == NULL) continue;
+
+		TM_BONE_INFO::iterator itfound = m_vBoneInfoMap.find(BoneInfo.pParentNode);
 		if (itfound != m_vBoneInfoMap.end())
 		{
 			BoneInfo.nParentID = itfound->second;
 		}
 		else
 		{
-			// TODO: 
+			assert(false);
+			tstring strNodeName = BoneInfo.pNode->GetName();
 		}
 	}
 
@@ -367,11 +372,19 @@ bool CMeshExporter::SaveToFile(const tstring& strFileName)
 bool CMeshExporter::DumpMesh(SKIN_MESH& SkinMeshOut, IGameNode* pGameNode)
 {
 	IGameObject* pGameObject = pGameNode->GetIGameObject();
-	if (pGameObject->GetIGameType() != IGameObject::IGAME_MESH) return false;
+	if (pGameObject->GetIGameType() != IGameObject::IGAME_MESH)
+	{
+		assert(false);
+		return false;
+	}
 
 	IGameMesh* pGameMesh = (IGameMesh*)pGameObject;
 	pGameMesh->SetCreateOptimizedNormalList();
-	if (!pGameMesh->InitializeData()) return false;
+	if (!pGameMesh->InitializeData())
+	{
+		assert(false);
+		return false;
+	}
 
 	// init vertex slots
 	int nNumVerts = pGameMesh->GetNumberOfVerts();
@@ -471,6 +484,7 @@ bool CMeshExporter::DumpMesh(SKIN_MESH& SkinMeshOut, IGameNode* pGameNode)
 		IGameSkin* pGameSkin = (IGameSkin*)pGameModifier;
 
 		bool bOK = DumpSkin(SkinMeshOut, pGameSkin);
+		assert(bOK);
 		// TODO: check bOK
 	}
 
@@ -486,9 +500,13 @@ bool CMeshExporter::DumpSkin(SKIN_MESH& SkinMeshOut, IGameSkin* pGameSkin)
 		int nNumBone = pGameSkin->GetNumberOfBones(i);
 		for (int j = 0; j < nNumBone; ++j)
 		{
-			int nNodeID = pGameSkin->GetBoneID(i, j);
-			TM_BONE_INFO::iterator it = m_vBoneInfoMap.find(nNodeID);
-			if (it == m_vBoneInfoMap.end()) continue;
+			IGameNode* pBoneNode = pGameSkin->GetIGameBone(i, j);
+			TM_BONE_INFO::iterator it = m_vBoneInfoMap.find(pBoneNode);
+			if (it == m_vBoneInfoMap.end())
+			{
+				assert(false);
+				continue;
+			}
 
 			SKIN Skin;
 			Skin.nBoneIndex = it->second;
@@ -585,6 +603,7 @@ bool CMeshExporter::DumpPositionController(TS_TIME_VALUE& TimeSetOut, IGameContr
 	default:
 		{
 			// TODO: 
+			assert(false);
 			return false;
 		}
 		break;
@@ -631,6 +650,7 @@ bool CMeshExporter::DumpRotationController(TS_TIME_VALUE& TimeSetOut, IGameContr
 	default:
 		{
 			// TODO: 
+			assert(false);
 			return false;
 		}
 		break;
@@ -660,6 +680,7 @@ bool CMeshExporter::DumpScaleController(TS_TIME_VALUE& TimeSetOut, IGameControl*
 	default:
 		{
 			// TODO: 
+			assert(false);
 			return false;
 		}
 		break;
@@ -959,6 +980,9 @@ bool CMeshExporter::DumpBipedScaleKey(TS_TIME_VALUE& TimeSetOut, IGameControl* p
 
 bool CMeshExporter::DumpConstraintKey(TS_TIME_VALUE& TimeSetOut, IGameControl* pGameControl)
 {
+	// TODO: 
+	assert(false);
+
 	//IGameConstraint* pGameConstraint = pGameControl->GetConstraint(IGAME_POS);
 
 	//int nConstraintCount = pGameConstraint->NumberOfConstraintNodes();
@@ -988,6 +1012,7 @@ bool CMeshExporter::DumpListKey(TS_TIME_VALUE& TimeSetOut, IGameControl* pGameCo
 	{
 		IGameControl* pSubGameControl = pGameControl->GetListSubControl(i, IGAME_POS);
 		bool bOK = DumpPositionController(TimeSetOut, pSubGameControl);
+		assert(bOK);
 		// TODO: check bOK
 	}
 
@@ -996,6 +1021,7 @@ bool CMeshExporter::DumpListKey(TS_TIME_VALUE& TimeSetOut, IGameControl* pGameCo
 	{
 		IGameControl* pSubGameControl = pGameControl->GetListSubControl(i, IGAME_ROT);
 		bool bOK = DumpRotationController(TimeSetOut, pSubGameControl);
+		assert(bOK);
 		// TODO: check bOK
 	}
 
@@ -1004,6 +1030,7 @@ bool CMeshExporter::DumpListKey(TS_TIME_VALUE& TimeSetOut, IGameControl* pGameCo
 	{
 		IGameControl* pSubGameControl = pGameControl->GetListSubControl(i, IGAME_SCALE);
 		bool bOK = DumpScaleController(TimeSetOut, pSubGameControl);
+		assert(bOK);
 		// TODO: check bOK
 	}
 

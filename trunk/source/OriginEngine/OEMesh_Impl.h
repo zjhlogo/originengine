@@ -33,6 +33,7 @@ public:
 	virtual IOEBone* FindBone(const tstring& strName) const;
 
 	virtual IOEBone* GetRootBone() const;
+	virtual float GetTimeLength() const;
 
 private:
 	void Init();
@@ -43,6 +44,8 @@ private:
 private:
 	TV_PIECE m_vPiece;
 	TV_BONE m_vBone;
+
+	float m_fTimeLength;
 
 };
 

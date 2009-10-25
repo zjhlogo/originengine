@@ -12,6 +12,8 @@
 #include <IOEFile.h>
 #include <OEFmtMesh.h>
 
+#include <vector>
+
 class COEPiece_Impl : public IOEPiece
 {
 public:

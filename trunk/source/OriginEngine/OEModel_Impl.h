@@ -34,6 +34,16 @@ public:
 
 	typedef std::vector<CMatrix4x4> TV_MATRIX;
 
+	typedef struct VERTEX_tag
+	{
+		float x, y, z;
+		float u, v;
+		uchar nBoneIndex[4];
+		float fWeight[4];
+	} VERTEX;
+
+	typedef std::vector<VERTEX> TV_VERTEX;
+
 public:
 	COEModel_Impl(const tstring& strFile);
 	virtual ~COEModel_Impl();
@@ -56,6 +66,8 @@ private:
 
 	IOEShader* CreateShader(int nVertDecl, const tstring& strShaderFile);
 
+	void SoftSkinned(IOEPiece* pPiece, TV_MATRIX& vmatSkin);
+
 private:
 	IOEMesh* m_pMesh;
 
@@ -63,6 +75,8 @@ private:
 	float m_fTotalTime;
 
 	TV_MATERIAL m_vMaterial;
+
+	TV_VERTEX m_vVerts;
 
 };
 
