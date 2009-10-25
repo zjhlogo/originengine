@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Model>
-	<Mesh>monster.mesh</Mesh>
+	<Mesh>monster.MESH</Mesh>
 	<Materials count="1">
-		<Material id="0" vertdecl="25" shader="mesh.fx" texture="grid32.png" />
+		<Material id="0" vertdecl="25" shader="meshskl.fx" texture="monster.jpg" />
 	</Materials>
 </Model>

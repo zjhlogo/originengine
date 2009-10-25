@@ -376,6 +376,7 @@ bool CMs3dConv_Impl::SaveToFile(const tstring& strFile)
 	if (nNumMeshes > 0)
 	{
 		vPiece.resize(nNumMeshes);
+		memset(&vPiece[0], 0, sizeof(COEFmtMesh::PIECE)*nNumMeshes);
 		pFile->Write(&vPiece[0], sizeof(COEFmtMesh::PIECE)*nNumMeshes);
 	}
 
@@ -385,6 +386,7 @@ bool CMs3dConv_Impl::SaveToFile(const tstring& strFile)
 	if (nNumBones > 0)
 	{
 		vBone.resize(nNumBones);
+		memset(&vBone[0], 0, sizeof(COEFmtMesh::BONE)*nNumBones);
 		pFile->Write(&vBone[0], sizeof(COEFmtMesh::BONE)*nNumBones);
 	}
 
@@ -393,8 +395,8 @@ bool CMs3dConv_Impl::SaveToFile(const tstring& strFile)
 	{
 		//std::string strName;
 		//COEOS::tchar2char(strName, m_vSkinMesh[i].strName.c_str());
-		//strncpy_s(vPiece[i].szName, strName.c_str(), COEFmtMesh::PIECE_NAME_SIZE);
-		strncpy_s(vPiece[i].szName, "mesh", COEFmtMesh::PIECE_NAME_SIZE);
+		//strncpy_s(vPiece[i].szName, COEFmtMesh::PIECE_NAME_SIZE, strName.c_str(), _TRUNCATE);
+		strncpy_s(vPiece[i].szName, COEFmtMesh::PIECE_NAME_SIZE, "mesh", _TRUNCATE);
 
 		vPiece[i].nPieceMask = COEFmtMesh::PM_VISIBLE;
 		vPiece[i].nVertexDataMask = COEFmtMesh::VDM_XYZ | COEFmtMesh::VDM_UV | COEFmtMesh::VDM_BONE;
@@ -410,26 +412,23 @@ bool CMs3dConv_Impl::SaveToFile(const tstring& strFile)
 		{
 			VERTEX& Vertex = m_vVerts[j];
 
+			FILE_VERTEX FileVert;
+			memset(&FileVert, 0, sizeof(FileVert));
+
 			// position
-			float vPos[3];
-			vPos[0] = Vertex.x;
-			vPos[1] = Vertex.y;
-			vPos[2] = Vertex.z;
-			pFile->Write(vPos, sizeof(vPos));
+			FileVert.x = Vertex.x;
+			FileVert.y = Vertex.y;
+			FileVert.z = Vertex.z;
 
 			// uv
-			float vUV[2];
-			vUV[0] = Vertex.u;
-			vUV[1] = Vertex.v;
-			pFile->Write(vUV, sizeof(vUV));
+			FileVert.u = Vertex.u;
+			FileVert.v = Vertex.v;
 
 			// bone weight, index
-			int arrBoneID[4] = {Vertex.nBoneID, 0, 0, 0};
-			float arrWeight[4] = {1.0f, 0.0f, 0.0f, 0.0f};
-			pFile->Write(arrBoneID, sizeof(arrBoneID));
-			pFile->Write(arrWeight, sizeof(arrWeight));
+			FileVert.nBoneIndex[0] = Vertex.nBoneID;
+			FileVert.fWeight[0] = 1.0f;
 
-			// TODO: add more data
+			pFile->Write(&FileVert, sizeof(FileVert));
 		}
 
 		// calculate index data offset
@@ -447,7 +446,7 @@ bool CMs3dConv_Impl::SaveToFile(const tstring& strFile)
 		// bone list info
 		std::string strName;
 		COEOS::tchar2char(strName, m_vBoneInfo[i].strName.c_str());
-		strncpy_s(vBone[i].szName, strName.c_str(), COEFmtMesh::BONE_NAME_SIZE);
+		strncpy_s(vBone[i].szName, COEFmtMesh::BONE_NAME_SIZE, strName.c_str(), _TRUNCATE);
 		vBone[i].nParentIndex = m_vBoneInfo[i].nParentIndex;
 		vBone[i].fTimeLength = m_vBoneInfo[i].fTimeLength;
 		vBone[i].BoneTrans = m_vBoneInfo[i].TransLocal;

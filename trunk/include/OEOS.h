@@ -25,12 +25,21 @@ public:
 		int nSecond;		// second [0, 59]
 	} LOCAL_TIME;
 
+	enum INITIALIZE_SYSTEM
+	{
+		IS_FILE				= 0x00000001,
+		IS_LOG				= 0x00000002,
+		IS_XML				= 0x00000004,
+		IS_MESSAGE			= 0x00000008,
+		IS_ALL				= IS_FILE|IS_LOG|IS_XML|IS_MESSAGE,
+	};
+
 	typedef void* OEMODULE;
 	typedef void* OEFILE;
 
 public:
 	// module relate
-	static bool Initialize();
+	static bool Initialize(uint nInitMask = IS_ALL);
 	static void Terminate();
 	static OEMODULE LoadOEModule(const tchar* pstrModuleName);
 	static void FreeOEModule(OEMODULE hModule);
@@ -46,6 +55,7 @@ public:
 	static bool strformat(tstring& strOut, const tchar* strFormat, ...);
 	static void toupper(tstring& strOut, const tstring& strIn);
 	static void tolower(tstring& strOut, const tstring& strIn);
+	static void GetFileName(tstring& strOut, const tstring& strIn);
 
 	// file system relate
 	static OEFILE FileOpen(const tstring& strFile, const tstring& strOption);

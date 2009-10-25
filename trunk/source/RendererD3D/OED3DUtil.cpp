@@ -147,7 +147,7 @@ int COED3DUtil::GetVertTypeSize(IOEVertDecl::TYPE eType)
 		sizeof(float)*3,	// 3D float expanded to (value, value, value, 1.)
 		sizeof(float)*4,	// 4D float
 		sizeof(uint),		// color
-		sizeof(float)*4,	// ubyte4
+		sizeof(uchar)*4,	// ubyte4
 	};
 
 	assert(eType >= 0 && eType < IOEVertDecl::T_MAX);

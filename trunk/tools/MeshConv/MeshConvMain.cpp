@@ -19,7 +19,7 @@ bool CheckParameter(int argc, char** argv)
 
 int main(int argc, char** argv)
 {
-	if (!COEOS::Initialize()) return 0;
+	if (!COEOS::Initialize(COEOS::IS_FILE)) return 0;
 
 	if (!CheckParameter(argc, argv))
 	{
@@ -41,7 +41,8 @@ int main(int argc, char** argv)
 	}
 
 	tstring strFileOut;
-	strFileOut = strFileIn + t(".mesh");
+	COEOS::GetFileName(strFileOut, strFileOut);
+	strFileOut += t(".mesh");
 
 	CConvMgr::Get().DoConvert(strFileIn, strFileOut);
 

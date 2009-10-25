@@ -25,9 +25,9 @@ COELogFileMgr_Impl* g_pOELogFileMgr_Impl = NULL;
 COEXmlMgr_Impl* g_pOEXmlMgr_Impl = NULL;
 COEMessageMgr_Impl* g_pOEMessageMgr_Impl = NULL;
 
-bool COEOS::Initialize()
+bool COEOS::Initialize(uint nInitMask /* = IS_ALL */)
 {
-	if (!g_pOEFileMgr_Impl)
+	if ((nInitMask & IS_FILE) && !g_pOEFileMgr_Impl)
 	{
 		g_pOEFileMgr_Impl = new COEFileMgr_Impl();
 		if (!g_pOEFileMgr_Impl || !g_pOEFileMgr_Impl->IsOK())
@@ -37,7 +37,7 @@ bool COEOS::Initialize()
 		}
 	}
 
-	if (!g_pOELogFileMgr_Impl)
+	if ((nInitMask & IS_LOG) && !g_pOELogFileMgr_Impl)
 	{
 		g_pOELogFileMgr_Impl = new COELogFileMgr_Impl();
 		if (!g_pOELogFileMgr_Impl || !g_pOELogFileMgr_Impl->IsOK())
@@ -47,7 +47,7 @@ bool COEOS::Initialize()
 		}
 	}
 
-	if (!g_pOEXmlMgr_Impl)
+	if ((nInitMask & IS_XML) && !g_pOEXmlMgr_Impl)
 	{
 		g_pOEXmlMgr_Impl = new COEXmlMgr_Impl();
 		if (!g_pOEXmlMgr_Impl || !g_pOEXmlMgr_Impl->IsOK())
@@ -57,7 +57,7 @@ bool COEOS::Initialize()
 		}
 	}
 
-	if (!g_pOEMessageMgr_Impl)
+	if ((nInitMask & IS_MESSAGE) && !g_pOEMessageMgr_Impl)
 	{
 		g_pOEMessageMgr_Impl = new COEMessageMgr_Impl();
 		if (!g_pOEMessageMgr_Impl || !g_pOEMessageMgr_Impl->IsOK())
@@ -220,6 +220,19 @@ void COEOS::tolower(tstring& strOut, const tstring& strIn)
 {
 	strOut = strIn;
 	std::transform(strOut.begin(), strOut.end(), strOut.begin(), ::toupper);
+}
+
+void COEOS::GetFileName(tstring& strOut, const tstring& strIn)
+{
+	size_t nPos = strIn.rfind(t('.'));
+	if (nPos != tstring::npos)
+	{
+		strOut = strIn.substr(0, nPos);
+	}
+	else
+	{
+		strOut = strIn;
+	}
 }
 
 COEOS::OEFILE COEOS::FileOpen(const tstring& strFile, const tstring& strOption)
