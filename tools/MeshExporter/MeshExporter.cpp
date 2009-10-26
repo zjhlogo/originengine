@@ -264,8 +264,8 @@ bool CMeshExporter::SaveToFile(const tstring& strFileName)
 		strncpy_s(vPiece[i].szName, COEFmtMesh::PIECE_NAME_SIZE, strName.c_str(), _TRUNCATE);
 
 		vPiece[i].nPieceMask = COEFmtMesh::PM_VISIBLE;
-		vPiece[i].nVertexDataMask = COEFmtMesh::VDM_XYZ | COEFmtMesh::VDM_UV | COEFmtMesh::VDM_BONE;
-		vPiece[i].nMaterialID = 0;										// TODO: 
+		vPiece[i].nVertexDataMask = COEFmtMesh::VDM_XYZ | COEFmtMesh::VDM_UV | COEFmtMesh::VDM_NXNYNZ | COEFmtMesh::VDM_TXTYTZ | COEFmtMesh::VDM_BONE;
+		vPiece[i].nMaterialID = 0;					// TODO: 
 
 		// write vertex data offset
 		vPiece[i].nNumVerts = (int)m_vSkinMesh[i].vVertSlots.size();
@@ -288,6 +288,16 @@ bool CMeshExporter::SaveToFile(const tstring& strFileName)
 			// uv
 			FileVert.u = VertSlot.tex.x;
 			FileVert.v = VertSlot.tex.y;
+
+			// normal
+			FileVert.nx = VertSlot.normal.x;
+			FileVert.ny = VertSlot.normal.y;
+			FileVert.nz = VertSlot.normal.z;
+
+			// tangent
+			FileVert.tx = VertSlot.tangent.x;
+			FileVert.ty = VertSlot.tangent.y;
+			FileVert.tz = VertSlot.tangent.z;
 
 			// bone weight, index
 			int nSkinCount = (int)VertSlot.Skins.size();
@@ -379,7 +389,7 @@ bool CMeshExporter::DumpMesh(SKIN_MESH& SkinMeshOut, IGameNode* pGameNode)
 	}
 
 	IGameMesh* pGameMesh = (IGameMesh*)pGameObject;
-	pGameMesh->SetCreateOptimizedNormalList();
+
 	if (!pGameMesh->InitializeData())
 	{
 		assert(false);
@@ -437,6 +447,10 @@ bool CMeshExporter::DumpMesh(SKIN_MESH& SkinMeshOut, IGameNode* pGameNode)
 					}
 				}
 
+				SkinMeshOut.vVertSlots[nVertIndex].vNormalIndex.insert(pFace->norm[j]);
+				int nTangentIndex = pGameMesh->GetFaceVertexTangentBinormal(i, j);
+				SkinMeshOut.vVertSlots[nVertIndex].vTangentIndex.insert(nTangentIndex);
+
 				if (bAddNew)
 				{
 					// add new slot
@@ -452,6 +466,10 @@ bool CMeshExporter::DumpMesh(SKIN_MESH& SkinMeshOut, IGameNode* pGameNode)
 			}
 			else
 			{
+				SkinMeshOut.vVertSlots[nVertIndex].vNormalIndex.insert(pFace->norm[j]);
+				int nTangentIndex = pGameMesh->GetFaceVertexTangentBinormal(i, j);
+				SkinMeshOut.vVertSlots[nVertIndex].vTangentIndex.insert(nTangentIndex);
+
 				// set this slot
 				SkinMeshOut.vVertSlots[nVertIndex].bUsed = true;
 				SkinMeshOut.vVertSlots[nVertIndex].nVertIndex = nVertIndex;
@@ -465,12 +483,46 @@ bool CMeshExporter::DumpMesh(SKIN_MESH& SkinMeshOut, IGameNode* pGameNode)
 	}
 
 	// setup vertex data
+	for (int i = 0; i < nNumVerts; ++i)
+	{
+		VERTEX_SLOT& LocalSlot = SkinMeshOut.vVertSlots[i];
+
+		int nNumNormal = 0;
+		Point3 vNormal(0.0f, 0.0f, 0.0f);
+		for (TS_INT::iterator it = LocalSlot.vNormalIndex.begin(); it != LocalSlot.vNormalIndex.end(); ++it)
+		{
+			vNormal += pGameMesh->GetNormal(*it, false);
+			++nNumNormal;
+		}
+
+		assert(nNumNormal);
+		LocalSlot.normal = vNormal.Normalize();
+
+		int nNumTangent = 0;
+		Point3 vTangent(0.0f, 0.0f, 0.0f);
+		for (TS_INT::iterator it = LocalSlot.vTangentIndex.begin(); it != LocalSlot.vTangentIndex.end(); ++it)
+		{
+			vTangent += pGameMesh->GetTangent(*it);
+			++nNumTangent;
+		}
+
+		assert(nNumTangent);
+		LocalSlot.tangent = vTangent.Normalize();
+	}
+
 	int nNewNumVerts = SkinMeshOut.vVertSlots.size();
 	for (int i = 0; i < nNewNumVerts; ++i)
 	{
 		VERTEX_SLOT& LocalSlot = SkinMeshOut.vVertSlots[i];
 
 		pGameMesh->GetVertex(LocalSlot.nVertIndex, LocalSlot.pos, false);
+
+		if (i != LocalSlot.nVertIndex)
+		{
+			LocalSlot.normal = SkinMeshOut.vVertSlots[LocalSlot.nVertIndex].normal;
+			LocalSlot.tangent = SkinMeshOut.vVertSlots[LocalSlot.nVertIndex].tangent;
+		}
+
 		pGameMesh->GetTexVertex(LocalSlot.nTexIndex, LocalSlot.tex);
 		LocalSlot.tex.y += 1.0f;
 	}

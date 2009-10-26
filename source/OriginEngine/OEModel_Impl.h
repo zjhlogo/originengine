@@ -19,17 +19,6 @@
 class COEModel_Impl : public IOEModel
 {
 public:
-	typedef struct MATERIAL_tag
-	{
-		int nID;
-		int nVertDecl;
-		tstring strShaderFile;
-		tstring strTextureFile;
-		IOEShader* pShader;
-		IOETexture* pTexture;
-		// TODO: some additional parameter
-	} MATERIAL;
-
 	typedef std::vector<MATERIAL> TV_MATERIAL;
 
 	typedef std::vector<CMatrix4x4> TV_MATRIX;
@@ -38,6 +27,8 @@ public:
 	{
 		float x, y, z;
 		float u, v;
+		float nx, ny, nz;
+		float tx, ty, tz;
 		uchar nBoneIndex[4];
 		float fWeight[4];
 	} VERTEX;
@@ -54,6 +45,9 @@ public:
 	virtual IOEMesh* GetMesh();
 	virtual int GetNumMatrixPalette();
 	virtual CMatrix4x4* GetMatrixPalette();
+
+	virtual int GetNumMaterials();
+	virtual MATERIAL* GetMaterial(int nIndex);
 
 private:
 	void Init();

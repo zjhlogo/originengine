@@ -10,9 +10,25 @@
 
 #include "IOEObject.h"
 #include "IOEMesh.h"
+#include "IOETexture.h"
+#include "IOEShader.h"
 
 class IOEModel : public IOEObject
 {
+public:
+	typedef struct MATERIAL_tag
+	{
+		int nID;
+		int nVertDecl;
+		tstring strShaderFile;
+		tstring strTextureFile;
+		tstring strTexNormalFile;
+		IOEShader* pShader;
+		IOETexture* pTexture;
+		IOETexture* pTexNormal;
+		// TODO: some additional parameter
+	} MATERIAL;
+
 public:
 	IOEModel() {};
 	virtual ~IOEModel() {};
@@ -23,6 +39,9 @@ public:
 	virtual IOEMesh* GetMesh() = 0;
 	virtual int GetNumMatrixPalette() = 0;
 	virtual CMatrix4x4* GetMatrixPalette() = 0;
+
+	virtual int GetNumMaterials() = 0;
+	virtual MATERIAL* GetMaterial(int nIndex) = 0;
 };
 
 #endif // __IOEMODEL_H__

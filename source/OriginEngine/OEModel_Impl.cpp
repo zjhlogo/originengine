@@ -44,6 +44,7 @@ void COEModel_Impl::ClearMaterials()
 		MATERIAL& Material = (*it);
 		SAFE_RELEASE(Material.pShader);
 		SAFE_RELEASE(Material.pTexture);
+		SAFE_RELEASE(Material.pTexNormal);
 	}
 
 	m_vMaterial.clear();
@@ -104,6 +105,7 @@ void COEModel_Impl::Render(float fDetailTime)
 
 		m_vMaterial[nMaterialID].pShader->SetMatrix(t("g_matWorldViewProj"), matWorldViewProj);
 		m_vMaterial[nMaterialID].pShader->SetTexture(t("g_texBase"), m_vMaterial[nMaterialID].pTexture);
+		m_vMaterial[nMaterialID].pShader->SetTexture(t("g_texNormal"), m_vMaterial[nMaterialID].pTexNormal);
 		m_vMaterial[nMaterialID].pShader->SetMatrixArray(t("g_matBoneMatrix"), &m_vmatSkin[0], m_vmatSkin.size());
 		g_pOERenderer->SetShader(m_vMaterial[nMaterialID].pShader);
 
@@ -128,6 +130,17 @@ CMatrix4x4* COEModel_Impl::GetMatrixPalette()
 {
 	if (m_vmatSkin.empty()) return NULL;
 	return &m_vmatSkin[0];
+}
+
+int COEModel_Impl::GetNumMaterials()
+{
+	return m_vMaterial.size();
+}
+
+IOEModel::MATERIAL* COEModel_Impl::GetMaterial(int nIndex)
+{
+	if (nIndex < 0 || nIndex >= (int)m_vMaterial.size()) return NULL;
+	return &m_vMaterial[nIndex];
 }
 
 bool COEModel_Impl::Create(const tstring& strFile)
@@ -195,6 +208,7 @@ bool COEModel_Impl::CreateMaterials(IOEXmlNode* pXmlMaterials)
 		if (!pXmlMaterial->GetAttribute(Material.nVertDecl, t("vertdecl"))) return false;
 		if (!pXmlMaterial->GetAttribute(Material.strShaderFile, t("shader"))) return false;
 		if (!pXmlMaterial->GetAttribute(Material.strTextureFile, t("texture"))) return false;
+		if (!pXmlMaterial->GetAttribute(Material.strTexNormalFile, t("texnormal"))) return false;
 
 		Material.pShader = CreateShader(Material.nVertDecl, Material.strShaderFile);
 		if (!Material.pShader) return false;
@@ -202,6 +216,14 @@ bool COEModel_Impl::CreateMaterials(IOEXmlNode* pXmlMaterials)
 		Material.pTexture = g_pOETextureMgr->CreateTextureFromFile(Material.strTextureFile);
 		if (!Material.pTexture)
 		{
+			SAFE_RELEASE(Material.pShader);
+			return false;
+		}
+
+		Material.pTexNormal = g_pOETextureMgr->CreateTextureFromFile(Material.strTexNormalFile);
+		if (!Material.pTexture)
+		{
+			SAFE_RELEASE(Material.pTexture);
 			SAFE_RELEASE(Material.pShader);
 			return false;
 		}
@@ -218,7 +240,9 @@ bool COEModel_Impl::CreateMaterials(IOEXmlNode* pXmlMaterials)
 IOEShader* COEModel_Impl::CreateShader(int nVertDecl, const tstring& strShaderFile)
 {
 	std::vector<IOEVertDecl::ELEMENT> vDecl;
+	int nTexCoordIndex = 0;
 
+	// position
 	if (nVertDecl & COEFmtMesh::VDM_XYZ)
 	{
 		IOEVertDecl::ELEMENT Element;
@@ -228,6 +252,7 @@ IOEShader* COEModel_Impl::CreateShader(int nVertDecl, const tstring& strShaderFi
 		vDecl.push_back(Element);
 	}
 
+	// color
 	if (nVertDecl & COEFmtMesh::VDM_COLOR)
 	{
 		IOEVertDecl::ELEMENT Element;
@@ -237,24 +262,37 @@ IOEShader* COEModel_Impl::CreateShader(int nVertDecl, const tstring& strShaderFi
 		vDecl.push_back(Element);
 	}
 
-	if (nVertDecl & COEFmtMesh::VDM_NXNYNZ)
-	{
-		IOEVertDecl::ELEMENT Element;
-		Element.eType = IOEVertDecl::T_FLOAT3;
-		Element.eUsage = IOEVertDecl::U_NORMAL;
-		Element.nIndex = 0;
-		vDecl.push_back(Element);
-	}
-
+	// texcoord
 	if (nVertDecl & COEFmtMesh::VDM_UV)
 	{
 		IOEVertDecl::ELEMENT Element;
 		Element.eType = IOEVertDecl::T_FLOAT2;
 		Element.eUsage = IOEVertDecl::U_TEXCOORD;
-		Element.nIndex = 0;
+		Element.nIndex = nTexCoordIndex++;
 		vDecl.push_back(Element);
 	}
 
+	// normal
+	if (nVertDecl & COEFmtMesh::VDM_NXNYNZ)
+	{
+		IOEVertDecl::ELEMENT Element;
+		Element.eType = IOEVertDecl::T_FLOAT3;
+		Element.eUsage = IOEVertDecl::U_TEXCOORD;
+		Element.nIndex = nTexCoordIndex++;
+		vDecl.push_back(Element);
+	}
+
+	// tangent
+	if (nVertDecl & COEFmtMesh::VDM_TXTYTZ)
+	{
+		IOEVertDecl::ELEMENT Element;
+		Element.eType = IOEVertDecl::T_FLOAT3;
+		Element.eUsage = IOEVertDecl::U_TEXCOORD;
+		Element.nIndex = nTexCoordIndex++;
+		vDecl.push_back(Element);
+	}
+
+	// blendindex, blendweight
 	if (nVertDecl & COEFmtMesh::VDM_BONE)
 	{
 		IOEVertDecl::ELEMENT Element;
@@ -282,7 +320,7 @@ IOEShader* COEModel_Impl::CreateShader(int nVertDecl, const tstring& strShaderFi
 void COEModel_Impl::SoftSkinned(IOEPiece* pPiece, TV_MATRIX& vmatSkin)
 {
 	int nNumVerts = pPiece->GetNumVerts();
-	if (m_vVerts.size() < nNumVerts) m_vVerts.resize(nNumVerts);
+	if ((int)m_vVerts.size() < nNumVerts) m_vVerts.resize(nNumVerts);
 
 	VERTEX* pVertSrc = (VERTEX*)pPiece->GetVerts();
 
@@ -299,8 +337,27 @@ void COEModel_Impl::SoftSkinned(IOEPiece* pPiece, TV_MATRIX& vmatSkin)
 		m_vVerts[i].x = vPosSkinned.x;
 		m_vVerts[i].y = vPosSkinned.y;
 		m_vVerts[i].z = vPosSkinned.z;
+
 		m_vVerts[i].u = pVertSrc->u;
 		m_vVerts[i].v = pVertSrc->v;
+
+		m_vVerts[i].nx = pVertSrc->nx;
+		m_vVerts[i].ny = pVertSrc->ny;
+		m_vVerts[i].nz = pVertSrc->nz;
+
+		m_vVerts[i].tx = pVertSrc->tx;
+		m_vVerts[i].ty = pVertSrc->ty;
+		m_vVerts[i].tz = pVertSrc->tz;
+
+		m_vVerts[i].nBoneIndex[0] = pVertSrc->nBoneIndex[0];
+		m_vVerts[i].nBoneIndex[1] = pVertSrc->nBoneIndex[1];
+		m_vVerts[i].nBoneIndex[2] = pVertSrc->nBoneIndex[2];
+		m_vVerts[i].nBoneIndex[3] = pVertSrc->nBoneIndex[3];
+
+		m_vVerts[i].fWeight[0] = pVertSrc->fWeight[0];
+		m_vVerts[i].fWeight[1] = pVertSrc->fWeight[1];
+		m_vVerts[i].fWeight[2] = pVertSrc->fWeight[2];
+		m_vVerts[i].fWeight[3] = pVertSrc->fWeight[3];
 
 		++pVertSrc;
 	}

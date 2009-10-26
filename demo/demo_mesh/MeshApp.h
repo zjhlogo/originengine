@@ -24,6 +24,25 @@ public:
 		KEY_COUNT = 256,
 	};
 
+	typedef struct MODEL_VERTEX_tag
+	{
+		float x, y, z;
+		float u, v;
+		float nx, ny, nz;
+		float tx, ty, tz;
+		uchar nBoneIndex[4];
+		float fWeight[4];
+	} MODEL_VERTEX;
+
+	typedef struct NORMAL_VERTEX_tag
+	{
+		float x, y, z;
+		uint nColor;
+	} NORMAL_VERTEX;
+
+	typedef std::vector<NORMAL_VERTEX> TV_NORMAL_VERTEX;
+	typedef std::vector<ushort> TV_USHORT;
+
 public:
 	CMeshApp();
 	virtual ~CMeshApp();
@@ -47,6 +66,8 @@ private:
 	bool UpdateMovement(float fDetailTime);
 	bool UpdateRotation(float fDetailTime);
 
+	void RenderPieceNormal(IOEPiece* pPiece);
+
 private:
 	CCamera* m_pCamera;
 	CSimpleShape* m_pSimpleShape;
@@ -57,6 +78,10 @@ private:
 	int m_nMouseDetailX;
 	int m_nMouseDetailY;
 	bool m_KeyDown[KEY_COUNT];
+
+	IOEVertDecl* m_pNormalVertDecl;
+	TV_NORMAL_VERTEX m_vNormalVerts;
+	TV_USHORT m_vNormalIndis;
 
 };
 
