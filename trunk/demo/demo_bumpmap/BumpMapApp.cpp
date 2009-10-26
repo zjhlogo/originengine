@@ -105,13 +105,14 @@ void CBumpMapApp::Render(float fDetailTime)
 	g_pOERenderer->GetTransform(matWorldViewProj, IOERenderer::TT_WORLD_VIEW_PROJ);
 	m_pShader->SetMatrix(t("g_matWorldViewProj"), matWorldViewProj);
 
-	s_fTotalTime += fDetailTime;
+	s_fTotalTime = 1.0f;
 	m_vLightPos.x = cos(s_fTotalTime)*10.0f;
 	m_vLightPos.y = 5.0f;
 	m_vLightPos.z = sin(s_fTotalTime)*10.0f;
 
 	m_pShader->SetVector(t("g_vLightPos"), m_vLightPos);
 
+	m_pShader->SetVector(t("g_vEyePos"), m_pCamera->GetEyePos());
 	m_pShader->SetTexture(t("g_texBase"), m_pTexBase);
 	m_pShader->SetTexture(t("g_texNormal"), m_pTexNormal);
 	m_pShader->SetTexture(t("g_texHeight"), m_pTexHeight);
@@ -161,7 +162,7 @@ void CBumpMapApp::OnKeyDown(int nKeyCode)
 
 bool CBumpMapApp::UpdateMovement(float fDetailTime)
 {
-	static const float MOVE_DIST = 20.0f;
+	static const float MOVE_DIST = 2.0f;
 
 	bool bUpdateMovement = m_KeyDown['W'] || m_KeyDown['S'] || m_KeyDown['A'] || m_KeyDown['D'];
 	if (!bUpdateMovement) return false;

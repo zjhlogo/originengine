@@ -1,7 +1,10 @@
 float4x4 g_matWorldViewProj;
 float4x4 g_matBoneMatrix[50] : WORLDMATRIXARRAY;
 
+float3 g_vLightPos = {-300.0f, 0.0f, -300.0f};
+
 texture g_texBase;
+texture g_texNormal;
 
 sampler texBaseSampler =
 sampler_state
@@ -12,10 +15,21 @@ sampler_state
     MagFilter = LINEAR;
 };
 
+sampler texNormalSampler =
+sampler_state
+{
+    Texture = <g_texNormal>;
+    MipFilter = LINEAR;
+    MinFilter = LINEAR;
+    MagFilter = LINEAR;
+};
+
 struct VS_INPUT
 {
     float3 pos : POSITION;
     float2 texcoord : TEXCOORD0;
+	float3 normal : TEXCOORD1;
+	float3 tangent : TEXCOORD2;
 	int4 boneindex : BLENDINDICES;
 	float4 boneweight : BLENDWEIGHT;
 };
@@ -24,6 +38,7 @@ struct VS_OUTPUT
 {
     float4 pos : POSITION;
     float2 texcoord : TEXCOORD0;
+    float3 lightdir : TEXCOORD1;
 };
 
 VS_OUTPUT VSMain(VS_INPUT input)
@@ -41,13 +56,29 @@ VS_OUTPUT VSMain(VS_INPUT input)
     output.pos = mul(skinnedpos, g_matWorldViewProj);
 	output.texcoord = input.texcoord;
 
+    float3 binormal = cross(input.tangent, input.normal);
+    float3x3 rotation = float3x3(input.tangent, binormal, input.normal);
+
+    float3 vLightDir = g_vLightPos - input.pos;
+    output.lightdir = mul(rotation, vLightDir);
+
     return output;
 }
 
 float4 PSMain(VS_OUTPUT input) : COLOR
 {
-    float4 color = tex2D(texBaseSampler, input.texcoord);
-    return color;
+    float3 lightdir = normalize(input.lightdir);
+
+    float3 basecolor = tex2D(texBaseSampler, input.texcoord);
+
+    float3 normal = tex2D(texNormalSampler, input.texcoord);
+    normal = (normal - 0.5f) * 2.0f;
+    float3 specular = dot(normal, lightdir);
+
+    return float4(basecolor*specular, 1.0f);
+
+	//float3 basecolor = tex2D(texBaseSampler, input.texcoord);
+	//return float4(basecolor, 1.0f);
 }
 
 technique Normal

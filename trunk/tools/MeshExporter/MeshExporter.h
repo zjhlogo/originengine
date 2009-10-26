@@ -44,6 +44,7 @@ public:
 	typedef std::vector<SKIN> TV_SKIN;
 
 	typedef std::vector<int> TV_INT;
+	typedef std::set<int> TS_INT;
 
 	typedef struct VERTEX_SLOT_tag
 	{
@@ -53,6 +54,10 @@ public:
 		TV_INT vClone;
 
 		Point3 pos;
+		TS_INT vNormalIndex;
+		TS_INT vTangentIndex;
+		Point3 normal;
+		Point3 tangent;
 		Point2 tex;
 		TV_SKIN Skins;
 	} VERTEX_SLOT;
@@ -105,6 +110,8 @@ public:
 	{
 		float x, y, z;
 		float u, v;
+		float nx, ny, nz;
+		float tx, ty, tz;
 		uchar nBoneIndex[4];
 		float fWeight[4];
 	} FILE_VERTEX;
