@@ -1,5 +1,5 @@
 float4x4 g_matWorldViewProj;
-float4x4 g_matBoneMatrix[50] : WORLDMATRIXARRAY;
+float4x3 g_matBoneMatrix[56] : WORLDMATRIXARRAY;
 
 float3 g_vLightPos = {-300.0f, 0.0f, -300.0f};
 
@@ -41,25 +41,49 @@ struct VS_OUTPUT
     float3 lightdir : TEXCOORD1;
 };
 
+float3 SkinMesh4(float4 posin, int4 boneindex, float4 boneweight)
+{
+	float3 posout[4];
+	posout[0] = mul(posin, g_matBoneMatrix[boneindex[0]]) * boneweight[0];
+	posout[1] = mul(posin, g_matBoneMatrix[boneindex[1]]) * boneweight[1];
+	posout[2] = mul(posin, g_matBoneMatrix[boneindex[2]]) * boneweight[2];
+	posout[3] = mul(posin, g_matBoneMatrix[boneindex[3]]) * boneweight[3];
+
+	return (posout[0] + posout[1] + posout[2] + posout[3]);
+}
+
+float3 SkinMesh3(float3 posin, int4 boneindex, float4 boneweight)
+{
+	float3 posout[4];
+	posout[0] = mul(posin, g_matBoneMatrix[boneindex[0]]) * boneweight[0];
+	posout[1] = mul(posin, g_matBoneMatrix[boneindex[1]]) * boneweight[1];
+	posout[2] = mul(posin, g_matBoneMatrix[boneindex[2]]) * boneweight[2];
+	posout[3] = mul(posin, g_matBoneMatrix[boneindex[3]]) * boneweight[3];
+
+	return (posout[0] + posout[1] + posout[2] + posout[3]);
+}
+
 VS_OUTPUT VSMain(VS_INPUT input)
 {
     VS_OUTPUT output;
 
-	float4 posin = float4(input.pos, 1.0f);
-	float4 posout[4];
-	posout[0] = mul(posin, g_matBoneMatrix[input.boneindex[0]]) * input.boneweight[0];
-	posout[1] = mul(posin, g_matBoneMatrix[input.boneindex[1]]) * input.boneweight[1];
-	posout[2] = mul(posin, g_matBoneMatrix[input.boneindex[2]]) * input.boneweight[2];
-	posout[3] = mul(posin, g_matBoneMatrix[input.boneindex[3]]) * input.boneweight[3];
+	float3 skinnedpos = SkinMesh4(float4(input.pos, 1.0f), input.boneindex, input.boneweight);
 
-	float4 skinnedpos = posout[0] + posout[1] + posout[2] + posout[3];
-    output.pos = mul(skinnedpos, g_matWorldViewProj);
+    output.pos = mul(float4(skinnedpos, 1.0f), g_matWorldViewProj);
 	output.texcoord = input.texcoord;
 
-    float3 binormal = cross(input.tangent, input.normal);
-    float3x3 rotation = float3x3(input.tangent, binormal, input.normal);
+	float3 skinnednormal = SkinMesh3(input.normal, input.boneindex, input.boneweight);
+	float3 normal = normalize(skinnednormal);
+	//float3 normal = input.normal;
 
-    float3 vLightDir = g_vLightPos - input.pos;
+	float3 skinnedtangent = SkinMesh3(input.tangent, input.boneindex, input.boneweight);
+	float3 tangent = normalize(skinnedtangent);
+	//float3 tangent = input.tangent;
+
+    float3 binormal = cross(tangent, normal);
+    float3x3 rotation = float3x3(tangent, binormal, normal);
+
+    float3 vLightDir = g_vLightPos - skinnedpos;
     output.lightdir = mul(rotation, vLightDir);
 
     return output;
