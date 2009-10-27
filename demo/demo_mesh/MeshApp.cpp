@@ -21,6 +21,7 @@ CMeshApp::~CMeshApp()
 void CMeshApp::Init()
 {
 	m_pCamera = NULL;
+	m_pSimpleShape = NULL;
 	m_pModel = NULL;
 	m_bLButtonDown = false;
 	m_nMouseDetailX = 0;
@@ -47,6 +48,10 @@ bool CMeshApp::Initialize()
 	m_pCamera = new CCamera();
 	if (!m_pCamera) return false;
 
+	m_pSimpleShape = new CSimpleShape();
+	if (!m_pSimpleShape) return false;
+	if (!m_pSimpleShape->Initialize()) return false;
+
 	m_pModel = g_pOEModelMgr->CreateModelFromFile(t("Model.xml"));
 	if (!m_pModel) return false;
 
@@ -60,6 +65,7 @@ void CMeshApp::Terminate()
 {
 	SAFE_RELEASE(m_pNormalVertDecl);
 	SAFE_RELEASE(m_pModel);
+	SAFE_DELETE(m_pSimpleShape);
 	SAFE_DELETE(m_pCamera);
 }
 
@@ -69,15 +75,24 @@ void CMeshApp::Update(float fDetailTime)
 	bool bMov = UpdateMovement(fDetailTime);
 	if (bRot || bMov) g_pOERenderer->SetTransform(IOERenderer::TT_VIEW, m_pCamera->GetViewMatrix());
 
-	m_pModel->Update(0.0f);
+	m_pModel->Update(fDetailTime*0.1f);
 }
 
 void CMeshApp::Render(float fDetailTime)
 {
+	static float s_fTotalTime = 0.0f;
+
 	CMatrix4x4 matWorldViewProj;
 	g_pOERenderer->GetTransform(matWorldViewProj, IOERenderer::TT_WORLD_VIEW_PROJ);
 
 	//g_pOERenderer->SetFillMode(IOERenderer::FM_WIREFRAME);
+	//g_pOERenderer->SetCullMode(IOERenderer::CMT_NONE);
+
+	s_fTotalTime += fDetailTime*0.1f;
+	CVector3 vLightPos;
+	vLightPos.x = cos(s_fTotalTime)*300.0f;
+	vLightPos.y = 150.0f;
+	vLightPos.z = sin(s_fTotalTime)*300.0f;
 
 	IOEMesh* pMesh = m_pModel->GetMesh();
 	int nNumPiece = pMesh->GetNumPieces();
@@ -93,6 +108,7 @@ void CMeshApp::Render(float fDetailTime)
 		pMaterial->pShader->SetMatrix(t("g_matWorldViewProj"), matWorldViewProj);
 		pMaterial->pShader->SetTexture(t("g_texBase"), pMaterial->pTexture);
 		pMaterial->pShader->SetTexture(t("g_texNormal"), pMaterial->pTexNormal);
+		pMaterial->pShader->SetVector(t("g_vLightPos"), vLightPos);
 		pMaterial->pShader->SetMatrixArray(t("g_matBoneMatrix"), m_pModel->GetMatrixPalette(), m_pModel->GetNumMatrixPalette());
 		g_pOERenderer->SetShader(pMaterial->pShader);
 
@@ -100,6 +116,9 @@ void CMeshApp::Render(float fDetailTime)
 
 		//RenderPieceNormal(pPiece);
 	}
+
+	g_pOERenderer->SetShader(NULL);
+	m_pSimpleShape->DrawCube(g_pOERenderer, vLightPos, 10.0f, 0xFFFFFFFF);
 }
 
 void CMeshApp::OnLButtonDown(int x, int y)

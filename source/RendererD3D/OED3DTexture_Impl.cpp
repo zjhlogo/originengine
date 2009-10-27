@@ -70,6 +70,7 @@ bool COED3DTexture_Impl::Create(const tstring& strFileName)
 	pFile->Read(pData, nSize);
 	SAFE_RELEASE(pFile);
 
+	//HRESULT hRet = D3DXCreateTextureFromFileInMemoryEx(g_pd3dDevice, pData, nSize, D3DX_DEFAULT, D3DX_DEFAULT, 1, 0, D3DFMT_UNKNOWN, D3DPOOL_MANAGED, D3DX_DEFAULT, D3DX_DEFAULT, 0, NULL, NULL, &m_pTexture);
 	HRESULT hRet = D3DXCreateTextureFromFileInMemory(g_pd3dDevice, pData, nSize, &m_pTexture);
 	SAFE_DELETE_ARRAY(pData);
 

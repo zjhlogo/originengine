@@ -105,7 +105,7 @@ void CBumpMapApp::Render(float fDetailTime)
 	g_pOERenderer->GetTransform(matWorldViewProj, IOERenderer::TT_WORLD_VIEW_PROJ);
 	m_pShader->SetMatrix(t("g_matWorldViewProj"), matWorldViewProj);
 
-	s_fTotalTime = 1.0f;
+	s_fTotalTime += fDetailTime;
 	m_vLightPos.x = cos(s_fTotalTime)*10.0f;
 	m_vLightPos.y = 5.0f;
 	m_vLightPos.z = sin(s_fTotalTime)*10.0f;
