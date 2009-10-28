@@ -104,7 +104,38 @@ public:
 
 	typedef std::vector<BONE_INFO> TV_BONE_INFO;
 	typedef std::map<IGameNode*, int> TM_BONE_INFO;
-	typedef std::set<TimeValue> TS_TIME_VALUE;
+
+	enum KEY_FRAME_MASK
+	{
+		KFM_UNKNOWN		= 0,
+		KFM_POS_X		= 0x00000001,
+		KFM_POS_Y		= 0x00000002,
+		KFM_POS_Z		= 0x00000004,
+		KFM_SCALE_X		= 0x00000008,
+		KFM_SCALE_Y		= 0x00000010,
+		KFM_SCALE_Z		= 0x00000020,
+		KFM_ROT_X		= 0x00000040,
+		KFM_ROT_Y		= 0x00000080,
+		KFM_ROT_Z		= 0x00000100,
+		KFM_QUAT		= 0x00000200,
+		KFM_MATRIX		= 0x00000400,
+		KFM_POS			= KFM_POS_X | KFM_POS_Y | KFM_POS_Z,
+		KFM_SCALE		= KFM_SCALE_X | KFM_SCALE_Y | KFM_SCALE_Z,
+		KFM_ROT			= KFM_ROT_X | KFM_ROT_Y | KFM_ROT_Z,
+	};
+
+	typedef struct KEY_FRAME_tag
+	{
+		TimeValue time;
+		uint nMask;
+		CVector3 vPos;
+		CVector3 vScale;
+		CVector3 vRot;
+		CQuaternion rRot;
+		CMatrix4x4 matFull;
+	} KEY_FRAME;
+
+	typedef std::map<TimeValue, KEY_FRAME> TM_KEY_FRAME;
 
 	typedef struct FILE_VERTEX_tag
 	{
@@ -149,24 +180,30 @@ private:
 	bool DumpSkin(SKIN_MESH& SkinMeshOut, IGameSkin* pGameSkin);
 
 	bool DumpController(TV_FRAME_INFO& vFrameInfoOut, IGameNode* pGameNode);
-	bool DumpPositionController(TS_TIME_VALUE& TimeSetOut, IGameControl* pGameControl);
-	bool DumpRotationController(TS_TIME_VALUE& TimeSetOut, IGameControl* pGameControl);
-	bool DumpScaleController(TS_TIME_VALUE& TimeSetOut, IGameControl* pGameControl);
+	bool DumpPositionController(TM_KEY_FRAME& KeyFrames, IGameControl* pGameControl);
+	bool DumpRotationController(TM_KEY_FRAME& KeyFrames, IGameControl* pGameControl);
+	bool DumpScaleController(TM_KEY_FRAME& KeyFrames, IGameControl* pGameControl);
 
-	bool DumpMaxStdPosKey(TS_TIME_VALUE& TimeSetOut, IGameControl* pGameControl);
-	bool DumpBipedPosKey(TS_TIME_VALUE& TimeSetOut, IGameControl* pGameControl);
-	bool DumpIndependentPosKey(TS_TIME_VALUE& TimeSetOut, IGameControl* pGameControl);
+	bool DumpMaxStdPosKey(TM_KEY_FRAME& KeyFrames, IGameControl* pGameControl);
+	bool DumpIndependentPosKey(TM_KEY_FRAME& KeyFrames, IGameControl* pGameControl);
 
-	bool DumpMaxStdRotKey(TS_TIME_VALUE& TimeSetOut, IGameControl* pGameControl);
-	bool DumpBipedRotKey(TS_TIME_VALUE& TimeSetOut, IGameControl* pGameControl);
-	bool DumpEulerRotKey(TS_TIME_VALUE& TimeSetOut, IGameControl* pGameControl);
+	bool DumpMaxStdRotKey(TM_KEY_FRAME& KeyFrames, IGameControl* pGameControl);
+	bool DumpEulerRotKey(TM_KEY_FRAME& KeyFrames, IGameControl* pGameControl);
 
-	bool DumpMaxStdScaleKey(TS_TIME_VALUE& TimeSetOut, IGameControl* pGameControl);
-	bool DumpBipedScaleKey(TS_TIME_VALUE& TimeSetOut, IGameControl* pGameControl);
+	bool DumpMaxStdScaleKey(TM_KEY_FRAME& KeyFrames, IGameControl* pGameControl);
 
-	bool DumpConstraintKey(TS_TIME_VALUE& TimeSetOut, IGameControl* pGameControl);
-	bool DumpListKey(TS_TIME_VALUE& TimeSetOut, IGameControl* pGameControl);
+	bool DumpConstraintKey(TM_KEY_FRAME& KeyFrames, IGameControl* pGameControl);
+	bool DumpListKey(TM_KEY_FRAME& KeyFrames, IGameControl* pGameControl);
+	bool DumpSampleKey(TM_KEY_FRAME& KeyFrames, IGameControl* pGameControl, IGameControlType eType);
 
+	KEY_FRAME* FindKeyFrame(TM_KEY_FRAME& KeyFrames, TimeValue time);
+	bool InsertKeyFrame(TM_KEY_FRAME& KeyFrames, TimeValue time, KEY_FRAME_MASK eMask, float fValue);
+	bool InsertKeyFrame(TM_KEY_FRAME& KeyFrames, TimeValue time, KEY_FRAME_MASK eMask, const Point3& vValue);
+	bool InsertKeyFrame(TM_KEY_FRAME& KeyFrames, TimeValue time, KEY_FRAME_MASK eMask, const Quat& qValue);
+	bool InsertKeyFrame(TM_KEY_FRAME& KeyFrames, TimeValue time, KEY_FRAME_MASK eMask, const GMatrix& matValue);
+
+	void GMatrix2CMatrix4x4(CMatrix4x4& matOut, const GMatrix& matIn);
+	void CMatrix4x42GMatrix(GMatrix& matOut, const CMatrix4x4& matIn);
 	void GMatrix2BoneTransform(COEFmtMesh::BONE_TRANSFORM& BoneTrans, const GMatrix& matTrans);
 	void SortSkin(TV_SKIN& vSkin);
 
@@ -176,7 +213,7 @@ private:
 	TV_SKIN_MESH m_vSkinMesh;
 	TV_BONE_INFO m_vBoneInfo;
 	TM_BONE_INFO m_vBoneInfoMap;
-	TS_TIME_VALUE m_TimeValueSet;
+	TM_KEY_FRAME m_TimeValueSet;
 
 };
 #endif // __MESHEXPORTER_H__
