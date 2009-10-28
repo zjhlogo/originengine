@@ -75,7 +75,7 @@ void CMeshApp::Update(float fDetailTime)
 	bool bMov = UpdateMovement(fDetailTime);
 	if (bRot || bMov) g_pOERenderer->SetTransform(IOERenderer::TT_VIEW, m_pCamera->GetViewMatrix());
 
-	m_pModel->Update(fDetailTime*0.1f);
+	m_pModel->Update(fDetailTime);
 }
 
 void CMeshApp::Render(float fDetailTime)
@@ -88,7 +88,7 @@ void CMeshApp::Render(float fDetailTime)
 	//g_pOERenderer->SetFillMode(IOERenderer::FM_WIREFRAME);
 	//g_pOERenderer->SetCullMode(IOERenderer::CMT_NONE);
 
-	s_fTotalTime += fDetailTime*0.1f;
+	s_fTotalTime += fDetailTime*0.0f;
 	CVector3 vLightPos;
 	vLightPos.x = cos(s_fTotalTime)*300.0f;
 	vLightPos.y = 150.0f;

@@ -583,41 +583,120 @@ bool CMeshExporter::DumpController(TV_FRAME_INFO& vFrameInfoOut, IGameNode* pGam
 {
 	IGameControl* pGameControl = pGameNode->GetIGameControl();
 
-	TS_TIME_VALUE TimeValueSet;
+	bool bBiped = false;
+	TM_KEY_FRAME KeyFrames;
 
 	// export position controller
-	if (pGameControl->IsAnimated(IGAME_POS)) DumpPositionController(TimeValueSet, pGameControl);
+	if (pGameControl->IsAnimated(IGAME_POS))
+	{
+		if (pGameControl->GetControlType(IGAME_POS) == IGameControl::IGAME_BIPED)
+		{
+			// dump sample keys
+			DumpSampleKey(KeyFrames, pGameControl, IGAME_TM);
+			bBiped = true;
+		}
+		else
+		{
+			DumpPositionController(KeyFrames, pGameControl);
+		}
+	}
 
 	// export rotation controller
-	if (pGameControl->IsAnimated(IGAME_ROT)) DumpRotationController(TimeValueSet, pGameControl);
+	if (pGameControl->IsAnimated(IGAME_ROT))
+	{
+		if (pGameControl->GetControlType(IGAME_ROT) == IGameControl::IGAME_BIPED)
+		{
+			if (!bBiped)
+			{
+				// dump sample keys
+				DumpSampleKey(KeyFrames, pGameControl, IGAME_TM);
+				bBiped = true;
+			}
+		}
+		else
+		{
+			DumpRotationController(KeyFrames, pGameControl);
+		}
+	}
 
 	// export scale controller
-	if (pGameControl->IsAnimated(IGAME_SCALE)) DumpScaleController(TimeValueSet, pGameControl);
-
-	// 
-	IGameKeyTab TMKey;
-	pGameControl->GetFullSampledKeys(TMKey, 1, IGAME_TM, true);
-
-	TS_TIME_VALUE::const_iterator it = TimeValueSet.begin();
-	int nCount = TMKey.Count();
-
-	for (int i = 0; i < nCount; ++i)
+	if (pGameControl->IsAnimated(IGAME_SCALE))
 	{
-		if (it == TimeValueSet.end()) break;
-		if (TMKey[i].t < (*it)) continue;
+		if (pGameControl->GetControlType(IGAME_SCALE) == IGameControl::IGAME_BIPED)
+		{
+			if (!bBiped)
+			{
+				// dump sample keys
+				DumpSampleKey(KeyFrames, pGameControl, IGAME_TM);
+				bBiped = true;
+			}
+		}
+		else
+		{
+			DumpScaleController(KeyFrames, pGameControl);
+		}
+	}
+
+	for (TM_KEY_FRAME::iterator it = KeyFrames.begin(); it != KeyFrames.end(); ++it)
+	{
+		KEY_FRAME& KeyFrame = it->second;
 
 		FRAME_INFO FrameInfo;
-		FrameInfo.Time = TMKey[i].t;
-		FrameInfo.matAnim = TMKey[i].sampleKey.gval;
-		vFrameInfoOut.push_back(FrameInfo);
+		FrameInfo.Time = KeyFrame.time;
 
-		++it;
+		if (KeyFrame.nMask == KFM_MATRIX)
+		{
+			CMatrix4x42GMatrix(FrameInfo.matAnim, KeyFrame.matFull);
+		}
+		else if (KeyFrame.nMask == KFM_QUAT)
+		{
+			CMatrix4x4 matFinal;
+			COEMath::BuildMatrixFromQuaternion(matFinal, KeyFrame.rRot);
+			COEMath::SetMatrixScale(matFinal, KeyFrame.vScale);
+			COEMath::SetMatrixTranslation(matFinal, KeyFrame.vPos);
+
+			CMatrix4x42GMatrix(FrameInfo.matAnim, matFinal);
+		}
+		else
+		{
+			CMatrix4x4 matFinal;
+			CQuaternion qRot;
+
+			COEMath::BuildQuaternionFromEuler(qRot, KeyFrame.vRot.x, KeyFrame.vRot.y, KeyFrame.vRot.z);
+			COEMath::BuildMatrixFromQuaternion(matFinal, qRot);
+			COEMath::SetMatrixScale(matFinal, KeyFrame.vScale);
+			COEMath::SetMatrixTranslation(matFinal, KeyFrame.vPos);
+
+			CMatrix4x42GMatrix(FrameInfo.matAnim, matFinal);
+		}
+
+		vFrameInfoOut.push_back(FrameInfo);
 	}
+
+	//// 
+	//IGameKeyTab TMKey;
+	//pGameControl->GetFullSampledKeys(TMKey, 1, IGAME_TM, true);
+
+	//TM_KEY_FRAME::const_iterator it = TimeValueSet.begin();
+	//int nCount = TMKey.Count();
+
+	//for (int i = 0; i < nCount; ++i)
+	//{
+	//	if (it == TimeValueSet.end()) break;
+	//	if (TMKey[i].t < (*it)) continue;
+
+	//	FRAME_INFO FrameInfo;
+	//	FrameInfo.Time = TMKey[i].t;
+	//	FrameInfo.matAnim = TMKey[i].sampleKey.gval;
+	//	vFrameInfoOut.push_back(FrameInfo);
+
+	//	++it;
+	//}
 
 	return true;
 }
 
-bool CMeshExporter::DumpPositionController(TS_TIME_VALUE& TimeSetOut, IGameControl* pGameControl)
+bool CMeshExporter::DumpPositionController(TM_KEY_FRAME& KeyFrames, IGameControl* pGameControl)
 {
 	IGameControl::MaxControlType eControlType = pGameControl->GetControlType(IGAME_POS);
 	switch (eControlType)
@@ -625,31 +704,25 @@ bool CMeshExporter::DumpPositionController(TS_TIME_VALUE& TimeSetOut, IGameContr
 	case IGameControl::IGAME_MAXSTD:
 		{
 			// export std pos key
-			DumpMaxStdPosKey(TimeSetOut, pGameControl);
-		}
-		break;
-	case IGameControl::IGAME_BIPED:
-		{
-			// export biped pos key
-			DumpBipedPosKey(TimeSetOut, pGameControl);
+			DumpMaxStdPosKey(KeyFrames, pGameControl);
 		}
 		break;
 	case IGameControl::IGAME_POS_CONSTRAINT:
 		{
 			// export constraint controller
-			DumpConstraintKey(TimeSetOut, pGameControl);
+			DumpConstraintKey(KeyFrames, pGameControl);
 		}
 		break;
 	case IGameControl::IGAME_LIST:
 		{
 			// export list controller
-			DumpListKey(TimeSetOut, pGameControl);
+			DumpListKey(KeyFrames, pGameControl);
 		}
 		break;
 	case IGameControl::IGAME_INDEPENDENT_POS:
 		{
 			// export independent controller
-			DumpIndependentPosKey(TimeSetOut, pGameControl);
+			DumpIndependentPosKey(KeyFrames, pGameControl);
 		}
 		break;
 	default:
@@ -664,7 +737,7 @@ bool CMeshExporter::DumpPositionController(TS_TIME_VALUE& TimeSetOut, IGameContr
 	return true;
 }
 
-bool CMeshExporter::DumpRotationController(TS_TIME_VALUE& TimeSetOut, IGameControl* pGameControl)
+bool CMeshExporter::DumpRotationController(TM_KEY_FRAME& KeyFrames, IGameControl* pGameControl)
 {
 	IGameControl::MaxControlType eControlType = pGameControl->GetControlType(IGAME_ROT);
 	switch (eControlType)
@@ -672,31 +745,25 @@ bool CMeshExporter::DumpRotationController(TS_TIME_VALUE& TimeSetOut, IGameContr
 	case IGameControl::IGAME_MAXSTD:
 		{
 			// export std rot key
-			DumpMaxStdRotKey(TimeSetOut, pGameControl);
-		}
-		break;
-	case IGameControl::IGAME_BIPED:
-		{
-			// export biped rot key
-			DumpBipedRotKey(TimeSetOut, pGameControl);
+			DumpMaxStdRotKey(KeyFrames, pGameControl);
 		}
 		break;
 	case IGameControl::IGAME_EULER:
 		{
 			// export Euler controller
-			DumpEulerRotKey(TimeSetOut, pGameControl);
+			DumpEulerRotKey(KeyFrames, pGameControl);
 		}
 		break;
 	case IGameControl::IGAME_ROT_CONSTRAINT:
 		{
 			// export constraint controller
-			DumpConstraintKey(TimeSetOut, pGameControl);
+			DumpConstraintKey(KeyFrames, pGameControl);
 		}
 		break;
 	case IGameControl::IGAME_LIST:
 		{
 			// export list controller
-			DumpListKey(TimeSetOut, pGameControl);
+			DumpListKey(KeyFrames, pGameControl);
 		}
 		break;
 	default:
@@ -711,7 +778,7 @@ bool CMeshExporter::DumpRotationController(TS_TIME_VALUE& TimeSetOut, IGameContr
 	return true;
 }
 
-bool CMeshExporter::DumpScaleController(TS_TIME_VALUE& TimeSetOut, IGameControl* pGameControl)
+bool CMeshExporter::DumpScaleController(TM_KEY_FRAME& KeyFrames, IGameControl* pGameControl)
 {
 	IGameControl::MaxControlType eControlType = pGameControl->GetControlType(IGAME_SCALE);
 
@@ -720,13 +787,7 @@ bool CMeshExporter::DumpScaleController(TS_TIME_VALUE& TimeSetOut, IGameControl*
 	case IGameControl::IGAME_MAXSTD:
 		{
 			// export scale key
-			DumpMaxStdScaleKey(TimeSetOut, pGameControl);
-		}
-		break;
-	case IGameControl::IGAME_BIPED:
-		{
-			// export scale key
-			DumpBipedScaleKey(TimeSetOut, pGameControl);
+			DumpMaxStdScaleKey(KeyFrames, pGameControl);
 		}
 		break;
 	default:
@@ -741,109 +802,67 @@ bool CMeshExporter::DumpScaleController(TS_TIME_VALUE& TimeSetOut, IGameControl*
 	return true;
 }
 
-bool CMeshExporter::DumpMaxStdPosKey(TS_TIME_VALUE& TimeSetOut, IGameControl* pGameControl)
+bool CMeshExporter::DumpMaxStdPosKey(TM_KEY_FRAME& KeyFrames, IGameControl* pGameControl)
 {
 	IGameKeyTab PosKey;
 	if (pGameControl->GetBezierKeys(PosKey, IGAME_POS))
 	{
-		int nCount = PosKey.Count();
-
-		for (int i = 0; i < nCount; ++i)
+		for (int i = 0; i < PosKey.Count(); ++i)
 		{
-			TimeSetOut.insert(PosKey[i].t);
-			// time = PosKey[i].t;
-			// position = PosKey[i].bezierKey.pval;
+			InsertKeyFrame(KeyFrames, PosKey[i].t, KFM_POS, PosKey[i].bezierKey.pval);
 		}
 	}
 	else if (pGameControl->GetLinearKeys(PosKey, IGAME_POS))
 	{
-		int nCount = PosKey.Count();
-
-		for (int i = 0; i < nCount; ++i)
+		for (int i = 0; i < PosKey.Count(); ++i)
 		{
-			TimeSetOut.insert(PosKey[i].t);
-			// time = PosKey[i].t;
-			// position = PosKey[i].linearKey.pval;
+			InsertKeyFrame(KeyFrames, PosKey[i].t, KFM_POS, PosKey[i].linearKey.pval);
 		}
 	}
 
 	return true;
 }
 
-bool CMeshExporter::DumpBipedPosKey(TS_TIME_VALUE& TimeSetOut, IGameControl* pGameControl)
-{
-	Control* pControl = pGameControl->GetMaxControl(IGAME_POS);
-
-	int nNumKey = pControl->NumKeys();
-	for (int i = 0; i < nNumKey; ++i)
-	{
-		TimeValue KeyTime = pControl->GetKeyTime(i);
-		TimeSetOut.insert(KeyTime);
-	}
-
-	return true;
-}
-
-bool CMeshExporter::DumpIndependentPosKey(TS_TIME_VALUE& TimeSetOut, IGameControl* pGameControl)
+bool CMeshExporter::DumpIndependentPosKey(TM_KEY_FRAME& KeyFrames, IGameControl* pGameControl)
 {
 	IGameKeyTab PosKey;
 	if (pGameControl->GetBezierKeys(PosKey, IGAME_POS_X))
 	{
-		int nCount = PosKey.Count();
-
-		for (int i = 0; i < nCount; ++i)
+		for (int i = 0; i < PosKey.Count(); ++i)
 		{
-			TimeSetOut.insert(PosKey[i].t);
-			// time = PosKey[i].t;
-			// position = PosKey[i].bezierKey.fval;
+			InsertKeyFrame(KeyFrames, PosKey[i].t, KFM_POS_X, PosKey[i].bezierKey.fval);
 		}
 	}
 
 	if (pGameControl->GetLinearKeys(PosKey, IGAME_POS_X))
 	{
-		int nCount = PosKey.Count();
-
-		for (int i = 0; i < nCount; ++i)
+		for (int i = 0; i < PosKey.Count(); ++i)
 		{
-			TimeSetOut.insert(PosKey[i].t);
-			// time = PosKey[i].t;
-			// position = PosKey[i].linearKey.fval;
+			InsertKeyFrame(KeyFrames, PosKey[i].t, KFM_POS_X, PosKey[i].linearKey.fval);
 		}
 	}
 
 	if (pGameControl->GetBezierKeys(PosKey, IGAME_POS_Y))
 	{
-		int nCount = PosKey.Count();
-
-		for (int i = 0; i < nCount; ++i)
+		for (int i = 0; i < PosKey.Count(); ++i)
 		{
-			TimeSetOut.insert(PosKey[i].t);
-			// time = PosKey[i].t;
-			// position = PosKey[i].bezierKey.fval;
+			InsertKeyFrame(KeyFrames, PosKey[i].t, KFM_POS_Y, PosKey[i].bezierKey.fval);
 		}
 	}
 
 	if (pGameControl->GetLinearKeys(PosKey, IGAME_POS_Y))
 	{
-		int nCount = PosKey.Count();
-
-		for (int i = 0; i < nCount; ++i)
+		for (int i = 0; i < PosKey.Count(); ++i)
 		{
-			TimeSetOut.insert(PosKey[i].t);
-			// time = PosKey[i].t;
-			// position = PosKey[i].linearKey.fval;
+			InsertKeyFrame(KeyFrames, PosKey[i].t, KFM_POS_Y, PosKey[i].linearKey.fval);
 		}
 	}
 
 	if (pGameControl->GetBezierKeys(PosKey, IGAME_POS_Z))
 	{
-		int nCount = PosKey.Count();
-
-		for (int i = 0; i < nCount; ++i)
+		for (int i = 0; i < PosKey.Count(); ++i)
 		{
-			TimeSetOut.insert(PosKey[i].t);
-			// time = PosKey[i].t;
-			// position = PosKey[i].bezierKey.fval;
+			InsertKeyFrame(KeyFrames, PosKey[i].t, KFM_POS_Z, PosKey[i].bezierKey.fval);
 		}
 	}
 
@@ -851,186 +870,117 @@ bool CMeshExporter::DumpIndependentPosKey(TS_TIME_VALUE& TimeSetOut, IGameContro
 	{
 		int nCount = PosKey.Count();
 
-		for (int i = 0; i < nCount; ++i)
+		for (int i = 0; i < PosKey.Count(); ++i)
 		{
-			TimeSetOut.insert(PosKey[i].t);
-			// time = PosKey[i].t;
-			// position = PosKey[i].linearKey.fval;
+			InsertKeyFrame(KeyFrames, PosKey[i].t, KFM_POS_Z, PosKey[i].linearKey.fval);
 		}
 	}
 
 	return true;
 }
 
-bool CMeshExporter::DumpMaxStdRotKey(TS_TIME_VALUE& TimeSetOut, IGameControl* pGameControl)
+bool CMeshExporter::DumpMaxStdRotKey(TM_KEY_FRAME& KeyFrames, IGameControl* pGameControl)
 {
 	IGameKeyTab RotKey;
 	if (pGameControl->GetBezierKeys(RotKey, IGAME_ROT))
 	{
 		// export Bezier Keys
-		int nCount = RotKey.Count();
-
-		for (int i = 0; i < nCount; ++i)
+		for (int i = 0; i < RotKey.Count(); ++i)
 		{
-			TimeSetOut.insert(RotKey[i].t);
-			// time = RotKey[i].t;
-			// Quat = RotKey[i].bezierKey.qval;
+			InsertKeyFrame(KeyFrames, RotKey[i].t, KFM_QUAT, RotKey[i].bezierKey.qval);
 		}
 	}
 	else if (pGameControl->GetLinearKeys(RotKey, IGAME_ROT))
 	{
 		// export Linear Keys
-		int nCount = RotKey.Count();
-
-		for (int i = 0; i < nCount; ++i)
+		for (int i = 0; i < RotKey.Count(); ++i)
 		{
-			TimeSetOut.insert(RotKey[i].t);
-			// time = RotKey[i].t;
-			// Quat = RotKey[i].linearKey.qval;
+			InsertKeyFrame(KeyFrames, RotKey[i].t, KFM_QUAT, RotKey[i].linearKey.qval);
 		}
 	}
 	else if (pGameControl->GetTCBKeys(RotKey, IGAME_ROT))
 	{
 		// export TCB Keys
-		int nCount = RotKey.Count();
-
-		for (int i = 0; i < nCount; ++i)
+		for (int i = 0; i < RotKey.Count(); ++i)
 		{
-			TimeSetOut.insert(RotKey[i].t);
-			// time = RotKey[i].t;
-			// AngAxis = RotKey[i].tcbKey.aval;
+			Quat qValue = QFromAngAxis(RotKey[i].tcbKey.aval.angle, RotKey[i].tcbKey.aval.axis);
+			InsertKeyFrame(KeyFrames, RotKey[i].t, KFM_QUAT, qValue);
 		}
 	}
 
 	return true;
 }
 
-bool CMeshExporter::DumpBipedRotKey(TS_TIME_VALUE& TimeSetOut, IGameControl* pGameControl)
-{
-	Control* pControl = pGameControl->GetMaxControl(IGAME_ROT);
-
-	int nNumKey = pControl->NumKeys();
-	for (int i = 0; i < nNumKey; ++i)
-	{
-		TimeValue KeyTime = pControl->GetKeyTime(i);
-		TimeSetOut.insert(KeyTime);
-	}
-
-	return true;
-}
-
-bool CMeshExporter::DumpEulerRotKey(TS_TIME_VALUE& TimeSetOut, IGameControl* pGameControl)
+bool CMeshExporter::DumpEulerRotKey(TM_KEY_FRAME& KeyFrames, IGameControl* pGameControl)
 {
 	IGameKeyTab RotKey;
 
 	if (pGameControl->GetBezierKeys(RotKey, IGAME_EULER_X))
 	{
-		int nCount = RotKey.Count();
-
-		for (int i = 0; i < nCount; ++i)
+		for (int i = 0; i < RotKey.Count(); ++i)
 		{
-			TimeSetOut.insert(RotKey[i].t);
-			// time = RotKey[i].t;
-			// RotKey[i].bezierKey.fval;
+			InsertKeyFrame(KeyFrames, RotKey[i].t, KFM_ROT_X, RotKey[i].bezierKey.fval);
 		}
 	}
 
 	if (pGameControl->GetLinearKeys(RotKey, IGAME_EULER_X))
 	{
-		int nCount = RotKey.Count();
-
-		for (int i = 0; i < nCount; ++i)
+		for (int i = 0; i < RotKey.Count(); ++i)
 		{
-			TimeSetOut.insert(RotKey[i].t);
-			// time = RotKey[i].t;
-			// RotKey[i].linearKey.fval;
+			InsertKeyFrame(KeyFrames, RotKey[i].t, KFM_ROT_X, RotKey[i].linearKey.fval);
 		}
 	}
 
 	if (pGameControl->GetBezierKeys(RotKey, IGAME_EULER_Y))
 	{
-		int nCount = RotKey.Count();
-
-		for (int i = 0; i < nCount; ++i)
+		for (int i = 0; i < RotKey.Count(); ++i)
 		{
-			TimeSetOut.insert(RotKey[i].t);
-			// time = RotKey[i].t;
-			// RotKey[i].bezierKey.fval;
+			InsertKeyFrame(KeyFrames, RotKey[i].t, KFM_ROT_Y, RotKey[i].bezierKey.fval);
 		}
 	}
 
 	if (pGameControl->GetLinearKeys(RotKey, IGAME_EULER_Y))
 	{
-		int nCount = RotKey.Count();
-
-		for (int i = 0; i < nCount; ++i)
+		for (int i = 0; i < RotKey.Count(); ++i)
 		{
-			TimeSetOut.insert(RotKey[i].t);
-			// time = RotKey[i].t;
-			// RotKey[i].linearKey.fval;
+			InsertKeyFrame(KeyFrames, RotKey[i].t, KFM_ROT_Y, RotKey[i].linearKey.fval);
 		}
 	}
 
 	if (pGameControl->GetBezierKeys(RotKey, IGAME_EULER_Z))
 	{
-		int nCount = RotKey.Count();
-
-		for (int i = 0; i < nCount; ++i)
+		for (int i = 0; i < RotKey.Count(); ++i)
 		{
-			TimeSetOut.insert(RotKey[i].t);
-			// time = RotKey[i].t;
-			// RotKey[i].bezierKey.fval;
+			InsertKeyFrame(KeyFrames, RotKey[i].t, KFM_ROT_Z, RotKey[i].bezierKey.fval);
 		}
 	}
 
 	if (pGameControl->GetLinearKeys(RotKey, IGAME_EULER_Z))
 	{
-		int nCount = RotKey.Count();
-
-		for (int i = 0; i < nCount; ++i)
+		for (int i = 0; i < RotKey.Count(); ++i)
 		{
-			TimeSetOut.insert(RotKey[i].t);
-			// time = RotKey[i].t;
-			// RotKey[i].linearKey.fval;
+			InsertKeyFrame(KeyFrames, RotKey[i].t, KFM_ROT_Z, RotKey[i].linearKey.fval);
 		}
 	}
 
 	return true;
 }
 
-bool CMeshExporter::DumpMaxStdScaleKey(TS_TIME_VALUE& TimeSetOut, IGameControl* pGameControl)
+bool CMeshExporter::DumpMaxStdScaleKey(TM_KEY_FRAME& KeyFrames, IGameControl* pGameControl)
 {
 	IGameKeyTab ScaleKey;
 	if (pGameControl->GetBezierKeys(ScaleKey, IGAME_SCALE))
 	{
-		int nCount = ScaleKey.Count();
-
-		for (int i = 0; i < nCount; ++i)
+		for (int i = 0; i < ScaleKey.Count(); ++i)
 		{
-			TimeSetOut.insert(ScaleKey[i].t);
-			// time = ScaleKey[i].t;
-			// ScaleKey[i].bezierKey.sval;
+			InsertKeyFrame(KeyFrames, ScaleKey[i].t, KFM_SCALE, ScaleKey[i].bezierKey.sval.s);
 		}
 	}
 
 	return true;
 }
 
-bool CMeshExporter::DumpBipedScaleKey(TS_TIME_VALUE& TimeSetOut, IGameControl* pGameControl)
-{
-	Control* pControl = pGameControl->GetMaxControl(IGAME_SCALE);
-
-	int nNumKey = pControl->NumKeys();
-	for (int i = 0; i < nNumKey; ++i)
-	{
-		TimeValue KeyTime = pControl->GetKeyTime(i);
-		TimeSetOut.insert(KeyTime);
-	}
-
-	return true;
-}
-
-bool CMeshExporter::DumpConstraintKey(TS_TIME_VALUE& TimeSetOut, IGameControl* pGameControl)
+bool CMeshExporter::DumpConstraintKey(TM_KEY_FRAME& KeyFrames, IGameControl* pGameControl)
 {
 	// TODO: 
 	assert(false);
@@ -1057,13 +1007,13 @@ bool CMeshExporter::DumpConstraintKey(TS_TIME_VALUE& TimeSetOut, IGameControl* p
 	return true;
 }
 
-bool CMeshExporter::DumpListKey(TS_TIME_VALUE& TimeSetOut, IGameControl* pGameControl)
+bool CMeshExporter::DumpListKey(TM_KEY_FRAME& KeyFrames, IGameControl* pGameControl)
 {
 	int nCount = pGameControl->GetNumOfListSubControls(IGAME_POS);
 	for (int i = 0; i < nCount; ++i)
 	{
 		IGameControl* pSubGameControl = pGameControl->GetListSubControl(i, IGAME_POS);
-		bool bOK = DumpPositionController(TimeSetOut, pSubGameControl);
+		bool bOK = DumpPositionController(KeyFrames, pSubGameControl);
 		assert(bOK);
 		// TODO: check bOK
 	}
@@ -1072,7 +1022,7 @@ bool CMeshExporter::DumpListKey(TS_TIME_VALUE& TimeSetOut, IGameControl* pGameCo
 	for (int i = 0; i < nCount; ++i)
 	{
 		IGameControl* pSubGameControl = pGameControl->GetListSubControl(i, IGAME_ROT);
-		bool bOK = DumpRotationController(TimeSetOut, pSubGameControl);
+		bool bOK = DumpRotationController(KeyFrames, pSubGameControl);
 		assert(bOK);
 		// TODO: check bOK
 	}
@@ -1081,7 +1031,7 @@ bool CMeshExporter::DumpListKey(TS_TIME_VALUE& TimeSetOut, IGameControl* pGameCo
 	for (int i = 0; i < nCount; ++i)
 	{
 		IGameControl* pSubGameControl = pGameControl->GetListSubControl(i, IGAME_SCALE);
-		bool bOK = DumpScaleController(TimeSetOut, pSubGameControl);
+		bool bOK = DumpScaleController(KeyFrames, pSubGameControl);
 		assert(bOK);
 		// TODO: check bOK
 	}
@@ -1089,28 +1039,279 @@ bool CMeshExporter::DumpListKey(TS_TIME_VALUE& TimeSetOut, IGameControl* pGameCo
 	return true;
 }
 
+bool CMeshExporter::DumpSampleKey(TM_KEY_FRAME& KeyFrames, IGameControl* pGameControl, IGameControlType eType)
+{
+	IGameKeyTab Keys;
+	if (pGameControl->GetFullSampledKeys(Keys, 1, eType, true))
+	{
+		for (int i = 0; i < Keys.Count(); ++i)
+		{
+			switch (eType)
+			{
+			case IGAME_TM:
+				{
+					InsertKeyFrame(KeyFrames, Keys[i].t, KFM_MATRIX, Keys[i].sampleKey.gval);
+				}
+				break;
+			default:
+				{
+					assert(false);
+				}
+				break;
+			}
+		}
+
+		return true;
+	}
+
+	return false;
+}
+
+CMeshExporter::KEY_FRAME* CMeshExporter::FindKeyFrame(TM_KEY_FRAME& KeyFrames, TimeValue time)
+{
+	KEY_FRAME* pKeyFrame = NULL;
+
+	TM_KEY_FRAME::iterator itfound = KeyFrames.find(time);
+	if (itfound != KeyFrames.end())
+	{
+		pKeyFrame = &itfound->second;
+	}
+	else
+	{
+		KEY_FRAME EmptyKeyFrame;
+		EmptyKeyFrame.time = time;
+		EmptyKeyFrame.nMask = KFM_UNKNOWN;
+		EmptyKeyFrame.vScale.x = 1.0f;
+		EmptyKeyFrame.vScale.y = 1.0f;
+		EmptyKeyFrame.vScale.z = 1.0f;
+		KeyFrames.insert(std::make_pair(EmptyKeyFrame.time, EmptyKeyFrame));
+
+		itfound = KeyFrames.find(time);
+		assert(itfound != KeyFrames.end());
+		pKeyFrame = &itfound->second;
+	}
+
+	return pKeyFrame;
+}
+
+bool CMeshExporter::InsertKeyFrame(TM_KEY_FRAME& KeyFrames, TimeValue time, KEY_FRAME_MASK eMask, float fValue)
+{
+	KEY_FRAME* pKeyFrame = FindKeyFrame(KeyFrames, time);
+	assert(pKeyFrame);
+
+	if (pKeyFrame->nMask & (eMask | KFM_MATRIX))
+	{
+		assert(false);
+		return false;
+	}
+
+	switch (eMask)
+	{
+	case KFM_POS_X:
+		pKeyFrame->vPos.x = fValue;
+		break;
+	case KFM_POS_Y:
+		pKeyFrame->vPos.y = fValue;
+		break;
+	case KFM_POS_Z:
+		pKeyFrame->vPos.z = fValue;
+		break;
+	case KFM_SCALE_X:
+		pKeyFrame->vScale.x = fValue;
+		break;
+	case KFM_SCALE_Y:
+		pKeyFrame->vScale.y = fValue;
+		break;
+	case KFM_SCALE_Z:
+		pKeyFrame->vScale.z = fValue;
+		break;
+	case KFM_ROT_X:
+		if (pKeyFrame->nMask & KFM_QUAT) assert(false);
+		pKeyFrame->vRot.x = fValue;
+		break;
+	case KFM_ROT_Y:
+		if (pKeyFrame->nMask & KFM_QUAT) assert(false);
+		pKeyFrame->vRot.y = fValue;
+		break;
+	case KFM_ROT_Z:
+		if (pKeyFrame->nMask & KFM_QUAT) assert(false);
+		pKeyFrame->vRot.z = fValue;
+		break;
+	default:
+		{
+			assert(false);
+			return false;
+		}
+		break;
+	}
+	pKeyFrame->nMask |= eMask;
+
+	return true;
+}
+
+bool CMeshExporter::InsertKeyFrame(TM_KEY_FRAME& KeyFrames, TimeValue time, KEY_FRAME_MASK eMask, const Point3& vValue)
+{
+	KEY_FRAME* pKeyFrame = FindKeyFrame(KeyFrames, time);
+	assert(pKeyFrame);
+
+	if (pKeyFrame->nMask & (eMask | KFM_MATRIX))
+	{
+		assert(false);
+		return false;
+	}
+
+	switch (eMask)
+	{
+	case KFM_POS:
+		pKeyFrame->vPos.x = vValue.x;
+		pKeyFrame->vPos.y = vValue.y;
+		pKeyFrame->vPos.z = vValue.z;
+		break;
+	case KFM_SCALE:
+		pKeyFrame->vScale.x = vValue.x;
+		pKeyFrame->vScale.y = vValue.y;
+		pKeyFrame->vScale.z = vValue.z;
+		break;
+	case KFM_ROT:
+		if (pKeyFrame->nMask & KFM_QUAT) assert(false);
+		pKeyFrame->vRot.x = vValue.x;
+		pKeyFrame->vRot.y = vValue.y;
+		pKeyFrame->vRot.z = vValue.z;
+		break;
+	default:
+		{
+			assert(false);
+			return false;
+		}
+		break;
+	}
+	pKeyFrame->nMask |= eMask;
+
+	return true;
+}
+
+bool CMeshExporter::InsertKeyFrame(TM_KEY_FRAME& KeyFrames, TimeValue time, KEY_FRAME_MASK eMask, const Quat& qValue)
+{
+	KEY_FRAME* pKeyFrame = FindKeyFrame(KeyFrames, time);
+	assert(pKeyFrame);
+
+	if (pKeyFrame->nMask & (eMask | KFM_MATRIX))
+	{
+		assert(false);
+		return false;
+	}
+
+	switch (eMask)
+	{
+	case KFM_QUAT:
+		{
+			if (pKeyFrame->nMask & KFM_ROT) assert(false);
+
+			Matrix3 matRot;
+			qValue.MakeMatrix(matRot);
+			GMatrix matFinal(matRot);
+
+			COEFmtMesh::BONE_TRANSFORM BoneTrans;
+			GMatrix2BoneTransform(BoneTrans, matFinal);
+
+			pKeyFrame->rRot.x = BoneTrans.vRotation[0];
+			pKeyFrame->rRot.y = BoneTrans.vRotation[1];
+			pKeyFrame->rRot.z = BoneTrans.vRotation[2];
+			pKeyFrame->rRot.w = BoneTrans.vRotation[3];
+		}
+		break;
+	default:
+		{
+			assert(false);
+			return false;
+		}
+		break;
+	}
+	pKeyFrame->nMask |= eMask;
+
+	return true;
+}
+
+bool CMeshExporter::InsertKeyFrame(TM_KEY_FRAME& KeyFrames, TimeValue time, KEY_FRAME_MASK eMask, const GMatrix& matValue)
+{
+	KEY_FRAME* pKeyFrame = FindKeyFrame(KeyFrames, time);
+	assert(pKeyFrame);
+
+	if (pKeyFrame->nMask & (eMask | KFM_POS | KFM_SCALE | KFM_ROT | KFM_QUAT))
+	{
+		assert(false);
+		return false;
+	}
+
+	switch (eMask)
+	{
+	case KFM_MATRIX:
+		{
+			GMatrix2CMatrix4x4(pKeyFrame->matFull, matValue);
+		}
+		break;
+	default:
+		{
+			assert(false);
+			return false;
+		}
+		break;
+	}
+	pKeyFrame->nMask |= eMask;
+
+	return true;
+}
+
+void CMeshExporter::GMatrix2CMatrix4x4(CMatrix4x4& matOut, const GMatrix& matIn)
+{
+	matOut.m[0] = matIn[0][0];
+	matOut.m[1] = matIn[0][1];
+	matOut.m[2] = matIn[0][2];
+	matOut.m[3] = matIn[0][3];
+
+	matOut.m[4] = matIn[1][0];
+	matOut.m[5] = matIn[1][1];
+	matOut.m[6] = matIn[1][2];
+	matOut.m[7] = matIn[1][3];
+
+	matOut.m[8] = matIn[2][0];
+	matOut.m[9] = matIn[2][1];
+	matOut.m[10] = matIn[2][2];
+	matOut.m[11] = matIn[2][3];
+
+	matOut.m[12] = matIn[3][0];
+	matOut.m[13] = matIn[3][1];
+	matOut.m[14] = matIn[3][2];
+	matOut.m[15] = matIn[3][3];
+}
+
+void CMeshExporter::CMatrix4x42GMatrix(GMatrix& matOut, const CMatrix4x4& matIn)
+{
+	matOut[0][0] = matIn.m[0];
+	matOut[0][1] = matIn.m[1];
+	matOut[0][2] = matIn.m[2];
+	matOut[0][3] = matIn.m[3];
+
+	matOut[1][0] = matIn.m[4];
+	matOut[1][1] = matIn.m[5];
+	matOut[1][2] = matIn.m[6];
+	matOut[1][3] = matIn.m[7];
+
+	matOut[2][0] = matIn.m[8];
+	matOut[2][1] = matIn.m[9];
+	matOut[2][2] = matIn.m[10];
+	matOut[2][3] = matIn.m[11];
+
+	matOut[3][0] = matIn.m[12];
+	matOut[3][1] = matIn.m[13];
+	matOut[3][2] = matIn.m[14];
+	matOut[3][3] = matIn.m[15];
+}
+
 void CMeshExporter::GMatrix2BoneTransform(COEFmtMesh::BONE_TRANSFORM& BoneTrans, const GMatrix& matTrans)
 {
 	CMatrix4x4 matRot;
-	matRot.m[0] = matTrans[0][0];
-	matRot.m[1] = matTrans[0][1];
-	matRot.m[2] = matTrans[0][2];
-	matRot.m[3] = matTrans[0][3];
-
-	matRot.m[4] = matTrans[1][0];
-	matRot.m[5] = matTrans[1][1];
-	matRot.m[6] = matTrans[1][2];
-	matRot.m[7] = matTrans[1][3];
-
-	matRot.m[8] = matTrans[2][0];
-	matRot.m[9] = matTrans[2][1];
-	matRot.m[10] = matTrans[2][2];
-	matRot.m[11] = matTrans[2][3];
-
-	matRot.m[12] = matTrans[3][0];
-	matRot.m[13] = matTrans[3][1];
-	matRot.m[14] = matTrans[3][2];
-	matRot.m[15] = matTrans[3][3];
+	GMatrix2CMatrix4x4(matRot, matTrans);
 
 	CQuaternion rRot;
 	COEMath::BuildQuaternionFromMatrix(rRot, matRot);
