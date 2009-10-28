@@ -18,7 +18,7 @@ BOOL WINAPI DllMain(HINSTANCE hInstDLL, DWORD fdwReason, LPVOID lpvReserved)
 	if (!g_bCtrlInit)
 	{
 		g_bCtrlInit = TRUE;
-		InitCustomControls(g_hInst);
+		//InitCustomControls(g_hInst);
 		InitCommonControls();
 
 		COEOS::Initialize(COEOS::IS_FILE);
