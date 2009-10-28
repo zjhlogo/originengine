@@ -214,6 +214,7 @@ private:
 	TV_BONE_INFO m_vBoneInfo;
 	TM_BONE_INFO m_vBoneInfoMap;
 	TM_KEY_FRAME m_TimeValueSet;
+	Interface* m_pInterface;
 
 };
 #endif // __MESHEXPORTER_H__

@@ -8,6 +8,11 @@
 #include "MeshExporter.h"
 #include <OEOS.h>
 
+DWORD WINAPI DummyFunc(LPVOID arg)
+{
+	return 0;
+}
+
 CMeshExporter::CMeshExporter()
 {
 	Init();
@@ -20,7 +25,7 @@ CMeshExporter::~CMeshExporter()
 
 void CMeshExporter::Init()
 {
-	// TODO: 
+	m_pInterface = NULL;
 }
 
 void CMeshExporter::Destroy()
@@ -81,24 +86,31 @@ void CMeshExporter::ShowAbout(HWND hWnd)
 int CMeshExporter::DoExport(const TCHAR* name, ExpInterface* ei, Interface* i, BOOL suppressPrompts /* = FALSE */, DWORD options /* = 0 */)
 {
 	Cleanup();
+	m_pInterface = i;
 
+	// initialize
+	m_pInterface->ProgressStart(_T("Initialize IGame interfaces"), TRUE, DummyFunc, NULL);
 	IGameScene* pIGame = GetIGameInterface();
 	IGameConversionManager* pGameConvMgr = GetConversionManager();
 	pGameConvMgr->SetCoordSystem(IGameConversionManager::IGAME_D3D);
 	pIGame->InitialiseIGame();
 
 	// collect usefull nodes
+	m_pInterface->ProgressStart(_T("Collection nodes"), TRUE, DummyFunc, NULL);
 	int nNodeCount = pIGame->GetTopLevelNodeCount();
 	for (int i = 0; i < nNodeCount; ++i)
 	{
+		m_pInterface->ProgressUpdate(i*100/nNodeCount);
 		IGameNode* pGameNode = pIGame->GetTopLevelNode(i);
 		CollectNodes(pGameNode);
 	}
 
 	// build bone info
+	m_pInterface->ProgressStart(_T("Build animation information"), TRUE, DummyFunc, NULL);
 	BuildBonesInfo();
 
 	// build mesh info
+	m_pInterface->ProgressStart(_T("Build mesh information"), TRUE, DummyFunc, NULL);
 	BuildMeshsInfo();
 
 	// save to file
@@ -110,6 +122,7 @@ int CMeshExporter::DoExport(const TCHAR* name, ExpInterface* ei, Interface* i, B
 	pIGame->ReleaseIGame();
 	pIGame = NULL;
 
+	m_pInterface->ProgressEnd();
 	Cleanup();
 
 	return TRUE;
@@ -123,6 +136,7 @@ void CMeshExporter::Cleanup()
 	m_vSkinMesh.clear();
 	m_vBoneInfo.clear();
 	m_vBoneInfoMap.clear();
+	m_pInterface = NULL;
 }
 
 bool CMeshExporter::CollectNodes(IGameNode* pGameNode, IGameNode* pParentGameNode /* = NULL */)
@@ -164,10 +178,12 @@ bool CMeshExporter::CollectNodes(IGameNode* pGameNode, IGameNode* pParentGameNod
 
 bool CMeshExporter::BuildMeshsInfo()
 {
-	for (TV_NODE_INFO::iterator it = m_vMeshNode.begin(); it != m_vMeshNode.end(); ++it)
+	int nMeshCount = m_vMeshNode.size();
+	for (int i = 0; i < nMeshCount; ++i)
 	{
-		NODE_INFO& NodeInfo = (*it);
+		m_pInterface->ProgressUpdate(i*100/nMeshCount);
 
+		NODE_INFO& NodeInfo = m_vMeshNode[i];
 		SKIN_MESH SkinMesh;
 		SkinMesh.strName = NodeInfo.pGameNode->GetName();
 		SkinMesh.matLocal = NodeInfo.pGameNode->GetLocalTM();
@@ -182,9 +198,12 @@ bool CMeshExporter::BuildMeshsInfo()
 
 bool CMeshExporter::BuildBonesInfo()
 {
-	for (TV_NODE_INFO::iterator it = m_vBoneNode.begin(); it != m_vBoneNode.end(); ++it)
+	int nBoneCount = m_vBoneNode.size();
+	for (int i = 0; i < nBoneCount; ++i)
 	{
-		NODE_INFO& NodeInfo = (*it);
+		m_pInterface->ProgressUpdate(i*100/nBoneCount);
+
+		NODE_INFO& NodeInfo = m_vBoneNode[i];
 
 		BONE_INFO BoneInfo;
 		BoneInfo.strName = NodeInfo.pGameNode->GetName();
@@ -200,9 +219,10 @@ bool CMeshExporter::BuildBonesInfo()
 		m_vBoneInfoMap.insert(std::make_pair(BoneInfo.pNode, BoneInfo.nID));
 	}
 
-	for (TV_BONE_INFO::iterator it = m_vBoneInfo.begin(); it != m_vBoneInfo.end(); ++it)
+	int nBoneInfoCount = m_vBoneInfo.size();
+	for (int i = 0; i < nBoneInfoCount; ++i)
 	{
-		BONE_INFO& BoneInfo = (*it);
+		BONE_INFO& BoneInfo = m_vBoneInfo[i];
 		if (BoneInfo.pParentNode == NULL) continue;
 
 		TM_BONE_INFO::iterator itfound = m_vBoneInfoMap.find(BoneInfo.pParentNode);
@@ -257,8 +277,11 @@ bool CMeshExporter::SaveToFile(const tstring& strFileName)
 	}
 
 	// write mesh
+	m_pInterface->ProgressStart(_T("Save mesh data"), TRUE, DummyFunc, NULL);
 	for (int i = 0; i < nNumMeshes; ++i)
 	{
+		m_pInterface->ProgressUpdate(i*100/nNumMeshes);
+
 		std::string strName;
 		COEOS::tchar2char(strName, m_vSkinMesh[i].strName.c_str());
 		strncpy_s(vPiece[i].szName, COEFmtMesh::PIECE_NAME_SIZE, strName.c_str(), _TRUNCATE);
@@ -328,8 +351,11 @@ bool CMeshExporter::SaveToFile(const tstring& strFileName)
 	}
 
 	// write bone data
+	m_pInterface->ProgressStart(_T("Save animation data"), TRUE, DummyFunc, NULL);
 	for (int i = 0; i < nNumBones; ++i)
 	{
+		m_pInterface->ProgressUpdate(i*100/nNumBones);
+
 		// bone list info
 		std::string strName;
 		COEOS::tchar2char(strName, m_vBoneInfo[i].strName.c_str());
@@ -1102,7 +1128,6 @@ bool CMeshExporter::InsertKeyFrame(TM_KEY_FRAME& KeyFrames, TimeValue time, KEY_
 	if (pKeyFrame->nMask & (eMask | KFM_MATRIX))
 	{
 		assert(false);
-		return false;
 	}
 
 	switch (eMask)
@@ -1157,7 +1182,6 @@ bool CMeshExporter::InsertKeyFrame(TM_KEY_FRAME& KeyFrames, TimeValue time, KEY_
 	if (pKeyFrame->nMask & (eMask | KFM_MATRIX))
 	{
 		assert(false);
-		return false;
 	}
 
 	switch (eMask)
@@ -1198,7 +1222,6 @@ bool CMeshExporter::InsertKeyFrame(TM_KEY_FRAME& KeyFrames, TimeValue time, KEY_
 	if (pKeyFrame->nMask & (eMask | KFM_MATRIX))
 	{
 		assert(false);
-		return false;
 	}
 
 	switch (eMask)
@@ -1240,7 +1263,6 @@ bool CMeshExporter::InsertKeyFrame(TM_KEY_FRAME& KeyFrames, TimeValue time, KEY_
 	if (pKeyFrame->nMask & (eMask | KFM_POS | KFM_SCALE | KFM_ROT | KFM_QUAT))
 	{
 		assert(false);
-		return false;
 	}
 
 	switch (eMask)
