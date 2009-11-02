@@ -17,6 +17,7 @@ public:
 	CQuaternion(float fx, float fy, float fz, float fw);
 	CQuaternion(const CVector3& vDirNormalized, float fRadian);
 
+	void Init(float fx, float fy, float fz, float fw);
 	void Identity();
 	float Length() const;
 	float SquaredLength() const;

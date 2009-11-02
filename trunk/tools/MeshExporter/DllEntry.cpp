@@ -21,7 +21,7 @@ BOOL WINAPI DllMain(HINSTANCE hInstDLL, DWORD fdwReason, LPVOID lpvReserved)
 		//InitCustomControls(g_hInst);
 		InitCommonControls();
 
-		COEOS::Initialize(COEOS::IS_FILE);
+		COEOS::Initialize(COEOS::IS_FILE | COEOS::IS_XML);
 	}
 
 	return TRUE;

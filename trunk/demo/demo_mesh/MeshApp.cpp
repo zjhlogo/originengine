@@ -85,8 +85,8 @@ void CMeshApp::Render(float fDetailTime)
 	CMatrix4x4 matWorldViewProj;
 	g_pOERenderer->GetTransform(matWorldViewProj, IOERenderer::TT_WORLD_VIEW_PROJ);
 
-	//g_pOERenderer->SetFillMode(IOERenderer::FM_WIREFRAME);
-	//g_pOERenderer->SetCullMode(IOERenderer::CMT_NONE);
+	g_pOERenderer->SetFillMode(IOERenderer::FM_WIREFRAME);
+	g_pOERenderer->SetCullMode(IOERenderer::CMT_NONE);
 
 	s_fTotalTime += fDetailTime*0.0f;
 	CVector3 vLightPos;
@@ -94,6 +94,7 @@ void CMeshApp::Render(float fDetailTime)
 	vLightPos.y = 150.0f;
 	vLightPos.z = sin(s_fTotalTime)*300.0f;
 
+	//m_pModel->Render(fDetailTime);
 	IOEMesh* pMesh = m_pModel->GetMesh();
 	int nNumPiece = pMesh->GetNumPieces();
 	for (int i = 0; i < nNumPiece; ++i)

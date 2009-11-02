@@ -8,7 +8,7 @@
 #include "OEBone_Impl.h"
 #include <OEOS.h>
 
-COEBone_Impl::COEBone_Impl(const COEFmtMesh::BONE& Bone, int nID, IOEFile* pFile)
+COEBone_Impl::COEBone_Impl(const COEFmtBone::BONE& Bone, int nID, IOEFile* pFile)
 {
 	Init();
 	m_bOK = Create(Bone, nID, pFile);
@@ -21,14 +21,20 @@ COEBone_Impl::~COEBone_Impl()
 
 void COEBone_Impl::Init()
 {
-	m_nID = COEFmtMesh::INVALID_BONE_ID;
-	m_nParentID = COEFmtMesh::INVALID_BONE_ID;
+	m_nID = COEFmtBone::INVALID_BONE_ID;
+	m_nParentID = COEFmtBone::INVALID_BONE_ID;
 	m_fTimeLength = 0.0f;
+
+	m_vKeyFrameRot.clear();
+	m_vKeyFramePos.clear();
+	m_vKeyFrameScale.clear();
 }
 
 void COEBone_Impl::Destroy()
 {
-	m_vFrame.clear();
+	m_vKeyFrameRot.clear();
+	m_vKeyFramePos.clear();
+	m_vKeyFrameScale.clear();
 }
 
 const tstring& COEBone_Impl::GetName() const
@@ -66,86 +72,19 @@ const CMatrix4x4& COEBone_Impl::GetWorldMatrixInv() const
 	return m_matWorldInv;
 }
 
-int COEBone_Impl::GetFrameCount() const
-{
-	return (int)m_vFrame.size();
-}
-
-const IOEBone::BONE_FRAME* COEBone_Impl::GetFrame(int nIndex) const
-{
-	if (nIndex < 0 || nIndex >= (int)m_vFrame.size()) return NULL;
-	return &m_vFrame[nIndex];
-}
-
 bool COEBone_Impl::SlerpMatrix(CMatrix4x4& matOut, float fTime, bool bLoop /*= true*/)
 {
-	int nFrameCount = (int)m_vFrame.size();
-	if (nFrameCount <= 0)
-	{
-		matOut = m_matLocal;
-		return true;
-	}
-
-	if (fTime >= m_fTimeLength)
-	{
-		if (!bLoop)
-		{
-			COEMath::BuildMatrixFromQuaternion(matOut, m_vFrame[nFrameCount-1].vRotation);
-			COEMath::SetMatrixTranslation(matOut, m_vFrame[nFrameCount-1].vPos);
-			COEMath::SetMatrixScale(matOut, m_vFrame[nFrameCount-1].vScale);
-			return true;
-		}
-
-		fTime -= floorf(fTime/m_fTimeLength)*m_fTimeLength;
-	}
-
-	if (fTime <= 0.0f)
-	{
-		if (!bLoop)
-		{
-			COEMath::BuildMatrixFromQuaternion(matOut, m_vFrame[0].vRotation);
-			COEMath::SetMatrixTranslation(matOut, m_vFrame[0].vPos);
-			COEMath::SetMatrixScale(matOut, m_vFrame[0].vScale);
-			return true;
-		}
-
-		fTime -= floorf(fTime/m_fTimeLength)*m_fTimeLength;
-	}
-
-	int nPrevIndex = 0;
-	int nNextIndex = 0;
-
-	for (int i = 0; i < nFrameCount-1; ++i)
-	{
-		if (fTime >= m_vFrame[i].fTime && fTime < m_vFrame[i+1].fTime)
-		{
-			nPrevIndex = i;
-			nNextIndex = i+1;
-			break;
-		}
-	}
-
-	if (nPrevIndex == nNextIndex)
-	{
-		COEMath::BuildMatrixFromQuaternion(matOut, m_vFrame[nPrevIndex].vRotation);
-		COEMath::SetMatrixTranslation(matOut, m_vFrame[nPrevIndex].vPos);
-		COEMath::SetMatrixScale(matOut, m_vFrame[nPrevIndex].vScale);
-		return true;
-	}
-
-	CQuaternion rRot;
-	float t = (fTime - m_vFrame[nPrevIndex].fTime) / (m_vFrame[nNextIndex].fTime - m_vFrame[nPrevIndex].fTime);
-	COEMath::QuaternionSlerp(rRot, m_vFrame[nPrevIndex].vRotation, m_vFrame[nNextIndex].vRotation, t);
-
+	CQuaternion qRot;
 	CVector3 vPos;
-	COEMath::VectorLerp(vPos, m_vFrame[nPrevIndex].vPos, m_vFrame[nNextIndex].vPos, t);
+	//CVector3 vScale;
 
-	CVector3 vScale;
-	COEMath::VectorLerp(vScale, m_vFrame[nPrevIndex].vScale, m_vFrame[nNextIndex].vScale, t);
+	if (!SlerpRot(qRot, fTime)) qRot = m_qLocalRot;
+	if (!LerpPos(vPos, fTime)) vPos = m_vLocalPos;
+	//LerpScale(vScale, fTime);
 
-	COEMath::BuildMatrixFromQuaternion(matOut, rRot);
+	COEMath::BuildMatrixFromQuaternion(matOut, qRot);
 	COEMath::SetMatrixTranslation(matOut, vPos);
-	COEMath::SetMatrixScale(matOut, vScale);
+	//COEMath::SetMatrixScale(matOut, vScale);
 
 	return true;
 }
@@ -156,59 +95,161 @@ void COEBone_Impl::SetWorldMatrix(const CMatrix4x4& matWorld)
 	m_matWorldInv = m_matWorld.Inverse();
 }
 
-bool COEBone_Impl::Create(const COEFmtMesh::BONE& Bone, int nID, IOEFile* pFile)
+bool COEBone_Impl::Create(const COEFmtBone::BONE& Bone, int nID, IOEFile* pFile)
 {
 	COEOS::char2tchar(m_strName, Bone.szName);
 	m_nID = nID;
 	m_nParentID = Bone.nParentIndex;
 	m_fTimeLength = Bone.fTimeLength;
 
-	CVector3 vPos;
-	CVector3 vScale;
-	CQuaternion rRot;
+	memcpy(m_matLocal.m, Bone.matLocal, sizeof(float)*16);
+	COEMath::BuildQuaternionFromMatrix(m_qLocalRot, m_matLocal);
+	COEMath::GetMatrixTranslation(m_vLocalPos, m_matLocal);
+	COEMath::GetMatrixScale(m_vLocalScale, m_matLocal);
 
-	vPos.x = Bone.BoneTrans.vPos[0];
-	vPos.y = Bone.BoneTrans.vPos[1];
-	vPos.z = Bone.BoneTrans.vPos[2];
-
-	vScale.x = Bone.BoneTrans.vScale[0];
-	vScale.y = Bone.BoneTrans.vScale[1];
-	vScale.z = Bone.BoneTrans.vScale[2];
-
-	rRot.x = Bone.BoneTrans.vRotation[0];
-	rRot.y = Bone.BoneTrans.vRotation[1];
-	rRot.z = Bone.BoneTrans.vRotation[2];
-	rRot.w = Bone.BoneTrans.vRotation[3];
-
-	COEMath::BuildMatrixFromQuaternion(m_matLocal, rRot);
-	COEMath::SetMatrixTranslation(m_matLocal, vPos);
-	COEMath::SetMatrixScale(m_matLocal, vScale);
-
-	pFile->Seek(Bone.nOffBoneFrame);
-	m_vFrame.clear();
-	for (int i = 0; i < Bone.nNumBoneFrame; ++i)
+	pFile->Seek(Bone.nOffFrameRot);
+	for (int i = 0; i < Bone.nNumFrameRot; ++i)
 	{
-		COEFmtMesh::BONE_FRAME BoneFrame;
-		pFile->Read(&BoneFrame, sizeof(BoneFrame));
+		COEFmtBone::FRAME_ROT KeyFrame;
+		pFile->Read(&KeyFrame, sizeof(KeyFrame));
 
-		BONE_FRAME InlBoneFrame;
-		InlBoneFrame.fTime = BoneFrame.fTime;
+		KEYFRAME_ROT KeyFrameRot;
+		KeyFrameRot.fTime = KeyFrame.fTime;
+		KeyFrameRot.qRot.Init(KeyFrame.qRot[0], KeyFrame.qRot[1], KeyFrame.qRot[2], KeyFrame.qRot[3]);
 
-		InlBoneFrame.vPos.x = BoneFrame.BoneTrans.vPos[0];
-		InlBoneFrame.vPos.y = BoneFrame.BoneTrans.vPos[1];
-		InlBoneFrame.vPos.z = BoneFrame.BoneTrans.vPos[2];
-
-		InlBoneFrame.vScale.x = BoneFrame.BoneTrans.vScale[0];
-		InlBoneFrame.vScale.y = BoneFrame.BoneTrans.vScale[1];
-		InlBoneFrame.vScale.z = BoneFrame.BoneTrans.vScale[2];
-
-		InlBoneFrame.vRotation.x = BoneFrame.BoneTrans.vRotation[0];
-		InlBoneFrame.vRotation.y = BoneFrame.BoneTrans.vRotation[1];
-		InlBoneFrame.vRotation.z = BoneFrame.BoneTrans.vRotation[2];
-		InlBoneFrame.vRotation.w = BoneFrame.BoneTrans.vRotation[3];
-
-		m_vFrame.push_back(InlBoneFrame);
+		m_vKeyFrameRot.push_back(KeyFrameRot);
 	}
+
+	pFile->Seek(Bone.nOffFramePos);
+	for (int i = 0; i < Bone.nNumFramePos; ++i)
+	{
+		COEFmtBone::FRAME_POS KeyFrame;
+		pFile->Read(&KeyFrame, sizeof(KeyFrame));
+
+		KEYFRAME_POS KeyFramePos;
+		KeyFramePos.fTime = KeyFrame.fTime;
+		KeyFramePos.vPos.Init(KeyFrame.vPos[0], KeyFrame.vPos[1], KeyFrame.vPos[2]);
+
+		m_vKeyFramePos.push_back(KeyFramePos);
+	}
+
+	pFile->Seek(Bone.nOffFrameScale);
+	for (int i = 0; i < Bone.nNumFrameScale; ++i)
+	{
+		COEFmtBone::FRAME_SCALE KeyFrame;
+		pFile->Read(&KeyFrame, sizeof(KeyFrame));
+
+		KEYFRAME_SCALE KeyFrameScale;
+		KeyFrameScale.fTime = KeyFrame.fTime;
+		KeyFrameScale.vScale.Init(KeyFrame.vScale[0], KeyFrame.vScale[1], KeyFrame.vScale[2]);
+
+		m_vKeyFrameScale.push_back(KeyFrameScale);
+	}
+
+	return true;
+}
+
+bool COEBone_Impl::SlerpRot(CQuaternion& qRotOut, float fTime)
+{
+	int nFrameCount = (int)m_vKeyFrameRot.size();
+	if (nFrameCount <= 0) return false;
+
+	int nPrevIndex = 0;
+	int nNextIndex = 0;
+	for (int i = 0; i < nFrameCount; ++i)
+	{
+		if (m_vKeyFrameRot[i].fTime > fTime)
+		{
+			nPrevIndex = i-1;
+			nNextIndex = i;
+			break;
+		}
+	}
+
+	if (nPrevIndex < 0)
+	{
+		qRotOut = m_vKeyFrameRot[0].qRot;
+		return true;
+	}
+
+	if (nPrevIndex == nNextIndex)
+	{
+		qRotOut = m_vKeyFrameRot[nFrameCount-1].qRot;
+		return true;
+	}
+
+	float fDetail = (fTime - m_vKeyFrameRot[nPrevIndex].fTime) / (m_vKeyFrameRot[nNextIndex].fTime - m_vKeyFrameRot[nPrevIndex].fTime);
+	COEMath::QuaternionSlerp(qRotOut, m_vKeyFrameRot[nPrevIndex].qRot, m_vKeyFrameRot[nNextIndex].qRot, fDetail);
+
+	return true;
+}
+
+bool COEBone_Impl::LerpPos(CVector3& vPosOut, float fTime)
+{
+	int nFrameCount = (int)m_vKeyFramePos.size();
+	if (nFrameCount <= 0) return false;
+
+	int nPrevIndex = 0;
+	int nNextIndex = 0;
+	for (int i = 0; i < nFrameCount; ++i)
+	{
+		if (m_vKeyFramePos[i].fTime > fTime)
+		{
+			nPrevIndex = i-1;
+			nNextIndex = i;
+			break;
+		}
+	}
+
+	if (nPrevIndex < 0)
+	{
+		vPosOut = m_vKeyFramePos[0].vPos;
+		return true;
+	}
+
+	if (nPrevIndex == nNextIndex)
+	{
+		vPosOut = m_vKeyFramePos[nFrameCount-1].vPos;
+		return true;
+	}
+
+	float fDetail = (fTime - m_vKeyFramePos[nPrevIndex].fTime) / (m_vKeyFramePos[nNextIndex].fTime - m_vKeyFramePos[nPrevIndex].fTime);
+	COEMath::VectorLerp(vPosOut, m_vKeyFramePos[nPrevIndex].vPos, m_vKeyFramePos[nNextIndex].vPos, fDetail);
+
+	return true;
+}
+
+bool COEBone_Impl::LerpScale(CVector3& vScaleOut, float fTime)
+{
+	int nFrameCount = (int)m_vKeyFrameScale.size();
+	if (nFrameCount <= 0) return false;
+
+	int nPrevIndex = 0;
+	int nNextIndex = 0;
+	for (int i = 0; i < nFrameCount; ++i)
+	{
+		if (m_vKeyFrameScale[i].fTime > fTime)
+		{
+			nPrevIndex = i-1;
+			nNextIndex = i;
+			break;
+		}
+	}
+
+	if (nPrevIndex < 0)
+	{
+		vScaleOut = m_vKeyFrameScale[0].vScale;
+		return true;
+	}
+
+	if (nPrevIndex == nNextIndex)
+	{
+		vScaleOut = m_vKeyFrameScale[nFrameCount-1].vScale;
+		return true;
+	}
+
+	float fDetail = (fTime - m_vKeyFrameScale[nPrevIndex].fTime) / (m_vKeyFrameScale[nNextIndex].fTime - m_vKeyFrameScale[nPrevIndex].fTime);
+	COEMath::VectorLerp(vScaleOut, m_vKeyFrameScale[nPrevIndex].vScale, m_vKeyFrameScale[nNextIndex].vScale, fDetail);
 
 	return true;
 }

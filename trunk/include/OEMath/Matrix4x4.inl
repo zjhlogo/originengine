@@ -29,6 +29,17 @@ inline CMatrix4x4::CMatrix4x4(float fm00, float fm01, float fm02, float fm03,
 	m[12] = fm30; m[13] = fm31; m[14] = fm32; m[15] = fm33;
 }
 
+inline void CMatrix4x4::Init(float fm00, float fm01, float fm02, float fm03,
+							 float fm10, float fm11, float fm12, float fm13,
+							 float fm20, float fm21, float fm22, float fm23,
+							 float fm30, float fm31, float fm32, float fm33)
+{
+	m[0]  = fm00; m[1]  = fm01; m[2]  = fm02; m[3]  = fm03;
+	m[4]  = fm10; m[5]  = fm11; m[6]  = fm12; m[7]  = fm13;
+	m[8]  = fm20; m[9]  = fm21; m[10] = fm22; m[11] = fm23;
+	m[12] = fm30; m[13] = fm31; m[14] = fm32; m[15] = fm33;
+}
+
 inline void CMatrix4x4::Identity()
 {
 	m[0]  = 1.0f; m[1]  = 0.0f; m[2]  = 0.0f; m[3]  = 0.0f;

@@ -16,11 +16,9 @@ class COEFmtMesh
 public:
 	enum CONST_DEFINE
 	{
-		MAGIC_NUMBER = 0x4853454D,
+		MAGIC_NUMBER = 0x4853454D,		// MESH
 		CURRENT_VERSION = 100,
 		PIECE_NAME_SIZE = 32,
-		BONE_NAME_SIZE = 32,
-		INVALID_BONE_ID = -1,
 	};
 
 	enum VERTEX_DATA_MASK
@@ -46,7 +44,6 @@ public:
 		int nVersion;					// CURRENT_VERSION
 
 		int nNumPieces;
-		int nNumBones;
 	} FILE_HEADER;
 
 	// 2, following the nNumPieces of PIECE
@@ -64,30 +61,5 @@ public:
 		int nNumIndis;
 		uint nOffIndis;					// sizeof(ushort)*nNumIndis*3;
 	} PIECE;
-
-	// 3, following the nNumBones of BONE
-	typedef struct BONE_TRANSFORM_tag
-	{
-		float vPos[3];
-		float vScale[3];
-		float vRotation[4];
-	} BONE_TRANSFORM;
-
-	typedef struct BONE_FRAME_tag
-	{
-		float fTime;
-		BONE_TRANSFORM BoneTrans;
-	} BONE_FRAME;
-
-	typedef struct BONE_tag
-	{
-		char szName[BONE_NAME_SIZE];
-		int nParentIndex;
-		float fTimeLength;
-		BONE_TRANSFORM BoneTrans;
-		int nNumBoneFrame;
-		uint nOffBoneFrame;
-	} BONE;
-
 };
 #endif // __OEFMTMESH_H__

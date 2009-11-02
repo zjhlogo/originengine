@@ -18,7 +18,6 @@ class COEMesh_Impl : public IOEMesh
 {
 public:
 	typedef std::vector<COEPiece_Impl*> TV_PIECE;
-	typedef std::vector<COEBone_Impl*> TV_BONE;
 
 public:
 	COEMesh_Impl(const tstring& strFileName);
@@ -28,13 +27,6 @@ public:
 	virtual IOEPiece* GetPiece(int nIndex) const;
 	virtual IOEPiece* FindPiece(const tstring& strName) const;
 
-	virtual int GetNumBones() const;
-	virtual IOEBone* GetBone(int nIndex) const;
-	virtual IOEBone* FindBone(const tstring& strName) const;
-
-	virtual IOEBone* GetRootBone() const;
-	virtual float GetTimeLength() const;
-
 private:
 	void Init();
 	void Destroy();
@@ -43,9 +35,6 @@ private:
 
 private:
 	TV_PIECE m_vPiece;
-	TV_BONE m_vBone;
-
-	float m_fTimeLength;
 
 };
 

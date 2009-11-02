@@ -35,6 +35,14 @@ inline CQuaternion::CQuaternion(const CVector3& vDirNormalized, float fRadian)
 	w = cosf(fHalfRadian);
 }
 
+inline void CQuaternion::Init(float fx, float fy, float fz, float fw)
+{
+	x = fx;
+	y = fy;
+	z = fz;
+	w = fw;
+}
+
 inline void CQuaternion::Identity()
 {
 	x = y = z = 0.0f;

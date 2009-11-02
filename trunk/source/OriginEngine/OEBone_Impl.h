@@ -10,17 +10,37 @@
 
 #include <IOEBone.h>
 #include <IOEFile.h>
-#include <OEFmtMesh.h>
+#include <OEFmtBone.h>
 
 #include <vector>
 
 class COEBone_Impl : public IOEBone
 {
 public:
-	typedef std::vector<BONE_FRAME> VBONE_FRAME;
+	typedef struct KEYFRAME_ROT_tag
+	{
+		float fTime;
+		CQuaternion qRot;
+	} KEYFRAME_ROT;
+
+	typedef struct KEYFRAME_POS_tag
+	{
+		float fTime;
+		CVector3 vPos;
+	} KEYFRAME_POS;
+
+	typedef struct KEYFRAME_SCALE_tag
+	{
+		float fTime;
+		CVector3 vScale;
+	} KEYFRAME_SCALE;
+
+	typedef std::vector<KEYFRAME_ROT> TV_KEYFRAME_ROT;
+	typedef std::vector<KEYFRAME_POS> TV_KEYFRAME_POS;
+	typedef std::vector<KEYFRAME_SCALE> TV_KEYFRAME_SCALE;
 
 public:
-	COEBone_Impl(const COEFmtMesh::BONE& Bone, int nID, IOEFile* pFile);
+	COEBone_Impl(const COEFmtBone::BONE& Bone, int nID, IOEFile* pFile);
 	virtual ~COEBone_Impl();
 
 	virtual const tstring& GetName() const;
@@ -32,9 +52,6 @@ public:
 	virtual const CMatrix4x4& GetWorldMatrix() const;
 	virtual const CMatrix4x4& GetWorldMatrixInv() const;
 
-	virtual int GetFrameCount() const;
-	virtual const BONE_FRAME* GetFrame(int nIndex) const;
-
 	virtual bool SlerpMatrix(CMatrix4x4& matOut, float fTime, bool bLoop = true);
 	void SetWorldMatrix(const CMatrix4x4& matWorld);
 
@@ -42,7 +59,11 @@ private:
 	void Init();
 	void Destroy();
 
-	bool Create(const COEFmtMesh::BONE& Bone, int nID, IOEFile* pFile);
+	bool Create(const COEFmtBone::BONE& Bone, int nID, IOEFile* pFile);
+
+	bool SlerpRot(CQuaternion& qRotOut, float fTime);
+	bool LerpPos(CVector3& vPosOut, float fTime);
+	bool LerpScale(CVector3& vScaleOut, float fTime);
 
 private:
 	tstring m_strName;
@@ -55,7 +76,13 @@ private:
 	CMatrix4x4 m_matWorld;
 	CMatrix4x4 m_matWorldInv;
 
-	VBONE_FRAME m_vFrame;
+	CQuaternion m_qLocalRot;
+	CVector3 m_vLocalPos;
+	CVector3 m_vLocalScale;
+
+	TV_KEYFRAME_ROT m_vKeyFrameRot;
+	TV_KEYFRAME_POS m_vKeyFramePos;
+	TV_KEYFRAME_SCALE m_vKeyFrameScale;
 
 };
 #endif // __OEBONE_IMPL_H__

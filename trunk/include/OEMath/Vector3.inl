@@ -27,6 +27,13 @@ inline CVector3::~CVector3()
 	// TODO: 
 }
 
+inline void CVector3::Init(float fx, float fy, float fz)
+{
+	x = fx;
+	y = fy;
+	z = fz;
+}
+
 inline float CVector3::Length() const
 {
 	return sqrtf(x*x+y*y+z*z);

@@ -1,5 +1,5 @@
 float4x4 g_matWorldViewProj;
-float4x3 g_matBoneMatrix[56] : WORLDMATRIXARRAY;
+float4x3 g_matBoneMatrix[50] : WORLDMATRIXARRAY;
 
 float3 g_vLightPos = {-300.0f, 0.0f, -300.0f};
 
