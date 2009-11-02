@@ -14,15 +14,6 @@
 class IOEBone : public IOEObject
 {
 public:
-	typedef struct BONE_FRAME_tag
-	{
-		float fTime;
-		CVector3 vPos;
-		CVector3 vScale;
-		CQuaternion vRotation;
-	} BONE_FRAME;
-
-public:
 	IOEBone() {};
 	virtual ~IOEBone() {};
 
@@ -34,9 +25,6 @@ public:
 	virtual const CMatrix4x4& GetLocalMatrix() const = 0;
 	virtual const CMatrix4x4& GetWorldMatrix() const = 0;
 	virtual const CMatrix4x4& GetWorldMatrixInv() const = 0;
-
-	virtual int GetFrameCount() const = 0;
-	virtual const BONE_FRAME* GetFrame(int nIndex) const = 0;
 
 	virtual bool SlerpMatrix(CMatrix4x4& matOut, float fTime, bool bLoop = true) = 0;
 

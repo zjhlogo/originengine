@@ -18,6 +18,7 @@
 
 #include <IOEFileMgr.h>
 #include <OEFmtMesh.h>
+#include <OEFmtBone.h>
 
 class CMeshExporter : public SceneExport
 {
@@ -25,6 +26,24 @@ public:
 	enum CONST_DEFINE
 	{
 		CURRENT_VERSION = 100,
+	};
+
+	enum KEY_FRAME_MASK
+	{
+		KFM_UNKNOWN		= 0,
+		KFM_POS_X		= 0x00000001,
+		KFM_POS_Y		= 0x00000002,
+		KFM_POS_Z		= 0x00000004,
+		KFM_SCALE_X		= 0x00000008,
+		KFM_SCALE_Y		= 0x00000010,
+		KFM_SCALE_Z		= 0x00000020,
+		KFM_ROT_X		= 0x00000040,
+		KFM_ROT_Y		= 0x00000080,
+		KFM_ROT_Z		= 0x00000100,
+		KFM_QUAT		= 0x00000200,
+		KFM_POS			= KFM_POS_X | KFM_POS_Y | KFM_POS_Z,
+		KFM_SCALE		= KFM_SCALE_X | KFM_SCALE_Y | KFM_SCALE_Z,
+		KFM_ROT			= KFM_ROT_X | KFM_ROT_Y | KFM_ROT_Z,
 	};
 
 	typedef struct NODE_INFO_tag
@@ -81,13 +100,42 @@ public:
 
 	typedef std::vector<SKIN_MESH> TV_SKIN_MESH;
 
-	typedef struct FRAME_INFO_tag
+	typedef struct FILE_VERTEX_tag
 	{
-		TimeValue Time;
-		GMatrix matAnim;
-	} FRAME_INFO;
+		float x, y, z;
+		float u, v;
+		float nx, ny, nz;
+		float tx, ty, tz;
+		uchar nBoneIndex[4];
+		float fWeight[4];
+	} FILE_VERTEX;
 
-	typedef std::vector<FRAME_INFO> TV_FRAME_INFO;
+	// bone information
+	typedef struct KEYFRAME_ROT_tag
+	{
+		TimeValue time;
+		uint nMask;
+		CVector3 vRot;
+		CQuaternion qRot;
+	} KEYFRAME_ROT;
+
+	typedef struct KEYFRAME_POS_tag
+	{
+		TimeValue time;
+		uint nMask;
+		CVector3 vPos;
+	} KEYFRAME_POS;
+
+	typedef struct KEYFRAME_SCALE_tag
+	{
+		TimeValue time;
+		uint nMask;
+		CVector3 vScale;
+	} KEYFRAME_SCALE;
+
+	typedef std::map<TimeValue, KEYFRAME_ROT> TM_KEYFRAME_ROT;
+	typedef std::map<TimeValue, KEYFRAME_POS> TM_KEYFRAME_POS;
+	typedef std::map<TimeValue, KEYFRAME_SCALE> TM_KEYFRAME_SCALE;
 
 	typedef struct BONE_INFO_tag
 	{
@@ -98,54 +146,15 @@ public:
 		int nID;
 		int nParentID;
 
-		GMatrix matLocal;
-		TV_FRAME_INFO vFrameInfo;
+		CMatrix4x4 matLocal;
+
+		TM_KEYFRAME_ROT FrameRot;
+		TM_KEYFRAME_POS FramePos;
+		TM_KEYFRAME_SCALE FrameScale;
 	} BONE_INFO;
 
 	typedef std::vector<BONE_INFO> TV_BONE_INFO;
 	typedef std::map<IGameNode*, int> TM_BONE_INFO;
-
-	enum KEY_FRAME_MASK
-	{
-		KFM_UNKNOWN		= 0,
-		KFM_POS_X		= 0x00000001,
-		KFM_POS_Y		= 0x00000002,
-		KFM_POS_Z		= 0x00000004,
-		KFM_SCALE_X		= 0x00000008,
-		KFM_SCALE_Y		= 0x00000010,
-		KFM_SCALE_Z		= 0x00000020,
-		KFM_ROT_X		= 0x00000040,
-		KFM_ROT_Y		= 0x00000080,
-		KFM_ROT_Z		= 0x00000100,
-		KFM_QUAT		= 0x00000200,
-		KFM_MATRIX		= 0x00000400,
-		KFM_POS			= KFM_POS_X | KFM_POS_Y | KFM_POS_Z,
-		KFM_SCALE		= KFM_SCALE_X | KFM_SCALE_Y | KFM_SCALE_Z,
-		KFM_ROT			= KFM_ROT_X | KFM_ROT_Y | KFM_ROT_Z,
-	};
-
-	typedef struct KEY_FRAME_tag
-	{
-		TimeValue time;
-		uint nMask;
-		CVector3 vPos;
-		CVector3 vScale;
-		CVector3 vRot;
-		CQuaternion rRot;
-		CMatrix4x4 matFull;
-	} KEY_FRAME;
-
-	typedef std::map<TimeValue, KEY_FRAME> TM_KEY_FRAME;
-
-	typedef struct FILE_VERTEX_tag
-	{
-		float x, y, z;
-		float u, v;
-		float nx, ny, nz;
-		float tx, ty, tz;
-		uchar nBoneIndex[4];
-		float fWeight[4];
-	} FILE_VERTEX;
 
 public:
 	CMeshExporter();
@@ -174,38 +183,45 @@ private:
 	bool BuildMeshsInfo();
 	bool BuildBonesInfo();
 
-	bool SaveToFile(const tstring& strFileName);
+	bool SaveMeshFile(const tstring& strFileName);
+	bool SaveBoneFile(const tstring& strFileName);
 
 	bool DumpMesh(SKIN_MESH& SkinMeshOut, IGameNode* pGameNode);
 	bool DumpSkin(SKIN_MESH& SkinMeshOut, IGameSkin* pGameSkin);
 
-	bool DumpController(TV_FRAME_INFO& vFrameInfoOut, IGameNode* pGameNode);
-	bool DumpPositionController(TM_KEY_FRAME& KeyFrames, IGameControl* pGameControl);
-	bool DumpRotationController(TM_KEY_FRAME& KeyFrames, IGameControl* pGameControl);
-	bool DumpScaleController(TM_KEY_FRAME& KeyFrames, IGameControl* pGameControl);
+	bool DumpController(BONE_INFO& BoneInfo, IGameNode* pGameNode);
+	bool DumpPositionController(BONE_INFO& BoneInfo, IGameControl* pGameControl);
+	bool DumpRotationController(BONE_INFO& BoneInfo, IGameControl* pGameControl);
+	bool DumpScaleController(BONE_INFO& BoneInfo, IGameControl* pGameControl);
 
-	bool DumpMaxStdPosKey(TM_KEY_FRAME& KeyFrames, IGameControl* pGameControl);
-	bool DumpIndependentPosKey(TM_KEY_FRAME& KeyFrames, IGameControl* pGameControl);
+	bool DumpMaxStdPosKey(BONE_INFO& BoneInfo, IGameControl* pGameControl);
+	bool DumpIndependentPosKey(BONE_INFO& BoneInfo, IGameControl* pGameControl);
 
-	bool DumpMaxStdRotKey(TM_KEY_FRAME& KeyFrames, IGameControl* pGameControl);
-	bool DumpEulerRotKey(TM_KEY_FRAME& KeyFrames, IGameControl* pGameControl);
+	bool DumpMaxStdRotKey(BONE_INFO& BoneInfo, IGameControl* pGameControl);
+	bool DumpEulerRotKey(BONE_INFO& BoneInfo, IGameControl* pGameControl);
 
-	bool DumpMaxStdScaleKey(TM_KEY_FRAME& KeyFrames, IGameControl* pGameControl);
+	bool DumpMaxStdScaleKey(BONE_INFO& BoneInfo, IGameControl* pGameControl);
 
-	bool DumpConstraintKey(TM_KEY_FRAME& KeyFrames, IGameControl* pGameControl);
-	bool DumpListKey(TM_KEY_FRAME& KeyFrames, IGameControl* pGameControl);
-	bool DumpSampleKey(TM_KEY_FRAME& KeyFrames, IGameControl* pGameControl, IGameControlType eType);
+	bool DumpConstraintKey(BONE_INFO& BoneInfo, IGameControl* pGameControl);
+	bool DumpListKey(BONE_INFO& BoneInfo, IGameControl* pGameControl);
+	bool DumpSampleKey(BONE_INFO& BoneInfo, IGameControl* pGameControl, IGameControlType eType);
 
-	KEY_FRAME* FindKeyFrame(TM_KEY_FRAME& KeyFrames, TimeValue time);
-	bool InsertKeyFrame(TM_KEY_FRAME& KeyFrames, TimeValue time, KEY_FRAME_MASK eMask, float fValue);
-	bool InsertKeyFrame(TM_KEY_FRAME& KeyFrames, TimeValue time, KEY_FRAME_MASK eMask, const Point3& vValue);
-	bool InsertKeyFrame(TM_KEY_FRAME& KeyFrames, TimeValue time, KEY_FRAME_MASK eMask, const Quat& qValue);
-	bool InsertKeyFrame(TM_KEY_FRAME& KeyFrames, TimeValue time, KEY_FRAME_MASK eMask, const GMatrix& matValue);
+	KEYFRAME_POS* GetKeyFrame(TM_KEYFRAME_POS& FramePos, TimeValue time);
+	KEYFRAME_SCALE* GetKeyFrame(TM_KEYFRAME_SCALE& FrameScale, TimeValue time);
+	KEYFRAME_ROT* GetKeyFrame(TM_KEYFRAME_ROT& FrameRot, TimeValue time);
+
+	bool InsertKeyFrame(BONE_INFO& BoneInfo, TimeValue time, KEY_FRAME_MASK eMask, float fValue);
+	bool InsertKeyFrame(BONE_INFO& BoneInfo, TimeValue time, KEY_FRAME_MASK eMask, const Point3& vValue);
+	bool InsertKeyFrame(BONE_INFO& BoneInfo, TimeValue time, const Quat& qValue);
+	bool InsertKeyFrame(BONE_INFO& BoneInfo, TimeValue time, const GMatrix& matValue);
 
 	void GMatrix2CMatrix4x4(CMatrix4x4& matOut, const GMatrix& matIn);
 	void CMatrix4x42GMatrix(GMatrix& matOut, const CMatrix4x4& matIn);
-	void GMatrix2BoneTransform(COEFmtMesh::BONE_TRANSFORM& BoneTrans, const GMatrix& matTrans);
+	//void GMatrix2BoneTransform(COEFmtMesh::BONE_TRANSFORM& BoneTrans, const GMatrix& matTrans);
 	void SortSkin(TV_SKIN& vSkin);
+
+	bool ReadConfig();
+	bool SaveConfig();
 
 private:
 	TV_NODE_INFO m_vMeshNode;
@@ -213,8 +229,19 @@ private:
 	TV_SKIN_MESH m_vSkinMesh;
 	TV_BONE_INFO m_vBoneInfo;
 	TM_BONE_INFO m_vBoneInfoMap;
-	TM_KEY_FRAME m_TimeValueSet;
 	Interface* m_pInterface;
+
+	bool m_bExportMesh;
+	bool m_bExportBone;
+
+	bool m_bOptimizeRotation;
+	float m_fOptimizeRotation;
+
+	bool m_bOptimizePosition;
+	float m_fOptimizePosition;
+
+	bool m_bOptimizeScale;
+	float m_fOptimizeScale;
 
 };
 #endif // __MESHEXPORTER_H__

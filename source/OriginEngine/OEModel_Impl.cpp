@@ -12,8 +12,10 @@
 #include <IOETextureMgr.h>
 #include <IOELogFileMgr.h>
 #include <IOERenderer.h>
+#include <IOEFileMgr.h>
 
 #include <OEFmtMesh.h>
+#include <OEFmtBone.h>
 
 COEModel_Impl::COEModel_Impl(const tstring& strFile)
 {
@@ -30,11 +32,15 @@ void COEModel_Impl::Init()
 {
 	m_pMesh = NULL;
 	m_fTotalTime = 0.0f;
+
+	m_bAnimation = false;
+	m_fAnimLength = 0.0f;
 }
 
 void COEModel_Impl::Destroy()
 {
 	ClearMaterials();
+	ClearBones();
 }
 
 void COEModel_Impl::ClearMaterials()
@@ -46,37 +52,50 @@ void COEModel_Impl::ClearMaterials()
 		SAFE_RELEASE(Material.pTexture);
 		SAFE_RELEASE(Material.pTexNormal);
 	}
-
 	m_vMaterial.clear();
+}
+
+void COEModel_Impl::ClearBones()
+{
+	for (TV_BONE::iterator it = m_vBone.begin(); it != m_vBone.end(); ++it)
+	{
+		IOEBone* pMeshBone = (*it);
+		SAFE_RELEASE(pMeshBone);
+	}
+	m_vBone.clear();
+
+	m_bAnimation = false;
+	m_fAnimLength = 0.0f;
 }
 
 void COEModel_Impl::Update(float fDetailTime)
 {
+	if (!m_bAnimation) return;
+
 	m_fTotalTime += fDetailTime;
 
-	float fTimeLength = m_pMesh->GetTimeLength();
-	if (m_fTotalTime > fTimeLength || m_fTotalTime < 0.0f)
+	if (m_fTotalTime > m_fAnimLength || m_fTotalTime < 0.0f)
 	{
-		m_fTotalTime -= floorf(m_fTotalTime/fTimeLength)*fTimeLength;
+		m_fTotalTime -= floorf(m_fTotalTime/m_fAnimLength)*m_fAnimLength;
 	}
 
 	CMatrix4x4 matAnim;
-	int nNumBones = m_pMesh->GetNumBones();
+	int nNumBones = (int)m_vBone.size();
 	for (int i = 0; i < nNumBones; ++i)
 	{
-		IOEBone* pMeshBone = m_pMesh->GetBone(i);
+		IOEBone* pBone = m_vBone[i];
 
-		if (m_fTotalTime > pMeshBone->GetTimeLength())
+		if (m_fTotalTime > pBone->GetTimeLength())
 		{
-			pMeshBone->SlerpMatrix(m_vmatSkin[i], m_fTotalTime, false);
+			pBone->SlerpMatrix(m_vmatSkin[i], m_fTotalTime, false);
 		}
 		else
 		{
-			pMeshBone->SlerpMatrix(m_vmatSkin[i], m_fTotalTime, true);
+			pBone->SlerpMatrix(m_vmatSkin[i], m_fTotalTime, true);
 		}
 
-		int nParentID = pMeshBone->GetParentID();
-		if (nParentID != COEFmtMesh::INVALID_BONE_ID)
+		int nParentID = pBone->GetParentID();
+		if (nParentID != COEFmtBone::INVALID_BONE_ID)
 		{
 			m_vmatSkin[i] *= m_vmatSkin[nParentID];
 		}
@@ -84,8 +103,8 @@ void COEModel_Impl::Update(float fDetailTime)
 
 	for (int i = 0; i < nNumBones; ++i)
 	{
-		IOEBone* pMeshBone = m_pMesh->GetBone(i);
-		m_vmatSkin[i] = pMeshBone->GetWorldMatrixInv() * m_vmatSkin[i];
+		IOEBone* pBone = m_vBone[i];
+		m_vmatSkin[i] = pBone->GetWorldMatrixInv() * m_vmatSkin[i];
 	}
 }
 
@@ -109,7 +128,7 @@ void COEModel_Impl::Render(float fDetailTime)
 		m_vMaterial[nMaterialID].pShader->SetMatrixArray(t("g_matBoneMatrix"), &m_vmatSkin[0], m_vmatSkin.size());
 		g_pOERenderer->SetShader(m_vMaterial[nMaterialID].pShader);
 
-		//SoftSkinned(pPiece, m_vmatSkin);
+		SoftSkinned(pPiece, m_vmatSkin);
 		//g_pOERenderer->DrawTriList(&m_vVerts[0], m_vVerts.size(), pPiece->GetIndis(), pPiece->GetNumIndis());
 
 		g_pOERenderer->DrawTriList(pPiece->GetVerts(), pPiece->GetNumVerts(), pPiece->GetIndis(), pPiece->GetNumIndis());
@@ -130,6 +149,27 @@ CMatrix4x4* COEModel_Impl::GetMatrixPalette()
 {
 	if (m_vmatSkin.empty()) return NULL;
 	return &m_vmatSkin[0];
+}
+
+int COEModel_Impl::GetNumBones() const
+{
+	return (int)m_vBone.size();
+}
+
+IOEBone* COEModel_Impl::GetBone(int nIndex) const
+{
+	if (nIndex < 0 || nIndex >= (int)m_vBone.size()) return NULL;
+	return m_vBone[nIndex];
+}
+
+IOEBone* COEModel_Impl::FindBone(const tstring& strName) const
+{
+	for (TV_BONE::const_iterator it = m_vBone.begin(); it != m_vBone.end(); ++it)
+	{
+		if ((*it)->GetName() == strName) return (*it);
+	}
+
+	return NULL;
 }
 
 int COEModel_Impl::GetNumMaterials()
@@ -158,6 +198,10 @@ bool COEModel_Impl::Create(const tstring& strFile)
 		return false;
 	}
 
+	// create bone
+	IOEXmlNode* pXmlBone = pXmlRoot->FirstChild(t("Bone"));
+	m_bAnimation = CreateBone(pXmlBone);
+
 	// create materials
 	IOEXmlNode* pXmlMaterials = pXmlRoot->FirstChild(t("Materials"));
 	if (!CreateMaterials(pXmlMaterials))
@@ -169,9 +213,6 @@ bool COEModel_Impl::Create(const tstring& strFile)
 
 	// no used any more
 	SAFE_RELEASE(pXmlDocument);
-
-	int nNumBones = m_pMesh->GetNumBones();
-	m_vmatSkin.resize(nNumBones);
 
 	return true;
 }
@@ -186,6 +227,72 @@ bool COEModel_Impl::CreateMesh(IOEXmlNode* pXmlMesh)
 
 	m_pMesh = g_pOEMeshMgr->CreateMeshFromFile(strMeshFile);
 	if (!m_pMesh) return false;
+
+	return true;
+}
+
+bool COEModel_Impl::CreateBone(IOEXmlNode* pXmlBone)
+{
+	ClearBones();
+
+	if (!pXmlBone) return false;
+
+	tstring strFile;
+	if (!pXmlBone->GetText(strFile)) return false;
+
+	IOEFile* pFile = g_pOEFileMgr->OpenFile(strFile);
+	if (!pFile) return false;
+
+	COEFmtBone::FILE_HEADER Header;
+	pFile->Read(&Header, sizeof(Header));
+
+	if (Header.nMagicNumber != COEFmtBone::MAGIC_NUMBER
+		|| Header.nVersion != COEFmtBone::CURRENT_VERSION)
+	{
+		SAFE_RELEASE(pFile);
+		return false;
+	}
+
+	// read bone info
+	std::vector<COEFmtBone::BONE> vBones;
+	if (Header.nNumBones > 0)
+	{
+		vBones.resize(Header.nNumBones);
+		pFile->Read(&vBones[0], sizeof(COEFmtBone::BONE)*Header.nNumBones);
+	}
+
+	// create bones
+	for (int i = 0; i < Header.nNumBones; ++i)
+	{
+		COEBone_Impl* pBone = new COEBone_Impl(vBones[i], i, pFile);
+		if (!pBone || !pBone->IsOK())
+		{
+			SAFE_RELEASE(pBone);
+			SAFE_RELEASE(pFile);
+			return false;
+		}
+		m_vBone.push_back(pBone);
+
+		if (m_fAnimLength < pBone->GetTimeLength()) m_fAnimLength = pBone->GetTimeLength();
+	}
+
+	SAFE_RELEASE(pFile);
+
+	// build bone matrix
+	for (int i = 0; i < Header.nNumBones; ++i)
+	{
+		int nParentID = m_vBone[i]->GetParentID();
+		if (nParentID != COEFmtBone::INVALID_BONE_ID)
+		{
+			m_vBone[i]->SetWorldMatrix(m_vBone[i]->GetLocalMatrix() * m_vBone[nParentID]->GetWorldMatrix());
+		}
+		else
+		{
+			m_vBone[i]->SetWorldMatrix(m_vBone[i]->GetLocalMatrix());
+		}
+	}
+
+	if (m_vmatSkin.size() < m_vBone.size()) m_vmatSkin.resize(m_vBone.size());
 
 	return true;
 }

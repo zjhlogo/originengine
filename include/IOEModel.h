@@ -40,6 +40,10 @@ public:
 	virtual int GetNumMatrixPalette() = 0;
 	virtual CMatrix4x4* GetMatrixPalette() = 0;
 
+	virtual int GetNumBones() const = 0;
+	virtual IOEBone* GetBone(int nIndex) const = 0;
+	virtual IOEBone* FindBone(const tstring& strName) const = 0;
+
 	virtual int GetNumMaterials() = 0;
 	virtual MATERIAL* GetMaterial(int nIndex) = 0;
 };

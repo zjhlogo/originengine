@@ -28,6 +28,14 @@ inline CVector4::~CVector4()
 	// TODO: 
 }
 
+inline void CVector4::Init(float fx, float fy, float fz, float fw)
+{
+	x = fx;
+	y = fy;
+	z = fz;
+	w = fw;
+}
+
 inline float CVector4::Length() const
 {
 	return sqrtf(x*x+y*y+z*z+w*w);

@@ -22,12 +22,5 @@ public:
 	virtual IOEPiece* GetPiece(int nIndex) const = 0;
 	virtual IOEPiece* FindPiece(const tstring& strName) const = 0;
 
-	virtual int GetNumBones() const = 0;
-	virtual IOEBone* GetBone(int nIndex) const = 0;
-	virtual IOEBone* FindBone(const tstring& strName) const = 0;
-
-	virtual IOEBone* GetRootBone() const = 0;
-	virtual float GetTimeLength() const = 0;
-
 };
 #endif // __IOEMESH_H__

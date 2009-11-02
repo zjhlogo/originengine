@@ -12,6 +12,7 @@
 #include <IOEShader.h>
 #include <IOETexture.h>
 #include <IOEXmlNode.h>
+#include "OEBone_Impl.h"
 
 #include <vector>
 #include <map>
@@ -22,6 +23,7 @@ public:
 	typedef std::vector<MATERIAL> TV_MATERIAL;
 
 	typedef std::vector<CMatrix4x4> TV_MATRIX;
+	typedef std::vector<COEBone_Impl*> TV_BONE;
 
 	typedef struct VERTEX_tag
 	{
@@ -46,16 +48,24 @@ public:
 	virtual int GetNumMatrixPalette();
 	virtual CMatrix4x4* GetMatrixPalette();
 
+	virtual int GetNumBones() const;
+	virtual IOEBone* GetBone(int nIndex) const;
+	virtual IOEBone* FindBone(const tstring& strName) const;
+
 	virtual int GetNumMaterials();
 	virtual MATERIAL* GetMaterial(int nIndex);
 
 private:
 	void Init();
 	void Destroy();
+
 	void ClearMaterials();
+	void ClearBones();
 
 	bool Create(const tstring& strFile);
+
 	bool CreateMesh(IOEXmlNode* pXmlMesh);
+	bool CreateBone(IOEXmlNode* pXmlBone);
 	bool CreateMaterials(IOEXmlNode* pXmlMaterials);
 
 	IOEShader* CreateShader(int nVertDecl, const tstring& strShaderFile);
@@ -64,13 +74,16 @@ private:
 
 private:
 	IOEMesh* m_pMesh;
+	TV_BONE m_vBone;
 
 	TV_MATRIX m_vmatSkin;
+	TV_MATERIAL m_vMaterial;
+	TV_VERTEX m_vVerts;
+
 	float m_fTotalTime;
 
-	TV_MATERIAL m_vMaterial;
-
-	TV_VERTEX m_vVerts;
+	bool m_bAnimation;
+	float m_fAnimLength;
 
 };
 

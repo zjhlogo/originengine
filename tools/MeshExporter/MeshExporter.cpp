@@ -6,6 +6,7 @@
  * \author zjhlogo (zjhlogo@163.com)
  */
 #include "MeshExporter.h"
+#include <OEInterfaces.h>
 #include <OEOS.h>
 
 DWORD WINAPI DummyFunc(LPVOID arg)
@@ -26,6 +27,18 @@ CMeshExporter::~CMeshExporter()
 void CMeshExporter::Init()
 {
 	m_pInterface = NULL;
+
+	m_bExportMesh = true;
+	m_bExportBone = true;
+
+	m_bOptimizeRotation = false;
+	m_fOptimizeRotation = 0.0f;
+
+	m_bOptimizePosition = false;
+	m_fOptimizePosition = 0.0f;
+
+	m_bOptimizeScale = false;
+	m_fOptimizeScale = 0.0f;
 }
 
 void CMeshExporter::Destroy()
@@ -116,8 +129,8 @@ int CMeshExporter::DoExport(const TCHAR* name, ExpInterface* ei, Interface* i, B
 	// save to file
 	tstring strFile;
 	COEOS::GetFileName(strFile, name);
-	strFile += t(".mesh");
-	SaveToFile(strFile);
+	SaveMeshFile(strFile + t(".mesh"));
+	SaveBoneFile(strFile + t(".bone"));
 
 	pIGame->ReleaseIGame();
 	pIGame = NULL;
@@ -130,13 +143,24 @@ int CMeshExporter::DoExport(const TCHAR* name, ExpInterface* ei, Interface* i, B
 
 void CMeshExporter::Cleanup()
 {
-	m_TimeValueSet.clear();
 	m_vMeshNode.clear();
 	m_vBoneNode.clear();
 	m_vSkinMesh.clear();
 	m_vBoneInfo.clear();
 	m_vBoneInfoMap.clear();
 	m_pInterface = NULL;
+
+	m_bExportMesh = true;
+	m_bExportBone = true;
+
+	m_bOptimizeRotation = false;
+	m_fOptimizeRotation = 0.0f;
+
+	m_bOptimizePosition = false;
+	m_fOptimizePosition = 0.0f;
+
+	m_bOptimizeScale = false;
+	m_fOptimizeScale = 0.0f;
 }
 
 bool CMeshExporter::CollectNodes(IGameNode* pGameNode, IGameNode* pParentGameNode /* = NULL */)
@@ -210,9 +234,9 @@ bool CMeshExporter::BuildBonesInfo()
 		BoneInfo.pNode = NodeInfo.pGameNode;
 		BoneInfo.pParentNode = NodeInfo.pParentGameNode;
 		BoneInfo.nID = (int)m_vBoneInfo.size();
-		BoneInfo.nParentID = COEFmtMesh::INVALID_BONE_ID;
-		BoneInfo.matLocal = NodeInfo.pGameNode->GetLocalTM();
-		bool bOK = DumpController(BoneInfo.vFrameInfo, NodeInfo.pGameNode);
+		BoneInfo.nParentID = COEFmtBone::INVALID_BONE_ID;
+		GMatrix2CMatrix4x4(BoneInfo.matLocal, NodeInfo.pGameNode->GetLocalTM());
+		bool bOK = DumpController(BoneInfo, NodeInfo.pGameNode);
 		assert(bOK);
 		// TODO: check bOK
 		m_vBoneInfo.push_back(BoneInfo);
@@ -240,65 +264,54 @@ bool CMeshExporter::BuildBonesInfo()
 	return true;
 }
 
-bool CMeshExporter::SaveToFile(const tstring& strFileName)
+bool CMeshExporter::SaveMeshFile(const tstring& strFileName)
 {
 	IOEFile* pFile = g_pOEFileMgr->OpenFile(strFileName, IOEFile::OFF_WRITE);
 	if (!pFile) return false;
-
-	int nNumMeshes = (int)m_vSkinMesh.size();
-	int nNumBones = (int)m_vBoneInfo.size();
 
 	// write header
 	COEFmtMesh::FILE_HEADER Header;
 	Header.nMagicNumber = COEFmtMesh::MAGIC_NUMBER;
 	Header.nVersion = COEFmtMesh::CURRENT_VERSION;
-	Header.nNumPieces = nNumMeshes;
-	Header.nNumBones = nNumBones;
+	Header.nNumPieces = (int)m_vSkinMesh.size();
 	pFile->Write(&Header, sizeof(Header));
 
 	// make room for piece list
 	uint nPieceListPos = pFile->Tell();
 	std::vector<COEFmtMesh::PIECE> vPiece;
-	if (nNumMeshes > 0)
+	if (Header.nNumPieces > 0)
 	{
-		vPiece.resize(nNumMeshes);
-		memset(&vPiece[0], 0, sizeof(COEFmtMesh::PIECE)*nNumMeshes);
-		pFile->Write(&vPiece[0], sizeof(COEFmtMesh::PIECE)*nNumMeshes);
-	}
-
-	// make room for bone list
-	uint nBoneListPos = pFile->Tell();
-	std::vector<COEFmtMesh::BONE> vBone;
-	if (nNumBones > 0)
-	{
-		vBone.resize(nNumBones);
-		memset(&vBone[0], 0, sizeof(COEFmtMesh::BONE)*nNumBones);
-		pFile->Write(&vBone[0], sizeof(COEFmtMesh::BONE)*nNumBones);
+		vPiece.resize(Header.nNumPieces);
+		memset(&vPiece[0], 0, sizeof(COEFmtMesh::PIECE)*Header.nNumPieces);
+		pFile->Write(&vPiece[0], sizeof(COEFmtMesh::PIECE)*Header.nNumPieces);
 	}
 
 	// write mesh
 	m_pInterface->ProgressStart(_T("Save mesh data"), TRUE, DummyFunc, NULL);
-	for (int i = 0; i < nNumMeshes; ++i)
+	for (int i = 0; i < Header.nNumPieces; ++i)
 	{
-		m_pInterface->ProgressUpdate(i*100/nNumMeshes);
+		m_pInterface->ProgressUpdate(i*100/Header.nNumPieces);
+
+		COEFmtMesh::PIECE& Piece = vPiece[i];
+		SKIN_MESH& SkinMesh = m_vSkinMesh[i];
 
 		std::string strName;
-		COEOS::tchar2char(strName, m_vSkinMesh[i].strName.c_str());
-		strncpy_s(vPiece[i].szName, COEFmtMesh::PIECE_NAME_SIZE, strName.c_str(), _TRUNCATE);
+		COEOS::tchar2char(strName, SkinMesh.strName.c_str());
+		strncpy_s(Piece.szName, COEFmtMesh::PIECE_NAME_SIZE, strName.c_str(), _TRUNCATE);
 
-		vPiece[i].nPieceMask = COEFmtMesh::PM_VISIBLE;
-		vPiece[i].nVertexDataMask = COEFmtMesh::VDM_XYZ | COEFmtMesh::VDM_UV | COEFmtMesh::VDM_NXNYNZ | COEFmtMesh::VDM_TXTYTZ | COEFmtMesh::VDM_BONE;
-		vPiece[i].nMaterialID = 0;					// TODO: 
+		Piece.nPieceMask = COEFmtMesh::PM_VISIBLE;
+		Piece.nVertexDataMask = COEFmtMesh::VDM_XYZ | COEFmtMesh::VDM_UV | COEFmtMesh::VDM_NXNYNZ | COEFmtMesh::VDM_TXTYTZ | COEFmtMesh::VDM_BONE;
+		Piece.nMaterialID = 0;					// TODO: 
 
 		// write vertex data offset
-		vPiece[i].nNumVerts = (int)m_vSkinMesh[i].vVertSlots.size();
-		vPiece[i].nOffVerts = pFile->Tell();
+		Piece.nNumVerts = (int)SkinMesh.vVertSlots.size();
+		Piece.nOffVerts = pFile->Tell();
 
 		// write vertex data
-		int nNumVerts = (int)m_vSkinMesh[i].vVertSlots.size();
+		int nNumVerts = (int)SkinMesh.vVertSlots.size();
 		for (int j = 0; j < nNumVerts; ++j)
 		{
-			VERTEX_SLOT& VertSlot = m_vSkinMesh[i].vVertSlots[j];
+			VERTEX_SLOT& VertSlot = SkinMesh.vVertSlots[j];
 
 			FILE_VERTEX FileVert;
 			memset(&FileVert, 0, sizeof(FileVert));
@@ -335,70 +348,130 @@ bool CMeshExporter::SaveToFile(const tstring& strFileName)
 		}
 
 		// write index data offset
-		vPiece[i].nNumIndis = (int)m_vSkinMesh[i].vFaces.size()*3;
-		vPiece[i].nOffIndis = pFile->Tell();
+		Piece.nNumIndis = (int)SkinMesh.vFaces.size()*3;
+		Piece.nOffIndis = pFile->Tell();
 
 		// write index data
-		int nNumFaces = (int)m_vSkinMesh[i].vFaces.size();
+		int nNumFaces = (int)SkinMesh.vFaces.size();
 		for (int j = 0; j < nNumFaces; ++j)
 		{
 			ushort nIndex[3];
-			nIndex[0] = (ushort)m_vSkinMesh[i].vFaces[j].nVertIndex[0];
-			nIndex[1] = (ushort)m_vSkinMesh[i].vFaces[j].nVertIndex[1];
-			nIndex[2] = (ushort)m_vSkinMesh[i].vFaces[j].nVertIndex[2];
+			nIndex[0] = (ushort)SkinMesh.vFaces[j].nVertIndex[0];
+			nIndex[1] = (ushort)SkinMesh.vFaces[j].nVertIndex[1];
+			nIndex[2] = (ushort)SkinMesh.vFaces[j].nVertIndex[2];
 			pFile->Write(nIndex, sizeof(nIndex));
 		}
 	}
 
-	// write bone data
-	m_pInterface->ProgressStart(_T("Save animation data"), TRUE, DummyFunc, NULL);
-	for (int i = 0; i < nNumBones; ++i)
+	// really write piece list
+	pFile->Seek(nPieceListPos);
+	if (Header.nNumPieces > 0)
 	{
-		m_pInterface->ProgressUpdate(i*100/nNumBones);
+		pFile->Write(&vPiece[0], sizeof(COEFmtMesh::PIECE)*Header.nNumPieces);
+	}
+
+	SAFE_RELEASE(pFile);
+	return true;
+}
+
+bool CMeshExporter::SaveBoneFile(const tstring& strFileName)
+{
+	IOEFile* pFile = g_pOEFileMgr->OpenFile(strFileName, IOEFile::OFF_WRITE);
+	if (!pFile) return false;
+
+	// write header
+	COEFmtBone::FILE_HEADER Header;
+	Header.nMagicNumber = COEFmtBone::MAGIC_NUMBER;
+	Header.nVersion = COEFmtBone::CURRENT_VERSION;
+	Header.nNumBones = (int)m_vBoneInfo.size();
+	pFile->Write(&Header, sizeof(Header));
+
+	// make room for bone list
+	uint nBoneListPos = pFile->Tell();
+	std::vector<COEFmtBone::BONE> vBone;
+	if (Header.nNumBones > 0)
+	{
+		vBone.resize(Header.nNumBones);
+		memset(&vBone[0], 0, sizeof(COEFmtBone::BONE)*Header.nNumBones);
+		pFile->Write(&vBone[0], sizeof(COEFmtBone::BONE)*Header.nNumBones);
+	}
+
+	// write bone data
+	m_pInterface->ProgressStart(_T("Save bone data"), TRUE, DummyFunc, NULL);
+	for (int i = 0; i < Header.nNumBones; ++i)
+	{
+		m_pInterface->ProgressUpdate(i*100/Header.nNumBones);
+
+		COEFmtBone::BONE& Bone = vBone[i];
+		BONE_INFO& BoneInfo = m_vBoneInfo[i];
 
 		// bone list info
 		std::string strName;
-		COEOS::tchar2char(strName, m_vBoneInfo[i].strName.c_str());
-		strncpy_s(vBone[i].szName, COEFmtMesh::BONE_NAME_SIZE, strName.c_str(), _TRUNCATE);
-		vBone[i].nParentIndex = m_vBoneInfo[i].nParentID;
-		if (!m_vBoneInfo[i].vFrameInfo.empty())
-		{
-			TimeValue TimeTick = m_vBoneInfo[i].vFrameInfo.rbegin()->Time;
-			vBone[i].fTimeLength = TicksToSec(TimeTick);
-		}
-		else
-		{
-			vBone[i].fTimeLength = 0.0f;
-		}
-		GMatrix2BoneTransform(vBone[i].BoneTrans, m_vBoneInfo[i].matLocal);
-		vBone[i].nNumBoneFrame = (int)m_vBoneInfo[i].vFrameInfo.size();
-		vBone[i].nOffBoneFrame = pFile->Tell();
+		COEOS::tchar2char(strName, BoneInfo.strName.c_str());
+		strncpy_s(Bone.szName, COEFmtBone::BONE_NAME_SIZE, strName.c_str(), _TRUNCATE);
+		Bone.nParentIndex = BoneInfo.nParentID;
+		memcpy(Bone.matLocal, BoneInfo.matLocal.m, sizeof(float)*16);
 
-		// bone data
-		int nNumFrame = (int)m_vBoneInfo[i].vFrameInfo.size();
-		for (int j = 0; j < nNumFrame; ++j)
-		{
-			FRAME_INFO& FrameInfo = m_vBoneInfo[i].vFrameInfo[j];
+		Bone.fTimeLength = 0.0f;
+		Bone.nNumFrameRot = (int)BoneInfo.FrameRot.size();
+		Bone.nNumFramePos = (int)BoneInfo.FramePos.size();
+		Bone.nNumFrameScale = (int)BoneInfo.FrameScale.size();
 
-			COEFmtMesh::BONE_FRAME BoneFrame;
-			BoneFrame.fTime = TicksToSec(FrameInfo.Time);
-			GMatrix2BoneTransform(BoneFrame.BoneTrans, FrameInfo.matAnim);
-			pFile->Write(&BoneFrame, sizeof(BoneFrame));
+		// frame rot
+		Bone.nOffFrameRot = pFile->Tell();
+		for (TM_KEYFRAME_ROT::iterator it = BoneInfo.FrameRot.begin(); it != BoneInfo.FrameRot.end(); ++it)
+		{
+			KEYFRAME_ROT& FrameRot = it->second;
+
+			COEFmtBone::FRAME_ROT Frame;
+			Frame.fTime = TicksToSec(FrameRot.time);
+			Frame.qRot[0] = FrameRot.qRot.x;
+			Frame.qRot[1] = FrameRot.qRot.y;
+			Frame.qRot[2] = FrameRot.qRot.z;
+			Frame.qRot[3] = FrameRot.qRot.w;
+			pFile->Write(&Frame, sizeof(Frame));
+
+			if (Bone.fTimeLength < Frame.fTime) Bone.fTimeLength = Frame.fTime;
+		}
+
+		// frame pos
+		Bone.nOffFramePos = pFile->Tell();
+		for (TM_KEYFRAME_POS::iterator it = BoneInfo.FramePos.begin(); it != BoneInfo.FramePos.end(); ++it)
+		{
+			KEYFRAME_POS& FramePos = it->second;
+
+			COEFmtBone::FRAME_POS Frame;
+			Frame.fTime = TicksToSec(FramePos.time);
+			Frame.vPos[0] = FramePos.vPos.x;
+			Frame.vPos[1] = FramePos.vPos.y;
+			Frame.vPos[2] = FramePos.vPos.z;
+			pFile->Write(&Frame, sizeof(Frame));
+
+			if (Bone.fTimeLength < Frame.fTime) Bone.fTimeLength = Frame.fTime;
+		}
+
+		// frame scale
+		Bone.nOffFrameScale = pFile->Tell();
+		for (TM_KEYFRAME_SCALE::iterator it = BoneInfo.FrameScale.begin(); it != BoneInfo.FrameScale.end(); ++it)
+		{
+			KEYFRAME_SCALE& FrameScale = it->second;
+
+			COEFmtBone::FRAME_SCALE Frame;
+			Frame.fTime = TicksToSec(FrameScale.time);
+			Frame.vScale[0] = FrameScale.vScale.x;
+			Frame.vScale[1] = FrameScale.vScale.y;
+			Frame.vScale[2] = FrameScale.vScale.z;
+			pFile->Write(&Frame, sizeof(Frame));
+
+			if (Bone.fTimeLength < Frame.fTime) Bone.fTimeLength = Frame.fTime;
 		}
 	}
 
-	// write true piece list
-	pFile->Seek(nPieceListPos);
-	if (nNumMeshes > 0)
-	{
-		pFile->Write(&vPiece[0], sizeof(COEFmtMesh::PIECE)*nNumMeshes);
-	}
-
-	// write true bone list
+	// really write bone list
 	pFile->Seek(nBoneListPos);
-	if (nNumBones > 0)
+	if (Header.nNumBones > 0)
 	{
-		pFile->Write(&vBone[0], sizeof(COEFmtMesh::BONE)*nNumBones);
+		pFile->Write(&vBone[0], sizeof(COEFmtBone::BONE)*Header.nNumBones);
 	}
 
 	SAFE_RELEASE(pFile);
@@ -605,12 +678,11 @@ bool CMeshExporter::DumpSkin(SKIN_MESH& SkinMeshOut, IGameSkin* pGameSkin)
 	return true;
 }
 
-bool CMeshExporter::DumpController(TV_FRAME_INFO& vFrameInfoOut, IGameNode* pGameNode)
+bool CMeshExporter::DumpController(BONE_INFO& BoneInfo, IGameNode* pGameNode)
 {
 	IGameControl* pGameControl = pGameNode->GetIGameControl();
 
 	bool bBiped = false;
-	TM_KEY_FRAME KeyFrames;
 
 	// export position controller
 	if (pGameControl->IsAnimated(IGAME_POS))
@@ -618,12 +690,12 @@ bool CMeshExporter::DumpController(TV_FRAME_INFO& vFrameInfoOut, IGameNode* pGam
 		if (pGameControl->GetControlType(IGAME_POS) == IGameControl::IGAME_BIPED)
 		{
 			// dump sample keys
-			DumpSampleKey(KeyFrames, pGameControl, IGAME_TM);
+			DumpSampleKey(BoneInfo, pGameControl, IGAME_TM);
 			bBiped = true;
 		}
 		else
 		{
-			DumpPositionController(KeyFrames, pGameControl);
+			DumpPositionController(BoneInfo, pGameControl);
 		}
 	}
 
@@ -635,13 +707,13 @@ bool CMeshExporter::DumpController(TV_FRAME_INFO& vFrameInfoOut, IGameNode* pGam
 			if (!bBiped)
 			{
 				// dump sample keys
-				DumpSampleKey(KeyFrames, pGameControl, IGAME_TM);
+				DumpSampleKey(BoneInfo, pGameControl, IGAME_TM);
 				bBiped = true;
 			}
 		}
 		else
 		{
-			DumpRotationController(KeyFrames, pGameControl);
+			DumpRotationController(BoneInfo, pGameControl);
 		}
 	}
 
@@ -653,76 +725,45 @@ bool CMeshExporter::DumpController(TV_FRAME_INFO& vFrameInfoOut, IGameNode* pGam
 			if (!bBiped)
 			{
 				// dump sample keys
-				DumpSampleKey(KeyFrames, pGameControl, IGAME_TM);
+				DumpSampleKey(BoneInfo, pGameControl, IGAME_TM);
 				bBiped = true;
 			}
 		}
 		else
 		{
-			DumpScaleController(KeyFrames, pGameControl);
+			DumpScaleController(BoneInfo, pGameControl);
 		}
 	}
 
-	for (TM_KEY_FRAME::iterator it = KeyFrames.begin(); it != KeyFrames.end(); ++it)
+	for (TM_KEYFRAME_ROT::iterator it = BoneInfo.FrameRot.begin(); it != BoneInfo.FrameRot.end(); ++it)
 	{
-		KEY_FRAME& KeyFrame = it->second;
+		KEYFRAME_ROT& KeyFrame = it->second;
 
-		FRAME_INFO FrameInfo;
-		FrameInfo.Time = KeyFrame.time;
-
-		if (KeyFrame.nMask == KFM_MATRIX)
+		if (KeyFrame.nMask & KFM_ROT)
 		{
-			CMatrix4x42GMatrix(FrameInfo.matAnim, KeyFrame.matFull);
+			if (KeyFrame.nMask & KFM_QUAT)
+			{
+				// TODO: logout
+				assert(false);
+			}
+
+			// ×óÓÒÊÖ×ø±ê×ª»»
+			COEMath::BuildQuaternionFromEuler(KeyFrame.qRot, KeyFrame.vRot.x, KeyFrame.vRot.z, -KeyFrame.vRot.y);
 		}
-		else if (KeyFrame.nMask == KFM_QUAT)
+		else if (KeyFrame.nMask & KFM_QUAT)
 		{
-			CMatrix4x4 matFinal;
-			COEMath::BuildMatrixFromQuaternion(matFinal, KeyFrame.rRot);
-			COEMath::SetMatrixScale(matFinal, KeyFrame.vScale);
-			COEMath::SetMatrixTranslation(matFinal, KeyFrame.vPos);
-
-			CMatrix4x42GMatrix(FrameInfo.matAnim, matFinal);
+			if (KeyFrame.nMask & KFM_ROT)
+			{
+				// TODO: logout
+				assert(false);
+			}
 		}
-		else
-		{
-			CMatrix4x4 matFinal;
-			CQuaternion qRot;
-
-			COEMath::BuildQuaternionFromEuler(qRot, KeyFrame.vRot.x, KeyFrame.vRot.y, KeyFrame.vRot.z);
-			COEMath::BuildMatrixFromQuaternion(matFinal, qRot);
-			COEMath::SetMatrixScale(matFinal, KeyFrame.vScale);
-			COEMath::SetMatrixTranslation(matFinal, KeyFrame.vPos);
-
-			CMatrix4x42GMatrix(FrameInfo.matAnim, matFinal);
-		}
-
-		vFrameInfoOut.push_back(FrameInfo);
 	}
-
-	//// 
-	//IGameKeyTab TMKey;
-	//pGameControl->GetFullSampledKeys(TMKey, 1, IGAME_TM, true);
-
-	//TM_KEY_FRAME::const_iterator it = TimeValueSet.begin();
-	//int nCount = TMKey.Count();
-
-	//for (int i = 0; i < nCount; ++i)
-	//{
-	//	if (it == TimeValueSet.end()) break;
-	//	if (TMKey[i].t < (*it)) continue;
-
-	//	FRAME_INFO FrameInfo;
-	//	FrameInfo.Time = TMKey[i].t;
-	//	FrameInfo.matAnim = TMKey[i].sampleKey.gval;
-	//	vFrameInfoOut.push_back(FrameInfo);
-
-	//	++it;
-	//}
 
 	return true;
 }
 
-bool CMeshExporter::DumpPositionController(TM_KEY_FRAME& KeyFrames, IGameControl* pGameControl)
+bool CMeshExporter::DumpPositionController(BONE_INFO& BoneInfo, IGameControl* pGameControl)
 {
 	IGameControl::MaxControlType eControlType = pGameControl->GetControlType(IGAME_POS);
 	switch (eControlType)
@@ -730,25 +771,25 @@ bool CMeshExporter::DumpPositionController(TM_KEY_FRAME& KeyFrames, IGameControl
 	case IGameControl::IGAME_MAXSTD:
 		{
 			// export std pos key
-			DumpMaxStdPosKey(KeyFrames, pGameControl);
+			DumpMaxStdPosKey(BoneInfo, pGameControl);
 		}
 		break;
 	case IGameControl::IGAME_POS_CONSTRAINT:
 		{
 			// export constraint controller
-			DumpConstraintKey(KeyFrames, pGameControl);
+			DumpConstraintKey(BoneInfo, pGameControl);
 		}
 		break;
 	case IGameControl::IGAME_LIST:
 		{
 			// export list controller
-			DumpListKey(KeyFrames, pGameControl);
+			DumpListKey(BoneInfo, pGameControl);
 		}
 		break;
 	case IGameControl::IGAME_INDEPENDENT_POS:
 		{
 			// export independent controller
-			DumpIndependentPosKey(KeyFrames, pGameControl);
+			DumpIndependentPosKey(BoneInfo, pGameControl);
 		}
 		break;
 	default:
@@ -763,7 +804,7 @@ bool CMeshExporter::DumpPositionController(TM_KEY_FRAME& KeyFrames, IGameControl
 	return true;
 }
 
-bool CMeshExporter::DumpRotationController(TM_KEY_FRAME& KeyFrames, IGameControl* pGameControl)
+bool CMeshExporter::DumpRotationController(BONE_INFO& BoneInfo, IGameControl* pGameControl)
 {
 	IGameControl::MaxControlType eControlType = pGameControl->GetControlType(IGAME_ROT);
 	switch (eControlType)
@@ -771,25 +812,25 @@ bool CMeshExporter::DumpRotationController(TM_KEY_FRAME& KeyFrames, IGameControl
 	case IGameControl::IGAME_MAXSTD:
 		{
 			// export std rot key
-			DumpMaxStdRotKey(KeyFrames, pGameControl);
+			DumpMaxStdRotKey(BoneInfo, pGameControl);
 		}
 		break;
 	case IGameControl::IGAME_EULER:
 		{
 			// export Euler controller
-			DumpEulerRotKey(KeyFrames, pGameControl);
+			DumpEulerRotKey(BoneInfo, pGameControl);
 		}
 		break;
 	case IGameControl::IGAME_ROT_CONSTRAINT:
 		{
 			// export constraint controller
-			DumpConstraintKey(KeyFrames, pGameControl);
+			DumpConstraintKey(BoneInfo, pGameControl);
 		}
 		break;
 	case IGameControl::IGAME_LIST:
 		{
 			// export list controller
-			DumpListKey(KeyFrames, pGameControl);
+			DumpListKey(BoneInfo, pGameControl);
 		}
 		break;
 	default:
@@ -804,7 +845,7 @@ bool CMeshExporter::DumpRotationController(TM_KEY_FRAME& KeyFrames, IGameControl
 	return true;
 }
 
-bool CMeshExporter::DumpScaleController(TM_KEY_FRAME& KeyFrames, IGameControl* pGameControl)
+bool CMeshExporter::DumpScaleController(BONE_INFO& BoneInfo, IGameControl* pGameControl)
 {
 	IGameControl::MaxControlType eControlType = pGameControl->GetControlType(IGAME_SCALE);
 
@@ -813,7 +854,7 @@ bool CMeshExporter::DumpScaleController(TM_KEY_FRAME& KeyFrames, IGameControl* p
 	case IGameControl::IGAME_MAXSTD:
 		{
 			// export scale key
-			DumpMaxStdScaleKey(KeyFrames, pGameControl);
+			DumpMaxStdScaleKey(BoneInfo, pGameControl);
 		}
 		break;
 	default:
@@ -828,35 +869,35 @@ bool CMeshExporter::DumpScaleController(TM_KEY_FRAME& KeyFrames, IGameControl* p
 	return true;
 }
 
-bool CMeshExporter::DumpMaxStdPosKey(TM_KEY_FRAME& KeyFrames, IGameControl* pGameControl)
+bool CMeshExporter::DumpMaxStdPosKey(BONE_INFO& BoneInfo, IGameControl* pGameControl)
 {
 	IGameKeyTab PosKey;
 	if (pGameControl->GetBezierKeys(PosKey, IGAME_POS))
 	{
 		for (int i = 0; i < PosKey.Count(); ++i)
 		{
-			InsertKeyFrame(KeyFrames, PosKey[i].t, KFM_POS, PosKey[i].bezierKey.pval);
+			InsertKeyFrame(BoneInfo, PosKey[i].t, KFM_POS, PosKey[i].bezierKey.pval);
 		}
 	}
 	else if (pGameControl->GetLinearKeys(PosKey, IGAME_POS))
 	{
 		for (int i = 0; i < PosKey.Count(); ++i)
 		{
-			InsertKeyFrame(KeyFrames, PosKey[i].t, KFM_POS, PosKey[i].linearKey.pval);
+			InsertKeyFrame(BoneInfo, PosKey[i].t, KFM_POS, PosKey[i].linearKey.pval);
 		}
 	}
 
 	return true;
 }
 
-bool CMeshExporter::DumpIndependentPosKey(TM_KEY_FRAME& KeyFrames, IGameControl* pGameControl)
+bool CMeshExporter::DumpIndependentPosKey(BONE_INFO& BoneInfo, IGameControl* pGameControl)
 {
 	IGameKeyTab PosKey;
 	if (pGameControl->GetBezierKeys(PosKey, IGAME_POS_X))
 	{
 		for (int i = 0; i < PosKey.Count(); ++i)
 		{
-			InsertKeyFrame(KeyFrames, PosKey[i].t, KFM_POS_X, PosKey[i].bezierKey.fval);
+			InsertKeyFrame(BoneInfo, PosKey[i].t, KFM_POS_X, PosKey[i].bezierKey.fval);
 		}
 	}
 
@@ -864,7 +905,7 @@ bool CMeshExporter::DumpIndependentPosKey(TM_KEY_FRAME& KeyFrames, IGameControl*
 	{
 		for (int i = 0; i < PosKey.Count(); ++i)
 		{
-			InsertKeyFrame(KeyFrames, PosKey[i].t, KFM_POS_X, PosKey[i].linearKey.fval);
+			InsertKeyFrame(BoneInfo, PosKey[i].t, KFM_POS_X, PosKey[i].linearKey.fval);
 		}
 	}
 
@@ -872,7 +913,7 @@ bool CMeshExporter::DumpIndependentPosKey(TM_KEY_FRAME& KeyFrames, IGameControl*
 	{
 		for (int i = 0; i < PosKey.Count(); ++i)
 		{
-			InsertKeyFrame(KeyFrames, PosKey[i].t, KFM_POS_Y, PosKey[i].bezierKey.fval);
+			InsertKeyFrame(BoneInfo, PosKey[i].t, KFM_POS_Y, PosKey[i].bezierKey.fval);
 		}
 	}
 
@@ -880,7 +921,7 @@ bool CMeshExporter::DumpIndependentPosKey(TM_KEY_FRAME& KeyFrames, IGameControl*
 	{
 		for (int i = 0; i < PosKey.Count(); ++i)
 		{
-			InsertKeyFrame(KeyFrames, PosKey[i].t, KFM_POS_Y, PosKey[i].linearKey.fval);
+			InsertKeyFrame(BoneInfo, PosKey[i].t, KFM_POS_Y, PosKey[i].linearKey.fval);
 		}
 	}
 
@@ -888,7 +929,7 @@ bool CMeshExporter::DumpIndependentPosKey(TM_KEY_FRAME& KeyFrames, IGameControl*
 	{
 		for (int i = 0; i < PosKey.Count(); ++i)
 		{
-			InsertKeyFrame(KeyFrames, PosKey[i].t, KFM_POS_Z, PosKey[i].bezierKey.fval);
+			InsertKeyFrame(BoneInfo, PosKey[i].t, KFM_POS_Z, PosKey[i].bezierKey.fval);
 		}
 	}
 
@@ -898,14 +939,14 @@ bool CMeshExporter::DumpIndependentPosKey(TM_KEY_FRAME& KeyFrames, IGameControl*
 
 		for (int i = 0; i < PosKey.Count(); ++i)
 		{
-			InsertKeyFrame(KeyFrames, PosKey[i].t, KFM_POS_Z, PosKey[i].linearKey.fval);
+			InsertKeyFrame(BoneInfo, PosKey[i].t, KFM_POS_Z, PosKey[i].linearKey.fval);
 		}
 	}
 
 	return true;
 }
 
-bool CMeshExporter::DumpMaxStdRotKey(TM_KEY_FRAME& KeyFrames, IGameControl* pGameControl)
+bool CMeshExporter::DumpMaxStdRotKey(BONE_INFO& BoneInfo, IGameControl* pGameControl)
 {
 	IGameKeyTab RotKey;
 	if (pGameControl->GetBezierKeys(RotKey, IGAME_ROT))
@@ -913,7 +954,7 @@ bool CMeshExporter::DumpMaxStdRotKey(TM_KEY_FRAME& KeyFrames, IGameControl* pGam
 		// export Bezier Keys
 		for (int i = 0; i < RotKey.Count(); ++i)
 		{
-			InsertKeyFrame(KeyFrames, RotKey[i].t, KFM_QUAT, RotKey[i].bezierKey.qval);
+			InsertKeyFrame(BoneInfo, RotKey[i].t, RotKey[i].bezierKey.qval);
 		}
 	}
 	else if (pGameControl->GetLinearKeys(RotKey, IGAME_ROT))
@@ -921,7 +962,7 @@ bool CMeshExporter::DumpMaxStdRotKey(TM_KEY_FRAME& KeyFrames, IGameControl* pGam
 		// export Linear Keys
 		for (int i = 0; i < RotKey.Count(); ++i)
 		{
-			InsertKeyFrame(KeyFrames, RotKey[i].t, KFM_QUAT, RotKey[i].linearKey.qval);
+			InsertKeyFrame(BoneInfo, RotKey[i].t, RotKey[i].linearKey.qval);
 		}
 	}
 	else if (pGameControl->GetTCBKeys(RotKey, IGAME_ROT))
@@ -930,14 +971,14 @@ bool CMeshExporter::DumpMaxStdRotKey(TM_KEY_FRAME& KeyFrames, IGameControl* pGam
 		for (int i = 0; i < RotKey.Count(); ++i)
 		{
 			Quat qValue = QFromAngAxis(RotKey[i].tcbKey.aval.angle, RotKey[i].tcbKey.aval.axis);
-			InsertKeyFrame(KeyFrames, RotKey[i].t, KFM_QUAT, qValue);
+			InsertKeyFrame(BoneInfo, RotKey[i].t, qValue);
 		}
 	}
 
 	return true;
 }
 
-bool CMeshExporter::DumpEulerRotKey(TM_KEY_FRAME& KeyFrames, IGameControl* pGameControl)
+bool CMeshExporter::DumpEulerRotKey(BONE_INFO& BoneInfo, IGameControl* pGameControl)
 {
 	IGameKeyTab RotKey;
 
@@ -945,7 +986,7 @@ bool CMeshExporter::DumpEulerRotKey(TM_KEY_FRAME& KeyFrames, IGameControl* pGame
 	{
 		for (int i = 0; i < RotKey.Count(); ++i)
 		{
-			InsertKeyFrame(KeyFrames, RotKey[i].t, KFM_ROT_X, RotKey[i].bezierKey.fval);
+			InsertKeyFrame(BoneInfo, RotKey[i].t, KFM_ROT_X, RotKey[i].bezierKey.fval);
 		}
 	}
 
@@ -953,7 +994,7 @@ bool CMeshExporter::DumpEulerRotKey(TM_KEY_FRAME& KeyFrames, IGameControl* pGame
 	{
 		for (int i = 0; i < RotKey.Count(); ++i)
 		{
-			InsertKeyFrame(KeyFrames, RotKey[i].t, KFM_ROT_X, RotKey[i].linearKey.fval);
+			InsertKeyFrame(BoneInfo, RotKey[i].t, KFM_ROT_X, RotKey[i].linearKey.fval);
 		}
 	}
 
@@ -961,7 +1002,7 @@ bool CMeshExporter::DumpEulerRotKey(TM_KEY_FRAME& KeyFrames, IGameControl* pGame
 	{
 		for (int i = 0; i < RotKey.Count(); ++i)
 		{
-			InsertKeyFrame(KeyFrames, RotKey[i].t, KFM_ROT_Y, RotKey[i].bezierKey.fval);
+			InsertKeyFrame(BoneInfo, RotKey[i].t, KFM_ROT_Y, RotKey[i].bezierKey.fval);
 		}
 	}
 
@@ -969,7 +1010,7 @@ bool CMeshExporter::DumpEulerRotKey(TM_KEY_FRAME& KeyFrames, IGameControl* pGame
 	{
 		for (int i = 0; i < RotKey.Count(); ++i)
 		{
-			InsertKeyFrame(KeyFrames, RotKey[i].t, KFM_ROT_Y, RotKey[i].linearKey.fval);
+			InsertKeyFrame(BoneInfo, RotKey[i].t, KFM_ROT_Y, RotKey[i].linearKey.fval);
 		}
 	}
 
@@ -977,7 +1018,7 @@ bool CMeshExporter::DumpEulerRotKey(TM_KEY_FRAME& KeyFrames, IGameControl* pGame
 	{
 		for (int i = 0; i < RotKey.Count(); ++i)
 		{
-			InsertKeyFrame(KeyFrames, RotKey[i].t, KFM_ROT_Z, RotKey[i].bezierKey.fval);
+			InsertKeyFrame(BoneInfo, RotKey[i].t, KFM_ROT_Z, RotKey[i].bezierKey.fval);
 		}
 	}
 
@@ -985,28 +1026,28 @@ bool CMeshExporter::DumpEulerRotKey(TM_KEY_FRAME& KeyFrames, IGameControl* pGame
 	{
 		for (int i = 0; i < RotKey.Count(); ++i)
 		{
-			InsertKeyFrame(KeyFrames, RotKey[i].t, KFM_ROT_Z, RotKey[i].linearKey.fval);
+			InsertKeyFrame(BoneInfo, RotKey[i].t, KFM_ROT_Z, RotKey[i].linearKey.fval);
 		}
 	}
 
 	return true;
 }
 
-bool CMeshExporter::DumpMaxStdScaleKey(TM_KEY_FRAME& KeyFrames, IGameControl* pGameControl)
+bool CMeshExporter::DumpMaxStdScaleKey(BONE_INFO& BoneInfo, IGameControl* pGameControl)
 {
 	IGameKeyTab ScaleKey;
 	if (pGameControl->GetBezierKeys(ScaleKey, IGAME_SCALE))
 	{
 		for (int i = 0; i < ScaleKey.Count(); ++i)
 		{
-			InsertKeyFrame(KeyFrames, ScaleKey[i].t, KFM_SCALE, ScaleKey[i].bezierKey.sval.s);
+			InsertKeyFrame(BoneInfo, ScaleKey[i].t, KFM_SCALE, ScaleKey[i].bezierKey.sval.s);
 		}
 	}
 
 	return true;
 }
 
-bool CMeshExporter::DumpConstraintKey(TM_KEY_FRAME& KeyFrames, IGameControl* pGameControl)
+bool CMeshExporter::DumpConstraintKey(BONE_INFO& BoneInfo, IGameControl* pGameControl)
 {
 	// TODO: 
 	assert(false);
@@ -1033,13 +1074,13 @@ bool CMeshExporter::DumpConstraintKey(TM_KEY_FRAME& KeyFrames, IGameControl* pGa
 	return true;
 }
 
-bool CMeshExporter::DumpListKey(TM_KEY_FRAME& KeyFrames, IGameControl* pGameControl)
+bool CMeshExporter::DumpListKey(BONE_INFO& BoneInfo, IGameControl* pGameControl)
 {
 	int nCount = pGameControl->GetNumOfListSubControls(IGAME_POS);
 	for (int i = 0; i < nCount; ++i)
 	{
 		IGameControl* pSubGameControl = pGameControl->GetListSubControl(i, IGAME_POS);
-		bool bOK = DumpPositionController(KeyFrames, pSubGameControl);
+		bool bOK = DumpPositionController(BoneInfo, pSubGameControl);
 		assert(bOK);
 		// TODO: check bOK
 	}
@@ -1048,7 +1089,7 @@ bool CMeshExporter::DumpListKey(TM_KEY_FRAME& KeyFrames, IGameControl* pGameCont
 	for (int i = 0; i < nCount; ++i)
 	{
 		IGameControl* pSubGameControl = pGameControl->GetListSubControl(i, IGAME_ROT);
-		bool bOK = DumpRotationController(KeyFrames, pSubGameControl);
+		bool bOK = DumpRotationController(BoneInfo, pSubGameControl);
 		assert(bOK);
 		// TODO: check bOK
 	}
@@ -1057,7 +1098,7 @@ bool CMeshExporter::DumpListKey(TM_KEY_FRAME& KeyFrames, IGameControl* pGameCont
 	for (int i = 0; i < nCount; ++i)
 	{
 		IGameControl* pSubGameControl = pGameControl->GetListSubControl(i, IGAME_SCALE);
-		bool bOK = DumpScaleController(KeyFrames, pSubGameControl);
+		bool bOK = DumpScaleController(BoneInfo, pSubGameControl);
 		assert(bOK);
 		// TODO: check bOK
 	}
@@ -1065,7 +1106,7 @@ bool CMeshExporter::DumpListKey(TM_KEY_FRAME& KeyFrames, IGameControl* pGameCont
 	return true;
 }
 
-bool CMeshExporter::DumpSampleKey(TM_KEY_FRAME& KeyFrames, IGameControl* pGameControl, IGameControlType eType)
+bool CMeshExporter::DumpSampleKey(BONE_INFO& BoneInfo, IGameControl* pGameControl, IGameControlType eType)
 {
 	IGameKeyTab Keys;
 	if (pGameControl->GetFullSampledKeys(Keys, 1, eType, true))
@@ -1076,7 +1117,7 @@ bool CMeshExporter::DumpSampleKey(TM_KEY_FRAME& KeyFrames, IGameControl* pGameCo
 			{
 			case IGAME_TM:
 				{
-					InsertKeyFrame(KeyFrames, Keys[i].t, KFM_MATRIX, Keys[i].sampleKey.gval);
+					InsertKeyFrame(BoneInfo, Keys[i].t, Keys[i].sampleKey.gval);
 				}
 				break;
 			default:
@@ -1093,74 +1134,190 @@ bool CMeshExporter::DumpSampleKey(TM_KEY_FRAME& KeyFrames, IGameControl* pGameCo
 	return false;
 }
 
-CMeshExporter::KEY_FRAME* CMeshExporter::FindKeyFrame(TM_KEY_FRAME& KeyFrames, TimeValue time)
+CMeshExporter::KEYFRAME_POS* CMeshExporter::GetKeyFrame(TM_KEYFRAME_POS& FramePos, TimeValue time)
 {
-	KEY_FRAME* pKeyFrame = NULL;
+	KEYFRAME_POS* pKeyFrame = NULL;
 
-	TM_KEY_FRAME::iterator itfound = KeyFrames.find(time);
-	if (itfound != KeyFrames.end())
+	TM_KEYFRAME_POS::iterator itfound = FramePos.find(time);
+	if (itfound != FramePos.end())
 	{
 		pKeyFrame = &itfound->second;
 	}
 	else
 	{
-		KEY_FRAME EmptyKeyFrame;
+		KEYFRAME_POS EmptyKeyFrame;
 		EmptyKeyFrame.time = time;
 		EmptyKeyFrame.nMask = KFM_UNKNOWN;
-		EmptyKeyFrame.vScale.x = 1.0f;
-		EmptyKeyFrame.vScale.y = 1.0f;
-		EmptyKeyFrame.vScale.z = 1.0f;
-		KeyFrames.insert(std::make_pair(EmptyKeyFrame.time, EmptyKeyFrame));
+		FramePos.insert(std::make_pair(EmptyKeyFrame.time, EmptyKeyFrame));
 
-		itfound = KeyFrames.find(time);
-		assert(itfound != KeyFrames.end());
+		itfound = FramePos.find(time);
+		assert(itfound != FramePos.end());
 		pKeyFrame = &itfound->second;
 	}
 
 	return pKeyFrame;
 }
 
-bool CMeshExporter::InsertKeyFrame(TM_KEY_FRAME& KeyFrames, TimeValue time, KEY_FRAME_MASK eMask, float fValue)
+CMeshExporter::KEYFRAME_SCALE* CMeshExporter::GetKeyFrame(TM_KEYFRAME_SCALE& FrameScale, TimeValue time)
 {
-	KEY_FRAME* pKeyFrame = FindKeyFrame(KeyFrames, time);
-	assert(pKeyFrame);
+	KEYFRAME_SCALE* pKeyFrame = NULL;
 
-	if (pKeyFrame->nMask & (eMask | KFM_MATRIX))
+	TM_KEYFRAME_SCALE::iterator itfound = FrameScale.find(time);
+	if (itfound != FrameScale.end())
 	{
-		assert(false);
+		pKeyFrame = &itfound->second;
+	}
+	else
+	{
+		KEYFRAME_SCALE EmptyKeyFrame;
+		EmptyKeyFrame.time = time;
+		EmptyKeyFrame.nMask = KFM_UNKNOWN;
+		EmptyKeyFrame.vScale.Init(1.0f, 1.0f, 1.0f);
+		FrameScale.insert(std::make_pair(EmptyKeyFrame.time, EmptyKeyFrame));
+
+		itfound = FrameScale.find(time);
+		assert(itfound != FrameScale.end());
+		pKeyFrame = &itfound->second;
 	}
 
+	return pKeyFrame;
+}
+
+CMeshExporter::KEYFRAME_ROT* CMeshExporter::GetKeyFrame(TM_KEYFRAME_ROT& FrameRot, TimeValue time)
+{
+	KEYFRAME_ROT* pKeyFrame = NULL;
+
+	TM_KEYFRAME_ROT::iterator itfound = FrameRot.find(time);
+	if (itfound != FrameRot.end())
+	{
+		pKeyFrame = &itfound->second;
+	}
+	else
+	{
+		KEYFRAME_ROT EmptyKeyFrame;
+		EmptyKeyFrame.time = time;
+		EmptyKeyFrame.nMask = KFM_UNKNOWN;
+		FrameRot.insert(std::make_pair(EmptyKeyFrame.time, EmptyKeyFrame));
+
+		itfound = FrameRot.find(time);
+		assert(itfound != FrameRot.end());
+		pKeyFrame = &itfound->second;
+	}
+
+	return pKeyFrame;
+}
+
+bool CMeshExporter::InsertKeyFrame(BONE_INFO& BoneInfo, TimeValue time, KEY_FRAME_MASK eMask, float fValue)
+{
 	switch (eMask)
 	{
 	case KFM_POS_X:
-		pKeyFrame->vPos.x = fValue;
+		{
+			KEYFRAME_POS* pKeyFrame = GetKeyFrame(BoneInfo.FramePos, time);
+			if (pKeyFrame->nMask & eMask)
+			{
+				// TODO: logout
+				assert(false);
+			}
+			pKeyFrame->vPos.x = fValue;
+			pKeyFrame->nMask |= eMask;
+		}
 		break;
 	case KFM_POS_Y:
-		pKeyFrame->vPos.y = fValue;
+		{
+			KEYFRAME_POS* pKeyFrame = GetKeyFrame(BoneInfo.FramePos, time);
+			if (pKeyFrame->nMask & eMask)
+			{
+				// TODO: logout
+				assert(false);
+			}
+			pKeyFrame->vPos.y = fValue;
+			pKeyFrame->nMask |= eMask;
+		}
 		break;
 	case KFM_POS_Z:
-		pKeyFrame->vPos.z = fValue;
+		{
+			KEYFRAME_POS* pKeyFrame = GetKeyFrame(BoneInfo.FramePos, time);
+			if (pKeyFrame->nMask & eMask)
+			{
+				// TODO: logout
+				assert(false);
+			}
+			pKeyFrame->vPos.z = fValue;
+			pKeyFrame->nMask |= eMask;
+		}
 		break;
 	case KFM_SCALE_X:
-		pKeyFrame->vScale.x = fValue;
+		{
+			KEYFRAME_SCALE* pKeyFrame = GetKeyFrame(BoneInfo.FrameScale, time);
+			if (pKeyFrame->nMask & eMask)
+			{
+				// TODO: logout
+				assert(false);
+			}
+			pKeyFrame->vScale.x = fValue;
+			pKeyFrame->nMask |= eMask;
+		}
 		break;
 	case KFM_SCALE_Y:
-		pKeyFrame->vScale.y = fValue;
+		{
+			KEYFRAME_SCALE* pKeyFrame = GetKeyFrame(BoneInfo.FrameScale, time);
+			if (pKeyFrame->nMask & eMask)
+			{
+				// TODO: logout
+				assert(false);
+			}
+			pKeyFrame->vScale.y = fValue;
+			pKeyFrame->nMask |= eMask;
+		}
 		break;
 	case KFM_SCALE_Z:
-		pKeyFrame->vScale.z = fValue;
+		{
+			KEYFRAME_SCALE* pKeyFrame = GetKeyFrame(BoneInfo.FrameScale, time);
+			if (pKeyFrame->nMask & eMask)
+			{
+				// TODO: logout
+				assert(false);
+			}
+			pKeyFrame->vScale.z = fValue;
+			pKeyFrame->nMask |= eMask;
+		}
 		break;
 	case KFM_ROT_X:
-		if (pKeyFrame->nMask & KFM_QUAT) assert(false);
-		pKeyFrame->vRot.x = fValue;
+		{
+			KEYFRAME_ROT* pKeyFrame = GetKeyFrame(BoneInfo.FrameRot, time);
+			if (pKeyFrame->nMask & (eMask | KFM_QUAT))
+			{
+				// TODO: logout
+				assert(false);
+			}
+			pKeyFrame->vRot.x = fValue;
+			pKeyFrame->nMask |= eMask;
+		}
 		break;
 	case KFM_ROT_Y:
-		if (pKeyFrame->nMask & KFM_QUAT) assert(false);
-		pKeyFrame->vRot.y = fValue;
+		{
+			KEYFRAME_ROT* pKeyFrame = GetKeyFrame(BoneInfo.FrameRot, time);
+			if (pKeyFrame->nMask & (eMask | KFM_QUAT))
+			{
+				// TODO: logout
+				assert(false);
+			}
+			pKeyFrame->vRot.y = fValue;
+			pKeyFrame->nMask |= eMask;
+		}
 		break;
 	case KFM_ROT_Z:
-		if (pKeyFrame->nMask & KFM_QUAT) assert(false);
-		pKeyFrame->vRot.z = fValue;
+		{
+			KEYFRAME_ROT* pKeyFrame = GetKeyFrame(BoneInfo.FrameRot, time);
+			if (pKeyFrame->nMask & (eMask | KFM_QUAT))
+			{
+				// TODO: logout
+				assert(false);
+			}
+			pKeyFrame->vRot.z = fValue;
+			pKeyFrame->nMask |= eMask;
+		}
 		break;
 	default:
 		{
@@ -1169,38 +1326,55 @@ bool CMeshExporter::InsertKeyFrame(TM_KEY_FRAME& KeyFrames, TimeValue time, KEY_
 		}
 		break;
 	}
-	pKeyFrame->nMask |= eMask;
 
 	return true;
 }
 
-bool CMeshExporter::InsertKeyFrame(TM_KEY_FRAME& KeyFrames, TimeValue time, KEY_FRAME_MASK eMask, const Point3& vValue)
+bool CMeshExporter::InsertKeyFrame(BONE_INFO& BoneInfo, TimeValue time, KEY_FRAME_MASK eMask, const Point3& vValue)
 {
-	KEY_FRAME* pKeyFrame = FindKeyFrame(KeyFrames, time);
-	assert(pKeyFrame);
-
-	if (pKeyFrame->nMask & (eMask | KFM_MATRIX))
-	{
-		assert(false);
-	}
-
 	switch (eMask)
 	{
 	case KFM_POS:
-		pKeyFrame->vPos.x = vValue.x;
-		pKeyFrame->vPos.y = vValue.y;
-		pKeyFrame->vPos.z = vValue.z;
+		{
+			KEYFRAME_POS* pKeyFrame = GetKeyFrame(BoneInfo.FramePos, time);
+			if (pKeyFrame->nMask & eMask)
+			{
+				// TODO: logout
+				assert(false);
+			}
+			pKeyFrame->vPos.x = vValue.x;
+			pKeyFrame->vPos.y = vValue.y;
+			pKeyFrame->vPos.z = vValue.z;
+			pKeyFrame->nMask |= eMask;
+		}
 		break;
 	case KFM_SCALE:
-		pKeyFrame->vScale.x = vValue.x;
-		pKeyFrame->vScale.y = vValue.y;
-		pKeyFrame->vScale.z = vValue.z;
+		{
+			KEYFRAME_SCALE* pKeyFrame = GetKeyFrame(BoneInfo.FrameScale, time);
+			if (pKeyFrame->nMask & eMask)
+			{
+				// TODO: logout
+				assert(false);
+			}
+			pKeyFrame->vScale.x = vValue.x;
+			pKeyFrame->vScale.y = vValue.y;
+			pKeyFrame->vScale.z = vValue.z;
+			pKeyFrame->nMask |= eMask;
+		}
 		break;
 	case KFM_ROT:
-		if (pKeyFrame->nMask & KFM_QUAT) assert(false);
-		pKeyFrame->vRot.x = vValue.x;
-		pKeyFrame->vRot.y = vValue.y;
-		pKeyFrame->vRot.z = vValue.z;
+		{
+			KEYFRAME_ROT* pKeyFrame = GetKeyFrame(BoneInfo.FrameRot, time);
+			if (pKeyFrame->nMask & (eMask | KFM_QUAT))
+			{
+				// TODO: logout
+				assert(false);
+			}
+			pKeyFrame->vRot.x = vValue.x;
+			pKeyFrame->vRot.y = vValue.y;
+			pKeyFrame->vRot.z = vValue.z;
+			pKeyFrame->nMask |= eMask;
+		}
 		break;
 	default:
 		{
@@ -1209,77 +1383,77 @@ bool CMeshExporter::InsertKeyFrame(TM_KEY_FRAME& KeyFrames, TimeValue time, KEY_
 		}
 		break;
 	}
-	pKeyFrame->nMask |= eMask;
 
 	return true;
 }
 
-bool CMeshExporter::InsertKeyFrame(TM_KEY_FRAME& KeyFrames, TimeValue time, KEY_FRAME_MASK eMask, const Quat& qValue)
+bool CMeshExporter::InsertKeyFrame(BONE_INFO& BoneInfo, TimeValue time, const Quat& qValue)
 {
-	KEY_FRAME* pKeyFrame = FindKeyFrame(KeyFrames, time);
-	assert(pKeyFrame);
-
-	if (pKeyFrame->nMask & (eMask | KFM_MATRIX))
+	KEYFRAME_ROT* pKeyFrame = GetKeyFrame(BoneInfo.FrameRot, time);
+	if (pKeyFrame->nMask & KFM_ROT)
 	{
+		// TODO: logout
 		assert(false);
 	}
 
-	switch (eMask)
-	{
-	case KFM_QUAT:
-		{
-			if (pKeyFrame->nMask & KFM_ROT) assert(false);
+	Matrix3 matTemp;
+	qValue.MakeMatrix(matTemp);
+	GMatrix matRotMax(matTemp);
 
-			Matrix3 matRot;
-			qValue.MakeMatrix(matRot);
-			GMatrix matFinal(matRot);
+	CMatrix4x4 matRot;
+	GMatrix2CMatrix4x4(matRot, matRotMax);
 
-			COEFmtMesh::BONE_TRANSFORM BoneTrans;
-			GMatrix2BoneTransform(BoneTrans, matFinal);
+	CQuaternion qRot;
+	COEMath::BuildQuaternionFromMatrix(qRot, matRot);
 
-			pKeyFrame->rRot.x = BoneTrans.vRotation[0];
-			pKeyFrame->rRot.y = BoneTrans.vRotation[1];
-			pKeyFrame->rRot.z = BoneTrans.vRotation[2];
-			pKeyFrame->rRot.w = BoneTrans.vRotation[3];
-		}
-		break;
-	default:
-		{
-			assert(false);
-			return false;
-		}
-		break;
-	}
-	pKeyFrame->nMask |= eMask;
+	pKeyFrame->qRot = qRot;
+	pKeyFrame->nMask |= KFM_QUAT;
 
 	return true;
 }
 
-bool CMeshExporter::InsertKeyFrame(TM_KEY_FRAME& KeyFrames, TimeValue time, KEY_FRAME_MASK eMask, const GMatrix& matValue)
+bool CMeshExporter::InsertKeyFrame(BONE_INFO& BoneInfo, TimeValue time, const GMatrix& matValue)
 {
-	KEY_FRAME* pKeyFrame = FindKeyFrame(KeyFrames, time);
-	assert(pKeyFrame);
-
-	if (pKeyFrame->nMask & (eMask | KFM_POS | KFM_SCALE | KFM_ROT | KFM_QUAT))
+	KEYFRAME_POS* pKeyFramePos = GetKeyFrame(BoneInfo.FramePos, time);
+	if (pKeyFramePos->nMask & KFM_POS)
 	{
+		// TODO: logout
 		assert(false);
 	}
 
-	switch (eMask)
+	KEYFRAME_SCALE* pKeyFrameScale = GetKeyFrame(BoneInfo.FrameScale, time);
+	if (pKeyFrameScale->nMask & KFM_SCALE)
 	{
-	case KFM_MATRIX:
-		{
-			GMatrix2CMatrix4x4(pKeyFrame->matFull, matValue);
-		}
-		break;
-	default:
-		{
-			assert(false);
-			return false;
-		}
-		break;
+		// TODO: logout
+		assert(false);
 	}
-	pKeyFrame->nMask |= eMask;
+
+	KEYFRAME_ROT* pKeyFrameRot = GetKeyFrame(BoneInfo.FrameRot, time);
+	if (pKeyFrameRot->nMask & (KFM_ROT | KFM_QUAT))
+	{
+		// TODO: logout
+		assert(false);
+	}
+
+	CMatrix4x4 matTrans;
+	GMatrix2CMatrix4x4(matTrans, matValue);
+
+	CQuaternion qRot;
+	COEMath::BuildQuaternionFromMatrix(qRot, matTrans);
+
+	pKeyFramePos->vPos.x = matTrans.m[12];
+	pKeyFramePos->vPos.x = matTrans.m[13];
+	pKeyFramePos->vPos.x = matTrans.m[14];
+	pKeyFramePos->nMask |= KFM_POS;
+
+	Point3 vScale = matValue.Scaling();
+	pKeyFrameScale->vScale.x = vScale.x;
+	pKeyFrameScale->vScale.y = vScale.y;
+	pKeyFrameScale->vScale.z = vScale.z;
+	pKeyFrameScale->nMask |= KFM_SCALE;
+
+	pKeyFrameRot->qRot = qRot;
+	pKeyFrameRot->nMask |= KFM_QUAT;
 
 	return true;
 }
@@ -1330,29 +1504,29 @@ void CMeshExporter::CMatrix4x42GMatrix(GMatrix& matOut, const CMatrix4x4& matIn)
 	matOut[3][3] = matIn.m[15];
 }
 
-void CMeshExporter::GMatrix2BoneTransform(COEFmtMesh::BONE_TRANSFORM& BoneTrans, const GMatrix& matTrans)
-{
-	CMatrix4x4 matRot;
-	GMatrix2CMatrix4x4(matRot, matTrans);
-
-	CQuaternion rRot;
-	COEMath::BuildQuaternionFromMatrix(rRot, matRot);
-
-	Point3 vScale = matTrans.Scaling();
-
-	BoneTrans.vPos[0] = matTrans[3][0];
-	BoneTrans.vPos[1] = matTrans[3][1];
-	BoneTrans.vPos[2] = matTrans[3][2];
-
-	BoneTrans.vScale[0] = vScale.x;
-	BoneTrans.vScale[1] = vScale.y;
-	BoneTrans.vScale[2] = vScale.z;
-
-	BoneTrans.vRotation[0] = rRot.x;
-	BoneTrans.vRotation[1] = rRot.y;
-	BoneTrans.vRotation[2] = rRot.z;
-	BoneTrans.vRotation[3] = rRot.w;
-}
+//void CMeshExporter::GMatrix2BoneTransform(COEFmtMesh::BONE_TRANSFORM& BoneTrans, const GMatrix& matTrans)
+//{
+//	CMatrix4x4 matRot;
+//	GMatrix2CMatrix4x4(matRot, matTrans);
+//
+//	CQuaternion rRot;
+//	COEMath::BuildQuaternionFromMatrix(rRot, matRot);
+//
+//	Point3 vScale = matTrans.Scaling();
+//
+//	BoneTrans.vPos[0] = matTrans[3][0];
+//	BoneTrans.vPos[1] = matTrans[3][1];
+//	BoneTrans.vPos[2] = matTrans[3][2];
+//
+//	BoneTrans.vScale[0] = vScale.x;
+//	BoneTrans.vScale[1] = vScale.y;
+//	BoneTrans.vScale[2] = vScale.z;
+//
+//	BoneTrans.vRotation[0] = rRot.x;
+//	BoneTrans.vRotation[1] = rRot.y;
+//	BoneTrans.vRotation[2] = rRot.z;
+//	BoneTrans.vRotation[3] = rRot.w;
+//}
 
 void CMeshExporter::SortSkin(TV_SKIN& vSkin)
 {
@@ -1373,4 +1547,71 @@ void CMeshExporter::SortSkin(TV_SKIN& vSkin)
 			vSkin[nChoose] = Skin;
 		}
 	}
+}
+
+bool CMeshExporter::ReadConfig()
+{
+	tstring strFile = GetCOREInterface()->GetDir(APP_PLUGCFG_DIR);
+	strFile += t("\\MeshExporterConfig.xml");
+
+	IOEXmlDocument* pXmlDocument = g_pOEXmlMgr->CreateDocument(strFile);
+	if (!pXmlDocument) return false;
+
+	IOEXmlNode* pXmlRoot = pXmlDocument->GetRootNode();
+	if (!pXmlRoot)
+	{
+		SAFE_RELEASE(pXmlDocument);
+		return false;
+	}
+
+	IOEXmlNode* pXmlAnimation = pXmlRoot->FirstChild(t("Animation"));
+	if (!pXmlAnimation)
+	{
+		SAFE_RELEASE(pXmlDocument);
+		return false;
+	}
+
+	IOEXmlNode* pXmlOptimizeRotation = pXmlAnimation->FirstChild(t("OptimizeRotation"));
+	IOEXmlNode* pXmlOptimizePosition = pXmlAnimation->FirstChild(t("OptimizePosition"));
+	IOEXmlNode* pXmlOptimizeScale = pXmlAnimation->FirstChild(t("OptimizeScale"));
+
+	if (!pXmlOptimizeRotation || !pXmlOptimizePosition || !pXmlOptimizeScale)
+	{
+		SAFE_RELEASE(pXmlDocument);
+		return false;
+	}
+
+	int nOptimizeRotation = 0;
+	int nOptimizePosition = 0;
+	int nOptimizeScale = 0;
+
+	pXmlOptimizeRotation->GetAttribute(nOptimizeRotation, t("enable"));
+	if (nOptimizeRotation != 0)
+	{
+		m_bOptimizeRotation = true;
+		pXmlOptimizeRotation->GetText(m_fOptimizeRotation);
+	}
+
+	pXmlOptimizePosition->GetAttribute(nOptimizePosition, t("enable"));
+	if (nOptimizePosition != 0)
+	{
+		m_bOptimizePosition = true;
+		pXmlOptimizePosition->GetText(m_fOptimizePosition);
+	}
+
+	pXmlOptimizeScale->GetAttribute(nOptimizeScale, t("enable"));
+	if (nOptimizeScale != 0)
+	{
+		m_bOptimizeScale = true;
+		pXmlOptimizeScale->GetText(m_fOptimizeScale);
+	}
+
+	SAFE_RELEASE(pXmlDocument);
+	return true;
+}
+
+bool CMeshExporter::SaveConfig()
+{
+	// TODO: 
+	return true;
 }

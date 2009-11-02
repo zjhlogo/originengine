@@ -15,6 +15,7 @@ public:
 	CVector4(float fx, float fy, float fz, float fw);
 	~CVector4();
 
+	void Init(float fx, float fy, float fz, float fw);
 	float Length() const;
 	float SquaredLength() const;
 	void Normalize();

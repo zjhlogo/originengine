@@ -17,6 +17,11 @@ public:
 			   float fm20, float fm21, float fm22, float fm23,
 			   float fm30, float fm31, float fm32, float fm33);
 
+	void Init(float fm00, float fm01, float fm02, float fm03,
+			  float fm10, float fm11, float fm12, float fm13,
+			  float fm20, float fm21, float fm22, float fm23,
+			  float fm30, float fm31, float fm32, float fm33);
+
 	void Identity();
 	float Det() const;
 	CMatrix4x4 Transpose() const;

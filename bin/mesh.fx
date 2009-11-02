@@ -15,7 +15,9 @@ struct VS_INPUT
 {
     float3 pos : POSITION;
     float2 texcoord : TEXCOORD0;
-	float4 boneindex : BLENDINDICES;
+	float3 normal : TEXCOORD1;
+	float3 tangent : TEXCOORD2;
+	int4 boneindex : BLENDINDICES;
 	float4 boneweight : BLENDWEIGHT;
 };
 
