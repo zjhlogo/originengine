@@ -62,8 +62,20 @@ void COEXmlNode_Impl::SetName(const tstring& strName)
 	m_strName = strName;
 }
 
+const tstring& COEXmlNode_Impl::GetValue()
+{
+	return m_strValue;
+}
+
+void COEXmlNode_Impl::SetValue(const tstring& strValue)
+{
+	m_strValue = strValue;
+}
+
 bool COEXmlNode_Impl::GetAttribute(int& nValue, const tstring& strName)
 {
+	if (IsTextNode()) return false;
+
 	IOEXmlAttribute* pAttribute = FirstAttribute(strName);
 	if (!pAttribute) return false;
 
@@ -72,6 +84,8 @@ bool COEXmlNode_Impl::GetAttribute(int& nValue, const tstring& strName)
 
 bool COEXmlNode_Impl::GetAttribute(float& fValue, const tstring& strName)
 {
+	if (IsTextNode()) return false;
+
 	IOEXmlAttribute* pAttribute = FirstAttribute(strName);
 	if (!pAttribute) return false;
 
@@ -80,6 +94,8 @@ bool COEXmlNode_Impl::GetAttribute(float& fValue, const tstring& strName)
 
 bool COEXmlNode_Impl::GetAttribute(tstring& strValue, const tstring& strName)
 {
+	if (IsTextNode()) return false;
+
 	IOEXmlAttribute* pAttribute = FirstAttribute(strName);
 	if (!pAttribute) return false;
 
@@ -87,53 +103,68 @@ bool COEXmlNode_Impl::GetAttribute(tstring& strValue, const tstring& strName)
 	return true;
 }
 
-void COEXmlNode_Impl::SetAttribute(const tstring& strName, int nValue)
+bool COEXmlNode_Impl::SetAttribute(const tstring& strName, int nValue)
 {
+	if (IsTextNode()) return false;
+
 	IOEXmlAttribute* pAttribute = FirstAttribute(strName);
 	if (!pAttribute)
 	{
 		pAttribute = CreateEndAttribute(strName);
-		if (!pAttribute) return;
+		if (!pAttribute) return true;
 	}
 
 	tstring strTemp;
 	COEOS::int2str(strTemp, nValue);
 	pAttribute->SetValue(strTemp);
+
+	return true;
 }
 
-void COEXmlNode_Impl::SetAttribute(const tstring& strName, float fValue)
+bool COEXmlNode_Impl::SetAttribute(const tstring& strName, float fValue)
 {
+	if (IsTextNode()) return false;
+
 	IOEXmlAttribute* pAttribute = FirstAttribute(strName);
 	if (!pAttribute)
 	{
 		pAttribute = CreateEndAttribute(strName);
-		if (!pAttribute) return;
+		if (!pAttribute) return true;
 	}
 
 	tstring strTemp;
 	COEOS::float2str(strTemp, fValue);
 	pAttribute->SetValue(strTemp);
+
+	return true;
 }
 
-void COEXmlNode_Impl::SetAttribute(const tstring& strName, const tstring& strValue)
+bool COEXmlNode_Impl::SetAttribute(const tstring& strName, const tstring& strValue)
 {
+	if (IsTextNode()) return false;
+
 	IOEXmlAttribute* pAttribute = FirstAttribute(strName);
 	if (!pAttribute)
 	{
 		pAttribute = CreateEndAttribute(strName);
-		if (!pAttribute) return;
+		if (!pAttribute) return true;
 	}
 
 	pAttribute->SetValue(strValue);
+
+	return true;
 }
 
 IOEXmlAttribute* COEXmlNode_Impl::FirstAttribute()
 {
+	if (IsTextNode()) return NULL;
 	return m_pAttribute;
 }
 
 IOEXmlAttribute* COEXmlNode_Impl::FirstAttribute(const tstring& strName)
 {
+	if (IsTextNode()) return NULL;
+
 	COEXmlAttribute_Impl* pAttribute = m_pAttribute;
 
 	while (pAttribute)
@@ -147,25 +178,29 @@ IOEXmlAttribute* COEXmlNode_Impl::FirstAttribute(const tstring& strName)
 
 bool COEXmlNode_Impl::GetText(int& nValue)
 {
+	if (IsTextNode()) return false;
 	if (!m_pNodeChild || !m_pNodeChild->m_strName.empty()) return false;
-	return COEOS::str2int(nValue, m_pNodeChild->m_strText.c_str());
+	return COEOS::str2int(nValue, m_pNodeChild->m_strValue.c_str());
 }
 
 bool COEXmlNode_Impl::GetText(float& fValue)
 {
+	if (IsTextNode()) return false;
 	if (!m_pNodeChild || !m_pNodeChild->m_strName.empty()) return false;
-	return COEOS::str2float(fValue, m_pNodeChild->m_strText.c_str());
+	return COEOS::str2float(fValue, m_pNodeChild->m_strValue.c_str());
 }
 
 bool COEXmlNode_Impl::GetText(tstring& strText)
 {
+	if (IsTextNode()) return false;
 	if (!m_pNodeChild || !m_pNodeChild->m_strName.empty()) return false;
-	strText = m_pNodeChild->m_strText;
+	strText = m_pNodeChild->m_strValue;
 	return true;
 }
 
 bool COEXmlNode_Impl::SetText(int nValue)
 {
+	if (IsTextNode()) return false;
 	if (m_pNodeChild && !m_pNodeChild->m_strName.empty()) return false;
 
 	if (!m_pNodeChild)
@@ -174,12 +209,13 @@ bool COEXmlNode_Impl::SetText(int nValue)
 		if (!m_pNodeChild) return false;
 	}
 
-	COEOS::int2str(m_pNodeChild->m_strText, nValue);
+	COEOS::int2str(m_pNodeChild->m_strValue, nValue);
 	return true;
 }
 
 bool COEXmlNode_Impl::SetText(float fValue)
 {
+	if (IsTextNode()) return false;
 	if (m_pNodeChild && !m_pNodeChild->m_strName.empty()) return false;
 
 	if (!m_pNodeChild)
@@ -188,12 +224,13 @@ bool COEXmlNode_Impl::SetText(float fValue)
 		if (!m_pNodeChild) return false;
 	}
 
-	COEOS::float2str(m_pNodeChild->m_strText, fValue);
+	COEOS::float2str(m_pNodeChild->m_strValue, fValue);
 	return true;
 }
 
 bool COEXmlNode_Impl::SetText(const tstring& strText)
 {
+	if (IsTextNode()) return false;
 	if (m_pNodeChild && !m_pNodeChild->GetName().empty()) return false;
 
 	if (!m_pNodeChild)
@@ -202,17 +239,19 @@ bool COEXmlNode_Impl::SetText(const tstring& strText)
 		if (!m_pNodeChild) return false;
 	}
 
-	m_pNodeChild->m_strText = strText;
+	m_pNodeChild->m_strValue = strText;
 	return true;
 }
 
 IOEXmlNode* COEXmlNode_Impl::FirstChild()
 {
+	if (IsTextNode()) return NULL;
 	return m_pNodeChild;
 }
 
 IOEXmlNode* COEXmlNode_Impl::FirstChild(const tstring& strName)
 {
+	if (IsTextNode()) return NULL;
 	if (!m_pNodeChild) return NULL;
 	if (m_pNodeChild->m_strName == strName) return m_pNodeChild;
 	return m_pNodeChild->NextSibling(strName);
@@ -220,6 +259,7 @@ IOEXmlNode* COEXmlNode_Impl::FirstChild(const tstring& strName)
 
 IOEXmlNode* COEXmlNode_Impl::EndChild()
 {
+	if (IsTextNode()) return NULL;
 	return EndSibling(m_pNodeChild);
 }
 
@@ -247,6 +287,7 @@ IOEXmlNode* COEXmlNode_Impl::EndSibling()
 
 IOEXmlNode* COEXmlNode_Impl::InsertChild(const tstring& strName, INSERT_NODE_BEHAVE eBehave /*= INB_NEXT*/)
 {
+	if (IsTextNode()) return NULL;
 	COEXmlNode_Impl* pNodeChild = (COEXmlNode_Impl*)g_pOEXmlMgr->CreateNode(strName);
 	if (!pNodeChild) return NULL;
 
@@ -278,6 +319,7 @@ IOEXmlNode* COEXmlNode_Impl::InsertChild(const tstring& strName, INSERT_NODE_BEH
 
 IOEXmlNode* COEXmlNode_Impl::InsertChild(const IOEXmlNode* pNodeChild, INSERT_NODE_BEHAVE eBehave /*= INB_NEXT*/)
 {
+	if (IsTextNode()) return NULL;
 	// TODO: 
 	return NULL;
 }
@@ -311,9 +353,69 @@ IOEXmlNode* COEXmlNode_Impl::InsertSibling(const IOEXmlNode* pNodeBrother, INSER
 	return NULL;
 }
 
-void COEXmlNode_Impl::SetValue(const tstring& strValue)
+bool COEXmlNode_Impl::ToString(tstring& strNode, int nLevel /* = 0 */)
 {
-	m_strText = strValue;
+	// text node
+	if (IsTextNode())
+	{
+		strNode.append(nLevel, t('\t'));
+		strNode += m_strValue;
+		return true;
+	}
+
+	strNode.append(nLevel, t('\t'));
+	strNode += t("<");
+	strNode += m_strName;
+
+	int nAttributeCount = 0;
+	COEXmlAttribute_Impl* pAttribute = m_pAttribute;
+	while (pAttribute)
+	{
+		strNode += t(" ");
+		pAttribute->ToString(strNode);
+		++nAttributeCount;
+		pAttribute = pAttribute->GetNextSibling();
+	}
+
+	if (m_pNodeChild)
+	{
+		// text node
+		if (m_pNodeChild->m_pNodeSibling == NULL && m_pNodeChild->GetName().empty())
+		{
+			strNode += t(">");
+			strNode += m_pNodeChild->m_strValue;
+			strNode += t("</");
+			strNode += m_strName;
+			strNode += t(">\n");
+		}
+		else
+		{
+			strNode += t(">\n");
+
+			COEXmlNode_Impl* pNodeChild = m_pNodeChild;
+			while (pNodeChild)
+			{
+				pNodeChild->ToString(strNode, nLevel+1);
+				pNodeChild = pNodeChild->m_pNodeSibling;
+			}
+
+			strNode.append(nLevel, t('\t'));
+			strNode += t("</");
+			strNode += m_strName;
+			strNode += t(">\n");
+		}
+	}
+	else
+	{
+		strNode += t("/>\n");
+	}
+
+	return true;
+}
+
+bool COEXmlNode_Impl::IsTextNode()
+{
+	return m_strName.empty();
 }
 
 void COEXmlNode_Impl::LinkAttribute(COEXmlAttribute_Impl* pAttribute)

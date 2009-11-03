@@ -22,6 +22,8 @@ public:
 	virtual const tstring& GetValue();
 	virtual void SetValue(const tstring& strValue);
 
+	virtual bool ToString(tstring& strNode);
+
 	void LinkSibling(COEXmlAttribute_Impl* pAttributeSibling);
 	COEXmlAttribute_Impl* GetNextSibling();
 

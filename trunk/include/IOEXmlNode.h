@@ -27,13 +27,16 @@ public:
 	virtual const tstring& GetName() = 0;
 	virtual void SetName(const tstring& strName) = 0;
 
+	virtual const tstring& GetValue() = 0;
+	virtual void SetValue(const tstring& strValue) = 0;
+
 	virtual bool GetAttribute(int& nValue, const tstring& strName) = 0;
 	virtual bool GetAttribute(float& fValue, const tstring& strName) = 0;
 	virtual bool GetAttribute(tstring& strValue, const tstring& strName) = 0;
 
-	virtual void SetAttribute(const tstring& strName, int nValue) = 0;
-	virtual void SetAttribute(const tstring& strName, float fValue) = 0;
-	virtual void SetAttribute(const tstring& strName, const tstring& strValue) = 0;
+	virtual bool SetAttribute(const tstring& strName, int nValue) = 0;
+	virtual bool SetAttribute(const tstring& strName, float fValue) = 0;
+	virtual bool SetAttribute(const tstring& strName, const tstring& strValue) = 0;
 
 	virtual IOEXmlAttribute* FirstAttribute() = 0;
 	virtual IOEXmlAttribute* FirstAttribute(const tstring& strName) = 0;
@@ -59,6 +62,9 @@ public:
 
 	virtual IOEXmlNode* InsertSibling(const tstring& strName, INSERT_NODE_BEHAVE eBehave = INB_NEXT) = 0;
 	virtual IOEXmlNode* InsertSibling(const IOEXmlNode* pNodeBrother, INSERT_NODE_BEHAVE eBehave = INB_NEXT) = 0;
+
+	virtual bool ToString(tstring& strNode, int nLevel = 0) = 0;
+	virtual bool IsTextNode() = 0;
 
 };
 #endif // __IOEXMLNODE_H__
