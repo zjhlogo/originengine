@@ -215,9 +215,18 @@ private:
 	bool InsertKeyFrame(BONE_INFO& BoneInfo, TimeValue time, const Quat& qValue);
 	bool InsertKeyFrame(BONE_INFO& BoneInfo, TimeValue time, const GMatrix& matValue);
 
-	void GMatrix2CMatrix4x4(CMatrix4x4& matOut, const GMatrix& matIn);
-	void CMatrix4x42GMatrix(GMatrix& matOut, const CMatrix4x4& matIn);
-	//void GMatrix2BoneTransform(COEFmtMesh::BONE_TRANSFORM& BoneTrans, const GMatrix& matTrans);
+	void MaxMat2OeMat(CMatrix4x4& matOut, const GMatrix& matIn);
+	void OeMat2MaxMat(GMatrix& matOut, const CMatrix4x4& matIn);
+
+	void MaxQuat2OeQuat(CQuaternion& qOut, const Quat& qIn);
+	void OeQuat2MaxQuat(Quat& qOut, const CQuaternion& qIn);
+
+	void MaxVec2OeVec(CVector3& vOut, const Point3& vIn);
+	void OeVec2MaxVec(Point3& vOut, const CVector3& vIn);
+
+	void MaxEular2OeEular(CVector3& vOut, const Point3& vIn);
+	void OeEular2MaxEular(Point3& vOut, const CVector3& vIn);
+
 	void SortSkin(TV_SKIN& vSkin);
 
 	bool ReadConfig();
