@@ -105,7 +105,7 @@ int CMeshExporter::DoExport(const TCHAR* name, ExpInterface* ei, Interface* i, B
 	m_pInterface->ProgressStart(_T("Initialize IGame interfaces"), TRUE, DummyFunc, NULL);
 	IGameScene* pIGame = GetIGameInterface();
 	IGameConversionManager* pGameConvMgr = GetConversionManager();
-	pGameConvMgr->SetCoordSystem(IGameConversionManager::IGAME_D3D);
+	//pGameConvMgr->SetCoordSystem(IGameConversionManager::IGAME_MAX);
 	pIGame->InitialiseIGame();
 
 	// collect usefull nodes
@@ -235,7 +235,7 @@ bool CMeshExporter::BuildBonesInfo()
 		BoneInfo.pParentNode = NodeInfo.pParentGameNode;
 		BoneInfo.nID = (int)m_vBoneInfo.size();
 		BoneInfo.nParentID = COEFmtBone::INVALID_BONE_ID;
-		GMatrix2CMatrix4x4(BoneInfo.matLocal, NodeInfo.pGameNode->GetLocalTM());
+		MaxMat2OeMat(BoneInfo.matLocal, NodeInfo.pGameNode->GetLocalTM());
 		bool bOK = DumpController(BoneInfo, NodeInfo.pGameNode);
 		assert(bOK);
 		// TODO: check bOK
@@ -316,24 +316,24 @@ bool CMeshExporter::SaveMeshFile(const tstring& strFileName)
 			FILE_VERTEX FileVert;
 			memset(&FileVert, 0, sizeof(FileVert));
 
-			// position
+			// position 左右手坐标转化
 			FileVert.x = VertSlot.pos.x;
-			FileVert.y = VertSlot.pos.y;
-			FileVert.z = VertSlot.pos.z;
+			FileVert.y = VertSlot.pos.z;
+			FileVert.z = VertSlot.pos.y;
 
 			// uv
 			FileVert.u = VertSlot.tex.x;
-			FileVert.v = VertSlot.tex.y;
+			FileVert.v = 1.0f - VertSlot.tex.y;
 
-			// normal
+			// normal 左右手坐标转化
 			FileVert.nx = VertSlot.normal.x;
-			FileVert.ny = VertSlot.normal.y;
-			FileVert.nz = VertSlot.normal.z;
+			FileVert.ny = VertSlot.normal.z;
+			FileVert.nz = VertSlot.normal.y;
 
-			// tangent
+			// tangent 左右手坐标转化
 			FileVert.tx = VertSlot.tangent.x;
-			FileVert.ty = VertSlot.tangent.y;
-			FileVert.tz = VertSlot.tangent.z;
+			FileVert.ty = VertSlot.tangent.z;
+			FileVert.tz = VertSlot.tangent.y;
 
 			// bone weight, index
 			int nSkinCount = (int)VertSlot.Skins.size();
@@ -355,10 +355,11 @@ bool CMeshExporter::SaveMeshFile(const tstring& strFileName)
 		int nNumFaces = (int)SkinMesh.vFaces.size();
 		for (int j = 0; j < nNumFaces; ++j)
 		{
+			//  左右手坐标转化
 			ushort nIndex[3];
 			nIndex[0] = (ushort)SkinMesh.vFaces[j].nVertIndex[0];
-			nIndex[1] = (ushort)SkinMesh.vFaces[j].nVertIndex[1];
-			nIndex[2] = (ushort)SkinMesh.vFaces[j].nVertIndex[2];
+			nIndex[1] = (ushort)SkinMesh.vFaces[j].nVertIndex[2];
+			nIndex[2] = (ushort)SkinMesh.vFaces[j].nVertIndex[1];
 			pFile->Write(nIndex, sizeof(nIndex));
 		}
 	}
@@ -614,16 +615,18 @@ bool CMeshExporter::DumpMesh(SKIN_MESH& SkinMeshOut, IGameNode* pGameNode)
 	{
 		VERTEX_SLOT& LocalSlot = SkinMeshOut.vVertSlots[i];
 
+		// get position
 		pGameMesh->GetVertex(LocalSlot.nVertIndex, LocalSlot.pos, false);
 
+		// get normal and tangent
 		if (i != LocalSlot.nVertIndex)
 		{
 			LocalSlot.normal = SkinMeshOut.vVertSlots[LocalSlot.nVertIndex].normal;
 			LocalSlot.tangent = SkinMeshOut.vVertSlots[LocalSlot.nVertIndex].tangent;
 		}
 
+		// get uv
 		pGameMesh->GetTexVertex(LocalSlot.nTexIndex, LocalSlot.tex);
-		LocalSlot.tex.y += 1.0f;
 	}
 
 	// skins
@@ -747,8 +750,7 @@ bool CMeshExporter::DumpController(BONE_INFO& BoneInfo, IGameNode* pGameNode)
 				assert(false);
 			}
 
-			// 左右手坐标转换
-			COEMath::BuildQuaternionFromEuler(KeyFrame.qRot, KeyFrame.vRot.x, KeyFrame.vRot.z, -KeyFrame.vRot.y);
+			COEMath::BuildQuaternionFromEuler(KeyFrame.qRot, KeyFrame.vRot.x, KeyFrame.vRot.y, KeyFrame.vRot.z);
 		}
 		else if (KeyFrame.nMask & KFM_QUAT)
 		{
@@ -1219,7 +1221,7 @@ bool CMeshExporter::InsertKeyFrame(BONE_INFO& BoneInfo, TimeValue time, KEY_FRAM
 				// TODO: logout
 				assert(false);
 			}
-			pKeyFrame->vPos.x = fValue;
+			pKeyFrame->vPos.x = fValue;			// 左右手坐标转换
 			pKeyFrame->nMask |= eMask;
 		}
 		break;
@@ -1231,7 +1233,7 @@ bool CMeshExporter::InsertKeyFrame(BONE_INFO& BoneInfo, TimeValue time, KEY_FRAM
 				// TODO: logout
 				assert(false);
 			}
-			pKeyFrame->vPos.y = fValue;
+			pKeyFrame->vPos.z = fValue;			// 左右手坐标转换
 			pKeyFrame->nMask |= eMask;
 		}
 		break;
@@ -1243,7 +1245,7 @@ bool CMeshExporter::InsertKeyFrame(BONE_INFO& BoneInfo, TimeValue time, KEY_FRAM
 				// TODO: logout
 				assert(false);
 			}
-			pKeyFrame->vPos.z = fValue;
+			pKeyFrame->vPos.y = fValue;			// 左右手坐标转换
 			pKeyFrame->nMask |= eMask;
 		}
 		break;
@@ -1255,7 +1257,7 @@ bool CMeshExporter::InsertKeyFrame(BONE_INFO& BoneInfo, TimeValue time, KEY_FRAM
 				// TODO: logout
 				assert(false);
 			}
-			pKeyFrame->vScale.x = fValue;
+			pKeyFrame->vScale.x = fValue;		// 左右手坐标转换
 			pKeyFrame->nMask |= eMask;
 		}
 		break;
@@ -1267,7 +1269,7 @@ bool CMeshExporter::InsertKeyFrame(BONE_INFO& BoneInfo, TimeValue time, KEY_FRAM
 				// TODO: logout
 				assert(false);
 			}
-			pKeyFrame->vScale.y = fValue;
+			pKeyFrame->vScale.z = fValue;		// 左右手坐标转换
 			pKeyFrame->nMask |= eMask;
 		}
 		break;
@@ -1279,7 +1281,7 @@ bool CMeshExporter::InsertKeyFrame(BONE_INFO& BoneInfo, TimeValue time, KEY_FRAM
 				// TODO: logout
 				assert(false);
 			}
-			pKeyFrame->vScale.z = fValue;
+			pKeyFrame->vScale.y = fValue;		// 左右手坐标转换
 			pKeyFrame->nMask |= eMask;
 		}
 		break;
@@ -1291,7 +1293,7 @@ bool CMeshExporter::InsertKeyFrame(BONE_INFO& BoneInfo, TimeValue time, KEY_FRAM
 				// TODO: logout
 				assert(false);
 			}
-			pKeyFrame->vRot.x = fValue;
+			pKeyFrame->vRot.x = -fValue;		// 左右手坐标转换
 			pKeyFrame->nMask |= eMask;
 		}
 		break;
@@ -1303,7 +1305,7 @@ bool CMeshExporter::InsertKeyFrame(BONE_INFO& BoneInfo, TimeValue time, KEY_FRAM
 				// TODO: logout
 				assert(false);
 			}
-			pKeyFrame->vRot.y = fValue;
+			pKeyFrame->vRot.z = -fValue;		// 左右手坐标转换
 			pKeyFrame->nMask |= eMask;
 		}
 		break;
@@ -1315,7 +1317,7 @@ bool CMeshExporter::InsertKeyFrame(BONE_INFO& BoneInfo, TimeValue time, KEY_FRAM
 				// TODO: logout
 				assert(false);
 			}
-			pKeyFrame->vRot.z = fValue;
+			pKeyFrame->vRot.y = -fValue;		// 左右手坐标转换
 			pKeyFrame->nMask |= eMask;
 		}
 		break;
@@ -1342,9 +1344,7 @@ bool CMeshExporter::InsertKeyFrame(BONE_INFO& BoneInfo, TimeValue time, KEY_FRAM
 				// TODO: logout
 				assert(false);
 			}
-			pKeyFrame->vPos.x = vValue.x;
-			pKeyFrame->vPos.y = vValue.y;
-			pKeyFrame->vPos.z = vValue.z;
+			MaxVec2OeVec(pKeyFrame->vPos, vValue);
 			pKeyFrame->nMask |= eMask;
 		}
 		break;
@@ -1356,9 +1356,7 @@ bool CMeshExporter::InsertKeyFrame(BONE_INFO& BoneInfo, TimeValue time, KEY_FRAM
 				// TODO: logout
 				assert(false);
 			}
-			pKeyFrame->vScale.x = vValue.x;
-			pKeyFrame->vScale.y = vValue.y;
-			pKeyFrame->vScale.z = vValue.z;
+			MaxVec2OeVec(pKeyFrame->vScale, vValue);
 			pKeyFrame->nMask |= eMask;
 		}
 		break;
@@ -1370,9 +1368,7 @@ bool CMeshExporter::InsertKeyFrame(BONE_INFO& BoneInfo, TimeValue time, KEY_FRAM
 				// TODO: logout
 				assert(false);
 			}
-			pKeyFrame->vRot.x = vValue.x;
-			pKeyFrame->vRot.y = vValue.y;
-			pKeyFrame->vRot.z = vValue.z;
+			MaxEular2OeEular(pKeyFrame->vRot, vValue);
 			pKeyFrame->nMask |= eMask;
 		}
 		break;
@@ -1396,17 +1392,7 @@ bool CMeshExporter::InsertKeyFrame(BONE_INFO& BoneInfo, TimeValue time, const Qu
 		assert(false);
 	}
 
-	Matrix3 matTemp;
-	qValue.MakeMatrix(matTemp);
-	GMatrix matRotMax(matTemp);
-
-	CMatrix4x4 matRot;
-	GMatrix2CMatrix4x4(matRot, matRotMax);
-
-	CQuaternion qRot;
-	COEMath::BuildQuaternionFromMatrix(qRot, matRot);
-
-	pKeyFrame->qRot = qRot;
+	MaxQuat2OeQuat(pKeyFrame->qRot, qValue);
 	pKeyFrame->nMask |= KFM_QUAT;
 
 	return true;
@@ -1436,97 +1422,105 @@ bool CMeshExporter::InsertKeyFrame(BONE_INFO& BoneInfo, TimeValue time, const GM
 	}
 
 	CMatrix4x4 matTrans;
-	GMatrix2CMatrix4x4(matTrans, matValue);
+	MaxMat2OeMat(matTrans, matValue);
 
-	CQuaternion qRot;
-	COEMath::BuildQuaternionFromMatrix(qRot, matTrans);
-
-	pKeyFramePos->vPos.x = matTrans.m[12];
-	pKeyFramePos->vPos.x = matTrans.m[13];
-	pKeyFramePos->vPos.x = matTrans.m[14];
-	pKeyFramePos->nMask |= KFM_POS;
-
-	Point3 vScale = matValue.Scaling();
-	pKeyFrameScale->vScale.x = vScale.x;
-	pKeyFrameScale->vScale.y = vScale.y;
-	pKeyFrameScale->vScale.z = vScale.z;
-	pKeyFrameScale->nMask |= KFM_SCALE;
-
-	pKeyFrameRot->qRot = qRot;
-	pKeyFrameRot->nMask |= KFM_QUAT;
+	COEMath::GetMatrixTranslation(pKeyFramePos->vPos, matTrans);
+	COEMath::GetMatrixScale(pKeyFrameScale->vScale, matTrans);
+	COEMath::BuildQuaternionFromMatrix(pKeyFrameRot->qRot, matTrans);
+	pKeyFrameScale->nMask |= (KFM_SCALE | KFM_POS | KFM_QUAT);
 
 	return true;
 }
 
-void CMeshExporter::GMatrix2CMatrix4x4(CMatrix4x4& matOut, const GMatrix& matIn)
+void CMeshExporter::MaxMat2OeMat(CMatrix4x4& matOut, const GMatrix& matIn)
 {
 	matOut.m[0] = matIn[0][0];
-	matOut.m[1] = matIn[0][1];
-	matOut.m[2] = matIn[0][2];
-	matOut.m[3] = matIn[0][3];
+	matOut.m[1] = matIn[0][2];
+	matOut.m[2] = matIn[0][1];
+	matOut.m[3] = 0.0f;
 
-	matOut.m[4] = matIn[1][0];
-	matOut.m[5] = matIn[1][1];
-	matOut.m[6] = matIn[1][2];
-	matOut.m[7] = matIn[1][3];
+	matOut.m[4] = matIn[2][0];
+	matOut.m[5] = matIn[2][2];
+	matOut.m[6] = matIn[2][1];
+	matOut.m[7] = 0.0f;
 
-	matOut.m[8] = matIn[2][0];
-	matOut.m[9] = matIn[2][1];
-	matOut.m[10] = matIn[2][2];
-	matOut.m[11] = matIn[2][3];
+	matOut.m[8] = matIn[1][0];
+	matOut.m[9] = matIn[1][2];
+	matOut.m[10] = matIn[1][1];
+	matOut.m[11] = 0.0f;
 
 	matOut.m[12] = matIn[3][0];
-	matOut.m[13] = matIn[3][1];
-	matOut.m[14] = matIn[3][2];
-	matOut.m[15] = matIn[3][3];
+	matOut.m[13] = matIn[3][2];
+	matOut.m[14] = matIn[3][1];
+	matOut.m[15] = 1.0f;
 }
 
-void CMeshExporter::CMatrix4x42GMatrix(GMatrix& matOut, const CMatrix4x4& matIn)
+void CMeshExporter::OeMat2MaxMat(GMatrix& matOut, const CMatrix4x4& matIn)
 {
 	matOut[0][0] = matIn.m[0];
-	matOut[0][1] = matIn.m[1];
-	matOut[0][2] = matIn.m[2];
-	matOut[0][3] = matIn.m[3];
+	matOut[0][1] = matIn.m[2];
+	matOut[0][2] = matIn.m[1];
+	matOut[0][3] = 0.0f;
 
-	matOut[1][0] = matIn.m[4];
-	matOut[1][1] = matIn.m[5];
-	matOut[1][2] = matIn.m[6];
-	matOut[1][3] = matIn.m[7];
+	matOut[1][0] = matIn.m[8];
+	matOut[1][1] = matIn.m[10];
+	matOut[1][2] = matIn.m[9];
+	matOut[1][3] = 0.0f;
 
-	matOut[2][0] = matIn.m[8];
-	matOut[2][1] = matIn.m[9];
-	matOut[2][2] = matIn.m[10];
-	matOut[2][3] = matIn.m[11];
+	matOut[2][0] = matIn.m[4];
+	matOut[2][1] = matIn.m[6];
+	matOut[2][2] = matIn.m[5];
+	matOut[2][3] = 0.0f;
 
 	matOut[3][0] = matIn.m[12];
-	matOut[3][1] = matIn.m[13];
-	matOut[3][2] = matIn.m[14];
-	matOut[3][3] = matIn.m[15];
+	matOut[3][1] = matIn.m[14];
+	matOut[3][2] = matIn.m[13];
+	matOut[3][3] = 1.0f;
 }
 
-//void CMeshExporter::GMatrix2BoneTransform(COEFmtMesh::BONE_TRANSFORM& BoneTrans, const GMatrix& matTrans)
-//{
-//	CMatrix4x4 matRot;
-//	GMatrix2CMatrix4x4(matRot, matTrans);
-//
-//	CQuaternion rRot;
-//	COEMath::BuildQuaternionFromMatrix(rRot, matRot);
-//
-//	Point3 vScale = matTrans.Scaling();
-//
-//	BoneTrans.vPos[0] = matTrans[3][0];
-//	BoneTrans.vPos[1] = matTrans[3][1];
-//	BoneTrans.vPos[2] = matTrans[3][2];
-//
-//	BoneTrans.vScale[0] = vScale.x;
-//	BoneTrans.vScale[1] = vScale.y;
-//	BoneTrans.vScale[2] = vScale.z;
-//
-//	BoneTrans.vRotation[0] = rRot.x;
-//	BoneTrans.vRotation[1] = rRot.y;
-//	BoneTrans.vRotation[2] = rRot.z;
-//	BoneTrans.vRotation[3] = rRot.w;
-//}
+void CMeshExporter::MaxQuat2OeQuat(CQuaternion& qOut, const Quat& qIn)
+{
+	qOut.x = -qIn.x;
+	qOut.y = -qIn.z;
+	qOut.z = -qIn.y;
+	qOut.w = qIn.w;
+}
+
+void CMeshExporter::OeQuat2MaxQuat(Quat& qOut, const CQuaternion& qIn)
+{
+	qOut.x = -qIn.x;
+	qOut.y = -qIn.z;
+	qOut.z = -qIn.y;
+	qOut.w = qIn.w;
+}
+
+void CMeshExporter::MaxVec2OeVec(CVector3& vOut, const Point3& vIn)
+{
+	vOut.x = vIn.x;
+	vOut.y = vIn.z;
+	vOut.z = vIn.y;
+}
+
+void CMeshExporter::OeVec2MaxVec(Point3& vOut, const CVector3& vIn)
+{
+	vOut.x = vIn.x;
+	vOut.y = vIn.z;
+	vOut.z = vIn.y;
+}
+
+void CMeshExporter::MaxEular2OeEular(CVector3& vOut, const Point3& vIn)
+{
+	vOut.x = -vIn.x;
+	vOut.y = vIn.z;
+	vOut.z = vIn.y;
+}
+
+void CMeshExporter::OeEular2MaxEular(Point3& vOut, const CVector3& vIn)
+{
+	vOut.x = -vIn.x;
+	vOut.y = vIn.z;
+	vOut.z = vIn.y;
+}
 
 void CMeshExporter::SortSkin(TV_SKIN& vSkin)
 {
