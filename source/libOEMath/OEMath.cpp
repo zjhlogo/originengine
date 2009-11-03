@@ -194,9 +194,9 @@ void COEMath::BuildQuaternionFromEuler(CQuaternion& qOut, float fRoll, float fPi
 	//q = qyaw qpitch qroll
 
 	//其中
-	//qroll = [cos(y/2), (sin(y/2), 0, 0)];
+	//qroll  = [cos(y/2), (sin(y/2), 0, 0)];
 	//qpitch = [cos(q/2), (0, sin(q/2), 0)];
-	//qyaw = [cos(f/2), (0, 0, sin(f/2)];
+	//qyaw   = [cos(f/2), (0, 0, sin(f/2))];
 
 	//计算求四元数时使用到的所有三角值
 	float cr = cosf(fRoll / 2.0f);
