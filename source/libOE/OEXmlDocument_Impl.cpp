@@ -9,6 +9,7 @@
 #include "XmlGenerator.h"
 
 #include <IOEFileMgr.h>
+#include <OEOS.h>
 
 COEXmlDocument_Impl::COEXmlDocument_Impl()
 {
@@ -48,8 +49,19 @@ bool COEXmlDocument_Impl::LoadFile(const tstring& strFile)
 
 bool COEXmlDocument_Impl::SaveFile(const tstring& strFile)
 {
-	// TODO: 
-	return false;
+	tstring strDoc;
+	if (!SaveBuffer(strDoc)) return false;
+
+	std::string strANSI;
+	if (!COEOS::tchar2char(strANSI, strDoc.c_str())) return false;
+
+	IOEFile* pFile = g_pOEFileMgr->OpenFile(strFile, IOEFile::OFF_WRITE);
+	if (!pFile) return false;
+
+	pFile->Write(strANSI.c_str(), strANSI.length());
+	SAFE_RELEASE(pFile);
+
+	return true;
 }
 
 bool COEXmlDocument_Impl::LoadBuffer(const void* pBuffer, uint nSize)
@@ -58,10 +70,12 @@ bool COEXmlDocument_Impl::LoadBuffer(const void* pBuffer, uint nSize)
 	return CXmlGenerator::Parse(m_pNodeDecl, m_pNodeRoot, pBuffer, nSize);
 }
 
-bool COEXmlDocument_Impl::SaveBuffer()
+bool COEXmlDocument_Impl::SaveBuffer(tstring& strBuffer)
 {
-	// TODO: 
-	return false;
+	if (!m_pNodeRoot) return false;
+
+	strBuffer += t("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
+	return m_pNodeRoot->ToString(strBuffer, 0);
 }
 
 IOEXmlNode* COEXmlDocument_Impl::GetDeclNode()

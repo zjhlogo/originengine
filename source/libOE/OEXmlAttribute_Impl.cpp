@@ -49,6 +49,15 @@ void COEXmlAttribute_Impl::SetValue(const tstring& strValue)
 	m_strValue = strValue;
 }
 
+bool COEXmlAttribute_Impl::ToString(tstring& strNode)
+{
+	strNode += m_strName;
+	strNode += t("=\"");
+	strNode += m_strValue;
+	strNode += t("\"");
+	return true;
+}
+
 void COEXmlAttribute_Impl::LinkSibling(COEXmlAttribute_Impl* pAttributeSibling)
 {
 	if (m_pAttributeSibling)

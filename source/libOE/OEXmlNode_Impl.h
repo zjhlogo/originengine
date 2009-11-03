@@ -20,13 +20,16 @@ public:
 	virtual const tstring& GetName();
 	virtual void SetName(const tstring& strName);
 
+	virtual const tstring& GetValue();
+	virtual void SetValue(const tstring& strValue);
+
 	virtual bool GetAttribute(int& nValue, const tstring& strName);
 	virtual bool GetAttribute(float& fValue, const tstring& strName);
 	virtual bool GetAttribute(tstring& strValue, const tstring& strName);
 
-	virtual void SetAttribute(const tstring& strName, int nValue);
-	virtual void SetAttribute(const tstring& strName, float fValue);
-	virtual void SetAttribute(const tstring& strName, const tstring& strValue);
+	virtual bool SetAttribute(const tstring& strName, int nValue);
+	virtual bool SetAttribute(const tstring& strName, float fValue);
+	virtual bool SetAttribute(const tstring& strName, const tstring& strValue);
 
 	virtual IOEXmlAttribute* FirstAttribute();
 	virtual IOEXmlAttribute* FirstAttribute(const tstring& strName);
@@ -53,7 +56,9 @@ public:
 	virtual IOEXmlNode* InsertSibling(const tstring& strName, INSERT_NODE_BEHAVE eBehave = INB_NEXT);
 	virtual IOEXmlNode* InsertSibling(const IOEXmlNode* pNodeBrother, INSERT_NODE_BEHAVE eBehave = INB_NEXT);
 
-	void SetValue(const tstring& strValue);
+	virtual bool ToString(tstring& strNode, int nLevel = 0);
+	virtual bool IsTextNode();
+
 	void LinkAttribute(COEXmlAttribute_Impl* pAttribute);
 	void LinkChild(COEXmlNode_Impl* pNodeChild);
 	void LinkSibling(COEXmlNode_Impl* pNodeSibling);
@@ -68,7 +73,7 @@ private:
 
 private:
 	tstring m_strName;
-	tstring m_strText;
+	tstring m_strValue;
 	COEXmlAttribute_Impl* m_pAttribute;
 	COEXmlNode_Impl* m_pNodeChild;
 	COEXmlNode_Impl* m_pNodeSibling;

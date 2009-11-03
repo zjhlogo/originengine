@@ -21,7 +21,7 @@ public:
 	virtual bool SaveFile(const tstring& strFile);
 
 	virtual bool LoadBuffer(const void* pBuffer, uint nSize);
-	virtual bool SaveBuffer();
+	virtual bool SaveBuffer(tstring& strBuffer);
 
 	virtual IOEXmlNode* GetDeclNode();
 	virtual IOEXmlNode* GetRootNode();

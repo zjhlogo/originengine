@@ -22,5 +22,7 @@ public:
 	virtual const tstring& GetValue() = 0;
 	virtual void SetValue(const tstring& strValue) = 0;
 
+	virtual bool ToString(tstring& strNode) = 0;
+
 };
 #endif // __IOEXMLATTRIBUTE_H__
