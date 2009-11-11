@@ -39,6 +39,22 @@ void CCamera::Destroy()
 	// TODO: 
 }
 
+void CCamera::Initialize(const CVector3& vEye, const CVector3& vLookAt)
+{
+	m_vEye = vEye;
+	m_vLookAt = vLookAt;
+
+	m_vForword = m_vLookAt-m_vEye;
+	m_vForword.Normalize();
+
+	m_vLookAt = m_vEye+m_vForword;
+
+	m_vRight = m_vUp^m_vForword;
+	m_vRight.Normalize();
+
+	COEMath::BuildLookAtMatrixLH(m_matView, m_vEye, m_vLookAt, m_vUp);
+}
+
 const CMatrix4x4& CCamera::GetViewMatrix() const
 {
 	return m_matView;

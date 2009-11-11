@@ -16,6 +16,7 @@ public:
 	CCamera();
 	~CCamera();
 
+	void Initialize(const CVector3& vEye, const CVector3& vLookAt);
 	const CMatrix4x4& GetViewMatrix() const;
 
 	void Rotate(const CVector3& vDir, float fRadian);

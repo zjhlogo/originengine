@@ -92,6 +92,8 @@ bool CWaterApp::Initialize()
 
 	m_pCamera = new CCamera();
 	if (!m_pCamera) return false;
+	m_pCamera->Initialize(CVector3(399.75037f, 532.55792f, -279.13873f), CVector3(399.73721f, 531.89636f, -278.38895f));
+	g_pOERenderer->SetTransform(IOERenderer::TT_VIEW, m_pCamera->GetViewMatrix());
 
 	m_pDlgWaveParam = new CDlgWaveParam();
 	if (!m_pDlgWaveParam) return false;
@@ -120,7 +122,7 @@ void CWaterApp::Render(float fDetailTime)
 {
 	static float s_fTime = 0.0f;
 
-	g_pOERenderer->SetFillMode(IOERenderer::FM_WIREFRAME);
+	//g_pOERenderer->SetFillMode(IOERenderer::FM_WIREFRAME);
 
 	CMatrix4x4 matWorldViewProj;
 	g_pOERenderer->GetTransform(matWorldViewProj, IOERenderer::TT_WORLD_VIEW_PROJ);
@@ -134,6 +136,7 @@ void CWaterApp::Render(float fDetailTime)
 	m_pShader->SetVector(t("vWaveDirX"), m_pDlgWaveParam->GetVecDirX());
 	m_pShader->SetVector(t("vWaveDirY"), m_pDlgWaveParam->GetVecDirY());
 	m_pShader->SetVector(t("vWaveHeight"), m_pDlgWaveParam->GetVecHeight()*m_pDlgWaveParam->GetHeightScale());
+	m_pShader->SetVector(t("g_vEyePos"), m_pCamera->GetEyePos());
 
 	g_pOERenderer->SetShader(m_pShader);
 	g_pOERenderer->DrawTriList(m_pVerts, m_nVerts, m_pIndis, m_nIndis);
