@@ -6,7 +6,11 @@
  * \author zjhlogo (zjhlogo@163.com)
  */
 #include "MeshApp.h"
+#include "../common/AppHelper.h"
+#include <OEMsgID.h>
 #include <assert.h>
+
+IMPLEMENT_APP(CMeshApp);
 
 CMeshApp::CMeshApp()
 {
@@ -60,6 +64,13 @@ bool CMeshApp::Initialize()
 
 	m_pNormalVertDecl = g_pOEDevice->CreateVertDecl(s_NormalVertDecl);
 	if (!m_pNormalVertDecl) return false;
+
+	// registe message
+	g_pOEMsgMgr->RegisterMessage(OMI_LBUTTON_DOWN, this, (MSG_FUNC)&CMeshApp::OnLButtonDown);
+	g_pOEMsgMgr->RegisterMessage(OMI_LBUTTON_UP, this, (MSG_FUNC)&CMeshApp::OnLButtonUp);
+	g_pOEMsgMgr->RegisterMessage(OMI_MOUSE_MOVE, this, (MSG_FUNC)&CMeshApp::OnMouseMove);
+	g_pOEMsgMgr->RegisterMessage(OMI_KEY_DOWN, this, (MSG_FUNC)&CMeshApp::OnKeyDown);
+	g_pOEMsgMgr->RegisterMessage(OMI_KEY_UP, this, (MSG_FUNC)&CMeshApp::OnKeyUp);
 
 	return true;
 }
@@ -125,33 +136,52 @@ void CMeshApp::Render(float fDetailTime)
 	m_pSimpleShape->DrawCube(g_pOERenderer, vLightPos, 10.0f, 0xFFFFFFFF);
 }
 
-void CMeshApp::OnLButtonDown(int x, int y)
+bool CMeshApp::OnLButtonDown(uint nMsgID, COEDataBufferRead* pDBRead)
 {
 	m_bLButtonDown = true;
+	return true;
 }
 
-void CMeshApp::OnLButtonUp(int x, int y)
+bool CMeshApp::OnLButtonUp(uint nMsgID, COEDataBufferRead* pDBRead)
 {
 	m_bLButtonDown = false;
+	return true;
 }
 
-void CMeshApp::OnMouseMove(int dx, int dy)
+bool CMeshApp::OnMouseMove(uint nMsgID, COEDataBufferRead* pDBRead)
 {
-	if (!m_bLButtonDown) return;
-	m_nMouseDetailX = dx;
-	m_nMouseDetailY = dy;
+	if (!m_bLButtonDown) return true;
+	COEMsg msg(pDBRead);
+	msg.Read(m_nMouseDetailX);
+	msg.Read(m_nMouseDetailY);
+	return true;
 }
 
-void CMeshApp::OnKeyUp(int nKeyCode)
+bool CMeshApp::OnKeyUp(uint nMsgID, COEDataBufferRead* pDBRead)
 {
+	COEMsg msg(pDBRead);
+
+	int nKeyCode = 0;
+	msg.Read(nKeyCode);
+
 	assert(nKeyCode > 0 && nKeyCode < KEY_COUNT);
 	m_KeyDown[nKeyCode] = false;
+
+	return true;
 }
 
-void CMeshApp::OnKeyDown(int nKeyCode)
+bool CMeshApp::OnKeyDown(uint nMsgID, COEDataBufferRead* pDBRead)
 {
+	COEMsg msg(pDBRead);
+
+	int nKeyCode = 0;
+	msg.Read(nKeyCode);
+
 	assert(nKeyCode > 0 && nKeyCode < KEY_COUNT);
 	m_KeyDown[nKeyCode] = true;
+	if (m_KeyDown[0x1B]) g_pOECore->End();		// TODO: 0x1B == VK_ESCAPE
+
+	return true;
 }
 
 bool CMeshApp::UpdateMovement(float fDetailTime)

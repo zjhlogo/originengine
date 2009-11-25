@@ -6,7 +6,11 @@
  * \author zjhlogo (zjhlogo@163.com)
  */
 #include "WaterApp.h"
+#include "../common/AppHelper.h"
+#include <OEMsgID.h>
 #include <assert.h>
+
+IMPLEMENT_APP(CWaterApp);
 
 CWaterApp::CWaterApp()
 {
@@ -99,6 +103,13 @@ bool CWaterApp::Initialize()
 	if (!m_pDlgWaveParam) return false;
 	if (!m_pDlgWaveParam->Initialize()) return false;
 
+	// registe message
+	g_pOEMsgMgr->RegisterMessage(OMI_LBUTTON_DOWN, this, (MSG_FUNC)&CWaterApp::OnLButtonDown);
+	g_pOEMsgMgr->RegisterMessage(OMI_LBUTTON_UP, this, (MSG_FUNC)&CWaterApp::OnLButtonUp);
+	g_pOEMsgMgr->RegisterMessage(OMI_MOUSE_MOVE, this, (MSG_FUNC)&CWaterApp::OnMouseMove);
+	g_pOEMsgMgr->RegisterMessage(OMI_KEY_DOWN, this, (MSG_FUNC)&CWaterApp::OnKeyDown);
+	g_pOEMsgMgr->RegisterMessage(OMI_KEY_UP, this, (MSG_FUNC)&CWaterApp::OnKeyUp);
+
 	return true;
 }
 
@@ -143,36 +154,53 @@ void CWaterApp::Render(float fDetailTime)
 	g_pOERenderer->SetShader(NULL);
 }
 
-void CWaterApp::OnLButtonDown(int x, int y)
+bool CWaterApp::OnLButtonDown(uint nMsgID, COEDataBufferRead* pDBRead)
 {
 	m_bLButtonDown = true;
+	return true;
 }
 
-void CWaterApp::OnLButtonUp(int x, int y)
+bool CWaterApp::OnLButtonUp(uint nMsgID, COEDataBufferRead* pDBRead)
 {
 	m_bLButtonDown = false;
+	return true;
 }
 
-void CWaterApp::OnMouseMove(int dx, int dy)
+bool CWaterApp::OnMouseMove(uint nMsgID, COEDataBufferRead* pDBRead)
 {
-	if (!m_bLButtonDown) return;
-	m_nMouseDetailX = dx;
-	m_nMouseDetailY = dy;
+	if (!m_bLButtonDown) return true;
+	COEMsg msg(pDBRead);
+	msg.Read(m_nMouseDetailX);
+	msg.Read(m_nMouseDetailY);
+	return true;
 }
 
-void CWaterApp::OnKeyUp(int nKeyCode)
+bool CWaterApp::OnKeyUp(uint nMsgID, COEDataBufferRead* pDBRead)
 {
+	COEMsg msg(pDBRead);
+
+	int nKeyCode = 0;
+	msg.Read(nKeyCode);
+
 	assert(nKeyCode > 0 && nKeyCode < KEY_COUNT);
 	m_KeyDown[nKeyCode] = false;
+
+	return true;
 }
 
-void CWaterApp::OnKeyDown(int nKeyCode)
+bool CWaterApp::OnKeyDown(uint nMsgID, COEDataBufferRead* pDBRead)
 {
+	COEMsg msg(pDBRead);
+
+	int nKeyCode = 0;
+	msg.Read(nKeyCode);
+
 	assert(nKeyCode > 0 && nKeyCode < KEY_COUNT);
 	m_KeyDown[nKeyCode] = true;
+	if (m_KeyDown[0x1B]) g_pOECore->End();		// TODO: 0x1B == VK_ESCAPE
+	else if (m_KeyDown[0x70]) m_pDlgWaveParam->Show(!m_pDlgWaveParam->IsVisible());		// TODO: 0x70 == VK_F1
 
-	if (nKeyCode == VK_ESCAPE) g_pOECore->End();
-	else if (nKeyCode == VK_F1) m_pDlgWaveParam->Show(!m_pDlgWaveParam->IsVisible());
+	return true;
 }
 
 bool CWaterApp::UpdateMovement(float fDetailTime)

@@ -12,7 +12,7 @@
 #include <IOEFileMgr.h>
 #include <IOELogFileMgr.h>
 #include <IOEXmlMgr.h>
-#include <IOEMessageMgr.h>
+#include <IOEMsgMgr.h>
 
 // 核心模块
 #include <IOECore.h>
@@ -38,7 +38,7 @@
 IOEFileMgr* g_pOEFileMgr = NULL;
 IOELogFileMgr* g_pOELogFileMgr = NULL;
 IOEXmlMgr* g_pOEXmlMgr = NULL;
-IOEMessageMgr* g_pOEMessageMgr = NULL;
+IOEMsgMgr* g_pOEMsgMgr = NULL;
 
 // 核心模块
 IOECore* g_pOECore = NULL;
@@ -79,7 +79,7 @@ void COEHolder::SetupInterfaces()
 	AddInterface(t("IOEFileMgr"), (void**)&g_pOEFileMgr);
 	AddInterface(t("IOELogFileMgr"), (void**)&g_pOELogFileMgr);
 	AddInterface(t("IOEXmlMgr"), (void**)&g_pOEXmlMgr);
-	AddInterface(t("IOEMessageMgr"), (void**)&g_pOEMessageMgr);
+	AddInterface(t("IOEMsgMgr"), (void**)&g_pOEMsgMgr);
 
 	// 核心模块
 	AddInterface(t("IOECore"), (void**)&g_pOECore);

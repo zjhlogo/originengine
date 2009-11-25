@@ -22,12 +22,6 @@ public:
 	virtual void Update(float fDetailTime) = 0;
 	virtual void Render(float fDetailTime) = 0;
 
-	virtual void OnLButtonDown(int x, int y) {};
-	virtual void OnLButtonUp(int x, int y) {};
-	virtual void OnMouseMove(int dx, int dy) {};
-	virtual void OnKeyUp(int nKeyCode) {};
-	virtual void OnKeyDown(int nKeyCode) {};
-
 	void Run();
 
 };

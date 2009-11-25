@@ -18,12 +18,12 @@
 #include "../OEFileMgr_Impl.h"
 #include "../OELogFileMgr_Impl.h"
 #include "../OEXmlMgr_Impl.h"
-#include "../OEMessageMgr_Impl.h"
+#include "../OEMsgMgr_Impl.h"
 
 COEFileMgr_Impl* g_pOEFileMgr_Impl = NULL;
 COELogFileMgr_Impl* g_pOELogFileMgr_Impl = NULL;
 COEXmlMgr_Impl* g_pOEXmlMgr_Impl = NULL;
-COEMessageMgr_Impl* g_pOEMessageMgr_Impl = NULL;
+COEMsgMgr_Impl* g_pOEMsgMgr_Impl = NULL;
 
 bool COEOS::Initialize(uint nInitMask /* = IS_ALL */)
 {
@@ -57,12 +57,12 @@ bool COEOS::Initialize(uint nInitMask /* = IS_ALL */)
 		}
 	}
 
-	if ((nInitMask & IS_MESSAGE) && !g_pOEMessageMgr_Impl)
+	if ((nInitMask & IS_MESSAGE) && !g_pOEMsgMgr_Impl)
 	{
-		g_pOEMessageMgr_Impl = new COEMessageMgr_Impl();
-		if (!g_pOEMessageMgr_Impl || !g_pOEMessageMgr_Impl->IsOK())
+		g_pOEMsgMgr_Impl = new COEMsgMgr_Impl();
+		if (!g_pOEMsgMgr_Impl || !g_pOEMsgMgr_Impl->IsOK())
 		{
-			SAFE_DELETE(g_pOEMessageMgr_Impl);
+			SAFE_DELETE(g_pOEMsgMgr_Impl);
 			return false;
 		}
 	}
@@ -72,7 +72,7 @@ bool COEOS::Initialize(uint nInitMask /* = IS_ALL */)
 
 void COEOS::Terminate()
 {
-	SAFE_DELETE(g_pOEMessageMgr_Impl);
+	SAFE_DELETE(g_pOEMsgMgr_Impl);
 	SAFE_DELETE(g_pOEXmlMgr_Impl);
 	SAFE_DELETE(g_pOELogFileMgr_Impl);
 	SAFE_DELETE(g_pOEFileMgr_Impl);

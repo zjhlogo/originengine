@@ -339,10 +339,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\BumpMapMain.cpp"
-				>
-			</File>
-			<File
 				RelativePath="..\common\Camera.cpp"
 				>
 			</File>
@@ -358,10 +354,6 @@
 			>
 			<File
 				RelativePath=".\BumpMapApp.h"
-				>
-			</File>
-			<File
-				RelativePath=".\BumpMapMain.h"
 				>
 			</File>
 			<File

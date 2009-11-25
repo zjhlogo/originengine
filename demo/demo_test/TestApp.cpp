@@ -6,7 +6,11 @@
  * \author zjhlogo (zjhlogo@163.com)
  */
 #include "TestApp.h"
+#include "../common/AppHelper.h"
+#include <OEMsgID.h>
 #include <assert.h>
+
+IMPLEMENT_APP(CTestApp);
 
 CTestApp::CTestApp()
 {
@@ -71,6 +75,13 @@ bool CTestApp::Initialize()
 	//SAFE_RELEASE(pTexture2);
 	//SAFE_RELEASE(pTexture3);
 
+	// registe message
+	g_pOEMsgMgr->RegisterMessage(OMI_LBUTTON_DOWN, this, (MSG_FUNC)&CTestApp::OnLButtonDown);
+	g_pOEMsgMgr->RegisterMessage(OMI_LBUTTON_UP, this, (MSG_FUNC)&CTestApp::OnLButtonUp);
+	g_pOEMsgMgr->RegisterMessage(OMI_MOUSE_MOVE, this, (MSG_FUNC)&CTestApp::OnMouseMove);
+	g_pOEMsgMgr->RegisterMessage(OMI_KEY_DOWN, this, (MSG_FUNC)&CTestApp::OnKeyDown);
+	g_pOEMsgMgr->RegisterMessage(OMI_KEY_UP, this, (MSG_FUNC)&CTestApp::OnKeyUp);
+
 	return true;
 }
 
@@ -121,34 +132,52 @@ void CTestApp::Render(float fDetailTime)
 	m_pTerrainMgr->Render(fDetailTime);
 }
 
-void CTestApp::OnLButtonDown(int x, int y)
+bool CTestApp::OnLButtonDown(uint nMsgID, COEDataBufferRead* pDBRead)
 {
 	m_bLButtonDown = true;
+	return true;
 }
 
-void CTestApp::OnLButtonUp(int x, int y)
+bool CTestApp::OnLButtonUp(uint nMsgID, COEDataBufferRead* pDBRead)
 {
 	m_bLButtonDown = false;
+	return true;
 }
 
-void CTestApp::OnMouseMove(int dx, int dy)
+bool CTestApp::OnMouseMove(uint nMsgID, COEDataBufferRead* pDBRead)
 {
-	if (!m_bLButtonDown) return;
-	m_nMouseDetailX = dx;
-	m_nMouseDetailY = dy;
+	if (!m_bLButtonDown) return true;
+	COEMsg msg(pDBRead);
+	msg.Read(m_nMouseDetailX);
+	msg.Read(m_nMouseDetailY);
+	return true;
 }
 
-void CTestApp::OnKeyUp(int nKeyCode)
+bool CTestApp::OnKeyUp(uint nMsgID, COEDataBufferRead* pDBRead)
 {
+	COEMsg msg(pDBRead);
+
+	int nKeyCode = 0;
+	msg.Read(nKeyCode);
+
 	assert(nKeyCode > 0 && nKeyCode < KEY_COUNT);
 	m_KeyDown[nKeyCode] = false;
+
+	return true;
 }
 
-void CTestApp::OnKeyDown(int nKeyCode)
+bool CTestApp::OnKeyDown(uint nMsgID, COEDataBufferRead* pDBRead)
 {
+	COEMsg msg(pDBRead);
+
+	int nKeyCode = 0;
+	msg.Read(nKeyCode);
+
 	assert(nKeyCode > 0 && nKeyCode < KEY_COUNT);
 	m_KeyDown[nKeyCode] = true;
 	if (m_KeyDown[0x1B]) g_pOECore->End();		// TODO: 0x1B == VK_ESCAPE
+
+	return true;
 }
 
 bool CTestApp::UpdateMovement(float fDetailTime)

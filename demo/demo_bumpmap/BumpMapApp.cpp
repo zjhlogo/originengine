@@ -6,7 +6,11 @@
  * \author zjhlogo (zjhlogo@163.com)
  */
 #include "BumpMapApp.h"
+#include "../common/AppHelper.h"
+#include <OEMsgID.h>
 #include <assert.h>
+
+IMPLEMENT_APP(CBumpMapApp);
 
 CBumpMapApp::CBumpMapApp()
 {
@@ -67,6 +71,13 @@ bool CBumpMapApp::Initialize()
 	m_pSimpleShape = new CSimpleShape();
 	if (!m_pSimpleShape->Initialize()) return false;
 
+	// registe message
+	g_pOEMsgMgr->RegisterMessage(OMI_LBUTTON_DOWN, this, (MSG_FUNC)&CBumpMapApp::OnLButtonDown);
+	g_pOEMsgMgr->RegisterMessage(OMI_LBUTTON_UP, this, (MSG_FUNC)&CBumpMapApp::OnLButtonUp);
+	g_pOEMsgMgr->RegisterMessage(OMI_MOUSE_MOVE, this, (MSG_FUNC)&CBumpMapApp::OnMouseMove);
+	g_pOEMsgMgr->RegisterMessage(OMI_KEY_DOWN, this, (MSG_FUNC)&CBumpMapApp::OnKeyDown);
+	g_pOEMsgMgr->RegisterMessage(OMI_KEY_UP, this, (MSG_FUNC)&CBumpMapApp::OnKeyUp);
+
 	return true;
 }
 
@@ -124,31 +135,47 @@ void CBumpMapApp::Render(float fDetailTime)
 	m_pSimpleShape->DrawCube(g_pOERenderer, m_vLightPos);
 }
 
-void CBumpMapApp::OnLButtonDown(int x, int y)
+bool CBumpMapApp::OnLButtonDown(uint nMsgID, COEDataBufferRead* pDBRead)
 {
 	m_bLButtonDown = true;
+	return true;
 }
 
-void CBumpMapApp::OnLButtonUp(int x, int y)
+bool CBumpMapApp::OnLButtonUp(uint nMsgID, COEDataBufferRead* pDBRead)
 {
 	m_bLButtonDown = false;
+	return true;
 }
 
-void CBumpMapApp::OnMouseMove(int dx, int dy)
+bool CBumpMapApp::OnMouseMove(uint nMsgID, COEDataBufferRead* pDBRead)
 {
-	if (!m_bLButtonDown) return;
-	m_nMouseDetailX = dx;
-	m_nMouseDetailY = dy;
+	if (!m_bLButtonDown) return true;
+	COEMsg msg(pDBRead);
+	msg.Read(m_nMouseDetailX);
+	msg.Read(m_nMouseDetailY);
+	return true;
 }
 
-void CBumpMapApp::OnKeyUp(int nKeyCode)
+bool CBumpMapApp::OnKeyUp(uint nMsgID, COEDataBufferRead* pDBRead)
 {
+	COEMsg msg(pDBRead);
+
+	int nKeyCode = 0;
+	msg.Read(nKeyCode);
+
 	assert(nKeyCode > 0 && nKeyCode < KEY_COUNT);
 	m_KeyDown[nKeyCode] = false;
+
+	return true;
 }
 
-void CBumpMapApp::OnKeyDown(int nKeyCode)
+bool CBumpMapApp::OnKeyDown(uint nMsgID, COEDataBufferRead* pDBRead)
 {
+	COEMsg msg(pDBRead);
+
+	int nKeyCode = 0;
+	msg.Read(nKeyCode);
+
 	assert(nKeyCode > 0 && nKeyCode < KEY_COUNT);
 	m_KeyDown[nKeyCode] = true;
 	if (m_KeyDown[0x1B]) g_pOECore->End();		// TODO: 0x1B == VK_ESCAPE
@@ -158,11 +185,13 @@ void CBumpMapApp::OnKeyDown(int nKeyCode)
 	if (m_KeyDown['3']) m_pShader->SetTechnique(t("BaseTex"));
 	if (m_KeyDown['4']) m_pShader->SetTechnique(t("NormalTex"));
 	if (m_KeyDown['5']) m_pShader->SetTechnique(t("HeightTex"));
+
+	return true;
 }
 
 bool CBumpMapApp::UpdateMovement(float fDetailTime)
 {
-	static const float MOVE_DIST = 2.0f;
+	static const float MOVE_DIST = 100.0f;
 
 	bool bUpdateMovement = m_KeyDown['W'] || m_KeyDown['S'] || m_KeyDown['A'] || m_KeyDown['D'];
 	if (!bUpdateMovement) return false;

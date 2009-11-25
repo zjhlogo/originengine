@@ -27,8 +27,6 @@ private:
 	void Init();
 	void Destroy();
 
-	bool OnMessage(uint nMsgID, COEDataBufferRead* pDBRead);
-
 private:
 	IOEUIFont* m_pFont;
 	IOEUIString* m_pString;
