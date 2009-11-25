@@ -343,10 +343,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\MeshMain.cpp"
-				>
-			</File>
-			<File
 				RelativePath="..\common\SimpleShape.cpp"
 				>
 			</File>
@@ -362,10 +358,6 @@
 			</File>
 			<File
 				RelativePath=".\MeshApp.h"
-				>
-			</File>
-			<File
-				RelativePath=".\MeshMain.h"
 				>
 			</File>
 			<File

@@ -1,19 +1,19 @@
 /*!
- * \file OEMessage.h
- * \date 10-12-2009 17:12:01
+ * \file OEMsg.h
+ * \date 11-25-2009 14:04:38
  * 
  * 
  * \author zjhlogo (zjhlogo@163.com)
  */
-#ifndef __OEMESSAGE_H__
-#define __OEMESSAGE_H__
+#ifndef __OEMSG_H__
+#define __OEMSG_H__
 
 #include "OEBasicType.h"
 #include "OEDataBufferRead.h"
 #include "OEDataBufferWrite.h"
 #include <assert.h>
 
-class COEMessage
+class COEMsg
 {
 public:
 	enum OPERATE_MODE
@@ -24,9 +24,9 @@ public:
 	};
 
 public:
-	COEMessage(uint nMsgID);
-	COEMessage(COEDataBufferRead* pDBRead);
-	~COEMessage();
+	COEMsg(uint nMsgID);
+	COEMsg(COEDataBufferRead* pDBRead, bool bFromBuffer = true);
+	virtual ~COEMsg();
 
 	uint GetMsgID();
 	bool ToBuffer(COEDataBufferWrite* pDBWrite);
@@ -40,6 +40,7 @@ public:
 	bool WriteBuffer(const void* pBuffer, uint nSize);
 
 protected:
+	bool FromBuffer(COEDataBufferRead* pDBRead);
 	virtual bool PackData();
 	virtual bool UnpackData();
 
@@ -58,7 +59,7 @@ private:
 
 };
 
-template <typename T> bool COEMessage::Read(T& DataType)
+template <typename T> bool COEMsg::Read(T& DataType)
 {
 	if (m_eOpMode != OM_READ) return false;
 
@@ -77,7 +78,7 @@ template <typename T> bool COEMessage::Read(T& DataType)
 	return true;
 }
 
-template <typename T> bool COEMessage::Write(const T& DataType)
+template <typename T> bool COEMsg::Write(const T& DataType)
 {
 	if (m_eOpMode != OM_WRITE) return false;
 
@@ -95,5 +96,4 @@ template <typename T> bool COEMessage::Write(const T& DataType)
 
 	return true;
 }
-
-#endif // __OEMESSAGE_H__
+#endif // __OEMSG_H__

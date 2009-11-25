@@ -1,14 +1,14 @@
 /*!
- * \file OEMessage.cpp
- * \date 10-12-2009 17:12:47
+ * \file OEMsg.cpp
+ * \date 11-25-2009 14:04:45
  * 
  * 
  * \author zjhlogo (zjhlogo@163.com)
  */
-#include <OEMessage.h>
-#include <OEMessageID.h>
+#include <OEMsg.h>
+#include <OEMsgID.h>
 
-COEMessage::COEMessage(uint nMsgID)
+COEMsg::COEMsg(uint nMsgID)
 {
 	m_eOpMode = OM_WRITE;
 	m_nMsgID = nMsgID;
@@ -17,7 +17,7 @@ COEMessage::COEMessage(uint nMsgID)
 	m_pNewDBRead = NULL;
 }
 
-COEMessage::COEMessage(COEDataBufferRead* pDBRead)
+COEMsg::COEMsg(COEDataBufferRead* pDBRead, bool bFromBuffer /* = true */)
 {
 	m_eOpMode = OM_READ;
 	m_nMsgID = OMI_UNKNOWN;
@@ -25,6 +25,21 @@ COEMessage::COEMessage(COEDataBufferRead* pDBRead)
 	m_pDBWrite = NULL;
 	m_pNewDBRead = NULL;
 
+	if (bFromBuffer) FromBuffer(pDBRead);
+}
+
+COEMsg::~COEMsg()
+{
+	SAFE_DELETE(m_pNewDBRead);
+}
+
+uint COEMsg::GetMsgID()
+{
+	return m_nMsgID;
+}
+
+bool COEMsg::FromBuffer(COEDataBufferRead* pDBRead)
+{
 	Read(m_nMsgID);
 	ReadExtendData();
 	UnpackData();
@@ -35,19 +50,11 @@ COEMessage::COEMessage(COEDataBufferRead* pDBRead)
 	}
 
 	m_pDBRead = m_pNewDBRead;
+
+	return true;
 }
 
-COEMessage::~COEMessage()
-{
-	SAFE_DELETE(m_pNewDBRead);
-}
-
-uint COEMessage::GetMsgID()
-{
-	return m_nMsgID;
-}
-
-bool COEMessage::ToBuffer(COEDataBufferWrite* pDBWrite)
+bool COEMsg::ToBuffer(COEDataBufferWrite* pDBWrite)
 {
 	m_pDBWrite = pDBWrite;
 
@@ -61,7 +68,7 @@ bool COEMessage::ToBuffer(COEDataBufferWrite* pDBWrite)
 	return bOK;
 }
 
-bool COEMessage::ReadString(tstring& strOut)
+bool COEMsg::ReadString(tstring& strOut)
 {
 	if (m_eOpMode != OM_READ) return false;
 
@@ -103,7 +110,7 @@ bool COEMessage::ReadString(tstring& strOut)
 	return true;
 }
 
-bool COEMessage::ReadBuffer(void* pBuffer, uint nSize)
+bool COEMsg::ReadBuffer(void* pBuffer, uint nSize)
 {
 	if (m_eOpMode != OM_READ) return false;
 
@@ -122,7 +129,7 @@ bool COEMessage::ReadBuffer(void* pBuffer, uint nSize)
 	return true;
 }
 
-bool COEMessage::WriteString(const tstring& strIn)
+bool COEMsg::WriteString(const tstring& strIn)
 {
 	if (m_eOpMode != OM_WRITE) return false;
 
@@ -149,7 +156,7 @@ bool COEMessage::WriteString(const tstring& strIn)
 	return true;
 }
 
-bool COEMessage::WriteBuffer(const void* pBuffer, uint nSize)
+bool COEMsg::WriteBuffer(const void* pBuffer, uint nSize)
 {
 	if (m_eOpMode != OM_WRITE) return false;
 
@@ -168,17 +175,17 @@ bool COEMessage::WriteBuffer(const void* pBuffer, uint nSize)
 	return true;
 }
 
-bool COEMessage::PackData()
+bool COEMsg::PackData()
 {
 	return true;
 }
 
-bool COEMessage::UnpackData()
+bool COEMsg::UnpackData()
 {
 	return true;
 }
 
-bool COEMessage::ReadExtendData()
+bool COEMsg::ReadExtendData()
 {
 	uint nExtendDataSize = 0;
 	if (!m_pDBRead->Read(&nExtendDataSize, sizeof(nExtendDataSize))) return false;
@@ -188,7 +195,7 @@ bool COEMessage::ReadExtendData()
 	return m_DBWrite.Write(m_pDBRead, nExtendDataSize);
 }
 
-bool COEMessage::WriteExtendData()
+bool COEMsg::WriteExtendData()
 {
 	uint nExtendDataSize = m_DBWrite.GetSize();
 	if (!m_pDBWrite->Write(&nExtendDataSize, sizeof(nExtendDataSize))) return false;

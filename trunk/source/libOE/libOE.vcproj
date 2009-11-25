@@ -307,11 +307,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\OEMessage.cpp"
+				RelativePath=".\OEMsg.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\OEMessageMgr_Impl.cpp"
+				RelativePath=".\OEMsgMgr_Impl.cpp"
 				>
 			</File>
 			<File
@@ -385,11 +385,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\include\OEMessage.h"
+				RelativePath="..\..\include\OEMsg.h"
 				>
 			</File>
 			<File
-				RelativePath=".\OEMessageMgr_Impl.h"
+				RelativePath=".\OEMsgMgr_Impl.h"
 				>
 			</File>
 			<File
@@ -445,7 +445,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\include\IOEMessageMgr.h"
+				RelativePath="..\..\include\IOEMsg.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\include\IOEMsgMgr.h"
 				>
 			</File>
 			<File
@@ -465,7 +469,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\include\OEMessageID.h"
+				RelativePath="..\..\include\OEMsgID.h"
 				>
 			</File>
 		</Filter>

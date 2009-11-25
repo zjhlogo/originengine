@@ -8,8 +8,7 @@
 #include "OECore_Impl.h"
 #include <IOEDevice.h>
 #include <IOELogFileMgr.h>
-#include <IOEMessageMgr.h>
-#include <OEMessageID.h>
+#include <IOEMsgMgr.h>
 
 COECore_Impl::COECore_Impl()
 {
@@ -72,11 +71,5 @@ void COECore_Impl::End()
 void COECore_Impl::Update()
 {
 	// dispatch the receive message
-	g_pOEMessageMgr->DispatchRecvMessage();
-
-	// send perform once message
-	COEMessage msg(OMI_PERFORM_ONCE);
-	float fCurrFPS = g_pOEDevice->GetFPS();
-	msg.Write(fCurrFPS);
-	g_pOEMessageMgr->SendMessage(&msg);
+	g_pOEMsgMgr->DispatchRecvMessage();
 }

@@ -350,10 +350,6 @@
 				RelativePath=".\WaterApp.cpp"
 				>
 			</File>
-			<File
-				RelativePath=".\WaterMain.cpp"
-				>
-			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -374,10 +370,6 @@
 			</File>
 			<File
 				RelativePath=".\WaterApp.h"
-				>
-			</File>
-			<File
-				RelativePath=".\WaterMain.h"
 				>
 			</File>
 		</Filter>

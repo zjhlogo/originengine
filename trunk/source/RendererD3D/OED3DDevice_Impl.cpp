@@ -13,6 +13,8 @@
 #include <IOECore.h>
 #include <IOEApp.h>
 #include <IOERenderer.h>
+#include <OEMsgID.h>
+#include <IOEMsgMgr.h>
 
 #include <OEOS.h>
 
@@ -445,16 +447,28 @@ LRESULT CALLBACK COED3DDevice_Impl::MainWndProc(HWND hWnd, UINT uMsg, WPARAM wPa
 	case WM_LBUTTONDOWN:
 		{
 			SetCapture(hWnd);
+
 			short x = LOWORD(lParam);
 			short y = HIWORD(lParam);
-			g_pOEApp->OnLButtonDown(x, y);
+
+			// send message
+			COEMsg msg(OMI_LBUTTON_DOWN);
+			msg.Write((int)x);
+			msg.Write((int)y);
+			g_pOEMsgMgr->SendMessageAndBlocked(&msg);
 		}
 		break;
 	case WM_LBUTTONUP:
 		{
 			short x = LOWORD(lParam);
 			short y = HIWORD(lParam);
-			g_pOEApp->OnLButtonUp(x, y);
+
+			// send message
+			COEMsg msg(OMI_LBUTTON_UP);
+			msg.Write((int)x);
+			msg.Write((int)y);
+			g_pOEMsgMgr->SendMessageAndBlocked(&msg);
+
 			ReleaseCapture();
 		}
 		break;
@@ -462,19 +476,31 @@ LRESULT CALLBACK COED3DDevice_Impl::MainWndProc(HWND hWnd, UINT uMsg, WPARAM wPa
 		{
 			short x = LOWORD(lParam);
 			short y = HIWORD(lParam);
-			g_pOEApp->OnMouseMove(x-s_nLastMousePosX, y-s_nLastMousePosY);
+
+			// send message
+			COEMsg msg(OMI_MOUSE_MOVE);
+			msg.Write((int)x-s_nLastMousePosX);
+			msg.Write((int)y-s_nLastMousePosY);
+			g_pOEMsgMgr->SendMessageAndBlocked(&msg);
+
 			s_nLastMousePosX = x;
 			s_nLastMousePosY = y;
 		}
 		break;
-	case WM_KEYUP:
-		{
-			g_pOEApp->OnKeyUp((int)wParam);
-		}
-		break;
 	case WM_KEYDOWN:
 		{
-			g_pOEApp->OnKeyDown((int)wParam);
+			// send message
+			COEMsg msg(OMI_KEY_DOWN);
+			msg.Write((int)wParam);
+			g_pOEMsgMgr->SendMessageAndBlocked(&msg);
+		}
+		break;
+	case WM_KEYUP:
+		{
+			// send message
+			COEMsg msg(OMI_KEY_UP);
+			msg.Write((int)wParam);
+			g_pOEMsgMgr->SendMessageAndBlocked(&msg);
 		}
 		break;
 	case WM_DESTROY:

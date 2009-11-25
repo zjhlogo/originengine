@@ -26,7 +26,20 @@ public:
 	COEDataBufferWrite();
 	~COEDataBufferWrite();
 
+	/*!
+	 * \brief 读取指定缓冲区数据并写入自身缓冲区中
+	 * \param pBuffer
+	 * \param nSize
+	 * \return 
+	 */
 	bool Write(const void* pBuffer, uint nSize);
+
+	/*!
+	 * \brief 从 data buffer read 中读取指定大学数据并写入自身缓冲区中
+	 * \param pDBRead
+	 * \param nSize
+	 * \return 
+	 */
 	bool Write(COEDataBufferRead* pDBRead, uint nSize);
 	void Reset();
 

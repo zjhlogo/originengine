@@ -350,10 +350,6 @@
 				RelativePath=".\TestApp.cpp"
 				>
 			</File>
-			<File
-				RelativePath=".\TestMain.cpp"
-				>
-			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -374,10 +370,6 @@
 			</File>
 			<File
 				RelativePath=".\TestApp.h"
-				>
-			</File>
-			<File
-				RelativePath=".\TestMain.h"
 				>
 			</File>
 		</Filter>

@@ -42,15 +42,15 @@ public:
 	virtual void Update(float fDetailTime);
 	virtual void Render(float fDetailTime);
 
-	virtual void OnLButtonDown(int x, int y);
-	virtual void OnLButtonUp(int x, int y);
-	virtual void OnMouseMove(int dx, int dy);
-	virtual void OnKeyUp(int nKeyCode);
-	virtual void OnKeyDown(int nKeyCode);
-
 private:
 	void Init();
 	void Destroy();
+
+	bool OnLButtonDown(uint nMsgID, COEDataBufferRead* pDBRead);
+	bool OnLButtonUp(uint nMsgID, COEDataBufferRead* pDBRead);
+	bool OnMouseMove(uint nMsgID, COEDataBufferRead* pDBRead);
+	bool OnKeyUp(uint nMsgID, COEDataBufferRead* pDBRead);
+	bool OnKeyDown(uint nMsgID, COEDataBufferRead* pDBRead);
 
 	bool UpdateMovement(float fDetailTime);
 	bool UpdateRotation(float fDetailTime);
