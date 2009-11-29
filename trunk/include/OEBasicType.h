@@ -30,10 +30,10 @@ typedef unsigned __int64			uint64;
 //typedef NULL						NULL;
 
 #ifdef _UNICODE
-	#define t(x) L ## x
+	#define TS(x) L ## x
 	typedef wchar_t tchar;
 #else
-	#define t(x) x
+	#define TS(x) x
 	typedef char tchar;
 #endif // _UNICODE
 

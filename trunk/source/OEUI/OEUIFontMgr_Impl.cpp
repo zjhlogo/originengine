@@ -61,7 +61,7 @@ IOEUIFont* COEUIFontMgr_Impl::CreateBitmapFont(const tstring& strFileName)
 	COEUIBitmapFont_Impl* pFont = new COEUIBitmapFont_Impl(strLowName);
 	if (!pFont || !pFont->IsOK())
 	{
-		LOGOUT(t("IOEUIFontMgr::CreateFont Failed \"%s\""), strLowName.c_str());
+		LOGOUT(TS("IOEUIFontMgr::CreateFont Failed \"%s\""), strLowName.c_str());
 		SAFE_RELEASE(pFont);
 		return NULL;
 	}

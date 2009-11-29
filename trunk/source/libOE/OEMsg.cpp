@@ -106,7 +106,7 @@ bool COEMsg::ReadString(tstring& strOut)
 		return false;
 	}
 
-	strOut[nLength] = t('\0');
+	strOut[nLength] = TS('\0');
 	return true;
 }
 

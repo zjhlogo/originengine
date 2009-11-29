@@ -10,7 +10,7 @@
 #include <OEMsgID.h>
 #include <assert.h>
 
-IMPLEMENT_APP(CUIApp);
+IMPLEMENT_OEAPP(CUIApp);
 
 CUIApp::CUIApp()
 {
@@ -36,13 +36,13 @@ void CUIApp::Destroy()
 
 bool CUIApp::Initialize()
 {
-	m_pFont = g_pOEUIFontMgr->CreateBitmapFont(t("12px_Tahoma.fnt"));
+	m_pFont = g_pOEUIFontMgr->CreateBitmapFont(TS("12px_Tahoma.fnt"));
 	if (!m_pFont) return false;
 
 	m_pString = g_pOEUIStringMgr->CreateUIString(m_pFont);
 	if (!m_pString) return false;
 
-	m_pString->SetText(t("HANDLE g_hTickEvent = ::CreateEvent(NULL, FALSE, FALSE, NULL);"));
+	m_pString->SetText(TS("HANDLE g_hTickEvent = ::CreateEvent(NULL, FALSE, FALSE, NULL);"));
 
 	return true;
 }

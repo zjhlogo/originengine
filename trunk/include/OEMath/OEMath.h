@@ -9,6 +9,7 @@
 #define __OEMATH_H__
 
 extern const float OEMATH_PI;		// pi
+extern const float OEMATH_2PI;		// 2*pi
 extern const float OEMATH_G;		// acceleration due to gravity, ft/s^2
 extern const float OEMATH_RHO;		// desity of air at sea level, slugs/ft^3
 extern const float OEMATH_TOL;		// float type tolerance

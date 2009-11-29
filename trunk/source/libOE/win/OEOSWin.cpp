@@ -78,9 +78,9 @@ void COEOS::Terminate()
 	SAFE_DELETE(g_pOEFileMgr_Impl);
 }
 
-#define MODULE_INIT_FUNC_NAME t("OEModuleInit")
-#define MODULE_TERM_FUNC_NAME t("OEModuleTerm")
-#define MODULE_SYNC_FUNC_NAME t("OEModuleSyncInterfaces")
+#define MODULE_INIT_FUNC_NAME TS("OEModuleInit")
+#define MODULE_TERM_FUNC_NAME TS("OEModuleTerm")
+#define MODULE_SYNC_FUNC_NAME TS("OEModuleSyncInterfaces")
 
 typedef bool (*FUNC_MODULE_INIT)(COEHolder& Holder);
 typedef void (*FUNC_MODULE_TERM)(COEHolder& Holder);
@@ -184,14 +184,14 @@ bool COEOS::str2float(float& fValue, const tchar* pstrIn)
 void COEOS::int2str(tstring& strOut, int nValue)
 {
 	static tchar s_strBuffer[1024];
-	_sntprintf_s(s_strBuffer, 1024, t("%d"), nValue);
+	_sntprintf_s(s_strBuffer, 1024, TS("%d"), nValue);
 	strOut = s_strBuffer;
 }
 
 void COEOS::float2str(tstring& strOut, float fValue)
 {
 	static tchar s_strBuffer[1024];
-	_sntprintf_s(s_strBuffer, 1024, t("%f"), fValue);
+	_sntprintf_s(s_strBuffer, 1024, TS("%f"), fValue);
 	strOut = s_strBuffer;
 }
 
@@ -224,7 +224,7 @@ void COEOS::tolower(tstring& strOut, const tstring& strIn)
 
 void COEOS::GetFileName(tstring& strOut, const tstring& strIn)
 {
-	size_t nPos = strIn.rfind(t('.'));
+	size_t nPos = strIn.rfind(TS('.'));
 	if (nPos != tstring::npos)
 	{
 		strOut = strIn.substr(0, nPos);

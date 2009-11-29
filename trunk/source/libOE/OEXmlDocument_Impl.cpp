@@ -74,7 +74,7 @@ bool COEXmlDocument_Impl::SaveBuffer(tstring& strBuffer)
 {
 	if (!m_pNodeRoot) return false;
 
-	strBuffer += t("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
+	strBuffer += TS("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
 	return m_pNodeRoot->ToString(strBuffer, 0);
 }
 

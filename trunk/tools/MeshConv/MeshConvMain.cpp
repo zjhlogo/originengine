@@ -42,7 +42,7 @@ int main(int argc, char** argv)
 
 	tstring strFileOut;
 	COEOS::GetFileName(strFileOut, strFileOut);
-	strFileOut += t(".mesh");
+	strFileOut += TS(".mesh");
 
 	CConvMgr::Get().DoConvert(strFileIn, strFileOut);
 

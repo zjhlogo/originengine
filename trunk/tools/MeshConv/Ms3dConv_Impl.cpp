@@ -44,7 +44,7 @@ bool CMs3dConv_Impl::DoConvert(const tstring& strFileIn, const tstring& strFileO
 
 bool CMs3dConv_Impl::CanConvert(const tstring& strFileExt)
 {
-	if (strFileExt == t("ms3d")) return true;
+	if (strFileExt == TS("ms3d")) return true;
 	return false;
 }
 

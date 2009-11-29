@@ -10,7 +10,7 @@
 #include <OEMsgID.h>
 #include <assert.h>
 
-IMPLEMENT_APP(CMeshApp);
+IMPLEMENT_OEAPP(CMeshApp);
 
 CMeshApp::CMeshApp()
 {
@@ -56,10 +56,10 @@ bool CMeshApp::Initialize()
 	if (!m_pSimpleShape) return false;
 	if (!m_pSimpleShape->Initialize()) return false;
 
-	IOEXmlDocument* pDocument = g_pOEXmlMgr->CreateDocument(t("Model.xml"));
-	pDocument->SaveFile(t("Model2.xml"));
+	IOEXmlDocument* pDocument = g_pOEXmlMgr->CreateDocument(TS("Model.xml"));
+	pDocument->SaveFile(TS("Model2.xml"));
 
-	m_pModel = g_pOEModelMgr->CreateModelFromFile(t("Model.xml"));
+	m_pModel = g_pOEModelMgr->CreateModelFromFile(TS("Model.xml"));
 	if (!m_pModel) return false;
 
 	m_pNormalVertDecl = g_pOEDevice->CreateVertDecl(s_NormalVertDecl);
@@ -120,11 +120,11 @@ void CMeshApp::Render(float fDetailTime)
 		if (!pMaterial) continue;
 		if (pPiece->GetVertDecl() != pMaterial->nVertDecl) continue;
 
-		pMaterial->pShader->SetMatrix(t("g_matWorldViewProj"), matWorldViewProj);
-		pMaterial->pShader->SetTexture(t("g_texBase"), pMaterial->pTexture);
-		pMaterial->pShader->SetTexture(t("g_texNormal"), pMaterial->pTexNormal);
-		pMaterial->pShader->SetVector(t("g_vLightPos"), vLightPos);
-		pMaterial->pShader->SetMatrixArray(t("g_matBoneMatrix"), m_pModel->GetMatrixPalette(), m_pModel->GetNumMatrixPalette());
+		pMaterial->pShader->SetMatrix(TS("g_matWorldViewProj"), matWorldViewProj);
+		pMaterial->pShader->SetTexture(TS("g_texBase"), pMaterial->pTexture);
+		pMaterial->pShader->SetTexture(TS("g_texNormal"), pMaterial->pTexNormal);
+		pMaterial->pShader->SetVector(TS("g_vLightPos"), vLightPos);
+		pMaterial->pShader->SetMatrixArray(TS("g_matBoneMatrix"), m_pModel->GetMatrixPalette(), m_pModel->GetNumMatrixPalette());
 		g_pOERenderer->SetShader(pMaterial->pShader);
 
 		g_pOERenderer->DrawTriList(pPiece->GetVerts(), pPiece->GetNumVerts(), pPiece->GetIndis(), pPiece->GetNumIndis());

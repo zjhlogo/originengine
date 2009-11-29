@@ -52,9 +52,9 @@ void COEXmlAttribute_Impl::SetValue(const tstring& strValue)
 bool COEXmlAttribute_Impl::ToString(tstring& strNode)
 {
 	strNode += m_strName;
-	strNode += t("=\"");
+	strNode += TS("=\"");
 	strNode += m_strValue;
-	strNode += t("\"");
+	strNode += TS("\"");
 	return true;
 }
 

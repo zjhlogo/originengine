@@ -10,7 +10,7 @@
 #include <OEMsgID.h>
 #include <assert.h>
 
-IMPLEMENT_APP(CBumpMapApp);
+IMPLEMENT_OEAPP(CBumpMapApp);
 
 CBumpMapApp::CBumpMapApp()
 {
@@ -54,16 +54,16 @@ bool CBumpMapApp::Initialize()
 		IOEVertDecl::T_UNKNOWN, IOEVertDecl::U_UNKNOWN, 0,
 	};
 
-	m_pShader = g_pOEShaderMgr->CreateShader(s_Decl, t("bumpmap.fx"));
+	m_pShader = g_pOEShaderMgr->CreateShader(s_Decl, TS("bumpmap.fx"));
 	if (!m_pShader) return false;
 
-	m_pTexBase = g_pOETextureMgr->CreateTextureFromFile(t("rock.png"));
+	m_pTexBase = g_pOETextureMgr->CreateTextureFromFile(TS("rock.png"));
 	if (!m_pTexBase) return false;
 
-	m_pTexNormal = g_pOETextureMgr->CreateTextureFromFile(t("rock_normal.png"));
+	m_pTexNormal = g_pOETextureMgr->CreateTextureFromFile(TS("rock_normal.png"));
 	if (!m_pTexNormal) return false;
 
-	m_pTexHeight = g_pOETextureMgr->CreateTextureFromFile(t("rock_height.png"));
+	m_pTexHeight = g_pOETextureMgr->CreateTextureFromFile(TS("rock_height.png"));
 	if (!m_pTexHeight) return false;
 
 	m_pCamera = new CCamera();
@@ -114,19 +114,19 @@ void CBumpMapApp::Render(float fDetailTime)
 
 	CMatrix4x4 matWorldViewProj;
 	g_pOERenderer->GetTransform(matWorldViewProj, IOERenderer::TT_WORLD_VIEW_PROJ);
-	m_pShader->SetMatrix(t("g_matWorldViewProj"), matWorldViewProj);
+	m_pShader->SetMatrix(TS("g_matWorldViewProj"), matWorldViewProj);
 
 	s_fTotalTime += fDetailTime;
 	m_vLightPos.x = cos(s_fTotalTime)*10.0f;
 	m_vLightPos.y = 5.0f;
 	m_vLightPos.z = sin(s_fTotalTime)*10.0f;
 
-	m_pShader->SetVector(t("g_vLightPos"), m_vLightPos);
+	m_pShader->SetVector(TS("g_vLightPos"), m_vLightPos);
 
-	m_pShader->SetVector(t("g_vEyePos"), m_pCamera->GetEyePos());
-	m_pShader->SetTexture(t("g_texBase"), m_pTexBase);
-	m_pShader->SetTexture(t("g_texNormal"), m_pTexNormal);
-	m_pShader->SetTexture(t("g_texHeight"), m_pTexHeight);
+	m_pShader->SetVector(TS("g_vEyePos"), m_pCamera->GetEyePos());
+	m_pShader->SetTexture(TS("g_texBase"), m_pTexBase);
+	m_pShader->SetTexture(TS("g_texNormal"), m_pTexNormal);
+	m_pShader->SetTexture(TS("g_texHeight"), m_pTexHeight);
 
 	g_pOERenderer->SetShader(m_pShader);
 	g_pOERenderer->DrawTriList(s_Verts, 4, s_Indis, 6);
@@ -180,11 +180,11 @@ bool CBumpMapApp::OnKeyDown(uint nMsgID, COEDataBufferRead* pDBRead)
 	m_KeyDown[nKeyCode] = true;
 	if (m_KeyDown[0x1B]) g_pOECore->End();		// TODO: 0x1B == VK_ESCAPE
 
-	if (m_KeyDown['1']) m_pShader->SetTechnique(t("Normal"));
-	if (m_KeyDown['2']) m_pShader->SetTechnique(t("Parallax"));
-	if (m_KeyDown['3']) m_pShader->SetTechnique(t("BaseTex"));
-	if (m_KeyDown['4']) m_pShader->SetTechnique(t("NormalTex"));
-	if (m_KeyDown['5']) m_pShader->SetTechnique(t("HeightTex"));
+	if (m_KeyDown['1']) m_pShader->SetTechnique(TS("Normal"));
+	if (m_KeyDown['2']) m_pShader->SetTechnique(TS("Parallax"));
+	if (m_KeyDown['3']) m_pShader->SetTechnique(TS("BaseTex"));
+	if (m_KeyDown['4']) m_pShader->SetTechnique(TS("NormalTex"));
+	if (m_KeyDown['5']) m_pShader->SetTechnique(TS("HeightTex"));
 
 	return true;
 }
