@@ -72,15 +72,15 @@ bool COEFile_Impl::Open(const tstring& strFileName, uint nFlag)
 
 	if (OFF_READ == m_nFlag)
 	{
-		m_hFile = COEOS::FileOpen(strFileName.c_str(), t("rb"));
+		m_hFile = COEOS::FileOpen(strFileName.c_str(), TS("rb"));
 	}
 	else if (OFF_WRITE == m_nFlag)
 	{
-		m_hFile = COEOS::FileOpen(strFileName.c_str(), t("wb"));
+		m_hFile = COEOS::FileOpen(strFileName.c_str(), TS("wb"));
 	}
 	else if ((OFF_READ|OFF_WRITE) == m_nFlag)
 	{
-		m_hFile = COEOS::FileOpen(strFileName.c_str(), t("rwb"));
+		m_hFile = COEOS::FileOpen(strFileName.c_str(), TS("rwb"));
 	}
 
 	if (!m_hFile) return false;

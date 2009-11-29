@@ -23,19 +23,19 @@ IDirect3D9* g_pD3D = NULL;
 IDirect3DDevice9* g_pd3dDevice = NULL;
 HWND g_hWnd = NULL;
 
-static const tchar NODE_WINDOW_WIDTH[] = t("WindowWidth");
-static const tchar NODE_WINDOW_HEIGHT[] = t("WindowHeight");
-static const tchar NODE_CLASS_NAME[] = t("ClassName");
-static const tchar NODE_WINDOW_NAME[] = t("WindowName");
-static const tchar NODE_MAX_FPS[] = t("MaxFPS");
+static const tchar NODE_WINDOW_WIDTH[] = TS("WindowWidth");
+static const tchar NODE_WINDOW_HEIGHT[] = TS("WindowHeight");
+static const tchar NODE_CLASS_NAME[] = TS("ClassName");
+static const tchar NODE_WINDOW_NAME[] = TS("WindowName");
+static const tchar NODE_MAX_FPS[] = TS("MaxFPS");
 
 static const int WINDOW_WIDTH = 800;
 static const int WINDOW_HEIGHT = 600;
-static const tchar CLASS_NAME[] = t("OriginEngine");
-static const tchar WINDOW_NAME[] = t("Origin Engine");
+static const tchar CLASS_NAME[] = TS("OriginEngine");
+static const tchar WINDOW_NAME[] = TS("Origin Engine");
 static const float MAX_FPS = 60.0f;
 
-static const tstring PARAM_HWIND = t("HWIND");
+static const tstring PARAM_HWIND = TS("HWIND");
 
 COED3DDevice_Impl::COED3DDevice_Impl()
 {
@@ -113,7 +113,7 @@ void COED3DDevice_Impl::StartPerform()
 	UpdateWindow(g_hWnd);
 
 	// logout start perform
-	LOGOUT(t("StartPerforming ..."));
+	LOGOUT(TS("StartPerforming ..."));
 
 	// Create Render signal event
 	HANDLE hTickEvent = CreateEvent(NULL, FALSE, FALSE, NULL);
@@ -199,7 +199,7 @@ IOEVertDecl* COED3DDevice_Impl::CreateVertDecl(const IOEVertDecl::ELEMENT* pElem
 	if (!pDecl || !pDecl->IsOK())
 	{
 		SAFE_DELETE(pDecl);
-		LOGOUT(t("IOEDevice::CreateVertDecl Failed"));
+		LOGOUT(TS("IOEDevice::CreateVertDecl Failed"));
 		return NULL;
 	}
 
@@ -263,11 +263,11 @@ bool COED3DDevice_Impl::InternalCreateWindow()
 		NULL);
 	if (!g_hWnd)
 	{
-		LOGOUT(t("COED3DDevice_Impl::InternalCreateWindow Failed"));
+		LOGOUT(TS("COED3DDevice_Impl::InternalCreateWindow Failed"));
 		return false;
 	}
 
-	LOGOUT(t("COED3DDevice_Impl::InternalCreateWindow OK"));
+	LOGOUT(TS("COED3DDevice_Impl::InternalCreateWindow OK"));
 	return true;
 }
 
@@ -277,7 +277,7 @@ void COED3DDevice_Impl::InternalDestroyWindow()
 	{
 		DestroyWindow(g_hWnd);
 		g_hWnd = NULL;
-		LOGOUT(t("COED3DDevice_Impl::InternalDestroyWindow OK"));
+		LOGOUT(TS("COED3DDevice_Impl::InternalDestroyWindow OK"));
 	}
 }
 
@@ -288,7 +288,7 @@ bool COED3DDevice_Impl::InternalCreateD3D()
 	g_pD3D = Direct3DCreate9(D3D_SDK_VERSION);
 	if (g_pD3D == NULL)
 	{
-		LOGOUT(t("COED3DDevice_Impl::InternalCreateD3D Failed"));
+		LOGOUT(TS("COED3DDevice_Impl::InternalCreateD3D Failed"));
 		return false;
 	}
 
@@ -323,12 +323,12 @@ bool COED3DDevice_Impl::InternalCreateD3D()
 		&d3dpp,
 		&g_pd3dDevice)))
 	{
-		LOGOUT(t("COED3DDevice_Impl::InternalCreateD3D Failed"));
+		LOGOUT(TS("COED3DDevice_Impl::InternalCreateD3D Failed"));
 		InternalDestroyD3D();
 		return false;
 	}
 
-	LOGOUT(t("COED3DDevice_Impl::InternalCreateD3D OK"));
+	LOGOUT(TS("COED3DDevice_Impl::InternalCreateD3D OK"));
 
 	return true;
 }
@@ -346,7 +346,7 @@ void COED3DDevice_Impl::InternalDestroyD3D()
 		g_pD3D->Release();
 		g_pD3D = NULL;
 
-		LOGOUT(t("COED3DDevice_Impl::InternalDestroyD3D OK"));
+		LOGOUT(TS("COED3DDevice_Impl::InternalDestroyD3D OK"));
 	}
 
 	// TODO: check m_vD3DVertDecl whether is empty, and logout
@@ -411,7 +411,7 @@ void COED3DDevice_Impl::CalculateFPS()
 		if (m_pStringFPS)
 		{
 			tstring strText;
-			COEOS::strformat(strText, t("%.2f FPS"), m_fCurrFPS);
+			COEOS::strformat(strText, TS("%.2f FPS"), m_fCurrFPS);
 			m_pStringFPS->SetText(strText);
 		}
 	}
@@ -424,7 +424,7 @@ void COED3DDevice_Impl::RenderFPS()
 		SAFE_RELEASE(m_pStringFPS);
 		SAFE_RELEASE(m_pFontFPS);
 
-		m_pFontFPS = g_pOEUIFontMgr->CreateBitmapFont(t("12px_Tahoma.fnt"));
+		m_pFontFPS = g_pOEUIFontMgr->CreateBitmapFont(TS("12px_Tahoma.fnt"));
 		m_pStringFPS = g_pOEUIStringMgr->CreateUIString(m_pFontFPS);
 	}
 

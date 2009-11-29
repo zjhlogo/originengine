@@ -25,7 +25,7 @@ COEConfigFileMgr_Impl::~COEConfigFileMgr_Impl()
 
 void COEConfigFileMgr_Impl::Init()
 {
-	m_strConfigFile = t("Config.xml");
+	m_strConfigFile = TS("Config.xml");
 	m_pXmlDocument = NULL;
 }
 

@@ -6,11 +6,19 @@
  * \author zjhlogo (zjhlogo@163.com)
  */
 #include "WaterApp.h"
+#include "resource.h"
+#include "DlgWaveSetting.h"
+
 #include "../common/AppHelper.h"
+#include "../common/wxInitHelper.h"
+
 #include <OEMsgID.h>
 #include <assert.h>
 
-IMPLEMENT_APP(CWaterApp);
+#include <wx/fs_mem.h>
+#include <wx/xrc/xmlres.h>
+
+IMPLEMENT_OEAPP(CWaterApp);
 
 CWaterApp::CWaterApp()
 {
@@ -30,7 +38,7 @@ void CWaterApp::Init()
 	m_nIndis = 0;
 	m_pShader = NULL;
 	m_pCamera = NULL;
-	m_pDlgWaveParam = NULL;
+	m_pDlgWaveSetting = NULL;
 
 	m_bLButtonDown = false;
 	m_nMouseDetailX = 0;
@@ -91,7 +99,7 @@ bool CWaterApp::Initialize()
 		}
 	}
 
-	m_pShader = g_pOEShaderMgr->CreateShader(s_Decl, t("water.fx"));
+	m_pShader = g_pOEShaderMgr->CreateShader(s_Decl, TS("water.fx"));
 	if (!m_pShader) return false;
 
 	m_pCamera = new CCamera();
@@ -99,9 +107,11 @@ bool CWaterApp::Initialize()
 	m_pCamera->Initialize(CVector3(399.75037f, 532.55792f, -279.13873f), CVector3(399.73721f, 531.89636f, -278.38895f));
 	g_pOERenderer->SetTransform(IOERenderer::TT_VIEW, m_pCamera->GetViewMatrix());
 
-	m_pDlgWaveParam = new CDlgWaveParam();
-	if (!m_pDlgWaveParam) return false;
-	if (!m_pDlgWaveParam->Initialize()) return false;
+	// initialize gui
+	if (!wxInitHelper::Initialize()) return false;
+	if (!wxInitHelper::AddMemoryXrc(TS("XRC"), IDR_XRC_DLGWAVESETTING, TS("DlgWaveSetting.xrc"))) return false;
+	m_pDlgWaveSetting = new CDlgWaveSetting();
+	if (!m_pDlgWaveSetting || !m_pDlgWaveSetting->Initialize()) return false;
 
 	// registe message
 	g_pOEMsgMgr->RegisterMessage(OMI_LBUTTON_DOWN, this, (MSG_FUNC)&CWaterApp::OnLButtonDown);
@@ -115,7 +125,9 @@ bool CWaterApp::Initialize()
 
 void CWaterApp::Terminate()
 {
-	SAFE_DELETE(m_pDlgWaveParam);
+	SAFE_DELETE(m_pDlgWaveSetting);
+	wxInitHelper::Uninitialize();
+
 	SAFE_RELEASE(m_pShader);
 	SAFE_DELETE(m_pCamera);
 	SAFE_DELETE_ARRAY(m_pVerts);
@@ -133,25 +145,24 @@ void CWaterApp::Render(float fDetailTime)
 {
 	static float s_fTime = 0.0f;
 
-	//g_pOERenderer->SetFillMode(IOERenderer::FM_WIREFRAME);
+	g_pOERenderer->SetFillMode(IOERenderer::FM_WIREFRAME);
 
 	CMatrix4x4 matWorldViewProj;
 	g_pOERenderer->GetTransform(matWorldViewProj, IOERenderer::TT_WORLD_VIEW_PROJ);
-	m_pShader->SetMatrix(t("g_matWorldViewProj"), matWorldViewProj);
+	m_pShader->SetMatrix(TS("g_matWorldViewProj"), matWorldViewProj);
 
-	s_fTime += (fDetailTime*m_pDlgWaveParam->GetTimeScale());
-	m_pShader->SetFloat(t("fTime"), s_fTime);
+	s_fTime += (fDetailTime*m_pDlgWaveSetting->GetTimeScale());
+	m_pShader->SetFloat(TS("fTime"), s_fTime);
 
-	m_pShader->SetVector(t("vWaveFreq"), m_pDlgWaveParam->GetVecFreq()*m_pDlgWaveParam->GetFreqScale());
-	m_pShader->SetVector(t("vWaveSpeed"), m_pDlgWaveParam->GetVecSpeed()*m_pDlgWaveParam->GetSpeedScale());
-	m_pShader->SetVector(t("vWaveDirX"), m_pDlgWaveParam->GetVecDirX());
-	m_pShader->SetVector(t("vWaveDirY"), m_pDlgWaveParam->GetVecDirY());
-	m_pShader->SetVector(t("vWaveHeight"), m_pDlgWaveParam->GetVecHeight()*m_pDlgWaveParam->GetHeightScale());
-	m_pShader->SetVector(t("g_vEyePos"), m_pCamera->GetEyePos());
+	m_pShader->SetVector(TS("vWaveFreq"), m_pDlgWaveSetting->GetVecFreq()*m_pDlgWaveSetting->GetFreqScale());
+	m_pShader->SetVector(TS("vWaveSpeed"), m_pDlgWaveSetting->GetVecSpeed()*m_pDlgWaveSetting->GetSpeedScale());
+	m_pShader->SetVector(TS("vWaveDirX"), m_pDlgWaveSetting->GetVecDirX());
+	m_pShader->SetVector(TS("vWaveDirY"), m_pDlgWaveSetting->GetVecDirY());
+	m_pShader->SetVector(TS("vWaveHeight"), m_pDlgWaveSetting->GetVecHeight()*m_pDlgWaveSetting->GetHeightScale());
+	m_pShader->SetVector(TS("g_vEyePos"), m_pCamera->GetEyePos());
 
 	g_pOERenderer->SetShader(m_pShader);
 	g_pOERenderer->DrawTriList(m_pVerts, m_nVerts, m_pIndis, m_nIndis);
-	g_pOERenderer->SetShader(NULL);
 }
 
 bool CWaterApp::OnLButtonDown(uint nMsgID, COEDataBufferRead* pDBRead)
@@ -198,7 +209,7 @@ bool CWaterApp::OnKeyDown(uint nMsgID, COEDataBufferRead* pDBRead)
 	assert(nKeyCode > 0 && nKeyCode < KEY_COUNT);
 	m_KeyDown[nKeyCode] = true;
 	if (m_KeyDown[0x1B]) g_pOECore->End();		// TODO: 0x1B == VK_ESCAPE
-	else if (m_KeyDown[0x70]) m_pDlgWaveParam->Show(!m_pDlgWaveParam->IsVisible());		// TODO: 0x70 == VK_F1
+	else if (m_KeyDown[0x70]) m_pDlgWaveSetting->Show(!m_pDlgWaveSetting->IsVisible());		// TODO: 0x70 == VK_F1
 
 	return true;
 }

@@ -129,8 +129,8 @@ int CMeshExporter::DoExport(const TCHAR* name, ExpInterface* ei, Interface* i, B
 	// save to file
 	tstring strFile;
 	COEOS::GetFileName(strFile, name);
-	SaveMeshFile(strFile + t(".mesh"));
-	SaveBoneFile(strFile + t(".bone"));
+	SaveMeshFile(strFile + TS(".mesh"));
+	SaveBoneFile(strFile + TS(".bone"));
 
 	pIGame->ReleaseIGame();
 	pIGame = NULL;
@@ -1546,7 +1546,7 @@ void CMeshExporter::SortSkin(TV_SKIN& vSkin)
 bool CMeshExporter::ReadConfig()
 {
 	tstring strFile = GetCOREInterface()->GetDir(APP_PLUGCFG_DIR);
-	strFile += t("\\MeshExporterConfig.xml");
+	strFile += TS("\\MeshExporterConfig.xml");
 
 	IOEXmlDocument* pXmlDocument = g_pOEXmlMgr->CreateDocument(strFile);
 	if (!pXmlDocument) return false;
@@ -1558,16 +1558,16 @@ bool CMeshExporter::ReadConfig()
 		return false;
 	}
 
-	IOEXmlNode* pXmlAnimation = pXmlRoot->FirstChild(t("Animation"));
+	IOEXmlNode* pXmlAnimation = pXmlRoot->FirstChild(TS("Animation"));
 	if (!pXmlAnimation)
 	{
 		SAFE_RELEASE(pXmlDocument);
 		return false;
 	}
 
-	IOEXmlNode* pXmlOptimizeRotation = pXmlAnimation->FirstChild(t("OptimizeRotation"));
-	IOEXmlNode* pXmlOptimizePosition = pXmlAnimation->FirstChild(t("OptimizePosition"));
-	IOEXmlNode* pXmlOptimizeScale = pXmlAnimation->FirstChild(t("OptimizeScale"));
+	IOEXmlNode* pXmlOptimizeRotation = pXmlAnimation->FirstChild(TS("OptimizeRotation"));
+	IOEXmlNode* pXmlOptimizePosition = pXmlAnimation->FirstChild(TS("OptimizePosition"));
+	IOEXmlNode* pXmlOptimizeScale = pXmlAnimation->FirstChild(TS("OptimizeScale"));
 
 	if (!pXmlOptimizeRotation || !pXmlOptimizePosition || !pXmlOptimizeScale)
 	{
@@ -1579,21 +1579,21 @@ bool CMeshExporter::ReadConfig()
 	int nOptimizePosition = 0;
 	int nOptimizeScale = 0;
 
-	pXmlOptimizeRotation->GetAttribute(nOptimizeRotation, t("enable"));
+	pXmlOptimizeRotation->GetAttribute(nOptimizeRotation, TS("enable"));
 	if (nOptimizeRotation != 0)
 	{
 		m_bOptimizeRotation = true;
 		pXmlOptimizeRotation->GetText(m_fOptimizeRotation);
 	}
 
-	pXmlOptimizePosition->GetAttribute(nOptimizePosition, t("enable"));
+	pXmlOptimizePosition->GetAttribute(nOptimizePosition, TS("enable"));
 	if (nOptimizePosition != 0)
 	{
 		m_bOptimizePosition = true;
 		pXmlOptimizePosition->GetText(m_fOptimizePosition);
 	}
 
-	pXmlOptimizeScale->GetAttribute(nOptimizeScale, t("enable"));
+	pXmlOptimizeScale->GetAttribute(nOptimizeScale, TS("enable"));
 	if (nOptimizeScale != 0)
 	{
 		m_bOptimizeScale = true;

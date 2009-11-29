@@ -41,7 +41,7 @@ IOEXmlDocument* COEXmlMgr_Impl::CreateDocument()
 	if (!pXmlDocument || !pXmlDocument->IsOK())
 	{
 		SAFE_RELEASE(pXmlDocument);
-		LOGOUT(t("IOEXmlMgr::CreateDocument Failed"));
+		LOGOUT(TS("IOEXmlMgr::CreateDocument Failed"));
 		return NULL;
 	}
 
@@ -56,7 +56,7 @@ IOEXmlDocument* COEXmlMgr_Impl::CreateDocument(const tstring& strFile)
 	if (!pXmlDocument->LoadFile(strFile))
 	{
 		SAFE_RELEASE(pXmlDocument);
-		LOGOUT(t("IOEXmlMgr::CreateDocument Load File Failed"));
+		LOGOUT(TS("IOEXmlMgr::CreateDocument Load File Failed"));
 		return NULL;
 	}
 
@@ -69,7 +69,7 @@ IOEXmlNode* COEXmlMgr_Impl::CreateNode(const tstring& strName)
 	if (!pXmlNode || !pXmlNode->IsOK())
 	{
 		SAFE_RELEASE(pXmlNode);
-		LOGOUT(t("IOEXmlMgr::CreateNode Failed \"%s\""), strName.c_str());
+		LOGOUT(TS("IOEXmlMgr::CreateNode Failed \"%s\""), strName.c_str());
 		return NULL;
 	}
 
@@ -82,7 +82,7 @@ IOEXmlAttribute* COEXmlMgr_Impl::CreateAttribute(const tstring& strName)
 	if (!pXmlAttribute || !pXmlAttribute->IsOK())
 	{
 		SAFE_RELEASE(pXmlAttribute);
-		LOGOUT(t("IOEXmlMgr::CreateAttribute Failed \"%s\""), strName.c_str());
+		LOGOUT(TS("IOEXmlMgr::CreateAttribute Failed \"%s\""), strName.c_str());
 		return NULL;
 	}
 

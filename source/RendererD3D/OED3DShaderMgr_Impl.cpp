@@ -52,7 +52,7 @@ IOEShader* COED3DShaderMgr_Impl::CreateShader(const IOEVertDecl::ELEMENT* pEleme
 	COED3DShader_Impl* pShader = new COED3DShader_Impl(pElement, strLowName);
 	if (!pShader || !pShader->IsOK())
 	{
-		LOGOUT(t("IOEShaderMgr::CreateShader Failed \"%s\""), strFileName.c_str());
+		LOGOUT(TS("IOEShaderMgr::CreateShader Failed \"%s\""), strFileName.c_str());
 		SAFE_RELEASE(pShader);
 		return NULL;
 	}

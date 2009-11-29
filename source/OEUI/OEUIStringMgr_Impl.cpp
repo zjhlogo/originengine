@@ -38,7 +38,7 @@ IOEUIString* COEUIStringMgr_Impl::CreateUIString(IOEUIFont* pFont)
 	COEUIString_Impl* pString = new COEUIString_Impl(pFont);
 	if (!pString || !pString->IsOK())
 	{
-		LOGOUT(t("IOEUIStringMgr::CreateUIString Failed"));
+		LOGOUT(TS("IOEUIStringMgr::CreateUIString Failed"));
 		SAFE_DELETE(pString);
 		return NULL;
 	}

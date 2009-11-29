@@ -11,7 +11,7 @@
 #include <windows.h>
 #include <OEOS.h>
 
-#define IMPLEMENT_APP(appclass)																	\
+#define IMPLEMENT_OEAPP(appclass)																\
 int __stdcall WinMain(HINSTANCE hInst, HINSTANCE hPrevInst, LPSTR lpCmdLine, int nShowCmd)		\
 {																								\
 	if (COEOS::Initialize())																	\

@@ -25,7 +25,7 @@ COELogFileMgr_Impl::~COELogFileMgr_Impl()
 
 void COELogFileMgr_Impl::Init()
 {
-	m_strFile = t("log.txt");
+	m_strFile = TS("log.txt");
 	m_pLogFile = NULL;
 	m_bFirstCreate = true;
 }
@@ -57,7 +57,7 @@ void COELogFileMgr_Impl::LogOut(const tstring& strLogMsg)
 	COEOS::TimeLocal(LocalTime, COEOS::TimeNow());
 
 	tstring strText;
-	COEOS::strformat(strText, t("[%04d-%02d-%02d %02d:%02d:%02d]: %s\n"),
+	COEOS::strformat(strText, TS("[%04d-%02d-%02d %02d:%02d:%02d]: %s\n"),
 		LocalTime.nYear,
 		LocalTime.nMonth,
 		LocalTime.nDayInMonth,

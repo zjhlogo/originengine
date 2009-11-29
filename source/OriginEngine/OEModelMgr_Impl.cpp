@@ -38,7 +38,7 @@ IOEModel* COEModelMgr_Impl::CreateModelFromFile(const tstring& strFileName)
 	COEModel_Impl* pModel = new COEModel_Impl(strFileName);
 	if (!pModel || !pModel->IsOK())
 	{
-		LOGOUT(t("IOEModelMgr::CreateModelFromFile Failed"));
+		LOGOUT(TS("IOEModelMgr::CreateModelFromFile Failed"));
 		SAFE_DELETE(pModel);
 		return NULL;
 	}

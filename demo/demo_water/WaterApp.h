@@ -10,7 +10,8 @@
 
 #include <OEInterfaces.h>
 #include "../common/Camera.h"
-#include "DlgWaveParam.h"
+
+class CDlgWaveSetting;
 
 class CWaterApp : public IOEApp
 {
@@ -63,7 +64,7 @@ private:
 
 	IOEShader* m_pShader;
 	CCamera* m_pCamera;
-	CDlgWaveParam* m_pDlgWaveParam;
+	CDlgWaveSetting* m_pDlgWaveSetting;
 
 	bool m_bLButtonDown;
 	int m_nMouseDetailX;

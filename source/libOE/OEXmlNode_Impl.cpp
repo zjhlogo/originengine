@@ -358,20 +358,20 @@ bool COEXmlNode_Impl::ToString(tstring& strNode, int nLevel /* = 0 */)
 	// text node
 	if (IsTextNode())
 	{
-		strNode.append(nLevel, t('\t'));
+		strNode.append(nLevel, TS('\t'));
 		strNode += m_strValue;
 		return true;
 	}
 
-	strNode.append(nLevel, t('\t'));
-	strNode += t("<");
+	strNode.append(nLevel, TS('\t'));
+	strNode += TS("<");
 	strNode += m_strName;
 
 	int nAttributeCount = 0;
 	COEXmlAttribute_Impl* pAttribute = m_pAttribute;
 	while (pAttribute)
 	{
-		strNode += t(" ");
+		strNode += TS(" ");
 		pAttribute->ToString(strNode);
 		++nAttributeCount;
 		pAttribute = pAttribute->GetNextSibling();
@@ -382,15 +382,15 @@ bool COEXmlNode_Impl::ToString(tstring& strNode, int nLevel /* = 0 */)
 		// text node
 		if (m_pNodeChild->m_pNodeSibling == NULL && m_pNodeChild->GetName().empty())
 		{
-			strNode += t(">");
+			strNode += TS(">");
 			strNode += m_pNodeChild->m_strValue;
-			strNode += t("</");
+			strNode += TS("</");
 			strNode += m_strName;
-			strNode += t(">\n");
+			strNode += TS(">\n");
 		}
 		else
 		{
-			strNode += t(">\n");
+			strNode += TS(">\n");
 
 			COEXmlNode_Impl* pNodeChild = m_pNodeChild;
 			while (pNodeChild)
@@ -399,15 +399,15 @@ bool COEXmlNode_Impl::ToString(tstring& strNode, int nLevel /* = 0 */)
 				pNodeChild = pNodeChild->m_pNodeSibling;
 			}
 
-			strNode.append(nLevel, t('\t'));
-			strNode += t("</");
+			strNode.append(nLevel, TS('\t'));
+			strNode += TS("</");
 			strNode += m_strName;
-			strNode += t(">\n");
+			strNode += TS(">\n");
 		}
 	}
 	else
 	{
-		strNode += t("/>\n");
+		strNode += TS("/>\n");
 	}
 
 	return true;

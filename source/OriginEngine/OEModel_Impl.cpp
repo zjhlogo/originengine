@@ -122,10 +122,10 @@ void COEModel_Impl::Render(float fDetailTime)
 		if (nMaterialID >= (int)m_vMaterial.size()) continue;
 		if (pPiece->GetVertDecl() != m_vMaterial[nMaterialID].nVertDecl) continue;
 
-		m_vMaterial[nMaterialID].pShader->SetMatrix(t("g_matWorldViewProj"), matWorldViewProj);
-		m_vMaterial[nMaterialID].pShader->SetTexture(t("g_texBase"), m_vMaterial[nMaterialID].pTexture);
-		m_vMaterial[nMaterialID].pShader->SetTexture(t("g_texNormal"), m_vMaterial[nMaterialID].pTexNormal);
-		m_vMaterial[nMaterialID].pShader->SetMatrixArray(t("g_matBoneMatrix"), &m_vmatSkin[0], m_vmatSkin.size());
+		m_vMaterial[nMaterialID].pShader->SetMatrix(TS("g_matWorldViewProj"), matWorldViewProj);
+		m_vMaterial[nMaterialID].pShader->SetTexture(TS("g_texBase"), m_vMaterial[nMaterialID].pTexture);
+		m_vMaterial[nMaterialID].pShader->SetTexture(TS("g_texNormal"), m_vMaterial[nMaterialID].pTexNormal);
+		m_vMaterial[nMaterialID].pShader->SetMatrixArray(TS("g_matBoneMatrix"), &m_vmatSkin[0], m_vmatSkin.size());
 		g_pOERenderer->SetShader(m_vMaterial[nMaterialID].pShader);
 
 		SoftSkinned(pPiece, m_vmatSkin);
@@ -191,7 +191,7 @@ bool COEModel_Impl::Create(const tstring& strFile)
 	IOEXmlNode* pXmlRoot = pXmlDocument->GetRootNode();
 
 	// create mesh
-	IOEXmlNode* pXmlMesh = pXmlRoot->FirstChild(t("Mesh"));
+	IOEXmlNode* pXmlMesh = pXmlRoot->FirstChild(TS("Mesh"));
 	if (!CreateMesh(pXmlMesh))
 	{
 		SAFE_RELEASE(pXmlDocument);
@@ -199,15 +199,15 @@ bool COEModel_Impl::Create(const tstring& strFile)
 	}
 
 	// create bone
-	IOEXmlNode* pXmlBone = pXmlRoot->FirstChild(t("Bone"));
+	IOEXmlNode* pXmlBone = pXmlRoot->FirstChild(TS("Bone"));
 	m_bAnimation = CreateBone(pXmlBone);
 
 	// create materials
-	IOEXmlNode* pXmlMaterials = pXmlRoot->FirstChild(t("Materials"));
+	IOEXmlNode* pXmlMaterials = pXmlRoot->FirstChild(TS("Materials"));
 	if (!CreateMaterials(pXmlMaterials))
 	{
 		SAFE_RELEASE(pXmlDocument);
-		LOGOUT(t("IOEModel::CreateMaterials failed"));
+		LOGOUT(TS("IOEModel::CreateMaterials failed"));
 		return false;
 	}
 
@@ -303,19 +303,19 @@ bool COEModel_Impl::CreateMaterials(IOEXmlNode* pXmlMaterials)
 	if (!pXmlMaterials) return false;
 
 	int nMaterialCount = 0;
-	if (!pXmlMaterials->GetAttribute(nMaterialCount, t("count"))) return false;
+	if (!pXmlMaterials->GetAttribute(nMaterialCount, TS("count"))) return false;
 
-	IOEXmlNode* pXmlMaterial = pXmlMaterials->FirstChild(t("Material"));
+	IOEXmlNode* pXmlMaterial = pXmlMaterials->FirstChild(TS("Material"));
 	while (nMaterialCount)
 	{
 		if (!pXmlMaterial) return false;
 
 		MATERIAL Material;
-		if (!pXmlMaterial->GetAttribute(Material.nID, t("id"))) return false;
-		if (!pXmlMaterial->GetAttribute(Material.nVertDecl, t("vertdecl"))) return false;
-		if (!pXmlMaterial->GetAttribute(Material.strShaderFile, t("shader"))) return false;
-		if (!pXmlMaterial->GetAttribute(Material.strTextureFile, t("texture"))) return false;
-		if (!pXmlMaterial->GetAttribute(Material.strTexNormalFile, t("texnormal"))) return false;
+		if (!pXmlMaterial->GetAttribute(Material.nID, TS("id"))) return false;
+		if (!pXmlMaterial->GetAttribute(Material.nVertDecl, TS("vertdecl"))) return false;
+		if (!pXmlMaterial->GetAttribute(Material.strShaderFile, TS("shader"))) return false;
+		if (!pXmlMaterial->GetAttribute(Material.strTextureFile, TS("texture"))) return false;
+		if (!pXmlMaterial->GetAttribute(Material.strTexNormalFile, TS("texnormal"))) return false;
 
 		Material.pShader = CreateShader(Material.nVertDecl, Material.strShaderFile);
 		if (!Material.pShader) return false;
@@ -337,7 +337,7 @@ bool COEModel_Impl::CreateMaterials(IOEXmlNode* pXmlMaterials)
 
 		m_vMaterial.push_back(Material);
 
-		pXmlMaterial = pXmlMaterial->NextSibling(t("Material"));
+		pXmlMaterial = pXmlMaterial->NextSibling(TS("Material"));
 		--nMaterialCount;
 	}
 

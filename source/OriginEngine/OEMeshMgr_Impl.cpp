@@ -53,7 +53,7 @@ IOEMesh* COEMeshMgr_Impl::CreateMeshFromFile(const tstring& strFileName)
 	COEMesh_Impl* pMesh = new COEMesh_Impl(strFileName);
 	if (!pMesh || !pMesh->IsOK())
 	{
-		LOGOUT(t("IOEMeshMgr::CreateMeshFromFile Failed"));
+		LOGOUT(TS("IOEMeshMgr::CreateMeshFromFile Failed"));
 		SAFE_RELEASE(pMesh);
 		return NULL;
 	}

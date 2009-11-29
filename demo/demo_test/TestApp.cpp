@@ -10,7 +10,7 @@
 #include <OEMsgID.h>
 #include <assert.h>
 
-IMPLEMENT_APP(CTestApp);
+IMPLEMENT_OEAPP(CTestApp);
 
 CTestApp::CTestApp()
 {
