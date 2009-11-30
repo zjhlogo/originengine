@@ -63,6 +63,7 @@ const CMatrix4x4& CCamera::GetViewMatrix() const
 void CCamera::Rotate(const CVector3& vDir, float fRadian)
 {
 	CQuaternion qr(vDir, fRadian);
+	qr.Normalize();
 
 	CQuaternion t = qr*m_vForword*(-qr);
 	CVector3 vNewForword(t.x, t.y, t.z);

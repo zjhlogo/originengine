@@ -20,6 +20,8 @@
 #include <OEFmtMesh.h>
 #include <OEFmtBone.h>
 
+class CDlgMeshExporterOption;
+
 class CMeshExporter : public SceneExport
 {
 public:
@@ -251,6 +253,8 @@ private:
 
 	bool m_bOptimizeScale;
 	float m_fOptimizeScale;
+
+	CDlgMeshExporterOption* m_pDlgMeshExpOption;
 
 };
 #endif // __MESHEXPORTER_H__

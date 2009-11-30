@@ -7,10 +7,12 @@
  */
 #include "DllEntry.h"
 #include "MeshExporterDesc.h"
+#include "resource.h"
+#include "../../demo/common/wxInitHelper.h"
 #include <OEOS.h>
 
-HINSTANCE g_hInst = NULL;
-BOOL g_bCtrlInit = FALSE;
+static HINSTANCE g_hInst = NULL;
+static BOOL g_bCtrlInit = FALSE;
 
 BOOL WINAPI DllMain(HINSTANCE hInstDLL, DWORD fdwReason, LPVOID lpvReserved)
 {
@@ -18,10 +20,13 @@ BOOL WINAPI DllMain(HINSTANCE hInstDLL, DWORD fdwReason, LPVOID lpvReserved)
 	if (!g_bCtrlInit)
 	{
 		g_bCtrlInit = TRUE;
-		//InitCustomControls(g_hInst);
 		InitCommonControls();
+		InitCustomControls(g_hInst);
 
 		COEOS::Initialize(COEOS::IS_FILE | COEOS::IS_XML);
+
+		wxInitHelper::Initialize(g_hInst);
+		wxInitHelper::AddMemoryXrc(TS("XRC"), IDR_XRC_DLGMESHEXPORTEROPTION, TS("DlgMeshExporterOption.xrc"));
 	}
 
 	return TRUE;
