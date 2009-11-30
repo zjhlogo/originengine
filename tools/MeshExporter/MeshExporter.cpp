@@ -42,6 +42,7 @@ void CMeshExporter::Init()
 	m_bOptimizeScale = false;
 	m_fOptimizeScale = 0.0f;
 
+	m_pParentWindow = NULL;
 	m_pDlgMeshExpOption = NULL;
 }
 
@@ -108,19 +109,18 @@ int CMeshExporter::DoExport(const TCHAR* name, ExpInterface* ei, Interface* i, B
 	// show the option dialog
 	if (!m_pDlgMeshExpOption)
 	{
+		m_pParentWindow = new wxWindow();
+		m_pParentWindow->SetHWND(m_pInterface->GetMAXHWnd());
+
 		m_pDlgMeshExpOption = new CDlgMeshExporterOption();
-		if (!m_pDlgMeshExpOption || !m_pDlgMeshExpOption->Initialize())
+		if (!m_pDlgMeshExpOption || !m_pDlgMeshExpOption->Initialize(m_pParentWindow))
 		{
 			wxDELETE(m_pDlgMeshExpOption);
 			return FALSE;
 		}
 	}
 
-	wxWindow win;
-	win.SetHWND(GetActiveWindow());
-	m_pDlgMeshExpOption->Reparent(&win);
 	m_pDlgMeshExpOption->ShowModal();
-	win.SetHWND(NULL);
 
 	// initialize
 	m_pInterface->ProgressStart(_T("Initialize IGame interfaces"), TRUE, DummyFunc, NULL);

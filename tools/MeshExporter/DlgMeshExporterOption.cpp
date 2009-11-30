@@ -18,9 +18,9 @@ CDlgMeshExporterOption::~CDlgMeshExporterOption()
 	// TODO: 
 }
 
-bool CDlgMeshExporterOption::Initialize()
+bool CDlgMeshExporterOption::Initialize(wxWindow* pParent)
 {
-	if (!wxXmlResource::Get()->LoadDialog(this, NULL, wxT("IDD_MESH_EXPORTER_OPTION"))) return false;
+	if (!wxXmlResource::Get()->LoadDialog(this, pParent, wxT("IDD_MESH_EXPORTER_OPTION"))) return false;
 
 	return true;
 }

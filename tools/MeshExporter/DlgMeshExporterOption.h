@@ -16,7 +16,7 @@ public:
 	CDlgMeshExporterOption();
 	virtual ~CDlgMeshExporterOption();
 
-	bool Initialize();
+	bool Initialize(wxWindow* pParent);
 
 private:
 

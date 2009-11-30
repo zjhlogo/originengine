@@ -21,6 +21,7 @@
 #include <OEFmtBone.h>
 
 class CDlgMeshExporterOption;
+class wxWindow;
 
 class CMeshExporter : public SceneExport
 {
@@ -254,6 +255,7 @@ private:
 	bool m_bOptimizeScale;
 	float m_fOptimizeScale;
 
+	wxWindow* m_pParentWindow;
 	CDlgMeshExporterOption* m_pDlgMeshExpOption;
 
 };
