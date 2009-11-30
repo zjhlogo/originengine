@@ -9,6 +9,8 @@
 #include <OEInterfaces.h>
 #include <OEOS.h>
 
+#include "DlgMeshExporterOption.h"
+
 DWORD WINAPI DummyFunc(LPVOID arg)
 {
 	return 0;
@@ -39,6 +41,8 @@ void CMeshExporter::Init()
 
 	m_bOptimizeScale = false;
 	m_fOptimizeScale = 0.0f;
+
+	m_pDlgMeshExpOption = NULL;
 }
 
 void CMeshExporter::Destroy()
@@ -100,6 +104,23 @@ int CMeshExporter::DoExport(const TCHAR* name, ExpInterface* ei, Interface* i, B
 {
 	Cleanup();
 	m_pInterface = i;
+
+	// show the option dialog
+	if (!m_pDlgMeshExpOption)
+	{
+		m_pDlgMeshExpOption = new CDlgMeshExporterOption();
+		if (!m_pDlgMeshExpOption || !m_pDlgMeshExpOption->Initialize())
+		{
+			wxDELETE(m_pDlgMeshExpOption);
+			return FALSE;
+		}
+	}
+
+	wxWindow win;
+	win.SetHWND(GetActiveWindow());
+	m_pDlgMeshExpOption->Reparent(&win);
+	m_pDlgMeshExpOption->ShowModal();
+	win.SetHWND(NULL);
 
 	// initialize
 	m_pInterface->ProgressStart(_T("Initialize IGame interfaces"), TRUE, DummyFunc, NULL);

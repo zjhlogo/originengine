@@ -9,11 +9,12 @@
 #define __WXINITHELPER_H__
 
 #include <OEBasicType.h>
+#include <windows.h>
 
 class wxInitHelper
 {
 public:
-	static bool Initialize();
+	static bool Initialize(HINSTANCE hInst = NULL);
 	static void Uninitialize();
 
 	static bool AddMemoryXrc(const tstring& strResType, uint nResID, const tstring& strMemoryFileName);

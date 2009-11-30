@@ -206,7 +206,7 @@ void CDlgWaveSetting::InitCtrlInfo()
 	InitCtrlInfoItem(CIT_HEIGHT4, wxT("IDC_SLD_HEIGHT4"), wxT("IDC_LBL_HEIGHT4"), 0, 100, 0.0f, 100.0f, m_vVecHeight.w);
 
 	InitCtrlInfoItem(CIT_TIME_SCALE, wxT("IDC_SLD_TIMESCALE"), wxT("IDC_LBL_TIMESCALE"), 0, 100, 0.0f, 1.0f, m_fTimeScale);
-	InitCtrlInfoItem(CIT_FREQ_SCALE, wxT("IDC_SLD_FREQUENCYSCALE"), wxT("IDC_LBL_FREQUENCYSCALE"), 0, 100, 0.0f, 1.0f, m_fFreqScale);
+	InitCtrlInfoItem(CIT_FREQ_SCALE, wxT("IDC_SLD_FREQUENCYSCALE"), wxT("IDC_LBL_FREQUENCYSCALE"), 0, 100, 0.0f, 10.0f, m_fFreqScale);
 	InitCtrlInfoItem(CIT_SPEED_SCALE, wxT("IDC_SLD_SPEEDSCALE"), wxT("IDC_LBL_SPEEDSCALE"), 0, 100, 0.0f, 1.0f, m_fSpeedScale);
 	InitCtrlInfoItem(CIT_HEIGHT_SCALE, wxT("IDC_SLD_HEIGHTSCALE"), wxT("IDC_LBL_HEIGHTSCALE"), 0, 100, 0.0f, 1.0f, m_fHeightScale);
 }

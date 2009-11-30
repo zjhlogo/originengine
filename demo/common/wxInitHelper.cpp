@@ -6,15 +6,19 @@
  * \author zjhlogo (zjhlogo@163.com)
  */
 #include "wxInitHelper.h"
-#include <wx/wx.h>
+#include <wx/app.h>
 #include <wx/fs_mem.h>
 #include <wx/xrc/xmlres.h>
 
 IMPLEMENT_APP_NO_MAIN(wxApp);
 
-bool wxInitHelper::Initialize()
+static HINSTANCE g_hInst = NULL;
+
+bool wxInitHelper::Initialize(HINSTANCE hInst /* = NULL */)
 {
 	if (!wxInitialize()) return false;
+
+	g_hInst = hInst;
 
 	// add memory file system
 	wxFileSystem::AddHandler(new wxMemoryFSHandler());
@@ -25,17 +29,18 @@ bool wxInitHelper::Initialize()
 
 void wxInitHelper::Uninitialize()
 {
+	g_hInst = NULL;
 	wxUninitialize();
 }
 
 bool wxInitHelper::AddMemoryXrc(const tstring& strResType, uint nResID, const tstring& strMemoryFileName)
 {
 	// load the resource
-	HRSRC hRes = FindResource(NULL, MAKEINTRESOURCE(nResID), strResType.c_str());
-	HGLOBAL hResData = LoadResource(NULL, hRes);
+	HRSRC hRes = FindResource(g_hInst, MAKEINTRESOURCE(nResID), strResType.c_str());
+	HGLOBAL hResData = LoadResource(g_hInst, hRes);
 	void* pResBuffer = LockResource(hResData);
 	if (!pResBuffer) return false;
-	int nResSize = SizeofResource(NULL, hRes);
+	int nResSize = SizeofResource(g_hInst, hRes);
 
 	// add resource into memory file system
 	wxMemoryFSHandler::AddFile(strMemoryFileName.c_str(), pResBuffer, nResSize);
