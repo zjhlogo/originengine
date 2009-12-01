@@ -19,7 +19,7 @@
     <string name="copyright_string">"zjhlogo@163.com"</string>
     <string name="resource_prefix">""</string>
     <bool name="use_two_step_construction">0</bool>
-    <bool name="use_enums">0</bool>
+    <bool name="use_enums">1</bool>
     <string name="current_platform">"&lt;All platforms&gt;"</string>
     <string name="target_wx_version">"2.8.10"</string>
     <string name="cpp_header_comment">"/////////////////////////////////////////////////////////////////////////////
