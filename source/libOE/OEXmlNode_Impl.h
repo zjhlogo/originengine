@@ -23,10 +23,12 @@ public:
 	virtual const tstring& GetValue();
 	virtual void SetValue(const tstring& strValue);
 
+	virtual bool GetAttribute(bool& bValue, const tstring& strName);
 	virtual bool GetAttribute(int& nValue, const tstring& strName);
 	virtual bool GetAttribute(float& fValue, const tstring& strName);
 	virtual bool GetAttribute(tstring& strValue, const tstring& strName);
 
+	virtual bool SetAttribute(const tstring& strName, bool bValue);
 	virtual bool SetAttribute(const tstring& strName, int nValue);
 	virtual bool SetAttribute(const tstring& strName, float fValue);
 	virtual bool SetAttribute(const tstring& strName, const tstring& strValue);

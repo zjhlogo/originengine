@@ -9,6 +9,7 @@
 #include "XmlGenerator.h"
 
 #include <IOEFileMgr.h>
+#include <IOEXmlMgr.h>
 #include <OEOS.h>
 
 COEXmlDocument_Impl::COEXmlDocument_Impl()
@@ -85,5 +86,15 @@ IOEXmlNode* COEXmlDocument_Impl::GetDeclNode()
 
 IOEXmlNode* COEXmlDocument_Impl::GetRootNode()
 {
+	return m_pNodeRoot;
+}
+
+IOEXmlNode* COEXmlDocument_Impl::InsertRootNode(const tstring& strName)
+{
+	if (m_pNodeRoot) return NULL;
+
+	m_pNodeRoot = (COEXmlNode_Impl*)g_pOEXmlMgr->CreateNode(strName);
+	if (!m_pNodeRoot) return NULL;
+
 	return m_pNodeRoot;
 }

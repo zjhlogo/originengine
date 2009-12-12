@@ -56,9 +56,6 @@ bool CMeshApp::Initialize()
 	if (!m_pSimpleShape) return false;
 	if (!m_pSimpleShape->Initialize()) return false;
 
-	IOEXmlDocument* pDocument = g_pOEXmlMgr->CreateDocument(TS("Model.xml"));
-	pDocument->SaveFile(TS("Model2.xml"));
-
 	m_pModel = g_pOEModelMgr->CreateModelFromFile(TS("Model.xml"));
 	if (!m_pModel) return false;
 

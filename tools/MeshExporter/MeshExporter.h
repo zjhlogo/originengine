@@ -235,6 +235,8 @@ private:
 	bool ReadConfig();
 	bool SaveConfig();
 
+	bool ShowOptionDialog();
+
 private:
 	TV_NODE_INFO m_vMeshNode;
 	TV_NODE_INFO m_vBoneNode;

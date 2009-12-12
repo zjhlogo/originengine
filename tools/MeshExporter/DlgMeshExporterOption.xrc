@@ -3,7 +3,6 @@
     <object class="wxDialog" name="IDD_MESH_EXPORTER_OPTION">
         <style>wxCAPTION|wxRESIZE_BORDER|wxSYSTEM_MENU|wxCLOSE_BOX|wxTAB_TRAVERSAL</style>
         <exstyle>wxWS_EX_BLOCK_EVENTS</exstyle>
-        <size>400,300</size>
         <title>Mesh Exporter Option</title>
         <centered>1</centered>
         <object class="wxBoxSizer">
@@ -19,7 +18,7 @@
                         <border>5</border>
                         <object class="wxCheckBox" name="IDC_CHK_EXPORTMESH">
                             <label>Export Mesh</label>
-                            <checked>0</checked>
+                            <checked>1</checked>
                         </object>
                     </object>
                     <object class="sizeritem">
@@ -29,19 +28,19 @@
                             <style>wxLB_SINGLE</style>
                             <content>
                                 <item>Position (float x, y, z)</item>
-                                <item>Texture UV 0 (float u, v)</item>
-                                <item>Texture UV 1 (float u, v)</item>
-                                <item>Texture UV 2 (float u, v)</item>
-                                <item>Texture UV 3 (float u, v)</item>
-                                <item>Texture UV 4 (float u, v)</item>
-                                <item>Texture UV 5 (float u, v)</item>
-                                <item>Texture UV 6 (float u, v)</item>
-                                <item>Texture UV 7 (float u, v)</item>
-                                <item>Vertex Color (uint color)</item>
-                                <item>Face Normal (float nx, ny, nz)</item>
-                                <item>Face Tangent (float tx, ty, tz)</item>
-                                <item>Face Binormal (float bx, by, bz)</item>
-                                <item>Skelection Vertex (uchar boneindices[4]; float boneweight[4])</item>
+                                <item>TexCoord0 (float u0, v0)</item>
+                                <item>TexCoord1 (float u1, v1)</item>
+                                <item>TexCoord2 (float u2, v2)</item>
+                                <item>TexCoord3 (float u3, v3)</item>
+                                <item>TexCoord4 (float u4, v4)</item>
+                                <item>TexCoord5 (float u5, v5)</item>
+                                <item>TexCoord6 (float u6, v6)</item>
+                                <item>TexCoord7 (float u7, v7)</item>
+                                <item>Color (uint color)</item>
+                                <item>Normal (float nx, ny, nz)</item>
+                                <item>Tangent (float tx, ty, tz)</item>
+                                <item>Binormal (float bx, by, bz)</item>
+                                <item>Skelection (uchar indices[4]; float weight[4])</item>
                             </content>
                         </object>
                     </object>
@@ -58,7 +57,7 @@
                         <border>5</border>
                         <object class="wxCheckBox" name="IDC_CHK_EXPORTSKELECTON">
                             <label>Export Skelecton</label>
-                            <checked>0</checked>
+                            <checked>1</checked>
                         </object>
                     </object>
                     <object class="sizeritem">

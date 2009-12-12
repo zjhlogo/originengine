@@ -46,10 +46,12 @@ public:
 	static void SyncModuleInterfaces(OEMODULE hModule);
 
 	// string relate
+	static bool str2bool(bool& bValue, const tchar* pstrIn);
 	static bool str2int(int& nValue, const tchar* pstrIn);
 	static bool str2float(float& fValue, const tchar* pstrIn);
 	static bool tchar2char(std::string& strOut, const tchar* pstrIn);
 	static bool char2tchar(tstring& strOut, const char* pstrIn);
+	static bool bool2str(tstring& strOut, bool bValue);
 	static void int2str(tstring& strOut, int nValue);
 	static void float2str(tstring& strOut, float fValue);
 	static bool strformat(tstring& strOut, const tchar* strFormat, ...);
