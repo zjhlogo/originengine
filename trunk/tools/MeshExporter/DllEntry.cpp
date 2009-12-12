@@ -11,22 +11,51 @@
 #include "../../demo/common/wxInitHelper.h"
 #include <OEOS.h>
 
-static HINSTANCE g_hInst = NULL;
-static BOOL g_bCtrlInit = FALSE;
+static int g_nInitCount = 0;
 
-BOOL WINAPI DllMain(HINSTANCE hInstDLL, DWORD fdwReason, LPVOID lpvReserved)
+static void Initialize(HINSTANCE hInstDLL)
 {
-	g_hInst = hInstDLL;
-	if (!g_bCtrlInit)
+	if (g_nInitCount <= 0)
 	{
-		g_bCtrlInit = TRUE;
 		InitCommonControls();
-		InitCustomControls(g_hInst);
+		InitCustomControls(hInstDLL);
 
 		COEOS::Initialize(COEOS::IS_FILE | COEOS::IS_XML);
 
-		wxInitHelper::Initialize(g_hInst);
+		wxInitHelper::Initialize(hInstDLL);
 		wxInitHelper::AddMemoryXrc(TS("XRC"), IDR_XRC_DLGMESHEXPORTEROPTION, TS("DlgMeshExporterOption.xrc"));
+	}
+
+	++g_nInitCount;
+}
+
+static void Uninitialize()
+{
+	--g_nInitCount;
+
+	if (g_nInitCount <= 0)
+	{
+		wxInitHelper::Uninitialize();
+		COEOS::Terminate();
+	}
+}
+
+BOOL WINAPI DllMain(HINSTANCE hInstDLL, DWORD fdwReason, LPVOID lpvReserved)
+{
+	switch (fdwReason)
+	{
+	case DLL_PROCESS_ATTACH:
+	case DLL_THREAD_ATTACH:
+		{
+			Initialize(hInstDLL);
+		}
+		break;
+	case DLL_THREAD_DETACH:
+	case DLL_PROCESS_DETACH:
+		{
+			Uninitialize();
+		}
+		break;
 	}
 
 	return TRUE;

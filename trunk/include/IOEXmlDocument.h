@@ -25,6 +25,8 @@ public:
 
 	virtual IOEXmlNode* GetDeclNode() = 0;
 	virtual IOEXmlNode* GetRootNode() = 0;
+
+	virtual IOEXmlNode* InsertRootNode(const tstring& strName) = 0;
 };
 
 #endif // __IOEXMLDOCUMENT_H__

@@ -8,7 +8,7 @@
 #include "MeshExporter.h"
 #include <OEInterfaces.h>
 #include <OEOS.h>
-
+#include <IPathConfigMgr.h>
 #include "DlgMeshExporterOption.h"
 
 DWORD WINAPI DummyFunc(LPVOID arg)
@@ -48,7 +48,13 @@ void CMeshExporter::Init()
 
 void CMeshExporter::Destroy()
 {
-	// TODO: 
+	wxDELETE(m_pDlgMeshExpOption);
+
+	if (m_pParentWindow)
+	{
+		m_pParentWindow->SetHWND(NULL);
+		wxDELETE(m_pParentWindow);
+	}
 }
 
 int CMeshExporter::ExtCount()
@@ -107,20 +113,7 @@ int CMeshExporter::DoExport(const TCHAR* name, ExpInterface* ei, Interface* i, B
 	m_pInterface = i;
 
 	// show the option dialog
-	if (!m_pDlgMeshExpOption)
-	{
-		m_pParentWindow = new wxWindow();
-		m_pParentWindow->SetHWND(m_pInterface->GetMAXHWnd());
-
-		m_pDlgMeshExpOption = new CDlgMeshExporterOption();
-		if (!m_pDlgMeshExpOption || !m_pDlgMeshExpOption->Initialize(m_pParentWindow))
-		{
-			wxDELETE(m_pDlgMeshExpOption);
-			return FALSE;
-		}
-	}
-
-	m_pDlgMeshExpOption->ShowModal();
+	if (!ShowOptionDialog()) return FALSE;
 
 	// initialize
 	m_pInterface->ProgressStart(_T("Initialize IGame interfaces"), TRUE, DummyFunc, NULL);
@@ -1628,5 +1621,37 @@ bool CMeshExporter::ReadConfig()
 bool CMeshExporter::SaveConfig()
 {
 	// TODO: 
+	return true;
+}
+
+bool CMeshExporter::ShowOptionDialog()
+{
+	if (!m_pDlgMeshExpOption)
+	{
+		m_pParentWindow = new wxWindow();
+		m_pParentWindow->SetHWND(m_pInterface->GetMAXHWnd());
+
+		m_pDlgMeshExpOption = new CDlgMeshExporterOption();
+		if (!m_pDlgMeshExpOption || !m_pDlgMeshExpOption->Initialize(m_pParentWindow))
+		{
+			wxDELETE(m_pDlgMeshExpOption);
+
+			m_pParentWindow->SetHWND(NULL);
+			wxDELETE(m_pParentWindow);
+
+			return false;
+		}
+	}
+
+	wxString strFile = IPathConfigMgr::GetPathConfigMgr()->GetDir(APP_PLUGCFG_DIR);
+	strFile += wxT("\\MeshExporter.xml");
+	m_pDlgMeshExpOption->LoadConfig(strFile);
+
+	int nModalValue = m_pDlgMeshExpOption->ShowModal();
+
+	m_pDlgMeshExpOption->SaveConfig(strFile);
+
+	if (nModalValue == 0) return false;
+
 	return true;
 }

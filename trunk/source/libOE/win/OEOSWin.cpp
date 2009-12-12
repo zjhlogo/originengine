@@ -169,6 +169,17 @@ bool COEOS::char2tchar(tstring& strOut, const char* pstrIn)
 #endif // _UNICODE
 }
 
+bool COEOS::str2bool(bool& bValue, const tchar* pstrIn)
+{
+	tstring strBool;
+	tolower(strBool, pstrIn);
+	if (strBool == TS("true")) bValue = true;
+	else if (strBool == TS("false")) bValue = false;
+	else return false;
+
+	return true;
+}
+
 bool COEOS::str2int(int& nValue, const tchar* pstrIn)
 {
 	nValue = _tstoi(pstrIn);
@@ -178,6 +189,14 @@ bool COEOS::str2int(int& nValue, const tchar* pstrIn)
 bool COEOS::str2float(float& fValue, const tchar* pstrIn)
 {
 	fValue = (float)_tstof(pstrIn);
+	return true;
+}
+
+bool COEOS::bool2str(tstring& strOut, bool bValue)
+{
+	if (bValue) strOut = TS("true");
+	else strOut = TS("false");
+
 	return true;
 }
 
@@ -213,13 +232,13 @@ bool COEOS::strformat(tstring& strOut, const tchar* strFormat, ...)
 void COEOS::toupper(tstring& strOut, const tstring& strIn)
 {
 	strOut = strIn;
-	std::transform(strOut.begin(), strOut.end(), strOut.begin(), ::tolower);
+	std::transform(strOut.begin(), strOut.end(), strOut.begin(), ::toupper);
 }
 
 void COEOS::tolower(tstring& strOut, const tstring& strIn)
 {
 	strOut = strIn;
-	std::transform(strOut.begin(), strOut.end(), strOut.begin(), ::toupper);
+	std::transform(strOut.begin(), strOut.end(), strOut.begin(), ::tolower);
 }
 
 void COEOS::GetFileName(tstring& strOut, const tstring& strIn)

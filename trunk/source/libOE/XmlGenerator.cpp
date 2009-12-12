@@ -267,4 +267,5 @@ void xmlerror(const char* pszErrorMsg)
 {
 	// TODO: 
 	int nLineNo = g_xmlFlexLexer.lineno();
+	const char* pszToken = g_xmlFlexLexer.YYText();
 }

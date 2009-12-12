@@ -26,6 +26,8 @@ public:
 	virtual IOEXmlNode* GetDeclNode();
 	virtual IOEXmlNode* GetRootNode();
 
+	virtual IOEXmlNode* InsertRootNode(const tstring& strName);
+
 private:
 	void Init();
 	void Destroy();

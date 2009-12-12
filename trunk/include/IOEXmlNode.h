@@ -30,10 +30,12 @@ public:
 	virtual const tstring& GetValue() = 0;
 	virtual void SetValue(const tstring& strValue) = 0;
 
+	virtual bool GetAttribute(bool& bValue, const tstring& strName) = 0;
 	virtual bool GetAttribute(int& nValue, const tstring& strName) = 0;
 	virtual bool GetAttribute(float& fValue, const tstring& strName) = 0;
 	virtual bool GetAttribute(tstring& strValue, const tstring& strName) = 0;
 
+	virtual bool SetAttribute(const tstring& strName, bool bValue) = 0;
 	virtual bool SetAttribute(const tstring& strName, int nValue) = 0;
 	virtual bool SetAttribute(const tstring& strName, float fValue) = 0;
 	virtual bool SetAttribute(const tstring& strName, const tstring& strValue) = 0;

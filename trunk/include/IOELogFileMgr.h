@@ -25,9 +25,12 @@ public:
 extern IOELogFileMgr* g_pOELogFileMgr;
 
 #if (ENABLE_LOGOUT)
-	#define LOGOUT(pstrFormat, ...)														\
-	COEOS::strformat(g_pOELogFileMgr->GetStringBuffer(), pstrFormat, __VA_ARGS__);	\
-	g_pOELogFileMgr->LogOut(g_pOELogFileMgr->GetStringBuffer())
+	#define LOGOUT(pstrFormat, ...)																\
+	if (g_pOELogFileMgr)																		\
+	{																							\
+		COEOS::strformat(g_pOELogFileMgr->GetStringBuffer(), pstrFormat, __VA_ARGS__);			\
+		g_pOELogFileMgr->LogOut(g_pOELogFileMgr->GetStringBuffer());							\
+	}
 #else
 	#define LOGOUT(pstrFormat, ...) 0
 #endif
