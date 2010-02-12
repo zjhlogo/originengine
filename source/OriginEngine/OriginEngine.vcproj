@@ -457,11 +457,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\include\IOERenderer.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\include\IOERenderer2D.h"
+				RelativePath="..\..\include\IOERenderSystem.h"
 				>
 			</File>
 			<File

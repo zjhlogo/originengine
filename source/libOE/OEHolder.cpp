@@ -22,7 +22,7 @@
 
 // äÖÈ¾Ä£¿é
 #include <IOEDevice.h>
-#include <IOERenderer.h>
+#include <IOERenderSystem.h>
 #include <IOETextureMgr.h>
 #include <IOEShaderMgr.h>
 
@@ -48,7 +48,7 @@ IOEModelMgr* g_pOEModelMgr = NULL;
 
 // äÖÈ¾Ä£¿é
 IOEDevice* g_pOEDevice = NULL;
-IOERenderer* g_pOERenderer = NULL;
+IOERenderSystem* g_pOERenderSystem = NULL;
 IOETextureMgr* g_pOETextureMgr = NULL;
 IOEShaderMgr* g_pOEShaderMgr = NULL;
 
@@ -89,7 +89,7 @@ void COEHolder::SetupInterfaces()
 
 	// äÖÈ¾Ä£¿é
 	AddInterface(TS("IOEDevice"), (void**)&g_pOEDevice);
-	AddInterface(TS("IOERenderer"), (void**)&g_pOERenderer);
+	AddInterface(TS("IOERenderSystem"), (void**)&g_pOERenderSystem);
 	AddInterface(TS("IOETextureMgr"), (void**)&g_pOETextureMgr);
 	AddInterface(TS("IOEShaderMgr"), (void**)&g_pOEShaderMgr);
 

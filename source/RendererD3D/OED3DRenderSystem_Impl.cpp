@@ -1,72 +1,72 @@
 /*!
- * \file OED3DRenderer_Impl.cpp
+ * \file OED3DRenderSystem_Impl.cpp
  * \date 24-5-2009 18:26:54
  * 
  * 
  * \author zjhlogo (zjhlogo@163.com)
  */
-#include "OED3DRenderer_Impl.h"
+#include "OED3DRenderSystem_Impl.h"
 #include "OED3DUtil.h"
 #include <assert.h>
 
 extern IDirect3DDevice9* g_pd3dDevice;
 
-COED3DRenderer_Impl::COED3DRenderer_Impl()
+COED3DRenderSystem_Impl::COED3DRenderSystem_Impl()
 {
-	g_pOERenderer = this;
+	g_pOERenderSystem = this;
 	Init();
 	m_bOK = true;
 }
 
-COED3DRenderer_Impl::~COED3DRenderer_Impl()
+COED3DRenderSystem_Impl::~COED3DRenderSystem_Impl()
 {
 	Destroy();
-	g_pOERenderer = NULL;
+	g_pOERenderSystem = NULL;
 }
 
-void COED3DRenderer_Impl::Init()
+void COED3DRenderSystem_Impl::Init()
 {
 	m_pVertDecl = NULL;
 	m_pTexture = NULL;
 	m_pShader = NULL;
 }
 
-void COED3DRenderer_Impl::Destroy()
+void COED3DRenderSystem_Impl::Destroy()
 {
 	// TODO: 
 }
 
-void COED3DRenderer_Impl::SetVertDecl(IOEVertDecl* pVertDecl)
+void COED3DRenderSystem_Impl::SetVertDecl(IOEVertDecl* pVertDecl)
 {
 	m_pVertDecl = (COED3DVertDecl_Impl*)pVertDecl;
 }
 
-IOEVertDecl* COED3DRenderer_Impl::GetVertDecl() const
+IOEVertDecl* COED3DRenderSystem_Impl::GetVertDecl() const
 {
 	return m_pVertDecl;
 }
 
-void COED3DRenderer_Impl::SetTexture(IOETexture* pTexture)
+void COED3DRenderSystem_Impl::SetTexture(IOETexture* pTexture)
 {
 	m_pTexture = (COED3DTexture_Impl*)pTexture;
 }
 
-IOETexture* COED3DRenderer_Impl::GetTexture() const
+IOETexture* COED3DRenderSystem_Impl::GetTexture() const
 {
 	return m_pTexture;
 }
 
-void COED3DRenderer_Impl::SetShader(IOEShader* pShader)
+void COED3DRenderSystem_Impl::SetShader(IOEShader* pShader)
 {
 	m_pShader = (COED3DShader_Impl*)pShader;
 }
 
-IOEShader* COED3DRenderer_Impl::GetShader() const
+IOEShader* COED3DRenderSystem_Impl::GetShader() const
 {
 	return m_pShader;
 }
 
-bool COED3DRenderer_Impl::SetTransform(TRANSFORM_TYPE eType, const CMatrix4x4& mat)
+bool COED3DRenderSystem_Impl::SetTransform(TRANSFORM_TYPE eType, const CMatrix4x4& mat)
 {
 	D3DTRANSFORMSTATETYPE d3dType = COED3DUtil::ToD3DTransformType(eType);
 	if (d3dType == D3DTS_FORCE_DWORD) return false;
@@ -77,13 +77,13 @@ bool COED3DRenderer_Impl::SetTransform(TRANSFORM_TYPE eType, const CMatrix4x4& m
 
 	switch (eType)
 	{
-	case IOERenderer::TT_WORLD:
+	case IOERenderSystem::TT_WORLD:
 		m_matWorld = mat;
 		break;
-	case IOERenderer::TT_VIEW:
+	case IOERenderSystem::TT_VIEW:
 		m_matView = mat;
 		break;
-	case IOERenderer::TT_PROJECTION:
+	case IOERenderSystem::TT_PROJECTION:
 		m_matProjection = mat;
 		break;
 	}
@@ -91,7 +91,7 @@ bool COED3DRenderer_Impl::SetTransform(TRANSFORM_TYPE eType, const CMatrix4x4& m
 	return true;
 }
 
-bool COED3DRenderer_Impl::GetTransform(CMatrix4x4& matOut, TRANSFORM_TYPE eType) const
+bool COED3DRenderSystem_Impl::GetTransform(CMatrix4x4& matOut, TRANSFORM_TYPE eType) const
 {
 	bool bOK = false;
 
@@ -118,44 +118,44 @@ bool COED3DRenderer_Impl::GetTransform(CMatrix4x4& matOut, TRANSFORM_TYPE eType)
 	return bOK;
 }
 
-void COED3DRenderer_Impl::DrawLineList(const void* pVerts, uint nVerts, const ushort* pIndis, uint nIndis)
+void COED3DRenderSystem_Impl::DrawLineList(const void* pVerts, uint nVerts, const ushort* pIndis, uint nIndis)
 {
 	DrawPrimitive(D3DPT_LINELIST, pVerts, nVerts, pIndis, nIndis/2);
 }
 
-void COED3DRenderer_Impl::DrawLineStrip(const void* pVerts, uint nVerts, const ushort* pIndis, uint nIndis)
+void COED3DRenderSystem_Impl::DrawLineStrip(const void* pVerts, uint nVerts, const ushort* pIndis, uint nIndis)
 {
 	DrawPrimitive(D3DPT_LINESTRIP, pVerts, nVerts, pIndis, nIndis-1);
 }
 
-void COED3DRenderer_Impl::DrawTriList(const void* pVerts, uint nVerts, const ushort* pIndis, uint nIndis)
+void COED3DRenderSystem_Impl::DrawTriList(const void* pVerts, uint nVerts, const ushort* pIndis, uint nIndis)
 {
 	DrawPrimitive(D3DPT_TRIANGLELIST, pVerts, nVerts, pIndis, nIndis/3);
 }
 
-void COED3DRenderer_Impl::DrawTriStrip(const void* pVerts, uint nVerts, const ushort* pIndis, uint nIndis)
+void COED3DRenderSystem_Impl::DrawTriStrip(const void* pVerts, uint nVerts, const ushort* pIndis, uint nIndis)
 {
 	DrawPrimitive(D3DPT_TRIANGLESTRIP, pVerts, nVerts, pIndis, nIndis-2);
 }
 
-void COED3DRenderer_Impl::DrawTriFan(const void* pVerts, uint nVerts, const ushort* pIndis, uint nIndis)
+void COED3DRenderSystem_Impl::DrawTriFan(const void* pVerts, uint nVerts, const ushort* pIndis, uint nIndis)
 {
 	DrawPrimitive(D3DPT_TRIANGLEFAN, pVerts, nVerts, pIndis, nIndis-2);
 }
 
-void COED3DRenderer_Impl::EnableLight(bool bEnable)
+void COED3DRenderSystem_Impl::EnableLight(bool bEnable)
 {
 	if (bEnable) g_pd3dDevice->SetRenderState(D3DRS_LIGHTING, TRUE);
 	else g_pd3dDevice->SetRenderState(D3DRS_LIGHTING, FALSE);
 }
 
-void COED3DRenderer_Impl::EnableZBuffer(bool bEnable)
+void COED3DRenderSystem_Impl::EnableZBuffer(bool bEnable)
 {
 	if (bEnable) g_pd3dDevice->SetRenderState(D3DRS_ZENABLE, TRUE);
 	else g_pd3dDevice->SetRenderState(D3DRS_ZENABLE, FALSE);
 }
 
-void COED3DRenderer_Impl::EnableFog(bool bEnable)
+void COED3DRenderSystem_Impl::EnableFog(bool bEnable)
 {
 	if (bEnable)
 	{
@@ -170,26 +170,26 @@ void COED3DRenderer_Impl::EnableFog(bool bEnable)
 	}
 }
 
-void COED3DRenderer_Impl::SetCullMode(CULL_MODE_TYPE eMode)
+void COED3DRenderSystem_Impl::SetCullMode(CULL_MODE_TYPE eMode)
 {
 	D3DCULL eD3DCull = COED3DUtil::ToD3DCullMode(eMode);
 	g_pd3dDevice->SetRenderState(D3DRS_CULLMODE, eD3DCull);
 }
 
-void COED3DRenderer_Impl::SetFillMode(FILL_MODE eFillMode)
+void COED3DRenderSystem_Impl::SetFillMode(FILL_MODE eFillMode)
 {
 	D3DFILLMODE eD3DFill = COED3DUtil::ToD3DFillMode(eFillMode);
 	g_pd3dDevice->SetRenderState(D3DRS_FILLMODE, eD3DFill);
 }
 
-void COED3DRenderer_Impl::SetFogInfo(uint nColor, float fNear, float fFar)
+void COED3DRenderSystem_Impl::SetFogInfo(uint nColor, float fNear, float fFar)
 {
 	g_pd3dDevice->SetRenderState(D3DRS_FOGCOLOR, nColor);
 	g_pd3dDevice->SetRenderState(D3DRS_FOGSTART, *(DWORD*)&fNear);
 	g_pd3dDevice->SetRenderState(D3DRS_FOGEND, *(DWORD*)&fFar);
 }
 
-void COED3DRenderer_Impl::SetSampleFilter(SAMPLE_FILTER eSampleFilter)
+void COED3DRenderSystem_Impl::SetSampleFilter(SAMPLE_FILTER eSampleFilter)
 {
 	D3DTEXTUREFILTERTYPE eD3DSampleFilter = COED3DUtil::ToD3DSampleFilter(eSampleFilter);
 	g_pd3dDevice->SetSamplerState(0, D3DSAMP_MAGFILTER, eD3DSampleFilter);
@@ -197,7 +197,7 @@ void COED3DRenderer_Impl::SetSampleFilter(SAMPLE_FILTER eSampleFilter)
 	g_pd3dDevice->SetSamplerState(0, D3DSAMP_MIPFILTER, eD3DSampleFilter);
 }
 
-void COED3DRenderer_Impl::DrawPrimitive(D3DPRIMITIVETYPE eType, const void* pVerts, uint nVerts, const ushort* pIndis, uint nPrimCount)
+void COED3DRenderSystem_Impl::DrawPrimitive(D3DPRIMITIVETYPE eType, const void* pVerts, uint nVerts, const ushort* pIndis, uint nPrimCount)
 {
 	if (m_pShader)
 	{

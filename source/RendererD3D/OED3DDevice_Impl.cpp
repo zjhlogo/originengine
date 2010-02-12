@@ -12,7 +12,7 @@
 #include <IOELogFileMgr.h>
 #include <IOECore.h>
 #include <IOEApp.h>
-#include <IOERenderer.h>
+#include <IOERenderSystem.h>
 #include <OEMsgID.h>
 #include <IOEMsgMgr.h>
 
@@ -360,10 +360,10 @@ void COED3DDevice_Impl::PerformOnce(float fDetailTime)
 	if (SUCCEEDED(g_pd3dDevice->BeginScene()))
 	{
 		// render scene
-		g_pOERenderer->SetSampleFilter(IOERenderer::SF_LINEAR);
-		g_pOERenderer->SetShader(NULL);
-		g_pOERenderer->SetVertDecl(NULL);
-		g_pOERenderer->SetTexture(NULL);
+		g_pOERenderSystem->SetSampleFilter(IOERenderSystem::SF_LINEAR);
+		g_pOERenderSystem->SetShader(NULL);
+		g_pOERenderSystem->SetVertDecl(NULL);
+		g_pOERenderSystem->SetTexture(NULL);
 		g_pOEApp->Render(fDetailTime);
 
 		// render fps
@@ -379,17 +379,17 @@ void COED3DDevice_Impl::InitializeD3D()
 	// initialize
 	CMatrix4x4 matWorld;
 	matWorld.Identity();
-	g_pOERenderer->SetTransform(IOERenderer::TT_WORLD, matWorld);
+	g_pOERenderSystem->SetTransform(IOERenderSystem::TT_WORLD, matWorld);
 
 	CMatrix4x4 matView;
 	COEMath::BuildLookAtMatrixLH(matView, CVector3(0.0f, 3.0f, -5.0f), CVector3(0.0f, 0.0f, 0.0f), CVector3(0.0f, 1.0f, 0.0f));
-	g_pOERenderer->SetTransform(IOERenderer::TT_VIEW, matView);
+	g_pOERenderSystem->SetTransform(IOERenderSystem::TT_VIEW, matView);
 
 	CMatrix4x4 matProj;
 	COEMath::BuildProjectMatrixLH(matProj, OEMATH_PI/4.0f, (float)m_nWindowWidth/(float)m_nWindowHeight, 1.0f, 10000.0f);
-	g_pOERenderer->SetTransform(IOERenderer::TT_PROJECTION, matProj);
+	g_pOERenderSystem->SetTransform(IOERenderSystem::TT_PROJECTION, matProj);
 
-	g_pOERenderer->EnableLight(false);
+	g_pOERenderSystem->EnableLight(false);
 }
 
 void COED3DDevice_Impl::ResetFPS(float fLastTime)
@@ -428,11 +428,11 @@ void COED3DDevice_Impl::RenderFPS()
 		m_pStringFPS = g_pOEUIStringMgr->CreateUIString(m_pFontFPS);
 	}
 
-	g_pOERenderer->SetSampleFilter(IOERenderer::SF_POINT);
-	g_pOERenderer->SetFillMode(IOERenderer::FM_SOLID);
-	g_pOERenderer->SetShader(NULL);
-	g_pOERenderer->SetVertDecl(NULL);
-	g_pOERenderer->SetTexture(NULL);
+	g_pOERenderSystem->SetSampleFilter(IOERenderSystem::SF_POINT);
+	g_pOERenderSystem->SetFillMode(IOERenderSystem::FM_SOLID);
+	g_pOERenderSystem->SetShader(NULL);
+	g_pOERenderSystem->SetVertDecl(NULL);
+	g_pOERenderSystem->SetTexture(NULL);
 	if (m_pStringFPS) m_pStringFPS->Render(CPoint(0, 0));
 	g_pOEUIRenderer->FlushAll();
 }

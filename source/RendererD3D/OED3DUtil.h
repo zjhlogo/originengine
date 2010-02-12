@@ -9,7 +9,7 @@
 #define __OED3DUTIL_H__
 
 #include <IOEVertDecl.h>
-#include <IOERenderer.h>
+#include <IOERenderSystem.h>
 #include <IOETexture.h>
 #include <OEMath/OEMath.h>
 #include <d3dx9.h>
@@ -34,17 +34,17 @@ public:
 
 	static int GetVertTypeSize(IOEVertDecl::TYPE eType);
 
-	static D3DTRANSFORMSTATETYPE ToD3DTransformType(IOERenderer::TRANSFORM_TYPE eType);
-	static IOERenderer::TRANSFORM_TYPE ToOETransformType(D3DTRANSFORMSTATETYPE eType);
+	static D3DTRANSFORMSTATETYPE ToD3DTransformType(IOERenderSystem::TRANSFORM_TYPE eType);
+	static IOERenderSystem::TRANSFORM_TYPE ToOETransformType(D3DTRANSFORMSTATETYPE eType);
 
-	static D3DCULL ToD3DCullMode(IOERenderer::CULL_MODE_TYPE eType);
-	static IOERenderer::CULL_MODE_TYPE ToOECullMode(D3DCULL eType);
+	static D3DCULL ToD3DCullMode(IOERenderSystem::CULL_MODE_TYPE eType);
+	static IOERenderSystem::CULL_MODE_TYPE ToOECullMode(D3DCULL eType);
 
-	static D3DFILLMODE ToD3DFillMode(IOERenderer::FILL_MODE eType);
-	static IOERenderer::FILL_MODE ToOEFillMode(D3DFILLMODE eType);
+	static D3DFILLMODE ToD3DFillMode(IOERenderSystem::FILL_MODE eType);
+	static IOERenderSystem::FILL_MODE ToOEFillMode(D3DFILLMODE eType);
 
-	static D3DTEXTUREFILTERTYPE ToD3DSampleFilter(IOERenderer::SAMPLE_FILTER eType);
-	static IOERenderer::SAMPLE_FILTER ToOESampleFilter(D3DTEXTUREFILTERTYPE eType);
+	static D3DTEXTUREFILTERTYPE ToD3DSampleFilter(IOERenderSystem::SAMPLE_FILTER eType);
+	static IOERenderSystem::SAMPLE_FILTER ToOESampleFilter(D3DTEXTUREFILTERTYPE eType);
 
 	static D3DFORMAT ToD3DTexFmt(IOETexture::TEXTURE_FORMAT eFormat);
 	static IOETexture::TEXTURE_FORMAT ToOETexFmt(D3DFORMAT eFormat);

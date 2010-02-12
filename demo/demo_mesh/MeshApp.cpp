@@ -84,7 +84,7 @@ void CMeshApp::Update(float fDetailTime)
 {
 	bool bRot = UpdateRotation(fDetailTime);
 	bool bMov = UpdateMovement(fDetailTime);
-	if (bRot || bMov) g_pOERenderer->SetTransform(IOERenderer::TT_VIEW, m_pCamera->GetViewMatrix());
+	if (bRot || bMov) g_pOERenderSystem->SetTransform(IOERenderSystem::TT_VIEW, m_pCamera->GetViewMatrix());
 
 	m_pModel->Update(fDetailTime);
 }
@@ -94,10 +94,10 @@ void CMeshApp::Render(float fDetailTime)
 	static float s_fTotalTime = 0.0f;
 
 	CMatrix4x4 matWorldViewProj;
-	g_pOERenderer->GetTransform(matWorldViewProj, IOERenderer::TT_WORLD_VIEW_PROJ);
+	g_pOERenderSystem->GetTransform(matWorldViewProj, IOERenderSystem::TT_WORLD_VIEW_PROJ);
 
-	//g_pOERenderer->SetFillMode(IOERenderer::FM_WIREFRAME);
-	//g_pOERenderer->SetCullMode(IOERenderer::CMT_NONE);
+	//g_pOERenderSystem->SetFillMode(IOERenderSystem::FM_WIREFRAME);
+	//g_pOERenderSystem->SetCullMode(IOERenderSystem::CMT_NONE);
 
 	s_fTotalTime += fDetailTime*0.0f;
 	CVector3 vLightPos;
@@ -122,15 +122,15 @@ void CMeshApp::Render(float fDetailTime)
 		pMaterial->pShader->SetTexture(TS("g_texNormal"), pMaterial->pTexNormal);
 		pMaterial->pShader->SetVector(TS("g_vLightPos"), vLightPos);
 		pMaterial->pShader->SetMatrixArray(TS("g_matBoneMatrix"), m_pModel->GetMatrixPalette(), m_pModel->GetNumMatrixPalette());
-		g_pOERenderer->SetShader(pMaterial->pShader);
+		g_pOERenderSystem->SetShader(pMaterial->pShader);
 
-		g_pOERenderer->DrawTriList(pPiece->GetVerts(), pPiece->GetNumVerts(), pPiece->GetIndis(), pPiece->GetNumIndis());
+		g_pOERenderSystem->DrawTriList(pPiece->GetVerts(), pPiece->GetNumVerts(), pPiece->GetIndis(), pPiece->GetNumIndis());
 
 		//RenderPieceNormal(pPiece);
 	}
 
-	g_pOERenderer->SetShader(NULL);
-	m_pSimpleShape->DrawCube(g_pOERenderer, vLightPos, 10.0f, 0xFFFFFFFF);
+	g_pOERenderSystem->SetShader(NULL);
+	m_pSimpleShape->DrawCube(g_pOERenderSystem, vLightPos, 10.0f, 0xFFFFFFFF);
 }
 
 bool CMeshApp::OnLButtonDown(uint nMsgID, COEDataBufferRead* pDBRead)
@@ -249,7 +249,7 @@ void CMeshApp::RenderPieceNormal(IOEPiece* pPiece)
 		m_vNormalVerts[i*2+1].z = pVertSrc[i].z + pVertSrc[i].nz * 2.0f;
 	}
 
-	g_pOERenderer->SetShader(NULL);
-	g_pOERenderer->SetVertDecl(m_pNormalVertDecl);
-	g_pOERenderer->DrawLineList(&m_vNormalVerts[0], m_vNormalVerts.size(), &m_vNormalIndis[0], m_vNormalIndis.size());
+	g_pOERenderSystem->SetShader(NULL);
+	g_pOERenderSystem->SetVertDecl(m_pNormalVertDecl);
+	g_pOERenderSystem->DrawLineList(&m_vNormalVerts[0], m_vNormalVerts.size(), &m_vNormalIndis[0], m_vNormalIndis.size());
 }

@@ -7,12 +7,12 @@
  */
 #include "D3DModule.h"
 #include "OED3DDevice_Impl.h"
-#include "OED3DRenderer_Impl.h"
+#include "OED3DRenderSystem_Impl.h"
 #include "OED3DTextureMgr_Impl.h"
 #include "OED3DShaderMgr_Impl.h"
 
 COED3DDevice_Impl* g_pOED3DDevice_Impl = NULL;
-COED3DRenderer_Impl* g_pOED3DRenderer_Impl = NULL;
+COED3DRenderSystem_Impl* g_pOED3DRenderSystem_Impl = NULL;
 COED3DTextureMgr_Impl* g_pOED3DTextureMgr_Impl = NULL;
 COED3DShaderMgr_Impl* g_pOED3DShaderMgr_Impl = NULL;
 
@@ -25,10 +25,10 @@ bool CreateSingleton()
 		return false;
 	}
 
-	g_pOED3DRenderer_Impl = new COED3DRenderer_Impl();
-	if (!g_pOED3DRenderer_Impl || !g_pOED3DRenderer_Impl->IsOK())
+	g_pOED3DRenderSystem_Impl = new COED3DRenderSystem_Impl();
+	if (!g_pOED3DRenderSystem_Impl || !g_pOED3DRenderSystem_Impl->IsOK())
 	{
-		SAFE_DELETE(g_pOED3DRenderer_Impl);
+		SAFE_DELETE(g_pOED3DRenderSystem_Impl);
 		return false;
 	}
 
@@ -53,7 +53,7 @@ void DestroySingleton()
 {
 	SAFE_DELETE(g_pOED3DShaderMgr_Impl);
 	SAFE_DELETE(g_pOED3DTextureMgr_Impl);
-	SAFE_DELETE(g_pOED3DRenderer_Impl);
+	SAFE_DELETE(g_pOED3DRenderSystem_Impl);
 	SAFE_DELETE(g_pOED3DDevice_Impl);
 }
 

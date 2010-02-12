@@ -95,7 +95,7 @@ void CBumpMapApp::Update(float fDetailTime)
 {
 	bool bRot = UpdateRotation(fDetailTime);
 	bool bMov = UpdateMovement(fDetailTime);
-	if (bRot || bMov) g_pOERenderer->SetTransform(IOERenderer::TT_VIEW, m_pCamera->GetViewMatrix());
+	if (bRot || bMov) g_pOERenderSystem->SetTransform(IOERenderSystem::TT_VIEW, m_pCamera->GetViewMatrix());
 }
 
 void CBumpMapApp::Render(float fDetailTime)
@@ -113,7 +113,7 @@ void CBumpMapApp::Render(float fDetailTime)
 	static const ushort s_Indis[6] = {0, 1, 3, 1, 2, 3};
 
 	CMatrix4x4 matWorldViewProj;
-	g_pOERenderer->GetTransform(matWorldViewProj, IOERenderer::TT_WORLD_VIEW_PROJ);
+	g_pOERenderSystem->GetTransform(matWorldViewProj, IOERenderSystem::TT_WORLD_VIEW_PROJ);
 	m_pShader->SetMatrix(TS("g_matWorldViewProj"), matWorldViewProj);
 
 	s_fTotalTime += fDetailTime;
@@ -128,11 +128,11 @@ void CBumpMapApp::Render(float fDetailTime)
 	m_pShader->SetTexture(TS("g_texNormal"), m_pTexNormal);
 	m_pShader->SetTexture(TS("g_texHeight"), m_pTexHeight);
 
-	g_pOERenderer->SetShader(m_pShader);
-	g_pOERenderer->DrawTriList(s_Verts, 4, s_Indis, 6);
-	g_pOERenderer->SetShader(NULL);
+	g_pOERenderSystem->SetShader(m_pShader);
+	g_pOERenderSystem->DrawTriList(s_Verts, 4, s_Indis, 6);
+	g_pOERenderSystem->SetShader(NULL);
 
-	m_pSimpleShape->DrawCube(g_pOERenderer, m_vLightPos);
+	m_pSimpleShape->DrawCube(g_pOERenderSystem, m_vLightPos);
 }
 
 bool CBumpMapApp::OnLButtonDown(uint nMsgID, COEDataBufferRead* pDBRead)

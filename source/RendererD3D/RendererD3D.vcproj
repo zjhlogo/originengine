@@ -343,7 +343,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\OED3DRenderer_Impl.cpp"
+				RelativePath=".\OED3DRenderSystem_Impl.cpp"
 				>
 			</File>
 			<File
@@ -385,7 +385,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\OED3DRenderer_Impl.h"
+				RelativePath=".\OED3DRenderSystem_Impl.h"
 				>
 			</File>
 			<File

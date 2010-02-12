@@ -1,12 +1,12 @@
 /*!
- * \file IOERenderer.h
+ * \file IOERenderSystem.h
  * \date 24-5-2009 17:14:26
  * 
  * 
  * \author zjhlogo (zjhlogo@163.com)
  */
-#ifndef __IOERENDERER_H__
-#define __IOERENDERER_H__
+#ifndef __IOERENDERSYSTEM_H__
+#define __IOERENDERSYSTEM_H__
 
 #include "IOEObject.h"
 #include "IOEVertDecl.h"
@@ -15,7 +15,7 @@
 
 #include "OEMath/OEMath.h"
 
-class IOERenderer : public IOEObject
+class IOERenderSystem : public IOEObject
 {
 public:
 	enum TRANSFORM_TYPE
@@ -60,8 +60,8 @@ public:
 	};
 
 public:
-	IOERenderer() {};
-	virtual ~IOERenderer() {};
+	IOERenderSystem() {};
+	virtual ~IOERenderSystem() {};
 
 	virtual void SetVertDecl(IOEVertDecl* pDecl) = 0;
 	virtual IOEVertDecl* GetVertDecl() const = 0;
@@ -92,6 +92,6 @@ public:
 	virtual void SetSampleFilter(SAMPLE_FILTER eSampleFilter) = 0;
 };
 
-extern IOERenderer* g_pOERenderer;
+extern IOERenderSystem* g_pOERenderSystem;
 
-#endif // __IOERENDERER_H__
+#endif // __IOERENDERSYSTEM_H__

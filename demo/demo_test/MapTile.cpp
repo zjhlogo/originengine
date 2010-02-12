@@ -118,14 +118,14 @@ void CMapTile::Render(float fDetailTime)
 	CalcMatrix(matWorld, m_nID);
 
 	CMatrix4x4 matViewProj;
-	g_pOERenderer->GetTransform(matViewProj, IOERenderer::TT_VIEW_PROJ);
+	g_pOERenderSystem->GetTransform(matViewProj, IOERenderSystem::TT_VIEW_PROJ);
 
 	CMatrix4x4 matWorldViewProj = matWorld*matViewProj;
 	m_pShader->SetMatrix(TS("g_matWorldViewProj"), matWorldViewProj);
 
-	g_pOERenderer->SetShader(m_pShader);
-	g_pOERenderer->DrawTriList(m_pVerts, TILE_SIZE*TILE_SIZE, m_pIndis, (TILE_SIZE-1)*(TILE_SIZE-1)*6);
-	g_pOERenderer->SetShader(NULL);
+	g_pOERenderSystem->SetShader(m_pShader);
+	g_pOERenderSystem->DrawTriList(m_pVerts, TILE_SIZE*TILE_SIZE, m_pIndis, (TILE_SIZE-1)*(TILE_SIZE-1)*6);
+	g_pOERenderSystem->SetShader(NULL);
 }
 
 void CMapTile::Reset()
