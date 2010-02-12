@@ -11,7 +11,7 @@
 #include <IOEShaderMgr.h>
 #include <IOETextureMgr.h>
 #include <IOELogFileMgr.h>
-#include <IOERenderer.h>
+#include <IOERenderSystem.h>
 #include <IOEFileMgr.h>
 
 #include <OEFmtMesh.h>
@@ -111,7 +111,7 @@ void COEModel_Impl::Update(float fDetailTime)
 void COEModel_Impl::Render(float fDetailTime)
 {
 	CMatrix4x4 matWorldViewProj;
-	g_pOERenderer->GetTransform(matWorldViewProj, IOERenderer::TT_WORLD_VIEW_PROJ);
+	g_pOERenderSystem->GetTransform(matWorldViewProj, IOERenderSystem::TT_WORLD_VIEW_PROJ);
 
 	int nNumPiece = m_pMesh->GetNumPieces();
 	for (int i = 0; i < nNumPiece; ++i)
@@ -126,12 +126,12 @@ void COEModel_Impl::Render(float fDetailTime)
 		m_vMaterial[nMaterialID].pShader->SetTexture(TS("g_texBase"), m_vMaterial[nMaterialID].pTexture);
 		m_vMaterial[nMaterialID].pShader->SetTexture(TS("g_texNormal"), m_vMaterial[nMaterialID].pTexNormal);
 		m_vMaterial[nMaterialID].pShader->SetMatrixArray(TS("g_matBoneMatrix"), &m_vmatSkin[0], m_vmatSkin.size());
-		g_pOERenderer->SetShader(m_vMaterial[nMaterialID].pShader);
+		g_pOERenderSystem->SetShader(m_vMaterial[nMaterialID].pShader);
 
 		SoftSkinned(pPiece, m_vmatSkin);
 		//g_pOERenderer->DrawTriList(&m_vVerts[0], m_vVerts.size(), pPiece->GetIndis(), pPiece->GetNumIndis());
 
-		g_pOERenderer->DrawTriList(pPiece->GetVerts(), pPiece->GetNumVerts(), pPiece->GetIndis(), pPiece->GetNumIndis());
+		g_pOERenderSystem->DrawTriList(pPiece->GetVerts(), pPiece->GetNumVerts(), pPiece->GetIndis(), pPiece->GetNumIndis());
 	}
 }
 

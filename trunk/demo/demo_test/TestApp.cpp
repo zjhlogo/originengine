@@ -57,9 +57,9 @@ bool CTestApp::Initialize()
 	m_pTerrainMgr = new CTerrainMgr();
 	if (!m_pTerrainMgr->LoadTerrain()) return false;
 
-	//g_pOERenderer->EnableFog(true);
-	//g_pOERenderer->SetFogInfo(0xFF000000, 600.0f, 800.0f);
-	////g_pOERenderer->SetFillMode(IOERenderer::FM_WIREFRAME);
+	//g_pOERenderSystem->EnableFog(true);
+	//g_pOERenderSystem->SetFogInfo(0xFF000000, 600.0f, 800.0f);
+	////g_pOERenderSystem->SetFillMode(IOERenderSystem::FM_WIREFRAME);
 
 	//m_pShader = g_pOEShaderMgr->CreateShader(s_Decl, _T("terrain.fx"));
 	//if (!m_pShader) return false;
@@ -98,7 +98,7 @@ void CTestApp::Update(float fDetailTime)
 {
 	bool bRot = UpdateRotation(fDetailTime);
 	bool bMov = UpdateMovement(fDetailTime);
-	if (bRot || bMov) g_pOERenderer->SetTransform(IOERenderer::TT_VIEW, m_pCamera->GetViewMatrix());
+	if (bRot || bMov) g_pOERenderSystem->SetTransform(IOERenderSystem::TT_VIEW, m_pCamera->GetViewMatrix());
 	m_pTerrainMgr->UpdateTerrain(m_pCamera->GetEyePos());
 }
 
@@ -117,17 +117,17 @@ void CTestApp::Render(float fDetailTime)
 	//CMatrix4x4 matView;
 	//CMatrix4x4 matProj;
 
-	//g_pOERenderer->GetTransform(matView, IOERenderer::TT_VIEW);
-	//g_pOERenderer->GetTransform(matProj, IOERenderer::TT_PROJECTION);
+	//g_pOERenderSystem->GetTransform(matView, IOERenderSystem::TT_VIEW);
+	//g_pOERenderSystem->GetTransform(matProj, IOERenderSystem::TT_PROJECTION);
 
 	//CMatrix4x4 matViewProj = matView*matProj;
 	//m_pShader->SetMatrix(_T("g_matViewProj"), matViewProj);
 	//m_pShader->SetTexture(_T("g_texBase"), m_pTexture);
 	//m_pShader->DrawTriList(s_Verts, 4, s_Indis, 6);
 
-	//g_pOERenderer->SetFillMode(IOERenderer::FM_SOLID);
-	//g_pOERenderer->SetVertDecl(m_pDecl);
-	//g_pOERenderer->DrawTriList(s_Verts, 4, s_Indis, 6);
+	//g_pOERenderSystem->SetFillMode(IOERenderSystem::FM_SOLID);
+	//g_pOERenderSystem->SetVertDecl(m_pDecl);
+	//g_pOERenderSystem->DrawTriList(s_Verts, 4, s_Indis, 6);
 
 	m_pTerrainMgr->Render(fDetailTime);
 }

@@ -105,7 +105,7 @@ bool CWaterApp::Initialize()
 	m_pCamera = new CCamera();
 	if (!m_pCamera) return false;
 	m_pCamera->Initialize(CVector3(399.75037f, 532.55792f, -279.13873f), CVector3(399.73721f, 531.89636f, -278.38895f));
-	g_pOERenderer->SetTransform(IOERenderer::TT_VIEW, m_pCamera->GetViewMatrix());
+	g_pOERenderSystem->SetTransform(IOERenderSystem::TT_VIEW, m_pCamera->GetViewMatrix());
 
 	// initialize gui
 	if (!wxInitHelper::Initialize()) return false;
@@ -138,17 +138,17 @@ void CWaterApp::Update(float fDetailTime)
 {
 	bool bRot = UpdateRotation(fDetailTime);
 	bool bMov = UpdateMovement(fDetailTime);
-	if (bRot || bMov) g_pOERenderer->SetTransform(IOERenderer::TT_VIEW, m_pCamera->GetViewMatrix());
+	if (bRot || bMov) g_pOERenderSystem->SetTransform(IOERenderSystem::TT_VIEW, m_pCamera->GetViewMatrix());
 }
 
 void CWaterApp::Render(float fDetailTime)
 {
 	static float s_fTime = 0.0f;
 
-	g_pOERenderer->SetFillMode(IOERenderer::FM_WIREFRAME);
+	g_pOERenderSystem->SetFillMode(IOERenderSystem::FM_WIREFRAME);
 
 	CMatrix4x4 matWorldViewProj;
-	g_pOERenderer->GetTransform(matWorldViewProj, IOERenderer::TT_WORLD_VIEW_PROJ);
+	g_pOERenderSystem->GetTransform(matWorldViewProj, IOERenderSystem::TT_WORLD_VIEW_PROJ);
 	m_pShader->SetMatrix(TS("g_matWorldViewProj"), matWorldViewProj);
 
 	s_fTime += (fDetailTime*m_pDlgWaveSetting->GetTimeScale());
@@ -161,8 +161,8 @@ void CWaterApp::Render(float fDetailTime)
 	m_pShader->SetVector(TS("vWaveHeight"), m_pDlgWaveSetting->GetVecHeight()*m_pDlgWaveSetting->GetHeightScale());
 	m_pShader->SetVector(TS("g_vEyePos"), m_pCamera->GetEyePos());
 
-	g_pOERenderer->SetShader(m_pShader);
-	g_pOERenderer->DrawTriList(m_pVerts, m_nVerts, m_pIndis, m_nIndis);
+	g_pOERenderSystem->SetShader(m_pShader);
+	g_pOERenderSystem->DrawTriList(m_pVerts, m_nVerts, m_pIndis, m_nIndis);
 }
 
 bool CWaterApp::OnLButtonDown(uint nMsgID, COEDataBufferRead* pDBRead)

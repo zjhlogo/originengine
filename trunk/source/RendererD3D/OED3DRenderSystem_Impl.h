@@ -1,23 +1,23 @@
 /*!
- * \file OED3DRenderer_Impl.h
+ * \file OED3DRenderSystem_Impl.h
  * \date 24-5-2009 18:26:08
  * 
  * 
  * \author zjhlogo (zjhlogo@163.com)
  */
-#ifndef __OED3DRENDERER_IMPL_H__
-#define __OED3DRENDERER_IMPL_H__
+#ifndef __OED3DRENDERSYSTEM_IMPL_H__
+#define __OED3DRENDERSYSTEM_IMPL_H__
 
-#include <IOERenderer.h>
+#include <IOERenderSystem.h>
 #include "OED3DVertDecl_Impl.h"
 #include "OED3DTexture_Impl.h"
 #include "OED3DShader_Impl.h"
 
-class COED3DRenderer_Impl : public IOERenderer
+class COED3DRenderSystem_Impl : public IOERenderSystem
 {
 public:
-	COED3DRenderer_Impl();
-	virtual ~COED3DRenderer_Impl();
+	COED3DRenderSystem_Impl();
+	virtual ~COED3DRenderSystem_Impl();
 
 	virtual void SetVertDecl(IOEVertDecl* pDecl);
 	virtual IOEVertDecl* GetVertDecl() const;
@@ -64,4 +64,4 @@ private:
 
 };
 
-#endif // __OED3DRENDERER_IMPL_H__
+#endif // __OED3DRENDERSYSTEM_IMPL_H__

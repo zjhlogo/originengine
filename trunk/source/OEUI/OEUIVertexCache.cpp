@@ -7,7 +7,7 @@
  */
 #include "OEUIVertexCache.h"
 
-#include <IOERenderer.h>
+#include <IOERenderSystem.h>
 #include <assert.h>
 
 COEUIVertexCache::COEUIVertexCache(uint nVertsCacheSize, uint nIndisCacheCount)
@@ -104,9 +104,9 @@ bool COEUIVertexCache::AddVerts(const void* pVerts, uint nVerts, const ushort* p
 
 void COEUIVertexCache::Flush()
 {
-	g_pOERenderer->SetVertDecl(m_pDecl);
-	g_pOERenderer->SetTexture(m_pTexture);
-	g_pOERenderer->DrawTriList(m_pVertsCache, m_nVertsCount, m_pIndisCache, m_nIndisCount);
+	g_pOERenderSystem->SetVertDecl(m_pDecl);
+	g_pOERenderSystem->SetTexture(m_pTexture);
+	g_pOERenderSystem->DrawTriList(m_pVertsCache, m_nVertsCount, m_pIndisCache, m_nIndisCount);
 
 	m_nVertsCount = 0;
 	m_nIndisCount = 0;

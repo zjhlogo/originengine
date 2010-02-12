@@ -24,7 +24,7 @@ public:
 	~CSimpleShape();
 
 	bool Initialize();
-	void DrawCube(IOERenderer* pRenderer, const CVector3& vPos, float fScale = 1.0f, uint nColor = 0xFFFFFFFF);
+	void DrawCube(IOERenderSystem* pRenderer, const CVector3& vPos, float fScale = 1.0f, uint nColor = 0xFFFFFFFF);
 
 private:
 	void Init();

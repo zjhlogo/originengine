@@ -24,7 +24,7 @@
 
 // äÖÈ¾Ä£¿é
 #include "IOEDevice.h"
-#include "IOERenderer.h"
+#include "IOERenderSystem.h"
 #include "IOETextureMgr.h"
 #include "IOEShaderMgr.h"
 

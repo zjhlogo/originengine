@@ -44,7 +44,7 @@ bool CSimpleShape::Initialize()
 	return true;
 }
 
-void CSimpleShape::DrawCube(IOERenderer* pRenderer, const CVector3& vPos, float fScale /* = 1.0f */, uint nColor /* = 0xFFFFFFFF */)
+void CSimpleShape::DrawCube(IOERenderSystem* pRenderer, const CVector3& vPos, float fScale /* = 1.0f */, uint nColor /* = 0xFFFFFFFF */)
 {
 	static VERTEX s_VertsTemplate[8] = 
 	{
