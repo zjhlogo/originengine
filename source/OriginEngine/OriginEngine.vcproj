@@ -355,7 +355,19 @@
 				>
 			</File>
 			<File
+				RelativePath=".\OEModelControl_Impl.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\OEModelMgr_Impl.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\OEModelRender_Impl.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\OEModelRenderData_Impl.cpp"
 				>
 			</File>
 			<File
@@ -397,7 +409,19 @@
 				>
 			</File>
 			<File
+				RelativePath=".\OEModelControl_Impl.h"
+				>
+			</File>
+			<File
 				RelativePath=".\OEModelMgr_Impl.h"
+				>
+			</File>
+			<File
+				RelativePath=".\OEModelRender_Impl.h"
+				>
+			</File>
+			<File
+				RelativePath=".\OEModelRenderData_Impl.h"
 				>
 			</File>
 			<File
@@ -422,6 +446,10 @@
 			</File>
 			<File
 				RelativePath="..\..\include\IOEConfigFileMgr.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\include\IOEControl.h"
 				>
 			</File>
 			<File
@@ -454,6 +482,14 @@
 			</File>
 			<File
 				RelativePath="..\..\include\IOEPiece.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\include\IOERender.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\include\IOERenderData.h"
 				>
 			</File>
 			<File
