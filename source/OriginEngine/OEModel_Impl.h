@@ -9,15 +9,18 @@
 #define __OEMODEL_IMPL_H__
 
 #include <IOEModel.h>
-#include <IOERenderData.h>
 #include <IOEControl.h>
 #include <IOERender.h>
+#include <IOEXmlNode.h>
 #include <vector>
+
+#include "OEModelRenderData_Impl.h"
 
 class COEModel_Impl : public IOEModel
 {
 public:
 	typedef std::vector<IOEControl*> TV_CONTROL;
+	typedef std::vector<IOERender*> TV_RENDER;
 
 public:
 	COEModel_Impl(const tstring& strFile);
@@ -31,11 +34,12 @@ private:
 	void Destroy();
 
 	bool Create(const tstring& strFile);
+	bool CreateRenderData(IOEXmlNode* pXmlRoot);
 
 private:
-	IOERenderData* m_pRenderData;
+	COEModelRenderData_Impl* m_pRenderData;
 	TV_CONTROL m_vControls;
-	IOERender* m_pRender;
+	TV_RENDER m_vRenders;
 
 };
 

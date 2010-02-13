@@ -45,13 +45,13 @@ void CBumpMapApp::Destroy()
 
 bool CBumpMapApp::Initialize()
 {
-	static const IOEVertDecl::ELEMENT s_Decl[] =
+	static const VERT_DECL_ELEMENT s_Decl[] =
 	{
-		IOEVertDecl::T_FLOAT3, IOEVertDecl::U_POSITION, 0,
-		IOEVertDecl::T_FLOAT2, IOEVertDecl::U_TEXCOORD, 0,
-		IOEVertDecl::T_FLOAT3, IOEVertDecl::U_TEXCOORD, 1,		// normal
-		IOEVertDecl::T_FLOAT3, IOEVertDecl::U_TEXCOORD, 2,		// tangent
-		IOEVertDecl::T_UNKNOWN, IOEVertDecl::U_UNKNOWN, 0,
+		VDT_FLOAT3, VDU_POSITION, 0,
+		VDT_FLOAT2, VDU_TEXCOORD, 0,
+		VDT_FLOAT3, VDU_TEXCOORD, 1,		// normal
+		VDT_FLOAT3, VDU_TEXCOORD, 2,		// tangent
+		VDT_UNKNOWN, VDU_UNKNOWN, 0,
 	};
 
 	m_pShader = g_pOEShaderMgr->CreateShader(s_Decl, TS("bumpmap.fx"));
@@ -95,7 +95,7 @@ void CBumpMapApp::Update(float fDetailTime)
 {
 	bool bRot = UpdateRotation(fDetailTime);
 	bool bMov = UpdateMovement(fDetailTime);
-	if (bRot || bMov) g_pOERenderSystem->SetTransform(IOERenderSystem::TT_VIEW, m_pCamera->GetViewMatrix());
+	if (bRot || bMov) g_pOERenderSystem->SetTransform(TT_VIEW, m_pCamera->GetViewMatrix());
 }
 
 void CBumpMapApp::Render(float fDetailTime)
@@ -113,7 +113,7 @@ void CBumpMapApp::Render(float fDetailTime)
 	static const ushort s_Indis[6] = {0, 1, 3, 1, 2, 3};
 
 	CMatrix4x4 matWorldViewProj;
-	g_pOERenderSystem->GetTransform(matWorldViewProj, IOERenderSystem::TT_WORLD_VIEW_PROJ);
+	g_pOERenderSystem->GetTransform(matWorldViewProj, TT_WORLD_VIEW_PROJ);
 	m_pShader->SetMatrix(TS("g_matWorldViewProj"), matWorldViewProj);
 
 	s_fTotalTime += fDetailTime;

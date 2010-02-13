@@ -13,7 +13,7 @@
 
 extern IDirect3DDevice9* g_pd3dDevice;
 
-COED3DVertDecl_Impl::COED3DVertDecl_Impl(const ELEMENT* pElement)
+COED3DVertDecl_Impl::COED3DVertDecl_Impl(const VERT_DECL_ELEMENT* pElement)
 {
 	Init();
 	m_bOK = Create(pElement);
@@ -42,15 +42,15 @@ int COED3DVertDecl_Impl::GetStrideSize() const
 	return m_nStride;
 }
 
-const IOEVertDecl::ELEMENT* COED3DVertDecl_Impl::GetElement() const
+const VERT_DECL_ELEMENT* COED3DVertDecl_Impl::GetElement() const
 {
 	return m_Element;
 }
 
-bool COED3DVertDecl_Impl::Compare(const ELEMENT* pElement) const
+bool COED3DVertDecl_Impl::Compare(const VERT_DECL_ELEMENT* pElement) const
 {
 	int nElementCount = 0;
-	while (pElement[nElementCount].eType != T_UNKNOWN) ++nElementCount;
+	while (pElement[nElementCount].eType != VDT_UNKNOWN) ++nElementCount;
 
 	if (m_nElementCount != nElementCount) return false;
 
@@ -69,14 +69,14 @@ IDirect3DVertexDeclaration9* COED3DVertDecl_Impl::GetD3DVertDecl()
 	return m_pDecl;
 }
 
-bool COED3DVertDecl_Impl::Create(const ELEMENT* pElement)
+bool COED3DVertDecl_Impl::Create(const VERT_DECL_ELEMENT* pElement)
 {
-	static D3DVERTEXELEMENT9 s_D3DDecl[IOEVertDecl::MAX_ELEMENT_COUNT];
+	static D3DVERTEXELEMENT9 s_D3DDecl[MAX_ELEMENT_COUNT];
 	static const D3DVERTEXELEMENT9 END_ELEMENT = D3DDECL_END();
 
 	// fill the element
 	m_nElementCount = 0;
-	while (pElement[m_nElementCount].eType != IOEVertDecl::T_UNKNOWN)
+	while (pElement[m_nElementCount].eType != VDT_UNKNOWN)
 	{
 		assert(m_nElementCount < MAX_ELEMENT_COUNT);
 		m_Element[m_nElementCount] = pElement[m_nElementCount];

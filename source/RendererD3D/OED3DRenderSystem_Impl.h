@@ -45,7 +45,7 @@ public:
 	virtual void SetCullMode(CULL_MODE_TYPE eMode);
 	virtual void SetFillMode(FILL_MODE eFillMode);
 	virtual void SetFogInfo(uint nColor, float fNear, float fFar);
-	virtual void SetSampleFilter(SAMPLE_FILTER eSampleFilter);
+	virtual void SetSampleFilter(OE_SAMPLE_FILTER eSampleFilter);
 
 private:
 	void Init();

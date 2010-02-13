@@ -25,14 +25,11 @@ CMeshApp::~CMeshApp()
 void CMeshApp::Init()
 {
 	m_pCamera = NULL;
-	m_pSimpleShape = NULL;
 	m_pModel = NULL;
 	m_bLButtonDown = false;
 	m_nMouseDetailX = 0;
 	m_nMouseDetailY = 0;
 	memset(m_KeyDown, 0, sizeof(m_KeyDown));
-
-	m_pNormalVertDecl = NULL;
 }
 
 void CMeshApp::Destroy()
@@ -42,25 +39,11 @@ void CMeshApp::Destroy()
 
 bool CMeshApp::Initialize()
 {
-	static IOEVertDecl::ELEMENT s_NormalVertDecl[] = 
-	{
-		{IOEVertDecl::T_FLOAT3, IOEVertDecl::U_POSITION, 0},
-		{IOEVertDecl::T_COLOR, IOEVertDecl::U_COLOR, 0},
-		{IOEVertDecl::T_UNKNOWN, IOEVertDecl::U_UNKNOWN, 0},
-	};
-
 	m_pCamera = new CCamera();
 	if (!m_pCamera) return false;
 
-	m_pSimpleShape = new CSimpleShape();
-	if (!m_pSimpleShape) return false;
-	if (!m_pSimpleShape->Initialize()) return false;
-
-	m_pModel = g_pOEModelMgr->CreateModelFromFile(TS("Model.xml"));
+	m_pModel = g_pOEResMgr->CreateModel(TS("Model.xml"));
 	if (!m_pModel) return false;
-
-	m_pNormalVertDecl = g_pOEDevice->CreateVertDecl(s_NormalVertDecl);
-	if (!m_pNormalVertDecl) return false;
 
 	// registe message
 	g_pOEMsgMgr->RegisterMessage(OMI_LBUTTON_DOWN, this, (MSG_FUNC)&CMeshApp::OnLButtonDown);
@@ -74,9 +57,7 @@ bool CMeshApp::Initialize()
 
 void CMeshApp::Terminate()
 {
-	SAFE_RELEASE(m_pNormalVertDecl);
 	SAFE_RELEASE(m_pModel);
-	SAFE_DELETE(m_pSimpleShape);
 	SAFE_DELETE(m_pCamera);
 }
 
@@ -84,53 +65,14 @@ void CMeshApp::Update(float fDetailTime)
 {
 	bool bRot = UpdateRotation(fDetailTime);
 	bool bMov = UpdateMovement(fDetailTime);
-	if (bRot || bMov) g_pOERenderSystem->SetTransform(IOERenderSystem::TT_VIEW, m_pCamera->GetViewMatrix());
+	if (bRot || bMov) g_pOERenderSystem->SetTransform(TT_VIEW, m_pCamera->GetViewMatrix());
 
 	m_pModel->Update(fDetailTime);
 }
 
 void CMeshApp::Render(float fDetailTime)
 {
-	static float s_fTotalTime = 0.0f;
-
-	CMatrix4x4 matWorldViewProj;
-	g_pOERenderSystem->GetTransform(matWorldViewProj, IOERenderSystem::TT_WORLD_VIEW_PROJ);
-
-	//g_pOERenderSystem->SetFillMode(IOERenderSystem::FM_WIREFRAME);
-	//g_pOERenderSystem->SetCullMode(IOERenderSystem::CMT_NONE);
-
-	s_fTotalTime += fDetailTime*0.0f;
-	CVector3 vLightPos;
-	vLightPos.x = cos(s_fTotalTime)*300.0f;
-	vLightPos.y = 150.0f;
-	vLightPos.z = sin(s_fTotalTime)*300.0f;
-
-	//m_pModel->Render(fDetailTime);
-	IOEMesh* pMesh = m_pModel->GetMesh();
-	int nNumPiece = pMesh->GetNumPieces();
-	for (int i = 0; i < nNumPiece; ++i)
-	{
-		IOEPiece* pPiece = pMesh->GetPiece(i);
-
-		int nMaterialID = pPiece->GetMaterialID();
-		IOEModel::MATERIAL* pMaterial = m_pModel->GetMaterial(nMaterialID);
-		if (!pMaterial) continue;
-		if (pPiece->GetVertDecl() != pMaterial->nVertDecl) continue;
-
-		pMaterial->pShader->SetMatrix(TS("g_matWorldViewProj"), matWorldViewProj);
-		pMaterial->pShader->SetTexture(TS("g_texBase"), pMaterial->pTexture);
-		pMaterial->pShader->SetTexture(TS("g_texNormal"), pMaterial->pTexNormal);
-		pMaterial->pShader->SetVector(TS("g_vLightPos"), vLightPos);
-		pMaterial->pShader->SetMatrixArray(TS("g_matBoneMatrix"), m_pModel->GetMatrixPalette(), m_pModel->GetNumMatrixPalette());
-		g_pOERenderSystem->SetShader(pMaterial->pShader);
-
-		g_pOERenderSystem->DrawTriList(pPiece->GetVerts(), pPiece->GetNumVerts(), pPiece->GetIndis(), pPiece->GetNumIndis());
-
-		//RenderPieceNormal(pPiece);
-	}
-
-	g_pOERenderSystem->SetShader(NULL);
-	m_pSimpleShape->DrawCube(g_pOERenderSystem, vLightPos, 10.0f, 0xFFFFFFFF);
+	m_pModel->Render();
 }
 
 bool CMeshApp::OnLButtonDown(uint nMsgID, COEDataBufferRead* pDBRead)
@@ -210,46 +152,4 @@ bool CMeshApp::UpdateRotation(float fDetailTime)
 	m_nMouseDetailX = 0;
 
 	return true;
-}
-
-void CMeshApp::RenderPieceNormal(IOEPiece* pPiece)
-{
-	static bool s_bFirstRender = true;
-
-	MODEL_VERTEX* pVertSrc = (MODEL_VERTEX*)pPiece->GetVerts();
-	int nNumVerts = pPiece->GetNumVerts();
-
-	if (s_bFirstRender)
-	{
-		int nSize = nNumVerts*2;
-
-		m_vNormalVerts.resize(nSize);
-		for (int i = 0; i < nSize; ++i)
-		{
-			m_vNormalVerts[i].nColor = 0xFFFFFFFF;
-		}
-
-		m_vNormalIndis.resize(nSize);
-		for (int i = 0; i < nSize; ++i)
-		{
-			m_vNormalIndis[i] = i;
-		}
-
-		s_bFirstRender = false;
-	}
-
-	for (int i = 0; i < nNumVerts; ++i)
-	{
-		m_vNormalVerts[i*2].x = pVertSrc[i].x;
-		m_vNormalVerts[i*2].y = pVertSrc[i].y;
-		m_vNormalVerts[i*2].z = pVertSrc[i].z;
-
-		m_vNormalVerts[i*2+1].x = pVertSrc[i].x + pVertSrc[i].nx * 2.0f;
-		m_vNormalVerts[i*2+1].y = pVertSrc[i].y + pVertSrc[i].ny * 2.0f;
-		m_vNormalVerts[i*2+1].z = pVertSrc[i].z + pVertSrc[i].nz * 2.0f;
-	}
-
-	g_pOERenderSystem->SetShader(NULL);
-	g_pOERenderSystem->SetVertDecl(m_pNormalVertDecl);
-	g_pOERenderSystem->DrawLineList(&m_vNormalVerts[0], m_vNormalVerts.size(), &m_vNormalIndis[0], m_vNormalIndis.size());
 }

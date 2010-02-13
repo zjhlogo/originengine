@@ -16,7 +16,7 @@
 class COED3DShader_Impl : public IOEShader
 {
 public:
-	COED3DShader_Impl(const IOEVertDecl::ELEMENT* pElement, const tstring& strFileName);
+	COED3DShader_Impl(const VERT_DECL_ELEMENT* pElement, const tstring& strFileName);
 	virtual ~COED3DShader_Impl();
 
 	virtual bool SetInt(const tstring& strParamName, int nValue);
@@ -45,7 +45,7 @@ private:
 	void Init();
 	void Destroy();
 
-	bool Create(const IOEVertDecl::ELEMENT* pElement, const tstring& strFileName);
+	bool Create(const VERT_DECL_ELEMENT* pElement, const tstring& strFileName);
 
 private:
 	COED3DVertDecl_Impl* m_pDecl;

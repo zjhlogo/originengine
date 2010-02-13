@@ -183,7 +183,7 @@ float COED3DDevice_Impl::GetFPS()
 	return m_fCurrFPS;
 }
 
-IOEVertDecl* COED3DDevice_Impl::CreateVertDecl(const IOEVertDecl::ELEMENT* pElement)
+IOEVertDecl* COED3DDevice_Impl::CreateVertDecl(const VERT_DECL_ELEMENT* pElement)
 {
 	for (VOED3D_VERTDECL::iterator it = m_vD3DVertDecl.begin(); it != m_vD3DVertDecl.end(); ++it)
 	{
@@ -360,7 +360,7 @@ void COED3DDevice_Impl::PerformOnce(float fDetailTime)
 	if (SUCCEEDED(g_pd3dDevice->BeginScene()))
 	{
 		// render scene
-		g_pOERenderSystem->SetSampleFilter(IOERenderSystem::SF_LINEAR);
+		g_pOERenderSystem->SetSampleFilter(OESF_LINEAR);
 		g_pOERenderSystem->SetShader(NULL);
 		g_pOERenderSystem->SetVertDecl(NULL);
 		g_pOERenderSystem->SetTexture(NULL);
@@ -379,15 +379,15 @@ void COED3DDevice_Impl::InitializeD3D()
 	// initialize
 	CMatrix4x4 matWorld;
 	matWorld.Identity();
-	g_pOERenderSystem->SetTransform(IOERenderSystem::TT_WORLD, matWorld);
+	g_pOERenderSystem->SetTransform(TT_WORLD, matWorld);
 
 	CMatrix4x4 matView;
 	COEMath::BuildLookAtMatrixLH(matView, CVector3(0.0f, 3.0f, -5.0f), CVector3(0.0f, 0.0f, 0.0f), CVector3(0.0f, 1.0f, 0.0f));
-	g_pOERenderSystem->SetTransform(IOERenderSystem::TT_VIEW, matView);
+	g_pOERenderSystem->SetTransform(TT_VIEW, matView);
 
 	CMatrix4x4 matProj;
 	COEMath::BuildProjectMatrixLH(matProj, OEMATH_PI/4.0f, (float)m_nWindowWidth/(float)m_nWindowHeight, 1.0f, 10000.0f);
-	g_pOERenderSystem->SetTransform(IOERenderSystem::TT_PROJECTION, matProj);
+	g_pOERenderSystem->SetTransform(TT_PROJECTION, matProj);
 
 	g_pOERenderSystem->EnableLight(false);
 }
@@ -428,8 +428,8 @@ void COED3DDevice_Impl::RenderFPS()
 		m_pStringFPS = g_pOEUIStringMgr->CreateUIString(m_pFontFPS);
 	}
 
-	g_pOERenderSystem->SetSampleFilter(IOERenderSystem::SF_POINT);
-	g_pOERenderSystem->SetFillMode(IOERenderSystem::FM_SOLID);
+	g_pOERenderSystem->SetSampleFilter(OESF_POINT);
+	g_pOERenderSystem->SetFillMode(FM_SOLID);
 	g_pOERenderSystem->SetShader(NULL);
 	g_pOERenderSystem->SetVertDecl(NULL);
 	g_pOERenderSystem->SetTexture(NULL);

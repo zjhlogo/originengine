@@ -24,7 +24,7 @@ public:
 
 	virtual float GetFPS();
 
-	virtual IOEVertDecl* CreateVertDecl(const IOEVertDecl::ELEMENT* pElement);
+	virtual IOEVertDecl* CreateVertDecl(const VERT_DECL_ELEMENT* pElement);
 
 	virtual bool GetDeviceParam(void* pData, const tstring& strParamName);
 

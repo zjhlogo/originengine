@@ -6,13 +6,10 @@
  * \author zjhlogo (zjhlogo@163.com)
  */
 #include "OEModel_Impl.h"
-#include <IOEMeshMgr.h>
+#include "OEModelRenderData_Impl.h"
 #include <IOEXmlMgr.h>
-#include <IOEShaderMgr.h>
-#include <IOETextureMgr.h>
-#include <IOELogFileMgr.h>
-#include <IOERenderSystem.h>
-#include <IOEFileMgr.h>
+#include <IOEControlMgr.h>
+#include <IOERenderMgr.h>
 
 COEModel_Impl::COEModel_Impl(const tstring& strFile)
 {
@@ -28,28 +25,83 @@ COEModel_Impl::~COEModel_Impl()
 void COEModel_Impl::Init()
 {
 	m_pRenderData = NULL;
-	m_pRender = NULL;
 }
 
 void COEModel_Impl::Destroy()
 {
-	// TODO: release data
-}
-
-bool COEModel_Impl::Create(const tstring& strFile)
-{
-	// TODO: create render data
-	// TODO: create control
-	// TODO: create render
-	return true;
+	// release data
+	SAFE_RELEASE(m_pRenderData);
+	m_vControls.clear();
+	m_vRenders.clear();
 }
 
 void COEModel_Impl::Update(float fDetailTime)
 {
-	// TODO: 
+	for (TV_CONTROL::iterator it = m_vControls.begin(); it != m_vControls.end(); ++it)
+	{
+		IOEControl* pControl = (*it);
+		pControl->Update(m_pRenderData, fDetailTime);
+	}
 }
 
 void COEModel_Impl::Render()
 {
-	// TODO: 
+	for (TV_RENDER::iterator it = m_vRenders.begin(); it != m_vRenders.end(); ++it)
+	{
+		IOERender* pRender = (*it);
+		pRender->Render(m_pRenderData);
+	}
+}
+
+bool COEModel_Impl::Create(const tstring& strFile)
+{
+	IOEXmlDocument* pXmlDocument = g_pOEXmlMgr->CreateDocument(strFile);
+	if (!pXmlDocument) return false;
+
+	// create mesh
+	IOEXmlNode* pXmlRoot = pXmlDocument->GetRootNode();
+	bool bOK = CreateRenderData(pXmlRoot);
+	SAFE_RELEASE(pXmlDocument);
+	if (!bOK) return false;
+
+	// create control
+	IOEControl* pControl = g_pOEControlMgr->GetControl(OECT_SKINMESH);
+	if (pControl) m_vControls.push_back(pControl);
+
+	// create render
+	IOERender* pRender = g_pOERenderMgr->GetRender(OERT_SKINMESH);
+	if (pRender) m_vRenders.push_back(pRender);
+
+	return true;
+}
+
+bool COEModel_Impl::CreateRenderData(IOEXmlNode* pXmlRoot)
+{
+	if (!pXmlRoot) return false;
+
+	// create render data
+	m_pRenderData = new COEModelRenderData_Impl();
+	if (!m_pRenderData) return false;
+
+	// create mesh
+	IOEXmlNode* pXmlMesh = pXmlRoot->FirstChild(TS("Mesh"));
+	if (!pXmlMesh) return false;
+
+	tstring strMeshFile;
+	if (!pXmlMesh->GetText(strMeshFile)) return false;
+	if (!m_pRenderData->LoadMesh(strMeshFile)) return false;
+
+	// create bone
+	IOEXmlNode* pXmlBone = pXmlRoot->FirstChild(TS("Bone"));
+	if (!pXmlBone) return false;
+
+	tstring strBoneFile;
+	if (!pXmlBone->GetText(strBoneFile)) return false;
+	if (!m_pRenderData->LoadBone(strBoneFile)) return false;
+
+	// create materials
+	IOEXmlNode* pXmlMaterials = pXmlRoot->FirstChild(TS("Materials"));
+	if (!m_pRenderData->LoadMaterials(pXmlMaterials)) return false;
+
+	return true;
 }

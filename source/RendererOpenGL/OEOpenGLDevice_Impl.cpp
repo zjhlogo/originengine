@@ -56,7 +56,7 @@ float COEOpenGLDevice_Impl::GetFPS()
 	return 0.0f;
 }
 
-IOEVertDecl* COEOpenGLDevice_Impl::CreateVertDecl(const IOEVertDecl::ELEMENT* pElement)
+IOEVertDecl* COEOpenGLDevice_Impl::CreateVertDecl(const VERT_DECL_ELEMENT* pElement)
 {
 	// TODO: 
 	return NULL;

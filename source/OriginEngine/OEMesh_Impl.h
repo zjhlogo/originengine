@@ -9,18 +9,12 @@
 #define __OEMESH_IMPL_H__
 
 #include <IOEMesh.h>
-#include "OEPiece_Impl.h"
-#include "OEBone_Impl.h"
-
-#include <vector>
+#include <IOEResMgr.h>
 
 class COEMesh_Impl : public IOEMesh
 {
 public:
-	typedef std::vector<COEPiece_Impl*> TV_PIECE;
-
-public:
-	COEMesh_Impl(const tstring& strFileName);
+	COEMesh_Impl(const tstring& strFile);
 	virtual ~COEMesh_Impl();
 
 	virtual int GetNumPieces() const;

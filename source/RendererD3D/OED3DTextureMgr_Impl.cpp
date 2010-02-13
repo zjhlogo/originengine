@@ -63,7 +63,7 @@ IOETexture* COED3DTextureMgr_Impl::CreateTextureFromFile(const tstring& strFileN
 	return pTexture;
 }
 
-IOETexture* COED3DTextureMgr_Impl::CreateTexture(int nWidth, int nHeight, IOETexture::TEXTURE_FORMAT eFormat)
+IOETexture* COED3DTextureMgr_Impl::CreateTexture(int nWidth, int nHeight, TEXTURE_FORMAT eFormat)
 {
 	COED3DTexture_Impl* pTexture = new COED3DTexture_Impl(nWidth, nHeight, eFormat);
 	if (!pTexture || !pTexture->IsOK())

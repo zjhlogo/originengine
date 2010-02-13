@@ -9,14 +9,20 @@
 #define __IOECONTROL_H__
 
 #include "IOEObject.h"
+#include "IOERenderData.h"
 
 class IOEControl : public IOEObject
 {
 public:
-	IOEControl() {};
+	IOEControl(uint nType) {m_nType = nType;};
 	virtual ~IOEControl() {};
 
-	virtual void Update(float fDetailTime) = 0;
+	uint GetType() const {return m_nType;};
+
+	virtual bool Update(IOERenderData* pRenderData, float fDetailTime) = 0;
+
+private:
+	uint m_nType;
 
 };
 #endif // __IOECONTROL_H__

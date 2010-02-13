@@ -30,11 +30,11 @@ void CSimpleShape::Destroy()
 
 bool CSimpleShape::Initialize()
 {
-	static const IOEVertDecl::ELEMENT s_Decl[] =
+	static const VERT_DECL_ELEMENT s_Decl[] =
 	{
-		IOEVertDecl::T_FLOAT3, IOEVertDecl::U_POSITION, 0,
-		IOEVertDecl::T_COLOR, IOEVertDecl::U_COLOR, 0,
-		IOEVertDecl::T_UNKNOWN, IOEVertDecl::U_UNKNOWN, 0,
+		VDT_FLOAT3, VDU_POSITION, 0,
+		VDT_COLOR, VDU_COLOR, 0,
+		VDT_UNKNOWN, VDU_UNKNOWN, 0,
 	};
 
 	m_pDecl = g_pOEDevice->CreateVertDecl(s_Decl);
