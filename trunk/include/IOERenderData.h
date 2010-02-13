@@ -9,12 +9,18 @@
 #define __IOERENDERDATA_H__
 
 #include "IOEObject.h"
+#include "OEBaseTypeEx.h"
 
 class IOERenderData : public IOEObject
 {
 public:
-	IOERenderData() {};
+	IOERenderData(uint nType) {m_nType = nType;};
 	virtual ~IOERenderData() {};
+
+	uint GetType() {return m_nType;};
+
+private:
+	uint m_nType;
 
 };
 #endif // __IOERENDERDATA_H__

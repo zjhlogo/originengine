@@ -76,6 +76,6 @@ public:
 		int nNumFrameScale;
 		uint nOffFrameScale;
 	} BONE;
-
 };
+
 #endif // __OEFMTBONE_H__

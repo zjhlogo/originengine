@@ -23,7 +23,7 @@ typedef std::vector<IOEBone*> TV_BONE;
 
 enum TRANSFORM_TYPE
 {
-	TT_UNKNOWN			= 0,
+	TT_UNKNOWN			= 0x00000000,
 	TT_WORLD			= 0x00000001,
 	TT_VIEW				= 0x00000002,
 	TT_PROJECTION		= 0x00000004,
@@ -121,6 +121,14 @@ typedef struct MATERIAL_tag
 } MATERIAL;
 
 typedef std::vector<MATERIAL> TV_MATERIAL;
+
+enum OE_RENDER_DATA_TYPE
+{
+	OERDT_UNKNOWN = 0,
+	OERDT_SKINMESH,
+
+	OERDT_USER = 1000,
+};
 
 enum OE_CONTROL_TYPE
 {

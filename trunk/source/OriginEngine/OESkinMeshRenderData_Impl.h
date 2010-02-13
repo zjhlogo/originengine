@@ -1,22 +1,22 @@
 /*!
- * \file OEModelRenderData_Impl.h
- * \date 12-2-2010 20:05:03
+ * \file OESkinMeshRenderData_Impl.h
+ * \date 13-2-2010 19:57:00
  * 
  * 
  * \author zjhlogo (zjhlogo@163.com)
  */
-#ifndef __OEMODELRENDERDATA_IMPL_H__
-#define __OEMODELRENDERDATA_IMPL_H__
+#ifndef __OESKINMESHRENDERDATA_IMPL_H__
+#define __OESKINMESHRENDERDATA_IMPL_H__
 
 #include <IOERenderData.h>
 #include <IOEResMgr.h>
 #include <IOEXmlMgr.h>
 
-class COEModelRenderData_Impl : public IOERenderData
+class COESkinMeshRenderData_Impl : public IOERenderData
 {
 public:
-	COEModelRenderData_Impl();
-	virtual ~COEModelRenderData_Impl();
+	COESkinMeshRenderData_Impl();
+	virtual ~COESkinMeshRenderData_Impl();
 
 	bool LoadMesh(const tstring& strFile);
 	bool LoadBone(const tstring& strFile);
@@ -56,4 +56,4 @@ private:
 	float m_fTotalTime;
 
 };
-#endif // __OEMODELRENDERDATA_IMPL_H__
+#endif // __OESKINMESHRENDERDATA_IMPL_H__

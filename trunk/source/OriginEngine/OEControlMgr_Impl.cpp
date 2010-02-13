@@ -6,7 +6,7 @@
  * \author zjhlogo (zjhlogo@163.com)
  */
 #include "OEControlMgr_Impl.h"
-#include "OEModelControl_Impl.h"
+#include "OESkinMeshControl_Impl.h"
 
 COEControlMgr_Impl::COEControlMgr_Impl()
 {
@@ -22,7 +22,7 @@ COEControlMgr_Impl::~COEControlMgr_Impl()
 
 void COEControlMgr_Impl::Init()
 {
-	AddControlHandle(new COEModelControl_Impl());
+	AddControlHandle(new COESkinMeshControl_Impl());
 	m_bOK = true;
 }
 
