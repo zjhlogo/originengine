@@ -6,7 +6,7 @@
  * \author zjhlogo (zjhlogo@163.com)
  */
 #include "OEModel_Impl.h"
-#include "OEModelRenderData_Impl.h"
+#include "OESkinMeshRenderData_Impl.h"
 #include <IOEXmlMgr.h>
 #include <IOEControlMgr.h>
 #include <IOERenderMgr.h>
@@ -80,7 +80,7 @@ bool COEModel_Impl::CreateRenderData(IOEXmlNode* pXmlRoot)
 	if (!pXmlRoot) return false;
 
 	// create render data
-	m_pRenderData = new COEModelRenderData_Impl();
+	m_pRenderData = new COESkinMeshRenderData_Impl();
 	if (!m_pRenderData) return false;
 
 	// create mesh

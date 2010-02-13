@@ -355,18 +355,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\OEModelControl_Impl.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\OEModelRender_Impl.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\OEModelRenderData_Impl.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\OEModule.cpp"
 				>
 			</File>
@@ -380,6 +368,18 @@
 			</File>
 			<File
 				RelativePath=".\OEResMgr_Impl.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\OESkinMeshControl_Impl.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\OESkinMeshRender_Impl.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\OESkinMeshRenderData_Impl.cpp"
 				>
 			</File>
 		</Filter>
@@ -413,18 +413,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\OEModelControl_Impl.h"
-				>
-			</File>
-			<File
-				RelativePath=".\OEModelRender_Impl.h"
-				>
-			</File>
-			<File
-				RelativePath=".\OEModelRenderData_Impl.h"
-				>
-			</File>
-			<File
 				RelativePath=".\OEModule.h"
 				>
 			</File>
@@ -438,6 +426,18 @@
 			</File>
 			<File
 				RelativePath=".\OEResMgr_Impl.h"
+				>
+			</File>
+			<File
+				RelativePath=".\OESkinMeshControl_Impl.h"
+				>
+			</File>
+			<File
+				RelativePath=".\OESkinMeshRender_Impl.h"
+				>
+			</File>
+			<File
+				RelativePath=".\OESkinMeshRenderData_Impl.h"
 				>
 			</File>
 		</Filter>
@@ -534,6 +534,10 @@
 			</File>
 			<File
 				RelativePath="..\..\include\OEConfig.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\include\OEFmtBone.h"
 				>
 			</File>
 			<File

@@ -1,11 +1,11 @@
 /*!
- * \file OEModelRenderData_Impl.cpp
- * \date 12-2-2010 20:06:21
+ * \file OESkinMeshRenderData_Impl.cpp
+ * \date 13-2-2010 19:57:22
  * 
  * 
  * \author zjhlogo (zjhlogo@163.com)
  */
-#include "OEModelRenderData_Impl.h"
+#include "OESkinMeshRenderData_Impl.h"
 #include "OEBone_Impl.h"
 
 #include <IOEFileMgr.h>
@@ -15,17 +15,18 @@
 #include <OEFmtMesh.h>
 #include <OEFmtBone.h>
 
-COEModelRenderData_Impl::COEModelRenderData_Impl()
+COESkinMeshRenderData_Impl::COESkinMeshRenderData_Impl()
+:IOERenderData(OERDT_SKINMESH)
 {
 	Init();
 }
 
-COEModelRenderData_Impl::~COEModelRenderData_Impl()
+COESkinMeshRenderData_Impl::~COESkinMeshRenderData_Impl()
 {
 	Destroy();
 }
 
-void COEModelRenderData_Impl::Init()
+void COESkinMeshRenderData_Impl::Init()
 {
 	m_pMesh = NULL;
 	m_fAnimLength = 0.0f;
@@ -33,71 +34,71 @@ void COEModelRenderData_Impl::Init()
 	m_bOK = true;
 }
 
-void COEModelRenderData_Impl::Destroy()
+void COESkinMeshRenderData_Impl::Destroy()
 {
 	DestroyMesh();
 	DestroyBone();
 }
 
-bool COEModelRenderData_Impl::LoadMesh(const tstring& strFile)
+bool COESkinMeshRenderData_Impl::LoadMesh(const tstring& strFile)
 {
 	DestroyMesh();
 	return CreateMesh(strFile);
 }
 
-bool COEModelRenderData_Impl::LoadBone(const tstring& strFile)
+bool COESkinMeshRenderData_Impl::LoadBone(const tstring& strFile)
 {
 	DestroyBone();
 	return CreateBone(strFile);
 }
 
-bool COEModelRenderData_Impl::LoadMaterials(IOEXmlNode* pXmlMaterials)
+bool COESkinMeshRenderData_Impl::LoadMaterials(IOEXmlNode* pXmlMaterials)
 {
 	DestroyMaterials();
 	return CreateMaterials(pXmlMaterials);
 }
 
-IOEMesh* COEModelRenderData_Impl::GetMesh()
+IOEMesh* COESkinMeshRenderData_Impl::GetMesh()
 {
 	return m_pMesh;
 }
 
-TV_BONE& COEModelRenderData_Impl::GetBones()
+TV_BONE& COESkinMeshRenderData_Impl::GetBones()
 {
 	return m_vBones;
 }
 
-TV_MATRIX& COEModelRenderData_Impl::GetSkinMatrix()
+TV_MATRIX& COESkinMeshRenderData_Impl::GetSkinMatrix()
 {
 	return m_vmatSkin;
 }
 
-TV_MATERIAL& COEModelRenderData_Impl::GetMaterials()
+TV_MATERIAL& COESkinMeshRenderData_Impl::GetMaterials()
 {
 	return m_vMaterials;
 }
 
-void COEModelRenderData_Impl::SetAnimLength(float fAnimLength)
+void COESkinMeshRenderData_Impl::SetAnimLength(float fAnimLength)
 {
 	m_fAnimLength = fAnimLength;
 }
 
-float COEModelRenderData_Impl::GetAnimLength() const
+float COESkinMeshRenderData_Impl::GetAnimLength() const
 {
 	return m_fAnimLength;
 }
 
-void COEModelRenderData_Impl::SetTotalTime(float fTotalTime)
+void COESkinMeshRenderData_Impl::SetTotalTime(float fTotalTime)
 {
 	m_fTotalTime = fTotalTime;
 }
 
-float COEModelRenderData_Impl::GetTotalTime() const
+float COESkinMeshRenderData_Impl::GetTotalTime() const
 {
 	return m_fTotalTime;
 }
 
-bool COEModelRenderData_Impl::CreateMesh(const tstring& strFile)
+bool COESkinMeshRenderData_Impl::CreateMesh(const tstring& strFile)
 {
 	DestroyMesh();
 
@@ -107,7 +108,7 @@ bool COEModelRenderData_Impl::CreateMesh(const tstring& strFile)
 	return true;
 }
 
-bool COEModelRenderData_Impl::CreateBone(const tstring& strFile)
+bool COESkinMeshRenderData_Impl::CreateBone(const tstring& strFile)
 {
 	DestroyBone();
 
@@ -125,7 +126,7 @@ bool COEModelRenderData_Impl::CreateBone(const tstring& strFile)
 	return true;
 }
 
-bool COEModelRenderData_Impl::CreateMaterials(IOEXmlNode* pXmlMaterials)
+bool COESkinMeshRenderData_Impl::CreateMaterials(IOEXmlNode* pXmlMaterials)
 {
 	if (!pXmlMaterials) return false;
 
@@ -176,7 +177,7 @@ bool COEModelRenderData_Impl::CreateMaterials(IOEXmlNode* pXmlMaterials)
 	return true;
 }
 
-IOEShader* COEModelRenderData_Impl::CreateShader(int nVertDecl, const tstring& strFile)
+IOEShader* COESkinMeshRenderData_Impl::CreateShader(int nVertDecl, const tstring& strFile)
 {
 	std::vector<VERT_DECL_ELEMENT> vDecl;
 	int nTexCoordIndex = 0;
@@ -256,18 +257,18 @@ IOEShader* COEModelRenderData_Impl::CreateShader(int nVertDecl, const tstring& s
 	return g_pOEShaderMgr->CreateShader(&vDecl[0], strFile);
 }
 
-void COEModelRenderData_Impl::DestroyMesh()
+void COESkinMeshRenderData_Impl::DestroyMesh()
 {
 	SAFE_RELEASE(m_pMesh);
 }
 
-void COEModelRenderData_Impl::DestroyBone()
+void COESkinMeshRenderData_Impl::DestroyBone()
 {
 	g_pOEResMgr->DestroyBones(m_vBones);
 	m_fAnimLength = 0.0f;
 }
 
-void COEModelRenderData_Impl::DestroyMaterials()
+void COESkinMeshRenderData_Impl::DestroyMaterials()
 {
 	for (TV_MATERIAL::iterator it = m_vMaterials.begin(); it != m_vMaterials.end(); ++it)
 	{

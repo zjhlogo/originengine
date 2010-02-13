@@ -1,27 +1,27 @@
 /*!
- * \file OEModelRender_Impl.cpp
- * \date 12-2-2010 20:22:00
+ * \file OESkinMeshRender_Impl.cpp
+ * \date 13-2-2010 19:58:25
  * 
  * 
  * \author zjhlogo (zjhlogo@163.com)
  */
-#include "OEModelRender_Impl.h"
+#include "OESkinMeshRender_Impl.h"
 #include <IOERenderSystem.h>
 
-COEModelRender_Impl::COEModelRender_Impl()
+COESkinMeshRender_Impl::COESkinMeshRender_Impl()
 :IOERender(OERT_SKINMESH)
 {
 	// TODO: 
 }
 
-COEModelRender_Impl::~COEModelRender_Impl()
+COESkinMeshRender_Impl::~COESkinMeshRender_Impl()
 {
 	// TODO: 
 }
 
-bool COEModelRender_Impl::Render(IOERenderData* pRenderData)
+bool COESkinMeshRender_Impl::Render(IOERenderData* pRenderData)
 {
-	COEModelRenderData_Impl* pData = ConvertData(pRenderData);
+	COESkinMeshRenderData_Impl* pData = ConvertData(pRenderData);
 	if (!pData) return false;
 
 	IOEMesh* pMesh = pData->GetMesh();
@@ -54,9 +54,11 @@ bool COEModelRender_Impl::Render(IOERenderData* pRenderData)
 	return true;
 }
 
-COEModelRenderData_Impl* COEModelRender_Impl::ConvertData(IOERenderData* pRenderData)
+COESkinMeshRenderData_Impl* COESkinMeshRender_Impl::ConvertData(IOERenderData* pRenderData)
 {
 	if (!pRenderData) return NULL;
 
-	return (COEModelRenderData_Impl*)pRenderData;
+	if (pRenderData->GetType() != OERDT_SKINMESH) return NULL;
+
+	return (COESkinMeshRenderData_Impl*)pRenderData;
 }

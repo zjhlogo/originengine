@@ -1,27 +1,27 @@
 /*!
- * \file OEModelControl_Impl.cpp
- * \date 12-2-2010 20:47:10
+ * \file OESkinMeshControl_Impl.cpp
+ * \date 13-2-2010 19:56:26
  * 
  * 
  * \author zjhlogo (zjhlogo@163.com)
  */
-#include "OEModelControl_Impl.h"
+#include "OESkinMeshControl_Impl.h"
 #include <OEFmtBone.h>
 
-COEModelControl_Impl::COEModelControl_Impl()
+COESkinMeshControl_Impl::COESkinMeshControl_Impl()
 :IOEControl(OECT_SKINMESH)
 {
 	// TODO: 
 }
 
-COEModelControl_Impl::~COEModelControl_Impl()
+COESkinMeshControl_Impl::~COESkinMeshControl_Impl()
 {
 	// TODO: 
 }
 
-bool COEModelControl_Impl::Update(IOERenderData* pRenderData, float fDetailTime)
+bool COESkinMeshControl_Impl::Update(IOERenderData* pRenderData, float fDetailTime)
 {
-	COEModelRenderData_Impl* pData = (COEModelRenderData_Impl*)ConvertData(pRenderData);
+	COESkinMeshRenderData_Impl* pData = (COESkinMeshRenderData_Impl*)ConvertData(pRenderData);
 	if (!pData) return false;
 
 	float fTotalTime = pData->GetTotalTime() + fDetailTime;
@@ -67,9 +67,11 @@ bool COEModelControl_Impl::Update(IOERenderData* pRenderData, float fDetailTime)
 	return true;
 }
 
-COEModelRenderData_Impl* COEModelControl_Impl::ConvertData(IOERenderData* pRenderData)
+COESkinMeshRenderData_Impl* COESkinMeshControl_Impl::ConvertData(IOERenderData* pRenderData)
 {
 	if (!pRenderData) return NULL;
 
-	return (COEModelRenderData_Impl*)pRenderData;
+	if (pRenderData->GetType() != OERDT_SKINMESH) return NULL;
+
+	return (COESkinMeshRenderData_Impl*)pRenderData;
 }

@@ -6,7 +6,7 @@
  * \author zjhlogo (zjhlogo@163.com)
  */
 #include "OERenderMgr_Impl.h"
-#include "OEModelRender_Impl.h"
+#include "OESkinMeshRender_Impl.h"
 
 COERenderMgr_Impl::COERenderMgr_Impl()
 {
@@ -22,7 +22,7 @@ COERenderMgr_Impl::~COERenderMgr_Impl()
 
 void COERenderMgr_Impl::Init()
 {
-	AddRenderHandle(new COEModelRender_Impl());
+	AddRenderHandle(new COESkinMeshRender_Impl());
 	m_bOK = true;
 }
 

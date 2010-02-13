@@ -62,4 +62,5 @@ public:
 		uint nOffIndis;					// sizeof(ushort)*nNumIndis*3;
 	} PIECE;
 };
+
 #endif // __OEFMTMESH_H__
