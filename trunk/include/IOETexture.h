@@ -9,18 +9,10 @@
 #define __IOETEXTURE_H__
 
 #include "IOEObject.h"
+#include "OEBaseTypeEx.h"
 
 class IOETexture : public IOEObject
 {
-public:
-	enum TEXTURE_FORMAT
-	{
-		TF_UNKNOWN,
-		TF_A8R8G8B8,
-		TF_A4R4G4B4,
-		TF_MAX,
-	};
-
 public:
 	IOETexture() {};
 	virtual ~IOETexture() {};

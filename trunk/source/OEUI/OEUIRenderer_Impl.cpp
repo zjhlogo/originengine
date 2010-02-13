@@ -112,12 +112,12 @@ void COEUIRenderer_Impl::FlushAll()
 
 bool COEUIRenderer_Impl::Create()
 {
-	static const IOEVertDecl::ELEMENT s_Decl[] =
+	static const VERT_DECL_ELEMENT s_Decl[] =
 	{
-		IOEVertDecl::T_FLOAT4, IOEVertDecl::U_POSITIONT, 0,
-		IOEVertDecl::T_COLOR, IOEVertDecl::U_COLOR, 0,
-		IOEVertDecl::T_FLOAT2, IOEVertDecl::U_TEXCOORD, 0,		// normal
-		IOEVertDecl::T_UNKNOWN, IOEVertDecl::U_UNKNOWN, 0,
+		VDT_FLOAT4, VDU_POSITIONT, 0,
+		VDT_COLOR, VDU_COLOR, 0,
+		VDT_FLOAT2, VDU_TEXCOORD, 0,		// normal
+		VDT_UNKNOWN, VDU_UNKNOWN, 0,
 	};
 
 	m_pDecl = g_pOEDevice->CreateVertDecl(s_Decl);

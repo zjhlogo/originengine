@@ -77,13 +77,13 @@ bool COED3DRenderSystem_Impl::SetTransform(TRANSFORM_TYPE eType, const CMatrix4x
 
 	switch (eType)
 	{
-	case IOERenderSystem::TT_WORLD:
+	case TT_WORLD:
 		m_matWorld = mat;
 		break;
-	case IOERenderSystem::TT_VIEW:
+	case TT_VIEW:
 		m_matView = mat;
 		break;
-	case IOERenderSystem::TT_PROJECTION:
+	case TT_PROJECTION:
 		m_matProjection = mat;
 		break;
 	}
@@ -189,7 +189,7 @@ void COED3DRenderSystem_Impl::SetFogInfo(uint nColor, float fNear, float fFar)
 	g_pd3dDevice->SetRenderState(D3DRS_FOGEND, *(DWORD*)&fFar);
 }
 
-void COED3DRenderSystem_Impl::SetSampleFilter(SAMPLE_FILTER eSampleFilter)
+void COED3DRenderSystem_Impl::SetSampleFilter(OE_SAMPLE_FILTER eSampleFilter)
 {
 	D3DTEXTUREFILTERTYPE eD3DSampleFilter = COED3DUtil::ToD3DSampleFilter(eSampleFilter);
 	g_pd3dDevice->SetSamplerState(0, D3DSAMP_MAGFILTER, eD3DSampleFilter);

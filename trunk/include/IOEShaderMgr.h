@@ -18,7 +18,7 @@ public:
 	IOEShaderMgr() {};
 	virtual ~IOEShaderMgr() {};
 
-	virtual IOEShader* CreateShader(const IOEVertDecl::ELEMENT* pElement, const tstring& strFileName) = 0;
+	virtual IOEShader* CreateShader(const VERT_DECL_ELEMENT* pElement, const tstring& strFileName) = 0;
 
 };
 

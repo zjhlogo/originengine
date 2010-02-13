@@ -40,8 +40,8 @@ typedef unsigned __int64			uint64;
 typedef std::basic_string<tchar>	tstring;
 extern const tstring EMPTY_STRING;
 
-#define SAFE_DELETE(x) if (x) {delete x; x = NULL;}
-#define SAFE_DELETE_ARRAY(x) if (x) {delete[] x; x = NULL;}
-#define SAFE_RELEASE(x) if (x) {x->Release(); x = NULL;}
+#define SAFE_DELETE(x) if (x) {delete (x); (x) = NULL;}
+#define SAFE_DELETE_ARRAY(x) if (x) {delete[] (x); (x) = NULL;}
+#define SAFE_RELEASE(x) if (x) {(x)->Release(); (x) = NULL;}
 
 #endif // __OEBASICTYPE_H__

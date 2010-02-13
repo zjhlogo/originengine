@@ -9,14 +9,20 @@
 #define __IOERENDER_H__
 
 #include "IOEObject.h"
+#include "IOERenderData.h"
 
 class IOERender : public IOEObject
 {
 public:
-	IOERender() {};
+	IOERender(uint nType) {m_nType = nType;};
 	virtual ~IOERender() {};
 
-	virtual void Render() = 0;
+	uint GetType() const {return m_nType;};
+
+	virtual bool Render(IOERenderData* pRenderData) = 0;
+
+private:
+	uint m_nType;
 
 };
 #endif // __IOERENDER_H__

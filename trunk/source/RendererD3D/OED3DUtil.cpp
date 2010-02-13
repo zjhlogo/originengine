@@ -48,9 +48,9 @@ void COED3DUtil::ToOEVector4(CVector4& vOut, const D3DXVECTOR4& vIn)
 	vOut.w = vIn.w;
 }
 
-D3DDECLTYPE COED3DUtil::ToD3DVertType(IOEVertDecl::TYPE eType)
+D3DDECLTYPE COED3DUtil::ToD3DVertType(VERT_DECL_TYPE eType)
 {
-	static const D3DDECLTYPE DECLARE_MAP[IOEVertDecl::T_MAX] =
+	static const D3DDECLTYPE DECLARE_MAP[VDT_MAX] =
 	{
 		D3DDECLTYPE_UNUSED,
 		D3DDECLTYPE_FLOAT1,		// 1D float expanded to (value, 0., 0., 1.)
@@ -61,42 +61,42 @@ D3DDECLTYPE COED3DUtil::ToD3DVertType(IOEVertDecl::TYPE eType)
 		D3DDECLTYPE_UBYTE4,		// 4D unsigned byte
 	};
 
-	assert(eType >= 0 && eType < IOEVertDecl::T_MAX);
+	assert(eType >= 0 && eType < VDT_MAX);
 	return DECLARE_MAP[eType];
 }
 
-IOEVertDecl::TYPE COED3DUtil::ToOEVertType(D3DDECLTYPE eType)
+VERT_DECL_TYPE COED3DUtil::ToOEVertType(D3DDECLTYPE eType)
 {
 	static const int MAP_SIZE = 18;
-	static const IOEVertDecl::TYPE DECLARE_MAP[MAP_SIZE] =
+	static const VERT_DECL_TYPE DECLARE_MAP[MAP_SIZE] =
 	{
-		IOEVertDecl::T_FLOAT1,
-		IOEVertDecl::T_FLOAT2,
-		IOEVertDecl::T_FLOAT3,
-		IOEVertDecl::T_FLOAT4,
-		IOEVertDecl::T_COLOR,
-		IOEVertDecl::T_UBYTE4,
-		IOEVertDecl::T_UNKNOWN,
-		IOEVertDecl::T_UNKNOWN,
-		IOEVertDecl::T_UNKNOWN,
-		IOEVertDecl::T_UNKNOWN,
-		IOEVertDecl::T_UNKNOWN,
-		IOEVertDecl::T_UNKNOWN,
-		IOEVertDecl::T_UNKNOWN,
-		IOEVertDecl::T_UNKNOWN,
-		IOEVertDecl::T_UNKNOWN,
-		IOEVertDecl::T_UNKNOWN,
-		IOEVertDecl::T_UNKNOWN,
-		IOEVertDecl::T_UNKNOWN,
+		VDT_FLOAT1,
+		VDT_FLOAT2,
+		VDT_FLOAT3,
+		VDT_FLOAT4,
+		VDT_COLOR,
+		VDT_UBYTE4,
+		VDT_UNKNOWN,
+		VDT_UNKNOWN,
+		VDT_UNKNOWN,
+		VDT_UNKNOWN,
+		VDT_UNKNOWN,
+		VDT_UNKNOWN,
+		VDT_UNKNOWN,
+		VDT_UNKNOWN,
+		VDT_UNKNOWN,
+		VDT_UNKNOWN,
+		VDT_UNKNOWN,
+		VDT_UNKNOWN,
 	};
 
 	assert(eType >= 0 && eType < MAP_SIZE);
 	return DECLARE_MAP[eType];
 }
 
-D3DDECLUSAGE COED3DUtil::ToD3DVertUsage(IOEVertDecl::USAGE eUsage)
+D3DDECLUSAGE COED3DUtil::ToD3DVertUsage(VERT_DECL_USAGE eUsage)
 {
-	static const D3DDECLUSAGE USAGE_MAP[IOEVertDecl::U_MAX] =
+	static const D3DDECLUSAGE USAGE_MAP[VDU_MAX] =
 	{
 		D3DDECLUSAGE_POSITION,		// 0
 		D3DDECLUSAGE_POSITION,		// 0
@@ -108,38 +108,38 @@ D3DDECLUSAGE COED3DUtil::ToD3DVertUsage(IOEVertDecl::USAGE eUsage)
 		D3DDECLUSAGE_BLENDINDICES,	// 2
 	};
 
-	assert(eUsage >= 0 && eUsage < IOEVertDecl::U_MAX);
+	assert(eUsage >= 0 && eUsage < VDU_MAX);
 	return USAGE_MAP[eUsage];
 }
 
-IOEVertDecl::USAGE COED3DUtil::ToOEVertUsage(D3DDECLUSAGE eUsage)
+VERT_DECL_USAGE COED3DUtil::ToOEVertUsage(D3DDECLUSAGE eUsage)
 {
 	static const int MAP_SIZE = 14;
-	static const IOEVertDecl::USAGE USAGE_MAP[MAP_SIZE] =
+	static const VERT_DECL_USAGE USAGE_MAP[MAP_SIZE] =
 	{
-		IOEVertDecl::U_POSITION,
-		IOEVertDecl::U_BLENDWEIGHT,
-		IOEVertDecl::U_BLENDINDICES,
-		IOEVertDecl::U_NORMAL,
-		IOEVertDecl::U_UNKNOWN,
-		IOEVertDecl::U_TEXCOORD,
-		IOEVertDecl::U_UNKNOWN,
-		IOEVertDecl::U_UNKNOWN,
-		IOEVertDecl::U_UNKNOWN,
-		IOEVertDecl::U_POSITIONT,
-		IOEVertDecl::U_COLOR,
-		IOEVertDecl::U_UNKNOWN,
-		IOEVertDecl::U_UNKNOWN,
-		IOEVertDecl::U_UNKNOWN,
+		VDU_POSITION,
+		VDU_BLENDWEIGHT,
+		VDU_BLENDINDICES,
+		VDU_NORMAL,
+		VDU_UNKNOWN,
+		VDU_TEXCOORD,
+		VDU_UNKNOWN,
+		VDU_UNKNOWN,
+		VDU_UNKNOWN,
+		VDU_POSITIONT,
+		VDU_COLOR,
+		VDU_UNKNOWN,
+		VDU_UNKNOWN,
+		VDU_UNKNOWN,
 	};
 
 	assert(eUsage >= 0 && eUsage < MAP_SIZE);
 	return USAGE_MAP[eUsage];
 }
 
-int COED3DUtil::GetVertTypeSize(IOEVertDecl::TYPE eType)
+int COED3DUtil::GetVertTypeSize(VERT_DECL_TYPE eType)
 {
-	static const int DECLARE_MAP[IOEVertDecl::T_MAX] =
+	static const int DECLARE_MAP[VDT_MAX] =
 	{
 		0,
 		sizeof(float)*1,	// 1D float expanded to (value, 0., 0., 1.)
@@ -150,21 +150,21 @@ int COED3DUtil::GetVertTypeSize(IOEVertDecl::TYPE eType)
 		sizeof(uchar)*4,	// ubyte4
 	};
 
-	assert(eType >= 0 && eType < IOEVertDecl::T_MAX);
+	assert(eType >= 0 && eType < VDT_MAX);
 	return DECLARE_MAP[eType];
 }
 
-D3DTRANSFORMSTATETYPE COED3DUtil::ToD3DTransformType(IOERenderSystem::TRANSFORM_TYPE eType)
+D3DTRANSFORMSTATETYPE COED3DUtil::ToD3DTransformType(TRANSFORM_TYPE eType)
 {
 	switch (eType)
 	{
-	case IOERenderSystem::TT_WORLD:
+	case TT_WORLD:
 		return D3DTS_WORLD;
 		break;
-	case IOERenderSystem::TT_VIEW:
+	case TT_VIEW:
 		return D3DTS_VIEW;
 		break;
-	case IOERenderSystem::TT_PROJECTION:
+	case TT_PROJECTION:
 		return D3DTS_PROJECTION;
 		break;
 	}
@@ -172,27 +172,27 @@ D3DTRANSFORMSTATETYPE COED3DUtil::ToD3DTransformType(IOERenderSystem::TRANSFORM_
 	return D3DTS_FORCE_DWORD;
 }
 
-IOERenderSystem::TRANSFORM_TYPE COED3DUtil::ToOETransformType(D3DTRANSFORMSTATETYPE eType)
+TRANSFORM_TYPE COED3DUtil::ToOETransformType(D3DTRANSFORMSTATETYPE eType)
 {
 	switch (eType)
 	{
 	case D3DTS_WORLD:
-		return IOERenderSystem::TT_WORLD;
+		return TT_WORLD;
 		break;
 	case D3DTS_VIEW:
-		return IOERenderSystem::TT_VIEW;
+		return TT_VIEW;
 		break;
 	case D3DTS_PROJECTION:
-		return IOERenderSystem::TT_PROJECTION;
+		return TT_PROJECTION;
 		break;
 	}
 
-	return IOERenderSystem::TT_UNKNOWN;
+	return TT_UNKNOWN;
 }
 
-D3DCULL COED3DUtil::ToD3DCullMode(IOERenderSystem::CULL_MODE_TYPE eType)
+D3DCULL COED3DUtil::ToD3DCullMode(CULL_MODE_TYPE eType)
 {
-	static const D3DCULL DECLARE_MAP[IOERenderSystem::CMT_MAX] =
+	static const D3DCULL DECLARE_MAP[CMT_MAX] =
 	{
 		D3DCULL_NONE,
 		D3DCULL_NONE,
@@ -200,28 +200,28 @@ D3DCULL COED3DUtil::ToD3DCullMode(IOERenderSystem::CULL_MODE_TYPE eType)
 		D3DCULL_CCW,
 	};
 
-	assert(eType >= 0 && eType < IOERenderSystem::CMT_MAX);
+	assert(eType >= 0 && eType < CMT_MAX);
 	return DECLARE_MAP[eType];
 }
 
-IOERenderSystem::CULL_MODE_TYPE COED3DUtil::ToOECullMode(D3DCULL eType)
+CULL_MODE_TYPE COED3DUtil::ToOECullMode(D3DCULL eType)
 {
 	static const int MAP_SIZE = 4;
-	static const IOERenderSystem::CULL_MODE_TYPE DECLARE_MAP[MAP_SIZE] =
+	static const CULL_MODE_TYPE DECLARE_MAP[MAP_SIZE] =
 	{
-		IOERenderSystem::CMT_NONE,
-		IOERenderSystem::CMT_NONE,
-		IOERenderSystem::CMT_CW,
-		IOERenderSystem::CMT_CCW,
+		CMT_NONE,
+		CMT_NONE,
+		CMT_CW,
+		CMT_CCW,
 	};
 
 	assert(eType >= 0 && eType < MAP_SIZE);
 	return DECLARE_MAP[eType];
 }
 
-D3DFILLMODE COED3DUtil::ToD3DFillMode(IOERenderSystem::FILL_MODE eType)
+D3DFILLMODE COED3DUtil::ToD3DFillMode(FILL_MODE eType)
 {
-	static const D3DFILLMODE DECLARE_MAP[IOERenderSystem::FM_MAX] =
+	static const D3DFILLMODE DECLARE_MAP[FM_MAX] =
 	{
 		D3DFILL_SOLID,
 		D3DFILL_POINT,
@@ -229,28 +229,28 @@ D3DFILLMODE COED3DUtil::ToD3DFillMode(IOERenderSystem::FILL_MODE eType)
 		D3DFILL_SOLID,
 	};
 
-	assert(eType >= 0 && eType < IOERenderSystem::FM_MAX);
+	assert(eType >= 0 && eType < FM_MAX);
 	return DECLARE_MAP[eType];
 }
 
-IOERenderSystem::FILL_MODE COED3DUtil::ToOEFillMode(D3DFILLMODE eType)
+FILL_MODE COED3DUtil::ToOEFillMode(D3DFILLMODE eType)
 {
 	static const int MAP_SIZE = 4;
-	static const IOERenderSystem::FILL_MODE DECLARE_MAP[MAP_SIZE] =
+	static const FILL_MODE DECLARE_MAP[MAP_SIZE] =
 	{
-		IOERenderSystem::FM_UNKNOWN,
-		IOERenderSystem::FM_POINT,
-		IOERenderSystem::FM_WIREFRAME,
-		IOERenderSystem::FM_SOLID,
+		FM_UNKNOWN,
+		FM_POINT,
+		FM_WIREFRAME,
+		FM_SOLID,
 	};
 
 	assert(eType >= 0 && eType < MAP_SIZE);
 	return DECLARE_MAP[eType];
 }
 
-D3DTEXTUREFILTERTYPE COED3DUtil::ToD3DSampleFilter(IOERenderSystem::SAMPLE_FILTER eType)
+D3DTEXTUREFILTERTYPE COED3DUtil::ToD3DSampleFilter(OE_SAMPLE_FILTER eType)
 {
-	static const D3DTEXTUREFILTERTYPE DECLARE_MAP[IOERenderSystem::SF_MAX] =
+	static const D3DTEXTUREFILTERTYPE DECLARE_MAP[OESF_MAX] =
 	{
 		D3DTEXF_NONE,
 		D3DTEXF_POINT,
@@ -260,37 +260,37 @@ D3DTEXTUREFILTERTYPE COED3DUtil::ToD3DSampleFilter(IOERenderSystem::SAMPLE_FILTE
 		D3DTEXF_GAUSSIANQUAD,
 	};
 
-	assert(eType >= 0 && eType < IOERenderSystem::SF_MAX);
+	assert(eType >= 0 && eType < OESF_MAX);
 	return DECLARE_MAP[eType];
 }
 
-IOERenderSystem::SAMPLE_FILTER COED3DUtil::ToOESampleFilter(D3DTEXTUREFILTERTYPE eType)
+OE_SAMPLE_FILTER COED3DUtil::ToOESampleFilter(D3DTEXTUREFILTERTYPE eType)
 {
 	static const int MAP_SIZE = 8;
-	static const IOERenderSystem::SAMPLE_FILTER DECLARE_MAP[MAP_SIZE] =
+	static const OE_SAMPLE_FILTER DECLARE_MAP[MAP_SIZE] =
 	{
-		IOERenderSystem::SF_UNKNOWN,
-		IOERenderSystem::SF_POINT,
-		IOERenderSystem::SF_LINEAR,
-		IOERenderSystem::SF_ANISOTROPIC,
-		IOERenderSystem::SF_UNKNOWN,
-		IOERenderSystem::SF_UNKNOWN,
-		IOERenderSystem::SF_PYRAMIDALQUAD,
-		IOERenderSystem::SF_GAUSSIANQUAD,
+		OESF_UNKNOWN,
+		OESF_POINT,
+		OESF_LINEAR,
+		OESF_ANISOTROPIC,
+		OESF_UNKNOWN,
+		OESF_UNKNOWN,
+		OESF_PYRAMIDALQUAD,
+		OESF_GAUSSIANQUAD,
 	};
 
 	assert(eType >= 0 && eType < MAP_SIZE);
 	return DECLARE_MAP[eType];
 }
 
-D3DFORMAT COED3DUtil::ToD3DTexFmt(IOETexture::TEXTURE_FORMAT eFormat)
+D3DFORMAT COED3DUtil::ToD3DTexFmt(TEXTURE_FORMAT eFormat)
 {
 	switch (eFormat)
 	{
-	case IOETexture::TF_A8R8G8B8:
+	case TF_A8R8G8B8:
 		return D3DFMT_A8R8G8B8;
 		break;
-	case IOETexture::TF_A4R4G4B4:
+	case TF_A4R4G4B4:
 		return D3DFMT_A4R4G4B4;
 		break;
 	}
@@ -298,17 +298,17 @@ D3DFORMAT COED3DUtil::ToD3DTexFmt(IOETexture::TEXTURE_FORMAT eFormat)
 	return D3DFMT_UNKNOWN;
 }
 
-IOETexture::TEXTURE_FORMAT COED3DUtil::ToOETexFmt(D3DFORMAT eFormat)
+TEXTURE_FORMAT COED3DUtil::ToOETexFmt(D3DFORMAT eFormat)
 {
 	switch (eFormat)
 	{
 	case D3DFMT_A8R8G8B8:
-		return IOETexture::TF_A8R8G8B8;
+		return TF_A8R8G8B8;
 		break;
 	case D3DFMT_A4R4G4B4:
-		return IOETexture::TF_A4R4G4B4;
+		return TF_A4R4G4B4;
 		break;
 	}
 
-	return IOETexture::TF_UNKNOWN;
+	return TF_UNKNOWN;
 }

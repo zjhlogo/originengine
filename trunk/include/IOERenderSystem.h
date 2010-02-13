@@ -13,52 +13,10 @@
 #include "IOETexture.h"
 #include "IOEShader.h"
 
-#include "OEMath/OEMath.h"
+#include "OEBaseTypeEx.h"
 
 class IOERenderSystem : public IOEObject
 {
-public:
-	enum TRANSFORM_TYPE
-	{
-		TT_UNKNOWN			= 0,
-		TT_WORLD			= 0x00000001,
-		TT_VIEW				= 0x00000002,
-		TT_PROJECTION		= 0x00000004,
-
-		TT_WORLD_VIEW		= TT_WORLD|TT_VIEW,					// just for GetTransform
-		TT_VIEW_PROJ		= TT_VIEW|TT_PROJECTION,			// just for GetTransform
-		TT_WORLD_VIEW_PROJ	= TT_WORLD|TT_VIEW|TT_PROJECTION,	// just for GetTransform
-	};
-
-	enum CULL_MODE_TYPE
-	{
-		CMT_UNKNOWN = 0,
-		CMT_NONE,
-		CMT_CW,
-		CMT_CCW,
-		CMT_MAX,
-	};
-
-	enum FILL_MODE
-	{
-		FM_UNKNOWN = 0,
-		FM_POINT,
-		FM_WIREFRAME,
-		FM_SOLID,
-		FM_MAX,
-	};
-
-	enum SAMPLE_FILTER
-	{
-		SF_UNKNOWN = 0,
-		SF_POINT,
-		SF_LINEAR,
-		SF_ANISOTROPIC,
-		SF_PYRAMIDALQUAD,
-		SF_GAUSSIANQUAD,
-		SF_MAX,
-	};
-
 public:
 	IOERenderSystem() {};
 	virtual ~IOERenderSystem() {};
@@ -89,7 +47,7 @@ public:
 	virtual void SetCullMode(CULL_MODE_TYPE eMode) = 0;
 	virtual void SetFillMode(FILL_MODE eFillMode) = 0;
 	virtual void SetFogInfo(uint nColor, float fNear, float fFar) = 0;
-	virtual void SetSampleFilter(SAMPLE_FILTER eSampleFilter) = 0;
+	virtual void SetSampleFilter(OE_SAMPLE_FILTER eSampleFilter) = 0;
 };
 
 extern IOERenderSystem* g_pOERenderSystem;

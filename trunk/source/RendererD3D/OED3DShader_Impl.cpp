@@ -15,7 +15,7 @@
 
 extern IDirect3DDevice9* g_pd3dDevice;
 
-COED3DShader_Impl::COED3DShader_Impl(const IOEVertDecl::ELEMENT* pElement, const tstring& strFileName)
+COED3DShader_Impl::COED3DShader_Impl(const VERT_DECL_ELEMENT* pElement, const tstring& strFileName)
 {
 	Init();
 	m_bOK = Create(pElement, strFileName);
@@ -194,7 +194,7 @@ ID3DXEffect* COED3DShader_Impl::GetEffect() const
 	return m_pEffect;
 }
 
-bool COED3DShader_Impl::Create(const IOEVertDecl::ELEMENT* pElement, const tstring& strFileName)
+bool COED3DShader_Impl::Create(const VERT_DECL_ELEMENT* pElement, const tstring& strFileName)
 {
 	m_pDecl = (COED3DVertDecl_Impl*)g_pOEDevice->CreateVertDecl(pElement);
 	if (!m_pDecl) return false;

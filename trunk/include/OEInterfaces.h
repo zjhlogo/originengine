@@ -19,8 +19,9 @@
 // ºËÐÄÄ£¿é
 #include "IOECore.h"
 #include "IOEConfigFileMgr.h"
-#include "IOEMeshMgr.h"
-#include "IOEModelMgr.h"
+#include "IOEResMgr.h"
+#include "IOEControlMgr.h"
+#include "IOERenderMgr.h"
 
 // äÖÈ¾Ä£¿é
 #include "IOEDevice.h"

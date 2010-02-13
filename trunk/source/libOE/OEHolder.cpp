@@ -17,8 +17,9 @@
 // 核心模块
 #include <IOECore.h>
 #include <IOEConfigFileMgr.h>
-#include <IOEMeshMgr.h>
-#include <IOEModelMgr.h>
+#include <IOEResMgr.h>
+#include <IOEControlMgr.h>
+#include <IOERenderMgr.h>
 
 // 渲染模块
 #include <IOEDevice.h>
@@ -43,8 +44,9 @@ IOEMsgMgr* g_pOEMsgMgr = NULL;
 // 核心模块
 IOECore* g_pOECore = NULL;
 IOEConfigFileMgr* g_pOEConfigFileMgr = NULL;
-IOEMeshMgr* g_pOEMeshMgr = NULL;
-IOEModelMgr* g_pOEModelMgr = NULL;
+IOEResMgr* g_pOEResMgr = NULL;
+IOEControlMgr* g_pOEControlMgr = NULL;
+IOERenderMgr* g_pOERenderMgr = NULL;
 
 // 渲染模块
 IOEDevice* g_pOEDevice = NULL;
@@ -84,8 +86,9 @@ void COEHolder::SetupInterfaces()
 	// 核心模块
 	AddInterface(TS("IOECore"), (void**)&g_pOECore);
 	AddInterface(TS("IOEConfigFileMgr"), (void**)&g_pOEConfigFileMgr);
-	AddInterface(TS("IOEMeshMgr"), (void**)&g_pOEMeshMgr);
-	AddInterface(TS("IOEModelMgr"), (void**)&g_pOEModelMgr);
+	AddInterface(TS("IOEResMgr"), (void**)&g_pOEResMgr);
+	AddInterface(TS("IOEControlMgr"), (void**)&g_pOEControlMgr);
+	AddInterface(TS("IOERenderMgr"), (void**)&g_pOERenderMgr);
 
 	// 渲染模块
 	AddInterface(TS("IOEDevice"), (void**)&g_pOEDevice);

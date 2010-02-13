@@ -34,7 +34,7 @@ void COED3DShaderMgr_Impl::Destroy()
 	// TODO: check m_ShaderMap whether is empty, and logout
 }
 
-IOEShader* COED3DShaderMgr_Impl::CreateShader(const IOEVertDecl::ELEMENT* pElement, const tstring& strFileName)
+IOEShader* COED3DShaderMgr_Impl::CreateShader(const VERT_DECL_ELEMENT* pElement, const tstring& strFileName)
 {
 	// transform string to lower
 	tstring strLowName = strFileName;

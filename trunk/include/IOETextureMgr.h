@@ -18,7 +18,7 @@ public:
 	virtual ~IOETextureMgr() {};
 
 	virtual IOETexture* CreateTextureFromFile(const tstring& strFileName) = 0;
-	virtual IOETexture* CreateTexture(int nWidth, int nHeight, IOETexture::TEXTURE_FORMAT eFormat) = 0;
+	virtual IOETexture* CreateTexture(int nWidth, int nHeight, TEXTURE_FORMAT eFormat) = 0;
 
 };
 

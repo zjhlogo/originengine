@@ -14,13 +14,13 @@
 class COED3DVertDecl_Impl : public IOEVertDecl
 {
 public:
-	COED3DVertDecl_Impl(const ELEMENT* pElement);
+	COED3DVertDecl_Impl(const VERT_DECL_ELEMENT* pElement);
 	virtual ~COED3DVertDecl_Impl();
 
 	virtual int GetStrideSize() const;
 
-	const ELEMENT* GetElement() const;
-	bool Compare(const ELEMENT* pElement) const;
+	const VERT_DECL_ELEMENT* GetElement() const;
+	bool Compare(const VERT_DECL_ELEMENT* pElement) const;
 
 	IDirect3DVertexDeclaration9* GetD3DVertDecl();
 
@@ -28,10 +28,10 @@ private:
 	void Init();
 	void Destroy();
 
-	bool Create(const ELEMENT* pElement);
+	bool Create(const VERT_DECL_ELEMENT* pElement);
 
 private:
-	ELEMENT m_Element[MAX_ELEMENT_COUNT];
+	VERT_DECL_ELEMENT m_Element[MAX_ELEMENT_COUNT];
 	uint m_nElementCount;
 	uint m_nStride;
 	IDirect3DVertexDeclaration9* m_pDecl;

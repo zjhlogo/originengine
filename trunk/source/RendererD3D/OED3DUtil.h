@@ -26,28 +26,28 @@ public:
 	static void ToD3DVector4(D3DXVECTOR4& vOut, const CVector4& vIn);
 	static void ToOEVector4(CVector4& vOut, const D3DXVECTOR4& vIn);
 
-	static D3DDECLTYPE ToD3DVertType(IOEVertDecl::TYPE eType);
-	static IOEVertDecl::TYPE ToOEVertType(D3DDECLTYPE eType);
+	static D3DDECLTYPE ToD3DVertType(VERT_DECL_TYPE eType);
+	static VERT_DECL_TYPE ToOEVertType(D3DDECLTYPE eType);
 
-	static D3DDECLUSAGE ToD3DVertUsage(IOEVertDecl::USAGE eUsage);
-	static IOEVertDecl::USAGE ToOEVertUsage(D3DDECLUSAGE eUsage);
+	static D3DDECLUSAGE ToD3DVertUsage(VERT_DECL_USAGE eUsage);
+	static VERT_DECL_USAGE ToOEVertUsage(D3DDECLUSAGE eUsage);
 
-	static int GetVertTypeSize(IOEVertDecl::TYPE eType);
+	static int GetVertTypeSize(VERT_DECL_TYPE eType);
 
-	static D3DTRANSFORMSTATETYPE ToD3DTransformType(IOERenderSystem::TRANSFORM_TYPE eType);
-	static IOERenderSystem::TRANSFORM_TYPE ToOETransformType(D3DTRANSFORMSTATETYPE eType);
+	static D3DTRANSFORMSTATETYPE ToD3DTransformType(TRANSFORM_TYPE eType);
+	static TRANSFORM_TYPE ToOETransformType(D3DTRANSFORMSTATETYPE eType);
 
-	static D3DCULL ToD3DCullMode(IOERenderSystem::CULL_MODE_TYPE eType);
-	static IOERenderSystem::CULL_MODE_TYPE ToOECullMode(D3DCULL eType);
+	static D3DCULL ToD3DCullMode(CULL_MODE_TYPE eType);
+	static CULL_MODE_TYPE ToOECullMode(D3DCULL eType);
 
-	static D3DFILLMODE ToD3DFillMode(IOERenderSystem::FILL_MODE eType);
-	static IOERenderSystem::FILL_MODE ToOEFillMode(D3DFILLMODE eType);
+	static D3DFILLMODE ToD3DFillMode(FILL_MODE eType);
+	static FILL_MODE ToOEFillMode(D3DFILLMODE eType);
 
-	static D3DTEXTUREFILTERTYPE ToD3DSampleFilter(IOERenderSystem::SAMPLE_FILTER eType);
-	static IOERenderSystem::SAMPLE_FILTER ToOESampleFilter(D3DTEXTUREFILTERTYPE eType);
+	static D3DTEXTUREFILTERTYPE ToD3DSampleFilter(OE_SAMPLE_FILTER eType);
+	static OE_SAMPLE_FILTER ToOESampleFilter(D3DTEXTUREFILTERTYPE eType);
 
-	static D3DFORMAT ToD3DTexFmt(IOETexture::TEXTURE_FORMAT eFormat);
-	static IOETexture::TEXTURE_FORMAT ToOETexFmt(D3DFORMAT eFormat);
+	static D3DFORMAT ToD3DTexFmt(TEXTURE_FORMAT eFormat);
+	static TEXTURE_FORMAT ToOETexFmt(D3DFORMAT eFormat);
 };
 
 #endif // __OED3DUTIL_H__

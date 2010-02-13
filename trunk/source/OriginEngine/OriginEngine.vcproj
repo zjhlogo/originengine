@@ -339,6 +339,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\OEControlMgr_Impl.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\OECore_Impl.cpp"
 				>
 			</File>
@@ -347,19 +351,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\OEMeshMgr_Impl.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\OEModel_Impl.cpp"
 				>
 			</File>
 			<File
 				RelativePath=".\OEModelControl_Impl.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\OEModelMgr_Impl.cpp"
 				>
 			</File>
 			<File
@@ -378,6 +374,14 @@
 				RelativePath=".\OEPiece_Impl.cpp"
 				>
 			</File>
+			<File
+				RelativePath=".\OERenderMgr_Impl.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\OEResMgr_Impl.cpp"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -393,6 +397,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\OEControlMgr_Impl.h"
+				>
+			</File>
+			<File
 				RelativePath=".\OECore_Impl.h"
 				>
 			</File>
@@ -401,19 +409,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\OEMeshMgr_Impl.h"
-				>
-			</File>
-			<File
 				RelativePath=".\OEModel_Impl.h"
 				>
 			</File>
 			<File
 				RelativePath=".\OEModelControl_Impl.h"
-				>
-			</File>
-			<File
-				RelativePath=".\OEModelMgr_Impl.h"
 				>
 			</File>
 			<File
@@ -430,6 +430,14 @@
 			</File>
 			<File
 				RelativePath=".\OEPiece_Impl.h"
+				>
+			</File>
+			<File
+				RelativePath=".\OERenderMgr_Impl.h"
+				>
+			</File>
+			<File
+				RelativePath=".\OEResMgr_Impl.h"
 				>
 			</File>
 		</Filter>
@@ -453,6 +461,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\include\IOEControlMgr.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\include\IOECore.h"
 				>
 			</File>
@@ -465,15 +477,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\include\IOEMeshMgr.h"
-				>
-			</File>
-			<File
 				RelativePath="..\..\include\IOEModel.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\include\IOEModelMgr.h"
 				>
 			</File>
 			<File
@@ -493,7 +497,15 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\include\IOERenderMgr.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\include\IOERenderSystem.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\include\IOEResMgr.h"
 				>
 			</File>
 			<File
@@ -514,6 +526,10 @@
 			</File>
 			<File
 				RelativePath="..\..\include\IOEVertDecl.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\include\OEBaseTypeEx.h"
 				>
 			</File>
 			<File

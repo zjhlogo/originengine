@@ -53,7 +53,7 @@ int COED3DTexture_Impl::GetHeight() const
 	return m_nHeight;
 }
 
-IOETexture::TEXTURE_FORMAT COED3DTexture_Impl::GetFormat() const
+TEXTURE_FORMAT COED3DTexture_Impl::GetFormat() const
 {
 	return m_eFormat;
 }

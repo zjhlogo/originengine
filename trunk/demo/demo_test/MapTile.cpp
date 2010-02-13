@@ -37,11 +37,11 @@ void CMapTile::Destroy()
 
 bool CMapTile::LoadMap(const ushort* pHeightField, int nID)
 {
-	static const IOEVertDecl::ELEMENT s_Decl[] =
+	static const VERT_DECL_ELEMENT s_Decl[] =
 	{
-		IOEVertDecl::T_FLOAT3, IOEVertDecl::U_POSITION, 0,
-		IOEVertDecl::T_FLOAT2, IOEVertDecl::U_TEXCOORD, 0,
-		IOEVertDecl::T_UNKNOWN, IOEVertDecl::U_UNKNOWN, 0,
+		VDT_FLOAT3, VDU_POSITION, 0,
+		VDT_FLOAT2, VDU_TEXCOORD, 0,
+		VDT_UNKNOWN, VDU_UNKNOWN, 0,
 	};
 
 	Reset();
@@ -118,7 +118,7 @@ void CMapTile::Render(float fDetailTime)
 	CalcMatrix(matWorld, m_nID);
 
 	CMatrix4x4 matViewProj;
-	g_pOERenderSystem->GetTransform(matViewProj, IOERenderSystem::TT_VIEW_PROJ);
+	g_pOERenderSystem->GetTransform(matViewProj, TT_VIEW_PROJ);
 
 	CMatrix4x4 matWorldViewProj = matWorld*matViewProj;
 	m_pShader->SetMatrix(TS("g_matWorldViewProj"), matWorldViewProj);
