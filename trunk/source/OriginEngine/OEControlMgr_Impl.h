@@ -20,12 +20,11 @@ public:
 	COEControlMgr_Impl();
 	virtual ~COEControlMgr_Impl();
 
+	virtual bool Initialize();
+	virtual void Terminate();
+
 	virtual bool AddControlHandle(IOEControl* pControl);
 	virtual IOEControl* GetControl(uint nID);
-
-private:
-	void Init();
-	void Destroy();
 
 private:
 	TM_CONTROL m_ControlMap;

@@ -20,12 +20,11 @@ public:
 	COERenderMgr_Impl();
 	virtual ~COERenderMgr_Impl();
 
+	virtual bool Initialize();
+	virtual void Terminate();
+
 	virtual bool AddRenderHandle(IOERender* pRender);
 	virtual IOERender* GetRender(uint nID);
-
-private:
-	void Init();
-	void Destroy();
 
 private:
 	TM_RENDER m_RenderMap;

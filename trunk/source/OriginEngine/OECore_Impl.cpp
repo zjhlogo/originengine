@@ -7,6 +7,8 @@
  */
 #include "OECore_Impl.h"
 #include <IOEDevice.h>
+#include <IOEControlMgr.h>
+#include <IOERenderMgr.h>
 #include <IOELogFileMgr.h>
 #include <IOEMsgMgr.h>
 
@@ -41,6 +43,18 @@ bool COECore_Impl::Initialize()
 		return false;
 	}
 
+	if (!g_pOEControlMgr->Initialize())
+	{
+		LOGOUT(TS("IOECore::Initialize Failed"));
+		return false;
+	}
+
+	if (!g_pOERenderMgr->Initialize())
+	{
+		LOGOUT(TS("IOECore::Initialize Failed"));
+		return false;
+	}
+
 	LOGOUT(TS("IOECore::Initialize OK"));
 
 	return true;
@@ -49,6 +63,9 @@ bool COECore_Impl::Initialize()
 void COECore_Impl::Terminate()
 {
 	End();
+
+	g_pOERenderMgr->Terminate();
+	g_pOEControlMgr->Terminate();
 	g_pOEDevice->DestroyDevice();
 }
 

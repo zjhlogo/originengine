@@ -11,22 +11,22 @@
 COEControlMgr_Impl::COEControlMgr_Impl()
 {
 	g_pOEControlMgr = this;
-	Init();
+	m_bOK = true;
 }
 
 COEControlMgr_Impl::~COEControlMgr_Impl()
 {
-	Destroy();
 	g_pOEControlMgr = NULL;
 }
 
-void COEControlMgr_Impl::Init()
+bool COEControlMgr_Impl::Initialize()
 {
 	AddControlHandle(new COESkinMeshControl_Impl());
-	m_bOK = true;
+
+	return true;
 }
 
-void COEControlMgr_Impl::Destroy()
+void COEControlMgr_Impl::Terminate()
 {
 	for (TM_CONTROL::iterator it = m_ControlMap.begin(); it != m_ControlMap.end(); ++it)
 	{
