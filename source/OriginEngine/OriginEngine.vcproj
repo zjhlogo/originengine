@@ -371,6 +371,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\OESkelectonRender_Impl.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\OESkinMeshControl_Impl.cpp"
 				>
 			</File>
@@ -426,6 +430,10 @@
 			</File>
 			<File
 				RelativePath=".\OEResMgr_Impl.h"
+				>
+			</File>
+			<File
+				RelativePath=".\OESkelectonRender_Impl.h"
 				>
 			</File>
 			<File

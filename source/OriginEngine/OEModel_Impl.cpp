@@ -68,8 +68,12 @@ bool COEModel_Impl::Create(const tstring& strFile)
 	IOEControl* pControl = g_pOEControlMgr->GetControl(OECT_SKINMESH);
 	if (pControl) m_vControls.push_back(pControl);
 
-	// create render
+	// for draw skin
 	IOERender* pRender = g_pOERenderMgr->GetRender(OERT_SKINMESH);
+	if (pRender) m_vRenders.push_back(pRender);
+
+	// for draw skelecton
+	pRender = g_pOERenderMgr->GetRender(OERT_SKELECTON);
 	if (pRender) m_vRenders.push_back(pRender);
 
 	return true;

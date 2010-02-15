@@ -7,26 +7,28 @@
  */
 #include "OERenderMgr_Impl.h"
 #include "OESkinMeshRender_Impl.h"
+#include "OESkelectonRender_Impl.h"
 
 COERenderMgr_Impl::COERenderMgr_Impl()
 {
 	g_pOERenderMgr = this;
-	Init();
+	m_bOK = true;
 }
 
 COERenderMgr_Impl::~COERenderMgr_Impl()
 {
-	Destroy();
 	g_pOERenderMgr = NULL;
 }
 
-void COERenderMgr_Impl::Init()
+bool COERenderMgr_Impl::Initialize()
 {
 	AddRenderHandle(new COESkinMeshRender_Impl());
-	m_bOK = true;
+	AddRenderHandle(new COESkelectonRender_Impl());
+
+	return true;
 }
 
-void COERenderMgr_Impl::Destroy()
+void COERenderMgr_Impl::Terminate()
 {
 	for (TM_RENDER::iterator it = m_RenderMap.begin(); it != m_RenderMap.end(); ++it)
 	{

@@ -5,16 +5,16 @@ texture g_texBase;
 sampler texBaseSampler =
 sampler_state
 {
-    Texture = <g_texBase>;
-    MipFilter = LINEAR;
-    MinFilter = LINEAR;
-    MagFilter = LINEAR;
+	Texture = <g_texBase>;
+	MipFilter = LINEAR;
+	MinFilter = LINEAR;
+	MagFilter = LINEAR;
 };
 
 struct VS_INPUT
 {
-    float3 pos : POSITION;
-    float2 texcoord : TEXCOORD0;
+	float3 pos : POSITION;
+	float2 texcoord : TEXCOORD0;
 	float3 normal : TEXCOORD1;
 	float3 tangent : TEXCOORD2;
 	int4 boneindex : BLENDINDICES;
@@ -23,31 +23,31 @@ struct VS_INPUT
 
 struct VS_OUTPUT
 {
-    float4 pos : POSITION;
-    float2 texcoord : TEXCOORD0;
+	float4 pos : POSITION;
+	float2 texcoord : TEXCOORD0;
 };
 
 VS_OUTPUT VSMain(VS_INPUT input)
 {
-    VS_OUTPUT output;
+	VS_OUTPUT output;
 
-    output.pos = mul(float4(input.pos.xyz, 1.0f), g_matWorldViewProj);
+	output.pos = mul(float4(input.pos.xyz, 1.0f), g_matWorldViewProj);
 	output.texcoord = input.texcoord;
 
-    return output;
+	return output;
 }
 
 float4 PSMain(VS_OUTPUT input) : COLOR
 {
-    float4 color = tex2D(texBaseSampler, input.texcoord);
-    return color;
+	float4 color = tex2D(texBaseSampler, input.texcoord);
+	return color;
 }
 
 technique Normal
 {
-    pass p0
-    {
-        VertexShader = compile vs_2_0 VSMain();
-        PixelShader = compile ps_2_0 PSMain();
-    }
+	pass p0
+	{
+		VertexShader = compile vs_2_0 VSMain();
+		PixelShader = compile ps_2_0 PSMain();
+	}
 }

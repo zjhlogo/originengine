@@ -17,6 +17,9 @@ public:
 	IOERenderMgr() {};
 	virtual ~IOERenderMgr() {};
 
+	virtual bool Initialize() = 0;
+	virtual void Terminate() = 0;
+
 	virtual bool AddRenderHandle(IOERender* pRender) = 0;
 	virtual IOERender* GetRender(uint nID) = 0;
 
