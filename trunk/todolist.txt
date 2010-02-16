@@ -2,7 +2,7 @@ DONE: 实现无缝地形加载
 DONE: 模型添加法线贴图
 DONE: 骨骼动画数据导出也有BUG, 一些模型导出后渲染出错
 
-TODO: max 模型导出参加还有很多BUG, (效率低, 不支持IKChain, 除了 Mesh, Bone, 不支持其他任何类型的修改器)
+TODO: max 模型导出插件还有很多BUG, (效率低, 不支持IKChain, 除了 Mesh, Bone, 不支持其他任何类型的修改器)
 TODO: 支持多动画集, 而不是一个 mesh 只支持一个动画
 TODO: 导出材质
 TODO: skinmesh.fx shader 中并非所有顶点都用到4个骨骼权重值, 可以根据实际情况缩减
