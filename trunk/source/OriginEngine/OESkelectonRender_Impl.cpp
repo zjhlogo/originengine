@@ -14,7 +14,7 @@
 COESkelectonRender_Impl::COESkelectonRender_Impl()
 :IOERender(OERT_SKELECTON)
 {
-	Init();
+	m_bOK = Init();
 }
 
 COESkelectonRender_Impl::~COESkelectonRender_Impl()
@@ -22,9 +22,12 @@ COESkelectonRender_Impl::~COESkelectonRender_Impl()
 	Destroy();
 }
 
-void COESkelectonRender_Impl::Init()
+bool COESkelectonRender_Impl::Init()
 {
-	m_pShader = NULL;
+	m_pShader = g_pOEShaderMgr->CreateDefaultShader(DST_LINE);
+	if (!m_pShader) return false;
+
+	return true;
 }
 
 void COESkelectonRender_Impl::Destroy()
@@ -34,21 +37,8 @@ void COESkelectonRender_Impl::Destroy()
 
 bool COESkelectonRender_Impl::Render(IOERenderData* pRenderData)
 {
-	static const VERT_DECL_ELEMENT s_Decl[] =
-	{
-		VDT_FLOAT3, VDU_POSITION, 0,
-		VDT_COLOR, VDU_COLOR, 0,
-		VDT_UNKNOWN, VDU_UNKNOWN, 0,
-	};
-
 	COESkinMeshRenderData_Impl* pData = ConvertData(pRenderData);
 	if (!pData) return false;
-
-	if (!m_pShader)
-	{
-		m_pShader = g_pOEShaderMgr->CreateShader(s_Decl, TS("line.fx"));
-		if (!m_pShader) return false;
-	}
 
 	m_vVerts.clear();
 	m_vIndis.clear();

@@ -111,13 +111,12 @@ typedef struct MATERIAL_tag
 {
 	int nID;
 	int nVertDecl;
-	tstring strShaderFile;
-	tstring strTextureFile;
-	tstring strTexNormalFile;
+	tstring strShader;
+	tstring strTexDiffuse;
+	tstring strTexNormal;
 	IOEShader* pShader;
-	IOETexture* pTexture;
+	IOETexture* pTexDiffuse;
 	IOETexture* pTexNormal;
-	// TODO: some additional parameter
 } MATERIAL;
 
 typedef std::vector<MATERIAL> TV_MATERIAL;
@@ -147,5 +146,40 @@ enum OE_RENDER_TYPE
 
 	OERT_USER = 1000,
 };
+
+enum DEFAULT_SHADER_TYPE
+{
+	DST_UNKNOWN = 0,
+	DST_LINE,
+	DST_POLYC,
+	DST_POLYT,
+	DST_POLY_UI,
+	DST_NUM,
+};
+
+typedef struct VERTEX_LINE_tag
+{
+	float x, y, z;
+	uint nColor;
+} VERTEX_LINE;
+
+typedef struct VERTEX_POLYC_tag
+{
+	float x, y, z;
+	uint nColor;
+} VERTEX_POLYC;
+
+typedef struct VERTEX_POLYT_tag
+{
+	float x, y, z;
+	float u, v;
+} VERTEX_POLYT;
+
+typedef struct VERTEX_POLY_UI_tag
+{
+	float x, y, z, w;
+	uint nColor;
+	float u, v;
+} VERTEX_POLY_UI;
 
 #endif // __OEBASETYPEEX_H__

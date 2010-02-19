@@ -33,8 +33,8 @@ void COEUIVertexCache::Init()
 	m_pVertsCache = NULL;
 	m_pIndisCache = NULL;
 
-	m_pDecl = NULL;
 	m_pTexture = NULL;
+	m_pShader = NULL;
 
 	m_bOK = false;
 }
@@ -52,27 +52,6 @@ void COEUIVertexCache::Destroy()
 	m_nStrideSize = 0;
 }
 
-void COEUIVertexCache::SetVertDecl(IOEVertDecl* pDecl)
-{
-	assert(m_nVertsCount == 0 && m_nIndisCount == 0);
-
-	m_pDecl = pDecl;
-
-	m_nStrideSize = 0;
-	m_nMaxVertsCount = 0;
-
-	if (m_pDecl)
-	{
-		m_nStrideSize = m_pDecl->GetStrideSize();
-		m_nMaxVertsCount = m_nVertsCacheSize/m_nStrideSize;
-	}
-}
-
-IOEVertDecl* COEUIVertexCache::GetVertDecl() const
-{
-	return m_pDecl;
-}
-
 void COEUIVertexCache::SetTexture(IOETexture* pTexture)
 {
 	m_pTexture = pTexture;
@@ -81,6 +60,27 @@ void COEUIVertexCache::SetTexture(IOETexture* pTexture)
 IOETexture* COEUIVertexCache::GetTexture() const
 {
 	return m_pTexture;
+}
+
+void COEUIVertexCache::SetShader(IOEShader* pShader)
+{
+	assert(m_nVertsCount == 0 && m_nIndisCount == 0);
+
+	m_pShader = pShader;
+
+	m_nStrideSize = 0;
+	m_nMaxVertsCount = 0;
+
+	if (m_pShader)
+	{
+		m_nStrideSize = m_pShader->GetVertDecl()->GetStrideSize();
+		m_nMaxVertsCount = m_nVertsCacheSize/m_nStrideSize;
+	}
+}
+
+IOEShader* COEUIVertexCache::GetShader() const
+{
+	return m_pShader;
 }
 
 bool COEUIVertexCache::AddVerts(const void* pVerts, uint nVerts, const ushort* pIndis, uint nIndis)
@@ -104,18 +104,18 @@ bool COEUIVertexCache::AddVerts(const void* pVerts, uint nVerts, const ushort* p
 
 void COEUIVertexCache::Flush()
 {
-	g_pOERenderSystem->SetVertDecl(m_pDecl);
-	g_pOERenderSystem->SetTexture(m_pTexture);
+	m_pShader->SetTexture(TS("g_texDiffuse"), m_pTexture);
+	g_pOERenderSystem->SetShader(m_pShader);
 	g_pOERenderSystem->DrawTriList(m_pVertsCache, m_nVertsCount, m_pIndisCache, m_nIndisCount);
 
 	m_nVertsCount = 0;
 	m_nIndisCount = 0;
 }
 
-bool COEUIVertexCache::Compare(IOEVertDecl* pDecl, IOETexture* pTexture)
+bool COEUIVertexCache::Compare(IOETexture* pTexture, IOEShader* pShader)
 {
-	if (m_pDecl != pDecl) return false;
 	if (m_pTexture != pTexture) return false;
+	if (m_pShader != pShader) return false;
 	return true;
 }
 

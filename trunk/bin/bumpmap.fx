@@ -2,20 +2,20 @@ float4x4 g_matWorldViewProj;
 float3 g_vLightPos;
 float3 g_vEyePos;
 
-texture g_texBase;
+texture g_texDiffuse;
 texture g_texNormal;
-texture g_texHeight;
+texture g_texHeightMap;
 
-sampler texBaseSampler =
+sampler sampleDiffuse =
 sampler_state
 {
-	Texture = <g_texBase>;
+	Texture = <g_texDiffuse>;
 	MipFilter = LINEAR;
 	MinFilter = LINEAR;
 	MagFilter = LINEAR;
 };
 
-sampler texNormalSampler =
+sampler sampleNormal =
 sampler_state
 {
 	Texture = <g_texNormal>;
@@ -24,10 +24,10 @@ sampler_state
 	MagFilter = LINEAR;
 };
 
-sampler texHeightSampler =
+sampler sampleHeightMap =
 sampler_state
 {
-	Texture = <g_texHeight>;
+	Texture = <g_texHeightMap>;
 	MipFilter = LINEAR;
 	MinFilter = LINEAR;
 	MagFilter = LINEAR;
@@ -45,8 +45,8 @@ struct VS_OUTPUT
 {
 	float4 pos : POSITION;
 	float2 texcoord : TEXCOORD0;
-	float3 lightdir : TEXCOORD1;
-	float3 eyedir : TEXCOORD2;
+	float3 lightDir : TEXCOORD1;
+	float3 eyeDir : TEXCOORD2;
 };
 
 VS_OUTPUT VSMain(VS_INPUT input)
@@ -60,103 +60,105 @@ VS_OUTPUT VSMain(VS_INPUT input)
 	float3x3 rotation = float3x3(input.tangent, binormal, input.normal);
 
 	float3 vLightDir = g_vLightPos - input.pos;
-	output.lightdir = mul(rotation, vLightDir);
+	output.lightDir = mul(rotation, vLightDir);
 
 	float3 vEyeDir = g_vEyePos - input.pos;
-	output.eyedir = mul(rotation, vEyeDir);
+	output.eyeDir = mul(rotation, vEyeDir);
 
 	return output;
 }
 
-float4 PSMainNormal(VS_OUTPUT input) : COLOR
+float4 PSMainNormalMap(VS_OUTPUT input) : COLOR
 {
-	float3 lightdir = normalize(input.lightdir);
+	float3 lightDir = normalize(input.lightDir);
 
-	float3 basecolor = tex2D(texBaseSampler, input.texcoord);
+	float3 diffuse = tex2D(sampleDiffuse, input.texcoord);
 
-	float3 normal = tex2D(texNormalSampler, input.texcoord);
+	float3 normal = tex2D(sampleNormal, input.texcoord);
 	normal = (normal - 0.5f) * 2.0f;
-	float3 specular = dot(normal, lightdir);
 
-	return float4(basecolor*specular, 1.0f);
+	float3 diffuseFactor = saturate(dot(normal, lightDir));
+
+	float3 finalColor = diffuse*diffuseFactor;
+	return float4(finalColor, 1.0f);
 }
 
-float4 PSMainParallax(VS_OUTPUT input) : COLOR
+float4 PSMainParallaxMap(VS_OUTPUT input) : COLOR
 {
-	float3 lightdir = normalize(input.lightdir);
-	float3 eyedir = normalize(input.eyedir);
+	float3 lightDir = normalize(input.lightDir);
+	float3 eyeDir = normalize(input.eyeDir);
 
-	//float hsb = tex2D(texHeightSampler, input.texcoord).x * 0.04f - 0.02f;
-	float hsb = tex2D(texHeightSampler, input.texcoord).x * 0.02f;
-	float2 offsetuv = float2(eyedir.x, eyedir.y)*hsb + input.texcoord;
-	float3 basecolor = tex2D(texBaseSampler, offsetuv);
+	//float hsb = tex2D(sampleHeightMap, input.texcoord).x * 0.04f - 0.02f;
+	float hsb = tex2D(sampleHeightMap, input.texcoord).x * 0.02f;
+	float2 offsetuv = float2(eyeDir.x, eyeDir.y)*hsb + input.texcoord;
 
-	float3 normal = tex2D(texNormalSampler, offsetuv);
+	float3 diffuse = tex2D(sampleDiffuse, offsetuv);
+
+	float3 normal = tex2D(sampleNormal, offsetuv);
 	normal = (normal - 0.5f) * 2.0f;
-	float3 specular = dot(normal, lightdir);
 
-	return float4(basecolor*specular, 1.0f);
+	float3 diffuseFactor = saturate(dot(normal, lightDir));
+
+	float3 finalColor = diffuse*diffuseFactor;
+	return float4(finalColor, 1.0f);
 }
 
-float4 PSMainBaseTex(VS_OUTPUT input) : COLOR
+float4 PSMainDiffuseTexture(VS_OUTPUT input) : COLOR
 {
-	float3 basecolor = tex2D(texBaseSampler, input.texcoord);
-	return float4(basecolor, 1.0f);
+	return tex2D(sampleDiffuse, input.texcoord);
 }
 
-float4 PSMainNormalTex(VS_OUTPUT input) : COLOR
+float4 PSMainNormalTexture(VS_OUTPUT input) : COLOR
 {
-	float3 basecolor = tex2D(texNormalSampler, input.texcoord);
-	return float4(basecolor, 1.0f);
+	return tex2D(sampleNormal, input.texcoord);
 }
 
-float4 PSMainHeightTex(VS_OUTPUT input) : COLOR
+float4 PSMainHeightMapTexture(VS_OUTPUT input) : COLOR
 {
-	float3 basecolor = tex2D(texHeightSampler, input.texcoord);
-	return float4(basecolor, 1.0f);
+	return tex2D(sampleHeightMap, input.texcoord);
 }
 
-technique Normal
+technique NormalMap
 {
 	pass p0
 	{
 		VertexShader = compile vs_2_0 VSMain();
-		PixelShader = compile ps_2_0 PSMainNormal();
+		PixelShader = compile ps_2_0 PSMainNormalMap();
 	}
 }
 
-technique Parallax
+technique ParallaxMap
 {
 	pass p0
 	{
 		VertexShader = compile vs_2_0 VSMain();
-		PixelShader = compile ps_2_0 PSMainParallax();
+		PixelShader = compile ps_2_0 PSMainParallaxMap();
 	}
 }
 
-technique BaseTex
+technique DiffuseTexture
 {
 	pass p0
 	{
 		VertexShader = compile vs_2_0 VSMain();
-		PixelShader = compile ps_2_0 PSMainBaseTex();
+		PixelShader = compile ps_2_0 PSMainDiffuseTexture();
 	}
 }
 
-technique NormalTex
+technique NormalTexture
 {
 	pass p0
 	{
 		VertexShader = compile vs_2_0 VSMain();
-		PixelShader = compile ps_2_0 PSMainNormalTex();
+		PixelShader = compile ps_2_0 PSMainNormalTexture();
 	}
 }
 
-technique HeightTex
+technique HeightMapTexture
 {
 	pass p0
 	{
 		VertexShader = compile vs_2_0 VSMain();
-		PixelShader = compile ps_2_0 PSMainHeightTex();
+		PixelShader = compile ps_2_0 PSMainHeightMapTexture();
 	}
 }

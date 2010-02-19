@@ -53,14 +53,14 @@ void CWaterApp::Destroy()
 
 bool CWaterApp::Initialize()
 {
-	static const IOEVertDecl::ELEMENT s_Decl[] =
+	static const VERT_DECL_ELEMENT s_Decl[] =
 	{
-		IOEVertDecl::T_FLOAT3, IOEVertDecl::U_POSITION, 0,
-		//IOEVertDecl::T_FLOAT3, IOEVertDecl::U_NORMAL, 0,
-		//IOEVertDecl::T_FLOAT3, IOEVertDecl::U_COLOR, 0,
-		IOEVertDecl::T_FLOAT2, IOEVertDecl::U_TEXCOORD, 0,
-		//IOEVertDecl::T_FLOAT3, IOEVertDecl::U_TEXCOORD, 1,
-		IOEVertDecl::T_UNKNOWN, IOEVertDecl::U_UNKNOWN, 0,
+		VDT_FLOAT3, VDU_POSITION, 0,
+		//VDT_FLOAT3, VDU_NORMAL, 0,
+		//VDT_FLOAT3, VDU_COLOR, 0,
+		VDT_FLOAT2, VDU_TEXCOORD, 0,
+		//VDT_FLOAT3, VDU_TEXCOORD, 1,
+		VDT_UNKNOWN, VDU_UNKNOWN, 0,
 	};
 
 	m_nVerts = (NUM_X+1)*(NUM_Z+1);
@@ -105,7 +105,7 @@ bool CWaterApp::Initialize()
 	m_pCamera = new CCamera();
 	if (!m_pCamera) return false;
 	m_pCamera->Initialize(CVector3(399.75037f, 532.55792f, -279.13873f), CVector3(399.73721f, 531.89636f, -278.38895f));
-	g_pOERenderSystem->SetTransform(IOERenderSystem::TT_VIEW, m_pCamera->GetViewMatrix());
+	g_pOERenderSystem->SetTransform(TT_VIEW, m_pCamera->GetViewMatrix());
 
 	// initialize gui
 	if (!wxInitHelper::Initialize()) return false;
@@ -138,17 +138,17 @@ void CWaterApp::Update(float fDetailTime)
 {
 	bool bRot = UpdateRotation(fDetailTime);
 	bool bMov = UpdateMovement(fDetailTime);
-	if (bRot || bMov) g_pOERenderSystem->SetTransform(IOERenderSystem::TT_VIEW, m_pCamera->GetViewMatrix());
+	if (bRot || bMov) g_pOERenderSystem->SetTransform(TT_VIEW, m_pCamera->GetViewMatrix());
 }
 
 void CWaterApp::Render(float fDetailTime)
 {
 	static float s_fTime = 0.0f;
 
-	g_pOERenderSystem->SetFillMode(IOERenderSystem::FM_WIREFRAME);
+	g_pOERenderSystem->SetFillMode(FM_WIREFRAME);
 
 	CMatrix4x4 matWorldViewProj;
-	g_pOERenderSystem->GetTransform(matWorldViewProj, IOERenderSystem::TT_WORLD_VIEW_PROJ);
+	g_pOERenderSystem->GetTransform(matWorldViewProj, TT_WORLD_VIEW_PROJ);
 	m_pShader->SetMatrix(TS("g_matWorldViewProj"), matWorldViewProj);
 
 	s_fTime += (fDetailTime*m_pDlgWaveSetting->GetTimeScale());

@@ -23,7 +23,7 @@ public:
 	virtual tstring& GetStringBuffer();
 
 private:
-	void Init();
+	bool Init();
 	void Destroy();
 
 	bool CreateLogFile(const tstring& strFileName);

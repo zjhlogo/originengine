@@ -38,7 +38,8 @@ public:
 	virtual bool SetTexture(const tstring& strParamName, IOETexture* pTexture);
 	virtual bool SetTechnique(const tstring& strParamName);
 
-	COED3DVertDecl_Impl* GetVertDecl() const;
+	virtual IOEVertDecl* GetVertDecl();
+
 	ID3DXEffect* GetEffect() const;
 
 private:

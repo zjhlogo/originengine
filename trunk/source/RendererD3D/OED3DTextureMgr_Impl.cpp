@@ -14,8 +14,7 @@
 COED3DTextureMgr_Impl::COED3DTextureMgr_Impl()
 {
 	g_pOETextureMgr = this;
-	Init();
-	m_bOK = true;
+	m_bOK = Init();
 }
 
 COED3DTextureMgr_Impl::~COED3DTextureMgr_Impl()
@@ -24,9 +23,10 @@ COED3DTextureMgr_Impl::~COED3DTextureMgr_Impl()
 	g_pOETextureMgr = NULL;
 }
 
-void COED3DTextureMgr_Impl::Init()
+bool COED3DTextureMgr_Impl::Init()
 {
 	m_TextureMap.clear();
+	return true;
 }
 
 void COED3DTextureMgr_Impl::Destroy()

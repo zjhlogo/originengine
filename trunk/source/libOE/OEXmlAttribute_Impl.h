@@ -28,7 +28,7 @@ public:
 	COEXmlAttribute_Impl* GetNextSibling();
 
 private:
-	void Init();
+	bool Init();
 	void Destroy();
 
 private:

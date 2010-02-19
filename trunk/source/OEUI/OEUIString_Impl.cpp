@@ -6,7 +6,8 @@
  * \author zjhlogo (zjhlogo@163.com)
  */
 #include "OEUIString_Impl.h"
-#include <OEUI/IOEUIRenderer.h>
+#include "OEBaseTypeEx.h"
+#include <OEUI/IOEUIRenderSystem.h>
 
 COEUIString_Impl::COEUIString_Impl(IOEUIFont* pFont)
 {
@@ -68,7 +69,7 @@ void COEUIString_Impl::Render(const CPoint& pos)
 	static const int INDIS_COUNT = 6;
 	static const ushort s_Indis[INDIS_COUNT] = {0, 1, 3, 1, 2, 3};
 
-	OEUI_VERTEX Verts[VERTS_COUNT];
+	VERTEX_POLY_UI Verts[VERTS_COUNT];
 
 	for (VCHAR_RENDER_INFO::iterator it = m_vCharRenderInfo.begin(); it != m_vCharRenderInfo.end(); ++it)
 	{
@@ -106,8 +107,8 @@ void COEUIString_Impl::Render(const CPoint& pos)
 		Verts[3].u = CharRenderInfo.pCharInfo->u+CharRenderInfo.pCharInfo->w;
 		Verts[3].v = CharRenderInfo.pCharInfo->v+CharRenderInfo.pCharInfo->h;
 
-		g_pOEUIRenderer->SetTexture(CharRenderInfo.pCharInfo->pTexture);
-		g_pOEUIRenderer->DrawTriList(Verts, VERTS_COUNT, s_Indis, INDIS_COUNT);
+		g_pOEUIRenderSystem->SetTexture(CharRenderInfo.pCharInfo->pTexture);
+		g_pOEUIRenderSystem->DrawTriList(Verts, VERTS_COUNT, s_Indis, INDIS_COUNT);
 	}
 }
 

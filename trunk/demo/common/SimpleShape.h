@@ -9,30 +9,31 @@
 #define __SIMPLESHAPE_H__
 
 #include <OEInterfaces.h>
+#include <OEBaseTypeEx.h>
 
 class CSimpleShape
 {
 public:
-	typedef struct VERTEX_tag
+	enum CONST_DEFINE
 	{
-		float x, y, z;
-		uint nColor;
-	} VERTEX;
+		CUBE_VERTS_COUNT = 8,
+		CUBE_INDIS_COUNT = 36,
+	};
 
 public:
 	CSimpleShape();
 	~CSimpleShape();
 
-	bool Initialize();
-	void DrawCube(IOERenderSystem* pRenderer, const CVector3& vPos, float fScale = 1.0f, uint nColor = 0xFFFFFFFF);
+	bool IsOK();
+	void DrawCube(const CVector3& vPos, float fScale = 1.0f, uint nColor = 0xFFFFFFFF);
 
 private:
-	void Init();
+	bool Init();
 	void Destroy();
 
 private:
-	IOEVertDecl* m_pDecl;
 	bool m_bOK;
+	IOEShader* m_pShader;
 
 };
 

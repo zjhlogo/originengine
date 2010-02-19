@@ -67,7 +67,7 @@ public:
 	void UnlinkAll();
 
 private:
-	void Init();
+	bool Init();
 	void Destroy();
 
 	COEXmlAttribute_Impl* CreateEndAttribute(const tstring& strName);

@@ -29,9 +29,15 @@ public:
 	virtual bool CreateBones(TV_BONE& vBonesOut, const tstring& strFile);
 	virtual void DestroyBones(TV_BONE& vBones);
 
+	virtual bool CreateMaterial(MATERIAL& MaterialOut, IOEXmlNode* pXmlMaterial);
+	virtual void DestroyMaterial(MATERIAL& Material);
+
 private:
-	void Init();
+	bool Init();
 	void Destroy();
+
+	void EmptyMaterial(MATERIAL& MaterialOut);
+	IOEShader* CreateShaderFromVertDecl(int nVertDecl, const tstring& strFile);
 
 private:
 	MESH_MAP m_MeshMap;

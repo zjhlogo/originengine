@@ -22,12 +22,6 @@ public:
 		TILE_HEIGHT = 800,
 	};
 
-	typedef struct TILE_VERTEX_tag
-	{
-		float x, y, z;
-		float u, v;
-	} TILE_VERTEX;
-
 public:
 	CMapTile();
 	~CMapTile();
@@ -45,7 +39,7 @@ private:
 	void CalcMatrix(CMatrix4x4& matOut, int nIndex);
 
 private:
-	TILE_VERTEX* m_pVerts;
+	VERTEX_POLYT* m_pVerts;
 	ushort* m_pIndis;
 	int m_nID;
 

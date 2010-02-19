@@ -25,7 +25,7 @@ public:
 	virtual void Update();
 
 private:
-	void Init();
+	bool Init();
 	void Destroy();
 
 private:

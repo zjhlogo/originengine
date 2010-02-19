@@ -9,8 +9,10 @@
 #define __IOESHADER_H__
 
 #include "IOEObject.h"
-#include "IOETexture.h"
 #include "OEMath/OEMath.h"
+
+#include "IOETexture.h"
+#include "IOEVertDecl.h"
 
 class IOEShader : public IOEObject
 {
@@ -36,6 +38,8 @@ public:
 
 	virtual bool SetTexture(const tstring& strParamName, IOETexture* pTexture) = 0;
 	virtual bool SetTechnique(const tstring& strParamName) = 0;
+
+	virtual IOEVertDecl* GetVertDecl() = 0;
 
 };
 

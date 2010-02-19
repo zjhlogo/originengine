@@ -14,8 +14,7 @@
 COEFileMgr_Impl::COEFileMgr_Impl()
 {
 	g_pOEFileMgr = this;
-	Init();
-	m_bOK = true;
+	m_bOK = Init();
 }
 
 COEFileMgr_Impl::~COEFileMgr_Impl()
@@ -24,9 +23,10 @@ COEFileMgr_Impl::~COEFileMgr_Impl()
 	g_pOEFileMgr = NULL;
 }
 
-void COEFileMgr_Impl::Init()
+bool COEFileMgr_Impl::Init()
 {
 	// TODO: 
+	return true;
 }
 
 void COEFileMgr_Impl::Destroy()

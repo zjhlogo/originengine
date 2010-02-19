@@ -9,9 +9,8 @@
 
 COEXmlAttribute_Impl::COEXmlAttribute_Impl(const tstring& strName)
 {
-	Init();
+	m_bOK = Init();
 	SetName(strName);
-	m_bOK = true;
 }
 
 COEXmlAttribute_Impl::~COEXmlAttribute_Impl()
@@ -19,9 +18,10 @@ COEXmlAttribute_Impl::~COEXmlAttribute_Impl()
 	Destroy();
 }
 
-void COEXmlAttribute_Impl::Init()
+bool COEXmlAttribute_Impl::Init()
 {
 	m_pAttributeSibling = NULL;
+	return true;
 }
 
 void COEXmlAttribute_Impl::Destroy()

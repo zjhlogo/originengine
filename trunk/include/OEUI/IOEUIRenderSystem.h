@@ -1,23 +1,22 @@
 /*!
- * \file IOEUIRenderer.h
- * \date 27-7-2009 17:47:39
+ * \file IOEUIRenderSystem.h
+ * \date 19-2-2010 19:49:34
  * 
  * 
  * \author zjhlogo (zjhlogo@163.com)
  */
-#ifndef __IOEUIRENDERER_H__
-#define __IOEUIRENDERER_H__
+#ifndef __IOEUIRENDERSYSTEM_H__
+#define __IOEUIRENDERSYSTEM_H__
 
 #include "IOEObject.h"
 #include "OEUIType.h"
-#include "../IOEVertDecl.h"
 #include "../IOETexture.h"
 
-class IOEUIRenderer : public IOEObject
+class IOEUIRenderSystem : public IOEObject
 {
 public:
-	IOEUIRenderer() {};
-	virtual ~IOEUIRenderer() {};
+	IOEUIRenderSystem() {};
+	virtual ~IOEUIRenderSystem() {};
 
 	virtual void SetTexture(IOETexture* pTexture) = 0;
 	virtual IOETexture* GetTexture() const = 0;
@@ -26,6 +25,5 @@ public:
 	virtual void FlushAll() = 0;
 };
 
-extern IOEUIRenderer* g_pOEUIRenderer;
-
-#endif // __IOEUIRENDERER_H__
+extern IOEUIRenderSystem* g_pOEUIRenderSystem;
+#endif // __IOEUIRENDERSYSTEM_H__

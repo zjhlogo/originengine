@@ -42,6 +42,7 @@ private:
 	bool OnMouseMove(uint nMsgID, COEDataBufferRead* pDBRead);
 	bool OnKeyUp(uint nMsgID, COEDataBufferRead* pDBRead);
 	bool OnKeyDown(uint nMsgID, COEDataBufferRead* pDBRead);
+	bool OnSetupShaderParam(uint nMsgID, COEDataBufferRead* pDBRead);
 
 	bool UpdateMovement(float fDetailTime);
 	bool UpdateRotation(float fDetailTime);

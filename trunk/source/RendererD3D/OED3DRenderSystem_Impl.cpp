@@ -14,8 +14,7 @@ extern IDirect3DDevice9* g_pd3dDevice;
 COED3DRenderSystem_Impl::COED3DRenderSystem_Impl()
 {
 	g_pOERenderSystem = this;
-	Init();
-	m_bOK = true;
+	m_bOK = Init();
 }
 
 COED3DRenderSystem_Impl::~COED3DRenderSystem_Impl()
@@ -24,36 +23,15 @@ COED3DRenderSystem_Impl::~COED3DRenderSystem_Impl()
 	g_pOERenderSystem = NULL;
 }
 
-void COED3DRenderSystem_Impl::Init()
+bool COED3DRenderSystem_Impl::Init()
 {
-	m_pVertDecl = NULL;
-	m_pTexture = NULL;
 	m_pShader = NULL;
+	return true;
 }
 
 void COED3DRenderSystem_Impl::Destroy()
 {
 	// TODO: 
-}
-
-void COED3DRenderSystem_Impl::SetVertDecl(IOEVertDecl* pVertDecl)
-{
-	m_pVertDecl = (COED3DVertDecl_Impl*)pVertDecl;
-}
-
-IOEVertDecl* COED3DRenderSystem_Impl::GetVertDecl() const
-{
-	return m_pVertDecl;
-}
-
-void COED3DRenderSystem_Impl::SetTexture(IOETexture* pTexture)
-{
-	m_pTexture = (COED3DTexture_Impl*)pTexture;
-}
-
-IOETexture* COED3DRenderSystem_Impl::GetTexture() const
-{
-	return m_pTexture;
 }
 
 void COED3DRenderSystem_Impl::SetShader(IOEShader* pShader)
@@ -199,33 +177,19 @@ void COED3DRenderSystem_Impl::SetSampleFilter(OE_SAMPLE_FILTER eSampleFilter)
 
 void COED3DRenderSystem_Impl::DrawPrimitive(D3DPRIMITIVETYPE eType, const void* pVerts, uint nVerts, const ushort* pIndis, uint nPrimCount)
 {
-	if (m_pShader)
+	ID3DXEffect* pEffect = m_pShader->GetEffect();
+	COED3DVertDecl_Impl* pVertDecl = (COED3DVertDecl_Impl*)m_pShader->GetVertDecl();
+
+	uint nPass = 0;
+	pEffect->Begin(&nPass, 0);
+	for (uint i = 0; i < nPass; ++i)
 	{
-		ID3DXEffect* pEffect = m_pShader->GetEffect();
-		COED3DVertDecl_Impl* pVertDecl = m_pShader->GetVertDecl();
+		pEffect->BeginPass(i);
+		pEffect->CommitChanges();
 
-		uint nPass = 0;
-		pEffect->Begin(&nPass, 0);
-		for (uint i = 0; i < nPass; ++i)
-		{
-			pEffect->BeginPass(i);
-			pEffect->CommitChanges();
-
-			g_pd3dDevice->SetVertexDeclaration(pVertDecl->GetD3DVertDecl());
-			HRESULT hRet = g_pd3dDevice->DrawIndexedPrimitiveUP(eType, 0, nVerts, nPrimCount, pIndis, D3DFMT_INDEX16, pVerts, pVertDecl->GetStrideSize());
-			pEffect->EndPass();
-		}
-		pEffect->End();
+		g_pd3dDevice->SetVertexDeclaration(pVertDecl->GetD3DVertDecl());
+		HRESULT hRet = g_pd3dDevice->DrawIndexedPrimitiveUP(eType, 0, nVerts, nPrimCount, pIndis, D3DFMT_INDEX16, pVerts, pVertDecl->GetStrideSize());
+		pEffect->EndPass();
 	}
-	else
-	{
-		assert(m_pVertDecl);
-		if (!m_pVertDecl) return;
-
-		g_pd3dDevice->SetVertexDeclaration(m_pVertDecl->GetD3DVertDecl());
-		IDirect3DTexture9* pD3DTexture = NULL;
-		if (m_pTexture) pD3DTexture = m_pTexture->GetTexture();
-		g_pd3dDevice->SetTexture(0, pD3DTexture);
-		HRESULT hRet = g_pd3dDevice->DrawIndexedPrimitiveUP(eType, 0, nVerts, nPrimCount, pIndis, D3DFMT_INDEX16, pVerts, m_pVertDecl->GetStrideSize());
-	}
+	pEffect->End();
 }

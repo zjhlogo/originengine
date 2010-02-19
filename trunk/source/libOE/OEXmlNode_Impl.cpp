@@ -12,9 +12,8 @@
 
 COEXmlNode_Impl::COEXmlNode_Impl(const tstring& strName)
 {
-	Init();
+	m_bOK = Init();
 	SetName(strName);
-	m_bOK = true;
 }
 
 COEXmlNode_Impl::~COEXmlNode_Impl()
@@ -22,11 +21,12 @@ COEXmlNode_Impl::~COEXmlNode_Impl()
 	Destroy();
 }
 
-void COEXmlNode_Impl::Init()
+bool COEXmlNode_Impl::Init()
 {
 	m_pAttribute = NULL;
 	m_pNodeChild = NULL;
 	m_pNodeSibling = NULL;
+	return true;
 }
 
 void COEXmlNode_Impl::Destroy()

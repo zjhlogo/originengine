@@ -13,8 +13,7 @@
 COEUIStringMgr_Impl::COEUIStringMgr_Impl()
 {
 	g_pOEUIStringMgr = this;
-	Init();
-	m_bOK = true;
+	m_bOK = Init();
 }
 
 COEUIStringMgr_Impl::~COEUIStringMgr_Impl()
@@ -23,9 +22,10 @@ COEUIStringMgr_Impl::~COEUIStringMgr_Impl()
 	g_pOEUIStringMgr = NULL;
 }
 
-void COEUIStringMgr_Impl::Init()
+bool COEUIStringMgr_Impl::Init()
 {
 	// TODO: 
+	return true;
 }
 
 void COEUIStringMgr_Impl::Destroy()

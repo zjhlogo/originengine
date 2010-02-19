@@ -9,8 +9,7 @@
 
 COEUIFont_Impl::COEUIFont_Impl()
 {
-	Init();
-	m_bOK = true;
+	m_bOK = Init();
 }
 
 COEUIFont_Impl::~COEUIFont_Impl()
@@ -18,9 +17,10 @@ COEUIFont_Impl::~COEUIFont_Impl()
 	Destroy();
 }
 
-void COEUIFont_Impl::Init()
+bool COEUIFont_Impl::Init()
 {
 	// TODO: 
+	return true;
 }
 
 void COEUIFont_Impl::Destroy()

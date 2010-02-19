@@ -15,8 +15,7 @@
 COEXmlMgr_Impl::COEXmlMgr_Impl()
 {
 	g_pOEXmlMgr = this;
-	Init();
-	m_bOK = true;
+	m_bOK = Init();
 }
 
 COEXmlMgr_Impl::~COEXmlMgr_Impl()
@@ -25,9 +24,10 @@ COEXmlMgr_Impl::~COEXmlMgr_Impl()
 	g_pOEXmlMgr = NULL;
 }
 
-void COEXmlMgr_Impl::Init()
+bool COEXmlMgr_Impl::Init()
 {
 	// TODO: 
+	return true;
 }
 
 void COEXmlMgr_Impl::Destroy()

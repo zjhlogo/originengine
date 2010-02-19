@@ -6,10 +6,11 @@
  * \author zjhlogo (zjhlogo@163.com)
  */
 #include "SimpleShape.h"
+#include <IOERenderSystem.h>
 
 CSimpleShape::CSimpleShape()
 {
-	Init();
+	m_bOK = Init();
 }
 
 CSimpleShape::~CSimpleShape()
@@ -17,36 +18,27 @@ CSimpleShape::~CSimpleShape()
 	Destroy();
 }
 
-void CSimpleShape::Init()
+bool CSimpleShape::Init()
 {
-	m_pDecl = NULL;
-	m_bOK = false;
+	m_pShader = g_pOEShaderMgr->CreateDefaultShader(DST_POLYC);
+	if (!m_pShader) return false;
+
+	return true;
 }
 
 void CSimpleShape::Destroy()
 {
-	SAFE_RELEASE(m_pDecl);
+	SAFE_RELEASE(m_pShader);
 }
 
-bool CSimpleShape::Initialize()
+bool CSimpleShape::IsOK()
 {
-	static const VERT_DECL_ELEMENT s_Decl[] =
-	{
-		VDT_FLOAT3, VDU_POSITION, 0,
-		VDT_COLOR, VDU_COLOR, 0,
-		VDT_UNKNOWN, VDU_UNKNOWN, 0,
-	};
-
-	m_pDecl = g_pOEDevice->CreateVertDecl(s_Decl);
-	if (!m_pDecl) return false;
-
-	m_bOK = true;
-	return true;
+	return m_bOK;
 }
 
-void CSimpleShape::DrawCube(IOERenderSystem* pRenderer, const CVector3& vPos, float fScale /* = 1.0f */, uint nColor /* = 0xFFFFFFFF */)
+void CSimpleShape::DrawCube(const CVector3& vPos, float fScale /* = 1.0f */, uint nColor /* = 0xFFFFFFFF */)
 {
-	static VERTEX s_VertsTemplate[8] = 
+	static const VERTEX_POLYC s_Verts[CUBE_VERTS_COUNT] = 
 	{
 		{-0.5f, -0.5f, -0.5f, 0xFFFFFFFF},
 		{-0.5f, -0.5f,  0.5f, 0xFFFFFFFF},
@@ -58,7 +50,7 @@ void CSimpleShape::DrawCube(IOERenderSystem* pRenderer, const CVector3& vPos, fl
 		{ 0.5f,  0.5f, -0.5f, 0xFFFFFFFF}
 	};
 
-	static ushort s_Indis[36] =
+	static const ushort s_Indis[CUBE_INDIS_COUNT] =
 	{
 		0, 2, 1,
 		0, 3, 2,
@@ -74,18 +66,15 @@ void CSimpleShape::DrawCube(IOERenderSystem* pRenderer, const CVector3& vPos, fl
 		1, 2, 6
 	};
 
-	if (!m_bOK || !pRenderer) return;
-
-	VERTEX Verts[8];
-	for (int i = 0; i < 8; ++i)
+	VERTEX_POLYC Verts[CUBE_VERTS_COUNT];
+	for (int i = 0; i < CUBE_VERTS_COUNT; ++i)
 	{
-		Verts[i].x = s_VertsTemplate[i].x*fScale+vPos.x;
-		Verts[i].y = s_VertsTemplate[i].y*fScale+vPos.y;
-		Verts[i].z = s_VertsTemplate[i].z*fScale+vPos.z;
+		Verts[i].x = s_Verts[i].x*fScale+vPos.x;
+		Verts[i].y = s_Verts[i].y*fScale+vPos.y;
+		Verts[i].z = s_Verts[i].z*fScale+vPos.z;
 		Verts[i].nColor = nColor;
 	}
 
-	pRenderer->SetVertDecl(m_pDecl);
-	pRenderer->SetTexture(NULL);
-	pRenderer->DrawTriList(&Verts, 8, s_Indis, 36);
+	g_pOERenderSystem->SetShader(m_pShader);
+	g_pOERenderSystem->DrawTriList(&Verts, CUBE_VERTS_COUNT, s_Indis, CUBE_INDIS_COUNT);
 }

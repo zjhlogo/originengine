@@ -28,7 +28,7 @@
 #include <IOEShaderMgr.h>
 
 // UIÄ£¿é
-#include <OEUI/IOEUIRenderer.h>
+#include <OEUI/IOEUIRenderSystem.h>
 #include <OEUI/IOEUIFontMgr.h>
 #include <OEUI/IOEUIStringMgr.h>
 
@@ -55,7 +55,7 @@ IOETextureMgr* g_pOETextureMgr = NULL;
 IOEShaderMgr* g_pOEShaderMgr = NULL;
 
 // UIÄ£¿é
-IOEUIRenderer* g_pOEUIRenderer = NULL;
+IOEUIRenderSystem* g_pOEUIRenderSystem = NULL;
 IOEUIFontMgr* g_pOEUIFontMgr = NULL;
 IOEUIStringMgr* g_pOEUIStringMgr = NULL;
 
@@ -97,7 +97,7 @@ void COEHolder::SetupInterfaces()
 	AddInterface(TS("IOEShaderMgr"), (void**)&g_pOEShaderMgr);
 
 	// UIÄ£¿é
-	AddInterface(TS("IOEUIRenderer"), (void**)&g_pOEUIRenderer);
+	AddInterface(TS("IOEUIRenderSystem"), (void**)&g_pOEUIRenderSystem);
 	AddInterface(TS("IOEUIFontMgr"), (void**)&g_pOEUIFontMgr);
 	AddInterface(TS("IOEUIStringMgr"), (void**)&g_pOEUIStringMgr);
 

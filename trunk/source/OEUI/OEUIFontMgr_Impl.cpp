@@ -16,8 +16,7 @@
 COEUIFontMgr_Impl::COEUIFontMgr_Impl()
 {
 	g_pOEUIFontMgr = this;
-	Init();
-	m_bOK = true;
+	m_bOK = Init();
 }
 
 COEUIFontMgr_Impl::~COEUIFontMgr_Impl()
@@ -26,9 +25,10 @@ COEUIFontMgr_Impl::~COEUIFontMgr_Impl()
 	g_pOEUIFontMgr = NULL;
 }
 
-void COEUIFontMgr_Impl::Init()
+bool COEUIFontMgr_Impl::Init()
 {
 	// TODO: 
+	return true;
 }
 
 void COEUIFontMgr_Impl::Destroy()

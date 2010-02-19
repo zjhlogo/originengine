@@ -11,6 +11,7 @@
 #include "IOEObject.h"
 #include "IOEShader.h"
 #include "IOEVertDecl.h"
+#include "OEBaseTypeEx.h"
 
 class IOEShaderMgr : public IOEObject
 {
@@ -18,7 +19,8 @@ public:
 	IOEShaderMgr() {};
 	virtual ~IOEShaderMgr() {};
 
-	virtual IOEShader* CreateShader(const VERT_DECL_ELEMENT* pElement, const tstring& strFileName) = 0;
+	virtual IOEShader* CreateShader(const VERT_DECL_ELEMENT* pElement, const tstring& strFile) = 0;
+	virtual IOEShader* CreateDefaultShader(DEFAULT_SHADER_TYPE eType) = 0;
 
 };
 

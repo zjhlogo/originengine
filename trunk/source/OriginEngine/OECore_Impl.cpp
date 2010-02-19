@@ -15,8 +15,7 @@
 COECore_Impl::COECore_Impl()
 {
 	g_pOECore = this;
-	Init();
-	m_bOK = true;
+	m_bOK = Init();
 }
 
 COECore_Impl::~COECore_Impl()
@@ -25,9 +24,10 @@ COECore_Impl::~COECore_Impl()
 	g_pOECore = NULL;
 }
 
-void COECore_Impl::Init()
+bool COECore_Impl::Init()
 {
 	m_bRunning = false;
+	return true;
 }
 
 void COECore_Impl::Destroy()

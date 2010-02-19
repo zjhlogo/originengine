@@ -14,8 +14,7 @@
 
 COEXmlDocument_Impl::COEXmlDocument_Impl()
 {
-	Init();
-	m_bOK = true;
+	m_bOK = Init();
 }
 
 COEXmlDocument_Impl::~COEXmlDocument_Impl()
@@ -23,10 +22,11 @@ COEXmlDocument_Impl::~COEXmlDocument_Impl()
 	Destroy();
 }
 
-void COEXmlDocument_Impl::Init()
+bool COEXmlDocument_Impl::Init()
 {
 	m_pNodeDecl = NULL;
 	m_pNodeRoot = NULL;
+	return true;
 }
 
 void COEXmlDocument_Impl::Destroy()

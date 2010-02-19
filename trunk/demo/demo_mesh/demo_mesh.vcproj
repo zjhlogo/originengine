@@ -342,10 +342,6 @@
 				RelativePath=".\MeshApp.cpp"
 				>
 			</File>
-			<File
-				RelativePath="..\common\SimpleShape.cpp"
-				>
-			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -358,10 +354,6 @@
 			</File>
 			<File
 				RelativePath=".\MeshApp.h"
-				>
-			</File>
-			<File
-				RelativePath="..\common\SimpleShape.h"
 				>
 			</File>
 		</Filter>
