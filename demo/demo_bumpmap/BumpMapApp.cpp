@@ -69,7 +69,7 @@ bool CBumpMapApp::Initialize()
 	m_pCamera = new CCamera();
 
 	m_pSimpleShape = new CSimpleShape();
-	if (!m_pSimpleShape->Initialize()) return false;
+	if (!m_pSimpleShape || !m_pSimpleShape->IsOK()) return false;
 
 	// registe message
 	g_pOEMsgMgr->RegisterMessage(OMI_LBUTTON_DOWN, this, (MSG_FUNC)&CBumpMapApp::OnLButtonDown);
@@ -122,17 +122,16 @@ void CBumpMapApp::Render(float fDetailTime)
 	m_vLightPos.z = sin(s_fTotalTime)*10.0f;
 
 	m_pShader->SetVector(TS("g_vLightPos"), m_vLightPos);
-
 	m_pShader->SetVector(TS("g_vEyePos"), m_pCamera->GetEyePos());
-	m_pShader->SetTexture(TS("g_texBase"), m_pTexBase);
+
+	m_pShader->SetTexture(TS("g_texDiffuse"), m_pTexBase);
 	m_pShader->SetTexture(TS("g_texNormal"), m_pTexNormal);
-	m_pShader->SetTexture(TS("g_texHeight"), m_pTexHeight);
+	m_pShader->SetTexture(TS("g_texHeightMap"), m_pTexHeight);
 
 	g_pOERenderSystem->SetShader(m_pShader);
 	g_pOERenderSystem->DrawTriList(s_Verts, 4, s_Indis, 6);
-	g_pOERenderSystem->SetShader(NULL);
 
-	m_pSimpleShape->DrawCube(g_pOERenderSystem, m_vLightPos);
+	m_pSimpleShape->DrawCube(m_vLightPos);
 }
 
 bool CBumpMapApp::OnLButtonDown(uint nMsgID, COEDataBufferRead* pDBRead)
@@ -180,11 +179,11 @@ bool CBumpMapApp::OnKeyDown(uint nMsgID, COEDataBufferRead* pDBRead)
 	m_KeyDown[nKeyCode] = true;
 	if (m_KeyDown[0x1B]) g_pOECore->End();		// TODO: 0x1B == VK_ESCAPE
 
-	if (m_KeyDown['1']) m_pShader->SetTechnique(TS("Normal"));
-	if (m_KeyDown['2']) m_pShader->SetTechnique(TS("Parallax"));
-	if (m_KeyDown['3']) m_pShader->SetTechnique(TS("BaseTex"));
-	if (m_KeyDown['4']) m_pShader->SetTechnique(TS("NormalTex"));
-	if (m_KeyDown['5']) m_pShader->SetTechnique(TS("HeightTex"));
+	if (m_KeyDown['1']) m_pShader->SetTechnique(TS("NormalMap"));
+	if (m_KeyDown['2']) m_pShader->SetTechnique(TS("ParallaxMap"));
+	if (m_KeyDown['3']) m_pShader->SetTechnique(TS("DiffuseTexture"));
+	if (m_KeyDown['4']) m_pShader->SetTechnique(TS("NormalTexture"));
+	if (m_KeyDown['5']) m_pShader->SetTechnique(TS("HeightMapTexture"));
 
 	return true;
 }

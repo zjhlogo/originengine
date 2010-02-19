@@ -1,58 +1,57 @@
 /*!
- * \file OEUIRenderer_Impl.cpp
- * \date 27-7-2009 18:06:01
+ * \file OEUIRenderSystem_Impl.cpp
+ * \date 19-2-2010 19:53:01
  * 
  * 
  * \author zjhlogo (zjhlogo@163.com)
  */
-#include "OEUIRenderer_Impl.h"
-
-#include <IOEDevice.h>
-
+#include "OEUIRenderSystem_Impl.h"
+#include <IOEShaderMgr.h>
 #include <assert.h>
 
-COEUIRenderer_Impl::COEUIRenderer_Impl()
+COEUIRenderSystem_Impl::COEUIRenderSystem_Impl()
 {
-	g_pOEUIRenderer = this;
-	Init();
-	m_bOK = true;
+	g_pOEUIRenderSystem = this;
+	m_bOK = Init();
 }
 
-COEUIRenderer_Impl::~COEUIRenderer_Impl()
+COEUIRenderSystem_Impl::~COEUIRenderSystem_Impl()
 {
 	Destroy();
-	g_pOEUIRenderer = NULL;
+	g_pOEUIRenderSystem = NULL;
 }
 
-void COEUIRenderer_Impl::Init()
+bool COEUIRenderSystem_Impl::Init()
 {
-	m_pDecl = NULL;
 	m_pTexture = NULL;
+	m_pShader = NULL;
 
 	memset(m_pVertsCache, 0, sizeof(m_pVertsCache));
 	m_bInitialized = false;
+
+	return true;
 }
 
-void COEUIRenderer_Impl::Destroy()
+void COEUIRenderSystem_Impl::Destroy()
 {
-	SAFE_RELEASE(m_pDecl);
+	SAFE_RELEASE(m_pShader);
 	for (int i = 0; i < VERTEX_CACHE_COUNT; ++i)
 	{
 		SAFE_DELETE(m_pVertsCache[i]);
 	}
 }
 
-void COEUIRenderer_Impl::SetTexture(IOETexture* pTexture)
+void COEUIRenderSystem_Impl::SetTexture(IOETexture* pTexture)
 {
 	m_pTexture = pTexture;
 }
 
-IOETexture* COEUIRenderer_Impl::GetTexture() const
+IOETexture* COEUIRenderSystem_Impl::GetTexture() const
 {
 	return m_pTexture;
 }
 
-void COEUIRenderer_Impl::DrawTriList(const void* pVerts, uint nVerts, const ushort* pIndis, uint nIndis)
+void COEUIRenderSystem_Impl::DrawTriList(const void* pVerts, uint nVerts, const ushort* pIndis, uint nIndis)
 {
 	if (!m_bInitialized)
 	{
@@ -64,7 +63,7 @@ void COEUIRenderer_Impl::DrawTriList(const void* pVerts, uint nVerts, const usho
 
 	for (int i = 0; i < VERTEX_CACHE_COUNT; ++i)
 	{
-		if (m_pVertsCache[i]->Compare(m_pDecl, m_pTexture))
+		if (m_pVertsCache[i]->Compare(m_pTexture, m_pShader))
 		{
 			pMatchCache = m_pVertsCache[i];
 			break;
@@ -87,8 +86,8 @@ void COEUIRenderer_Impl::DrawTriList(const void* pVerts, uint nVerts, const usho
 	}
 	else if (pEmptyCache)
 	{
-		pEmptyCache->SetVertDecl(m_pDecl);
 		pEmptyCache->SetTexture(m_pTexture);
+		pEmptyCache->SetShader(m_pShader);
 		bool bOK = pEmptyCache->AddVerts(pVerts, nVerts, pIndis, nIndis);
 		assert(bOK);
 	}
@@ -98,7 +97,7 @@ void COEUIRenderer_Impl::DrawTriList(const void* pVerts, uint nVerts, const usho
 	}
 }
 
-void COEUIRenderer_Impl::FlushAll()
+void COEUIRenderSystem_Impl::FlushAll()
 {
 	if (!m_bInitialized) return;
 
@@ -106,22 +105,14 @@ void COEUIRenderer_Impl::FlushAll()
 	{
 		m_pVertsCache[i]->Flush();
 		m_pVertsCache[i]->SetTexture(NULL);
-		m_pVertsCache[i]->SetVertDecl(NULL);
+		m_pVertsCache[i]->SetShader(NULL);
 	}
 }
 
-bool COEUIRenderer_Impl::Create()
+bool COEUIRenderSystem_Impl::Create()
 {
-	static const VERT_DECL_ELEMENT s_Decl[] =
-	{
-		VDT_FLOAT4, VDU_POSITIONT, 0,
-		VDT_COLOR, VDU_COLOR, 0,
-		VDT_FLOAT2, VDU_TEXCOORD, 0,		// normal
-		VDT_UNKNOWN, VDU_UNKNOWN, 0,
-	};
-
-	m_pDecl = g_pOEDevice->CreateVertDecl(s_Decl);
-	if (!m_pDecl) return false;
+	m_pShader = g_pOEShaderMgr->CreateDefaultShader(DST_POLY_UI);
+	if (!m_pShader) return false;
 
 	for (int i = 0; i < VERTEX_CACHE_COUNT; ++i)
 	{

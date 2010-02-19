@@ -37,13 +37,6 @@ void CMapTile::Destroy()
 
 bool CMapTile::LoadMap(const ushort* pHeightField, int nID)
 {
-	static const VERT_DECL_ELEMENT s_Decl[] =
-	{
-		VDT_FLOAT3, VDU_POSITION, 0,
-		VDT_FLOAT2, VDU_TEXCOORD, 0,
-		VDT_UNKNOWN, VDU_UNKNOWN, 0,
-	};
-
 	Reset();
 
 	if (!m_pTexture)
@@ -54,13 +47,13 @@ bool CMapTile::LoadMap(const ushort* pHeightField, int nID)
 
 	if (!m_pShader)
 	{
-		m_pShader = g_pOEShaderMgr->CreateShader(s_Decl, TS("terrain.fx"));
+		m_pShader = g_pOEShaderMgr->CreateDefaultShader(DST_POLYT);
 		if (!m_pShader) return false;
 	}
 
 	if (!m_pVerts)
 	{
-		m_pVerts = new TILE_VERTEX[TILE_SIZE*TILE_SIZE];
+		m_pVerts = new VERTEX_POLYT[TILE_SIZE*TILE_SIZE];
 		if (!m_pVerts) return false;
 	}
 
@@ -112,20 +105,18 @@ int CMapTile::GetID()
 
 void CMapTile::Render(float fDetailTime)
 {
-	m_pShader->SetTexture(TS("g_texBase"), m_pTexture);
-
 	CMatrix4x4 matWorld;
 	CalcMatrix(matWorld, m_nID);
 
 	CMatrix4x4 matViewProj;
 	g_pOERenderSystem->GetTransform(matViewProj, TT_VIEW_PROJ);
-
 	CMatrix4x4 matWorldViewProj = matWorld*matViewProj;
+
 	m_pShader->SetMatrix(TS("g_matWorldViewProj"), matWorldViewProj);
+	m_pShader->SetTexture(TS("g_texDiffuse"), m_pTexture);
 
 	g_pOERenderSystem->SetShader(m_pShader);
 	g_pOERenderSystem->DrawTriList(m_pVerts, TILE_SIZE*TILE_SIZE, m_pIndis, (TILE_SIZE-1)*(TILE_SIZE-1)*6);
-	g_pOERenderSystem->SetShader(NULL);
 }
 
 void CMapTile::Reset()

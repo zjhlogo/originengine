@@ -17,16 +17,16 @@ public:
 	COEUIVertexCache(uint nVertsCacheSize, uint nIndisCacheCount);
 	~COEUIVertexCache();
 
-	void SetVertDecl(IOEVertDecl* pDecl);
-	IOEVertDecl* GetVertDecl() const;
-
 	void SetTexture(IOETexture* pTexture);
 	IOETexture* GetTexture() const;
+
+	void SetShader(IOEShader* pShader);
+	IOEShader* GetShader() const;
 
 	bool AddVerts(const void* pVerts, uint nVerts, const ushort* pIndis, uint nIndis);
 	void Flush();
 
-	bool Compare(IOEVertDecl* pDecl, IOETexture* pTexture);
+	bool Compare(IOETexture* pTexture, IOEShader* pShader);
 
 	int GetVertsCount();
 	int GetIndisCount();
@@ -50,8 +50,8 @@ private:
 	void* m_pVertsCache;
 	ushort* m_pIndisCache;
 
-	IOEVertDecl* m_pDecl;
 	IOETexture* m_pTexture;
+	IOEShader* m_pShader;
 
 	bool m_bOK;
 };

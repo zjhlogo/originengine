@@ -14,8 +14,7 @@
 COEMsgMgr_Impl::COEMsgMgr_Impl()
 {
 	g_pOEMsgMgr = this;
-	Init();
-	m_bOK = true;
+	m_bOK = Init();
 }
 
 COEMsgMgr_Impl::~COEMsgMgr_Impl()
@@ -24,9 +23,10 @@ COEMsgMgr_Impl::~COEMsgMgr_Impl()
 	g_pOEMsgMgr = NULL;
 }
 
-void COEMsgMgr_Impl::Init()
+bool COEMsgMgr_Impl::Init()
 {
 	// TODO: 
+	return true;
 }
 
 void COEMsgMgr_Impl::Destroy()

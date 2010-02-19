@@ -24,7 +24,7 @@ public:
 	virtual IOETexture* CreateTexture(int nWidth, int nHeight, TEXTURE_FORMAT eFormat);
 
 private:
-	void Init();
+	bool Init();
 	void Destroy();
 
 private:

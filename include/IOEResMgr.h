@@ -14,6 +14,7 @@
 #include "IOEControl.h"
 #include "IOERender.h"
 #include "OEBaseTypeEx.h"
+#include "IOEXmlNode.h"
 
 class IOEResMgr : public IOEObject
 {
@@ -29,6 +30,9 @@ public:
 
 	virtual bool CreateBones(TV_BONE& vBonesOut, const tstring& strFile) = 0;
 	virtual void DestroyBones(TV_BONE& vBones) = 0;
+
+	virtual bool CreateMaterial(MATERIAL& MaterialOut, IOEXmlNode* pXmlMaterial) = 0;
+	virtual void DestroyMaterial(MATERIAL& Material) = 0;
 
 };
 

@@ -10,8 +10,7 @@
 COEOpenGLDevice_Impl::COEOpenGLDevice_Impl()
 {
 	g_pOEDevice = this;
-	Init();
-	m_bOK = true;
+	m_bOK = Init();
 }
 
 COEOpenGLDevice_Impl::~COEOpenGLDevice_Impl()
@@ -20,9 +19,10 @@ COEOpenGLDevice_Impl::~COEOpenGLDevice_Impl()
 	g_pOEDevice = NULL;
 }
 
-void COEOpenGLDevice_Impl::Init()
+bool COEOpenGLDevice_Impl::Init()
 {
 	// TODO: 
+	return true;
 }
 
 void COEOpenGLDevice_Impl::Destroy()

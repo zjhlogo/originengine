@@ -29,6 +29,11 @@ enum OE_MSG_ID
 	OMI_KEY_UP,
 	OMI_CHAR,
 
+	//
+	// model render message
+	//
+	OMI_SETUP_SHADER_PARAM,
+
 	OMI_USER = 10000,
 };
 

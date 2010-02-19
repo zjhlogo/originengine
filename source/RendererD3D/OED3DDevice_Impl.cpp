@@ -40,8 +40,7 @@ static const tstring PARAM_HWIND = TS("HWIND");
 COED3DDevice_Impl::COED3DDevice_Impl()
 {
 	g_pOEDevice = this;
-	Init();
-	m_bOK = true;
+	m_bOK = Init();
 }
 
 COED3DDevice_Impl::~COED3DDevice_Impl()
@@ -50,7 +49,7 @@ COED3DDevice_Impl::~COED3DDevice_Impl()
 	g_pOEDevice = NULL;
 }
 
-void COED3DDevice_Impl::Init()
+bool COED3DDevice_Impl::Init()
 {
 	// read from config file
 	g_pOEConfigFileMgr->GetValue(m_nWindowWidth, NODE_WINDOW_WIDTH, WINDOW_WIDTH);
@@ -68,6 +67,8 @@ void COED3DDevice_Impl::Init()
 	m_nFPSCount = 0;
 	m_pFontFPS = NULL;
 	m_pStringFPS = NULL;
+
+	return true;
 }
 
 void COED3DDevice_Impl::Destroy()
@@ -362,8 +363,6 @@ void COED3DDevice_Impl::PerformOnce(float fDetailTime)
 		// render scene
 		g_pOERenderSystem->SetSampleFilter(OESF_LINEAR);
 		g_pOERenderSystem->SetShader(NULL);
-		g_pOERenderSystem->SetVertDecl(NULL);
-		g_pOERenderSystem->SetTexture(NULL);
 		g_pOEApp->Render(fDetailTime);
 
 		// render fps
@@ -431,10 +430,8 @@ void COED3DDevice_Impl::RenderFPS()
 	g_pOERenderSystem->SetSampleFilter(OESF_POINT);
 	g_pOERenderSystem->SetFillMode(FM_SOLID);
 	g_pOERenderSystem->SetShader(NULL);
-	g_pOERenderSystem->SetVertDecl(NULL);
-	g_pOERenderSystem->SetTexture(NULL);
 	if (m_pStringFPS) m_pStringFPS->Render(CPoint(0, 0));
-	g_pOEUIRenderer->FlushAll();
+	g_pOEUIRenderSystem->FlushAll();
 }
 
 LRESULT CALLBACK COED3DDevice_Impl::MainWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)

@@ -34,13 +34,12 @@ public:
 	float GetTotalTime() const;
 
 private:
-	void Init();
+	bool Init();
 	void Destroy();
 
 	bool CreateMesh(const tstring& strFile);
 	bool CreateBone(const tstring& strFile);
 	bool CreateMaterials(IOEXmlNode* pXmlMaterials);
-	IOEShader* CreateShader(int nVertDecl, const tstring& strFile);
 
 	void DestroyMesh();
 	void DestroyBone();

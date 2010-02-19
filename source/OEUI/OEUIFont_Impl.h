@@ -21,7 +21,7 @@ public:
 	virtual float GetKerning(int nFirstID, int nSecondID) const;
 
 private:
-	void Init();
+	bool Init();
 	void Destroy();
 
 };

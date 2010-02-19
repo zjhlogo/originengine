@@ -33,7 +33,7 @@ public:
 	virtual bool Render(IOERenderData* pRenderData);
 
 private:
-	void Init();
+	bool Init();
 	void Destroy();
 
 	COESkinMeshRenderData_Impl* ConvertData(IOERenderData* pRenderData);

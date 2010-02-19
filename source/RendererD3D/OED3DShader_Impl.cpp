@@ -184,7 +184,7 @@ bool COED3DShader_Impl::SetTechnique(const tstring& strParamName)
 	return true;
 }
 
-COED3DVertDecl_Impl* COED3DShader_Impl::GetVertDecl() const
+IOEVertDecl* COED3DShader_Impl::GetVertDecl()
 {
 	return m_pDecl;
 }

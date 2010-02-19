@@ -18,7 +18,7 @@
 COESkinMeshRenderData_Impl::COESkinMeshRenderData_Impl()
 :IOERenderData(OERDT_SKINMESH)
 {
-	Init();
+	m_bOK = Init();
 }
 
 COESkinMeshRenderData_Impl::~COESkinMeshRenderData_Impl()
@@ -26,12 +26,12 @@ COESkinMeshRenderData_Impl::~COESkinMeshRenderData_Impl()
 	Destroy();
 }
 
-void COESkinMeshRenderData_Impl::Init()
+bool COESkinMeshRenderData_Impl::Init()
 {
 	m_pMesh = NULL;
 	m_fAnimLength = 0.0f;
 	m_fTotalTime = 0.0f;
-	m_bOK = true;
+	return true;
 }
 
 void COESkinMeshRenderData_Impl::Destroy()
@@ -136,125 +136,14 @@ bool COESkinMeshRenderData_Impl::CreateMaterials(IOEXmlNode* pXmlMaterials)
 	IOEXmlNode* pXmlMaterial = pXmlMaterials->FirstChild(TS("Material"));
 	for (int i = 0; i < nMaterialCount; ++i)
 	{
-		if (!pXmlMaterial) break;
-
 		MATERIAL Material;
-		if (!pXmlMaterial->GetAttribute(Material.nID, TS("id"))) break;
-		if (!pXmlMaterial->GetAttribute(Material.nVertDecl, TS("vertdecl"))) break;
-		if (!pXmlMaterial->GetAttribute(Material.strShaderFile, TS("shader"))) break;
-		if (!pXmlMaterial->GetAttribute(Material.strTextureFile, TS("texture"))) break;
-		if (!pXmlMaterial->GetAttribute(Material.strTexNormalFile, TS("texnormal"))) break;
-
-		Material.pShader = CreateShader(Material.nVertDecl, Material.strShaderFile);
-		if (!Material.pShader) return false;
-
-		Material.pTexture = g_pOETextureMgr->CreateTextureFromFile(Material.strTextureFile);
-		if (!Material.pTexture)
-		{
-			SAFE_RELEASE(Material.pShader);
-			break;
-		}
-
-		Material.pTexNormal = g_pOETextureMgr->CreateTextureFromFile(Material.strTexNormalFile);
-		if (!Material.pTexture)
-		{
-			SAFE_RELEASE(Material.pTexture);
-			SAFE_RELEASE(Material.pShader);
-			break;
-		}
-
+		if (!g_pOEResMgr->CreateMaterial(Material, pXmlMaterial)) return false;
 		m_vMaterials.push_back(Material);
 
 		pXmlMaterial = pXmlMaterial->NextSibling(TS("Material"));
 	}
 
-	if (m_vMaterials.size() != nMaterialCount)
-	{
-		DestroyMaterials();
-		return false;
-	}
-
 	return true;
-}
-
-IOEShader* COESkinMeshRenderData_Impl::CreateShader(int nVertDecl, const tstring& strFile)
-{
-	std::vector<VERT_DECL_ELEMENT> vDecl;
-	int nTexCoordIndex = 0;
-
-	// position
-	if (nVertDecl & COEFmtMesh::VDM_XYZ)
-	{
-		VERT_DECL_ELEMENT Element;
-		Element.eType = VDT_FLOAT3;
-		Element.eUsage = VDU_POSITION;
-		Element.nIndex = 0;
-		vDecl.push_back(Element);
-	}
-
-	// color
-	if (nVertDecl & COEFmtMesh::VDM_COLOR)
-	{
-		VERT_DECL_ELEMENT Element;
-		Element.eType = VDT_COLOR;
-		Element.eUsage = VDU_COLOR;
-		Element.nIndex = 0;
-		vDecl.push_back(Element);
-	}
-
-	// texcoord
-	if (nVertDecl & COEFmtMesh::VDM_UV)
-	{
-		VERT_DECL_ELEMENT Element;
-		Element.eType = VDT_FLOAT2;
-		Element.eUsage = VDU_TEXCOORD;
-		Element.nIndex = nTexCoordIndex++;
-		vDecl.push_back(Element);
-	}
-
-	// normal
-	if (nVertDecl & COEFmtMesh::VDM_NXNYNZ)
-	{
-		VERT_DECL_ELEMENT Element;
-		Element.eType = VDT_FLOAT3;
-		Element.eUsage = VDU_TEXCOORD;
-		Element.nIndex = nTexCoordIndex++;
-		vDecl.push_back(Element);
-	}
-
-	// tangent
-	if (nVertDecl & COEFmtMesh::VDM_TXTYTZ)
-	{
-		VERT_DECL_ELEMENT Element;
-		Element.eType = VDT_FLOAT3;
-		Element.eUsage = VDU_TEXCOORD;
-		Element.nIndex = nTexCoordIndex++;
-		vDecl.push_back(Element);
-	}
-
-	// blendindex, blendweight
-	if (nVertDecl & COEFmtMesh::VDM_BONE)
-	{
-		VERT_DECL_ELEMENT Element;
-		Element.eType = VDT_UBYTE4;
-		Element.eUsage = VDU_BLENDINDICES;
-		Element.nIndex = 0;
-		vDecl.push_back(Element);
-
-		Element.eType = VDT_FLOAT4;
-		Element.eUsage = VDU_BLENDWEIGHT;
-		Element.nIndex = 0;
-		vDecl.push_back(Element);
-	}
-
-	// push back empty element to indicate the end
-	VERT_DECL_ELEMENT Element;
-	Element.eType = VDT_UNKNOWN;
-	Element.eUsage = VDU_UNKNOWN;
-	Element.nIndex = 0;
-	vDecl.push_back(Element);
-
-	return g_pOEShaderMgr->CreateShader(&vDecl[0], strFile);
 }
 
 void COESkinMeshRenderData_Impl::DestroyMesh()
@@ -273,9 +162,7 @@ void COESkinMeshRenderData_Impl::DestroyMaterials()
 	for (TV_MATERIAL::iterator it = m_vMaterials.begin(); it != m_vMaterials.end(); ++it)
 	{
 		MATERIAL& Material = (*it);
-		SAFE_RELEASE(Material.pShader);
-		SAFE_RELEASE(Material.pTexture);
-		SAFE_RELEASE(Material.pTexNormal);
+		g_pOEResMgr->DestroyMaterial(Material);
 	}
 	m_vMaterials.clear();
 }

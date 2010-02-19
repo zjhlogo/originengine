@@ -9,7 +9,7 @@
 #define __OEUI_H__
 
 #include "OEUIType.h"
-#include "IOEUIRenderer.h"
+#include "IOEUIRenderSystem.h"
 #include "IOEUIFontMgr.h"
 #include "IOEUIStringMgr.h"
 

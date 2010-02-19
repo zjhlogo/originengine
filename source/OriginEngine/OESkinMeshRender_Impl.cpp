@@ -7,6 +7,8 @@
  */
 #include "OESkinMeshRender_Impl.h"
 #include <IOERenderSystem.h>
+#include <IOEMsgMgr.h>
+#include <OEMsgID.h>
 
 COESkinMeshRender_Impl::COESkinMeshRender_Impl()
 :IOERender(OERT_SKINMESH)
@@ -40,13 +42,21 @@ bool COESkinMeshRender_Impl::Render(IOERenderData* pRenderData)
 
 		int nMaterialID = pPiece->GetMaterialID();
 		if (nMaterialID >= (int)vMaterials.size()) continue;
-		if (pPiece->GetVertDecl() != vMaterials[nMaterialID].nVertDecl) continue;
 
-		vMaterials[nMaterialID].pShader->SetMatrix(TS("g_matWorldViewProj"), matWorldViewProj);
-		vMaterials[nMaterialID].pShader->SetTexture(TS("g_texBase"), vMaterials[nMaterialID].pTexture);
-		vMaterials[nMaterialID].pShader->SetTexture(TS("g_texNormal"), vMaterials[nMaterialID].pTexNormal);
-		vMaterials[nMaterialID].pShader->SetMatrixArray(TS("g_matBoneMatrix"), &vmatSkins[0], vmatSkins.size());
-		g_pOERenderSystem->SetShader(vMaterials[nMaterialID].pShader);
+		const MATERIAL& Material = vMaterials[nMaterialID];
+		if (pPiece->GetVertDecl() != Material.nVertDecl) continue;
+
+		Material.pShader->SetMatrix(TS("g_matWorldViewProj"), matWorldViewProj);
+		Material.pShader->SetTexture(TS("g_texDiffuse"), Material.pTexDiffuse);
+		Material.pShader->SetTexture(TS("g_texNormal"), Material.pTexNormal);
+		Material.pShader->SetMatrixArray(TS("g_matBoneMatrix"), &vmatSkins[0], vmatSkins.size());
+
+		// setup shader parameter
+		COEMsg msg(OMI_SETUP_SHADER_PARAM);
+		msg.Write(Material.pShader);
+		g_pOEMsgMgr->SendMessageAndBlocked(&msg);
+
+		g_pOERenderSystem->SetShader(Material.pShader);
 
 		g_pOERenderSystem->DrawTriList(pPiece->GetVerts(), pPiece->GetNumVerts(), pPiece->GetIndis(), pPiece->GetNumIndis());
 	}

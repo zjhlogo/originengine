@@ -18,7 +18,7 @@ public:
 	virtual IOEFile* OpenFile(const tstring& strFileName, uint nFlag = IOEFile::OFF_READ);
 
 private:
-	void Init();
+	bool Init();
 	void Destroy();
 
 };

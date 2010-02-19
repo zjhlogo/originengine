@@ -13,8 +13,7 @@
 COELogFileMgr_Impl::COELogFileMgr_Impl()
 {
 	g_pOELogFileMgr = this;
-	Init();
-	m_bOK = true;
+	m_bOK = Init();
 }
 
 COELogFileMgr_Impl::~COELogFileMgr_Impl()
@@ -23,11 +22,12 @@ COELogFileMgr_Impl::~COELogFileMgr_Impl()
 	g_pOELogFileMgr = NULL;
 }
 
-void COELogFileMgr_Impl::Init()
+bool COELogFileMgr_Impl::Init()
 {
 	m_strFile = TS("log.txt");
 	m_pLogFile = NULL;
 	m_bFirstCreate = true;
+	return true;
 }
 
 void COELogFileMgr_Impl::Destroy()

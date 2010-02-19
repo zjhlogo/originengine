@@ -29,7 +29,7 @@ public:
 	virtual IOEXmlNode* InsertRootNode(const tstring& strName);
 
 private:
-	void Init();
+	bool Init();
 	void Destroy();
 
 private:

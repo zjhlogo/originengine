@@ -29,7 +29,7 @@ public:
 	virtual bool GetDeviceParam(void* pData, const tstring& strParamName);
 
 private:
-	void Init();
+	bool Init();
 	void Destroy();
 
 };

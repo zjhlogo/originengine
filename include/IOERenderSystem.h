@@ -21,12 +21,6 @@ public:
 	IOERenderSystem() {};
 	virtual ~IOERenderSystem() {};
 
-	virtual void SetVertDecl(IOEVertDecl* pDecl) = 0;
-	virtual IOEVertDecl* GetVertDecl() const = 0;
-
-	virtual void SetTexture(IOETexture* pTexture) = 0;
-	virtual IOETexture* GetTexture() const = 0;
-
 	virtual void SetShader(IOEShader* pShader) = 0;
 	virtual IOEShader* GetShader() const = 0;
 

@@ -19,7 +19,7 @@ public:
 	virtual IOEUIString* CreateUIString(IOEUIFont* pFont);
 
 private:
-	void Init();
+	bool Init();
 	void Destroy();
 
 private:

@@ -51,6 +51,7 @@ bool CMeshApp::Initialize()
 	g_pOEMsgMgr->RegisterMessage(OMI_MOUSE_MOVE, this, (MSG_FUNC)&CMeshApp::OnMouseMove);
 	g_pOEMsgMgr->RegisterMessage(OMI_KEY_DOWN, this, (MSG_FUNC)&CMeshApp::OnKeyDown);
 	g_pOEMsgMgr->RegisterMessage(OMI_KEY_UP, this, (MSG_FUNC)&CMeshApp::OnKeyUp);
+	g_pOEMsgMgr->RegisterMessage(OMI_SETUP_SHADER_PARAM, this, (MSG_FUNC)&CMeshApp::OnSetupShaderParam);
 
 	return true;
 }
@@ -119,6 +120,19 @@ bool CMeshApp::OnKeyDown(uint nMsgID, COEDataBufferRead* pDBRead)
 	assert(nKeyCode > 0 && nKeyCode < KEY_COUNT);
 	m_KeyDown[nKeyCode] = true;
 	if (m_KeyDown[0x1B]) g_pOECore->End();		// TODO: 0x1B == VK_ESCAPE
+
+	return true;
+}
+
+bool CMeshApp::OnSetupShaderParam(uint nMsgID, COEDataBufferRead* pDBRead)
+{
+	COEMsg msg(pDBRead);
+
+	IOEShader* pShader = NULL;
+	msg.Read(pShader);
+
+	pShader->SetVector(TS("g_vLightPos"), CVector3(0.0f, 0.0f, -300.0f));
+	pShader->SetVector(TS("g_vEyePos"), m_pCamera->GetEyePos());
 
 	return true;
 }

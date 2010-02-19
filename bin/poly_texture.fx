@@ -1,11 +1,11 @@
 float4x4 g_matWorldViewProj;
 
-texture g_texBase;
+texture g_texDiffuse;
 
-sampler texBaseSampler =
+sampler sampleDiffuse =
 sampler_state
 {
-	Texture = <g_texBase>;
+	Texture = <g_texDiffuse>;
 	MipFilter = LINEAR;
 	MinFilter = LINEAR;
 	MagFilter = LINEAR;
@@ -15,10 +15,6 @@ struct VS_INPUT
 {
 	float3 pos : POSITION;
 	float2 texcoord : TEXCOORD0;
-	float3 normal : TEXCOORD1;
-	float3 tangent : TEXCOORD2;
-	int4 boneindex : BLENDINDICES;
-	float4 boneweight : BLENDWEIGHT;
 };
 
 struct VS_OUTPUT
@@ -31,16 +27,14 @@ VS_OUTPUT VSMain(VS_INPUT input)
 {
 	VS_OUTPUT output;
 
-	output.pos = mul(float4(input.pos.xyz, 1.0f), g_matWorldViewProj);
+	output.pos = mul(float4(input.pos, 1.0f), g_matWorldViewProj);
 	output.texcoord = input.texcoord;
-
 	return output;
 }
 
 float4 PSMain(VS_OUTPUT input) : COLOR
 {
-	float4 color = tex2D(texBaseSampler, input.texcoord);
-	return color;
+	return tex2D(sampleDiffuse, input.texcoord);
 }
 
 technique Normal

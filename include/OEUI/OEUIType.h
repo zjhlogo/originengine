@@ -10,13 +10,6 @@
 
 #include "../OEBasicType.h"
 
-typedef struct OEUI_VERTEX_tag
-{
-	float x, y, z, w;
-	uint nColor;
-	float u, v;
-} OEUI_VERTEX;
-
 class CPoint
 {
 public:

@@ -24,7 +24,7 @@ public:
 	virtual IOEUIFont* CreateBitmapFont(const tstring& strFileName);
 
 private:
-	void Init();
+	bool Init();
 	void Destroy();
 
 private:

@@ -6,20 +6,20 @@
  * \author zjhlogo (zjhlogo@163.com)
  */
 #include "OEUIModule.h"
-#include "OEUIRenderer_Impl.h"
+#include "OEUIRenderSystem_Impl.h"
 #include "OEUIFontMgr_Impl.h"
 #include "OEUIStringMgr_Impl.h"
 
-COEUIRenderer_Impl* g_pOEUIRenderer_Impl = NULL;
+COEUIRenderSystem_Impl* g_pOEUIRenderSystem_Impl = NULL;
 COEUIFontMgr_Impl* g_pOEUIFontMgr_Impl = NULL;
 COEUIStringMgr_Impl* g_pOEUIStringMgr_Impl = NULL;
 
 bool CreateSingleton()
 {
-	g_pOEUIRenderer_Impl = new COEUIRenderer_Impl();
-	if (!g_pOEUIRenderer_Impl || !g_pOEUIRenderer_Impl->IsOK())
+	g_pOEUIRenderSystem_Impl = new COEUIRenderSystem_Impl();
+	if (!g_pOEUIRenderSystem_Impl || !g_pOEUIRenderSystem_Impl->IsOK())
 	{
-		SAFE_DELETE(g_pOEUIRenderer_Impl);
+		SAFE_DELETE(g_pOEUIRenderSystem_Impl);
 		return false;
 	}
 
@@ -44,7 +44,7 @@ void DestroySingleton()
 {
 	SAFE_DELETE(g_pOEUIStringMgr_Impl);
 	SAFE_DELETE(g_pOEUIFontMgr_Impl);
-	SAFE_DELETE(g_pOEUIRenderer_Impl);
+	SAFE_DELETE(g_pOEUIRenderSystem_Impl);
 }
 
 bool OEModuleInit(COEHolder& Holder)

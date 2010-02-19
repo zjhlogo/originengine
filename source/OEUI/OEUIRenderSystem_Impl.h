@@ -1,17 +1,17 @@
 /*!
- * \file OEUIRenderer_Impl.h
- * \date 27-7-2009 17:58:05
+ * \file OEUIRenderSystem_Impl.h
+ * \date 19-2-2010 19:52:06
  * 
  * 
  * \author zjhlogo (zjhlogo@163.com)
  */
-#ifndef __OEUIRENDERER_IMPL_H__
-#define __OEUIRENDERER_IMPL_H__
+#ifndef __OEUIRENDERSYSTEM_IMPL_H__
+#define __OEUIRENDERSYSTEM_IMPL_H__
 
-#include <OEUI/IOEUIRenderer.h>
+#include <OEUI/IOEUIRenderSystem.h>
 #include "OEUIVertexCache.h"
 
-class COEUIRenderer_Impl : public IOEUIRenderer
+class COEUIRenderSystem_Impl : public IOEUIRenderSystem
 {
 public:
 	enum CONST_DEFINE
@@ -22,8 +22,8 @@ public:
 	};
 
 public:
-	COEUIRenderer_Impl();
-	virtual ~COEUIRenderer_Impl();
+	COEUIRenderSystem_Impl();
+	virtual ~COEUIRenderSystem_Impl();
 
 	virtual void SetTexture(IOETexture* pTexture);
 	virtual IOETexture* GetTexture() const;
@@ -32,17 +32,17 @@ public:
 	virtual void FlushAll();
 
 private:
-	void Init();
+	bool Init();
 	void Destroy();
 
 	bool Create();
 
 private:
-	IOEVertDecl* m_pDecl;
 	IOETexture* m_pTexture;
+	IOEShader* m_pShader;
 
 	COEUIVertexCache* m_pVertsCache[VERTEX_CACHE_COUNT];
 	bool m_bInitialized;
 
 };
-#endif // __OEUIRENDERER_IMPL_H__
+#endif // __OEUIRENDERSYSTEM_IMPL_H__

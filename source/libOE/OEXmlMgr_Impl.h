@@ -23,7 +23,7 @@ public:
 	virtual IOEXmlAttribute* CreateAttribute(const tstring& strName);
 
 private:
-	void Init();
+	bool Init();
 	void Destroy();
 
 };

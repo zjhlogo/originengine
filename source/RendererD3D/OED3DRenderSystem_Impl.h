@@ -19,12 +19,6 @@ public:
 	COED3DRenderSystem_Impl();
 	virtual ~COED3DRenderSystem_Impl();
 
-	virtual void SetVertDecl(IOEVertDecl* pDecl);
-	virtual IOEVertDecl* GetVertDecl() const;
-
-	virtual void SetTexture(IOETexture* pTexture);
-	virtual IOETexture* GetTexture() const;
-
 	virtual void SetShader(IOEShader* pShader);
 	virtual IOEShader* GetShader() const;
 
@@ -48,14 +42,12 @@ public:
 	virtual void SetSampleFilter(OE_SAMPLE_FILTER eSampleFilter);
 
 private:
-	void Init();
+	bool Init();
 	void Destroy();
 
 	void DrawPrimitive(D3DPRIMITIVETYPE eType, const void* pVerts, uint nVerts, const ushort* pIndis, uint nPrimCount);
 
 private:
-	COED3DVertDecl_Impl* m_pVertDecl;
-	COED3DTexture_Impl* m_pTexture;
 	COED3DShader_Impl* m_pShader;
 
 	CMatrix4x4 m_matWorld;

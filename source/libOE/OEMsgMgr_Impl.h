@@ -41,7 +41,7 @@ public:
 	virtual bool UnregisterMessage(uint nMsgID, IOEObject* pHandler);
 
 private:
-	void Init();
+	bool Init();
 	void Destroy();
 
 	void ProcessReceive(uint nMsgID, COEDataBufferRead* pDBRead);
