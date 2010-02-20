@@ -13,6 +13,7 @@
 
 COEMsgMgr_Impl::COEMsgMgr_Impl()
 {
+	assert(!g_pOEMsgMgr);
 	g_pOEMsgMgr = this;
 	m_bOK = Init();
 }

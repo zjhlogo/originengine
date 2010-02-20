@@ -8,9 +8,11 @@
 #include <IOEApp.h>
 #include <IOECore.h>
 #include <OEHolder.h>
+#include <assert.h>
 
 IOEApp::IOEApp()
 {
+	assert(!g_pOEApp);
 	g_pOEApp = this;
 	m_bOK = true;
 }
@@ -26,12 +28,12 @@ void IOEApp::Run()
 	{
 		if (g_pOECore->Initialize())
 		{
-			if (Initialize())
+			if (this->Initialize())
 			{
 				g_pOECore->Run();
 			}
 
-			Terminate();
+			this->Terminate();
 		}
 
 		g_pOECore->Terminate();

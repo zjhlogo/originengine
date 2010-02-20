@@ -9,9 +9,11 @@
 #include "OEUIString_Impl.h"
 
 #include <IOELogFileMgr.h>
+#include <assert.h>
 
 COEUIStringMgr_Impl::COEUIStringMgr_Impl()
 {
+	assert(!g_pOEUIStringMgr);
 	g_pOEUIStringMgr = this;
 	m_bOK = Init();
 }

@@ -10,6 +10,7 @@
 COED3DRenderState::COED3DRenderState()
 {
 	m_bZBuffer = true;
+	m_bAlphaTest = false;
 
 	m_bFog = false;
 	m_nFogColor = 0xFFFFFFFF;
@@ -23,6 +24,7 @@ COED3DRenderState::COED3DRenderState()
 COED3DRenderState::COED3DRenderState(const COED3DRenderState& rs)
 {
 	m_bZBuffer = rs.m_bZBuffer;
+	m_bAlphaTest = rs.m_bAlphaTest;
 
 	m_bFog = rs.m_bFog;
 	m_nFogColor = rs.m_nFogColor;

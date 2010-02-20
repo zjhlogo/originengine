@@ -10,9 +10,11 @@
 
 #include <IOELogFileMgr.h>
 #include <OEOS.h>
+#include <assert.h>
 
 COED3DTextureMgr_Impl::COED3DTextureMgr_Impl()
 {
+	assert(!g_pOETextureMgr);
 	g_pOETextureMgr = this;
 	m_bOK = Init();
 }

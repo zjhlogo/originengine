@@ -20,6 +20,7 @@ public:
 
 public:
 	bool m_bZBuffer;
+	bool m_bAlphaTest;
 
 	bool m_bFog;
 	uint m_nFogColor;

@@ -71,9 +71,14 @@ void CTestApp::Update(float fDetailTime)
 	m_pTerrainMgr->UpdateTerrain(m_pCamera->GetEyePos());
 }
 
-void CTestApp::Render(float fDetailTime)
+void CTestApp::Render3D(float fDetailTime)
 {
 	m_pTerrainMgr->Render(fDetailTime);
+}
+
+void CTestApp::Render2D(float fDetailTime)
+{
+	// TODO: 
 }
 
 bool CTestApp::OnLButtonDown(uint nMsgID, COEDataBufferRead* pDBRead)

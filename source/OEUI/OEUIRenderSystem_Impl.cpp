@@ -7,10 +7,13 @@
  */
 #include "OEUIRenderSystem_Impl.h"
 #include <IOEShaderMgr.h>
+#include <IOEMsgMgr.h>
+#include <OEMsgID.h>
 #include <assert.h>
 
 COEUIRenderSystem_Impl::COEUIRenderSystem_Impl()
 {
+	assert(!g_pOEUIRenderSystem);
 	g_pOEUIRenderSystem = this;
 	m_bOK = Init();
 }
@@ -27,12 +30,35 @@ bool COEUIRenderSystem_Impl::Init()
 	m_pShader = NULL;
 
 	memset(m_pVertsCache, 0, sizeof(m_pVertsCache));
-	m_bInitialized = false;
+	m_bInRenderBlock = false;
 
 	return true;
 }
 
 void COEUIRenderSystem_Impl::Destroy()
+{
+	// TODO: 
+}
+
+bool COEUIRenderSystem_Impl::Initialize()
+{
+	m_pShader = g_pOEShaderMgr->CreateDefaultShader(DST_POLY_UI);
+	if (!m_pShader) return false;
+
+	for (int i = 0; i < VERTEX_CACHE_COUNT; ++i)
+	{
+		m_pVertsCache[i] = new COEUIVertexCache(VERTEX_CACHE_SIZE, INDEX_CACHE_COUNT);
+		if (!m_pVertsCache[i] || !m_pVertsCache[i]->IsOK()) return false;
+	}
+
+	// registe message
+	g_pOEMsgMgr->RegisterMessage(OMI_PRE_RENDER_2D, this, (MSG_FUNC)&COEUIRenderSystem_Impl::OnPreRender2D);
+	g_pOEMsgMgr->RegisterMessage(OMI_POST_RENDER_2D, this, (MSG_FUNC)&COEUIRenderSystem_Impl::OnPostRender2D);
+
+	return true;
+}
+
+void COEUIRenderSystem_Impl::Terminate()
 {
 	SAFE_RELEASE(m_pShader);
 	for (int i = 0; i < VERTEX_CACHE_COUNT; ++i)
@@ -53,10 +79,7 @@ IOETexture* COEUIRenderSystem_Impl::GetTexture() const
 
 void COEUIRenderSystem_Impl::DrawTriList(const void* pVerts, uint nVerts, const ushort* pIndis, uint nIndis)
 {
-	if (!m_bInitialized)
-	{
-		m_bInitialized = Create();
-	}
+	if (!m_bInRenderBlock) return;
 
 	COEUIVertexCache* pEmptyCache = NULL;
 	COEUIVertexCache* pMatchCache = NULL;
@@ -99,8 +122,6 @@ void COEUIRenderSystem_Impl::DrawTriList(const void* pVerts, uint nVerts, const 
 
 void COEUIRenderSystem_Impl::FlushAll()
 {
-	if (!m_bInitialized) return;
-
 	for (int i = 0; i < VERTEX_CACHE_COUNT; ++i)
 	{
 		m_pVertsCache[i]->Flush();
@@ -109,16 +130,17 @@ void COEUIRenderSystem_Impl::FlushAll()
 	}
 }
 
-bool COEUIRenderSystem_Impl::Create()
+bool COEUIRenderSystem_Impl::OnPreRender2D(uint nMsgID, COEDataBufferRead* pDBRead)
 {
-	m_pShader = g_pOEShaderMgr->CreateDefaultShader(DST_POLY_UI);
-	if (!m_pShader) return false;
+	assert(!m_bInRenderBlock);
+	m_bInRenderBlock = true;
+	return true;
+}
 
-	for (int i = 0; i < VERTEX_CACHE_COUNT; ++i)
-	{
-		m_pVertsCache[i] = new COEUIVertexCache(VERTEX_CACHE_SIZE, INDEX_CACHE_COUNT);
-		if (!m_pVertsCache[i] || !m_pVertsCache[i]->IsOK()) return false;
-	}
-
+bool COEUIRenderSystem_Impl::OnPostRender2D(uint nMsgID, COEDataBufferRead* pDBRead)
+{
+	assert(m_bInRenderBlock);
+	m_bInRenderBlock = false;
+	FlushAll();
 	return true;
 }

@@ -71,9 +71,14 @@ void CMeshApp::Update(float fDetailTime)
 	m_pModel->Update(fDetailTime);
 }
 
-void CMeshApp::Render(float fDetailTime)
+void CMeshApp::Render3D(float fDetailTime)
 {
 	m_pModel->Render();
+}
+
+void CMeshApp::Render2D(float fDetailTime)
+{
+	// TODO: 
 }
 
 bool CMeshApp::OnLButtonDown(uint nMsgID, COEDataBufferRead* pDBRead)

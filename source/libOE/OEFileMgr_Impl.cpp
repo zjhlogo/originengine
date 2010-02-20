@@ -13,6 +13,7 @@
 
 COEFileMgr_Impl::COEFileMgr_Impl()
 {
+	assert(!g_pOEFileMgr);
 	g_pOEFileMgr = this;
 	m_bOK = Init();
 }

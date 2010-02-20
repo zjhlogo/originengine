@@ -21,6 +21,9 @@ public:
 	IOERenderSystem() {};
 	virtual ~IOERenderSystem() {};
 
+	virtual bool Initialize() = 0;
+	virtual void Terminate() = 0;
+
 	virtual void SetShader(IOEShader* pShader) = 0;
 	virtual IOEShader* GetShader() const = 0;
 
@@ -39,6 +42,7 @@ public:
 	virtual bool PopRenderState() = 0;
 
 	virtual void EnableZBuffer(bool bEnable) = 0;
+	virtual void EnableAlphaTest(bool bEnable) = 0;
 
 	virtual void EnableFog(bool bEnable) = 0;
 	virtual void SetFogInfo(uint nColor, float fNear, float fFar) = 0;

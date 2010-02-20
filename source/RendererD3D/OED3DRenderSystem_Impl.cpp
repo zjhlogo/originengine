@@ -7,12 +7,16 @@
  */
 #include "OED3DRenderSystem_Impl.h"
 #include "OED3DUtil.h"
+
+#include <IOEMsgMgr.h>
+#include <OEMsgID.h>
 #include <assert.h>
 
 extern IDirect3DDevice9* g_pd3dDevice;
 
 COED3DRenderSystem_Impl::COED3DRenderSystem_Impl()
 {
+	assert(!g_pOERenderSystem);
 	g_pOERenderSystem = this;
 	m_bOK = Init();
 }
@@ -30,6 +34,19 @@ bool COED3DRenderSystem_Impl::Init()
 }
 
 void COED3DRenderSystem_Impl::Destroy()
+{
+	// TODO: 
+}
+
+bool COED3DRenderSystem_Impl::Initialize()
+{
+	g_pOEMsgMgr->RegisterMessage(OMI_PRE_RENDER_3D, this, (MSG_FUNC)&COED3DRenderSystem_Impl::OnPreRender3D);
+	g_pOEMsgMgr->RegisterMessage(OMI_POST_RENDER_3D, this, (MSG_FUNC)&COED3DRenderSystem_Impl::OnPostRender3D);
+
+	return true;
+}
+
+void COED3DRenderSystem_Impl::Terminate()
 {
 	// TODO: 
 }
@@ -148,6 +165,11 @@ void COED3DRenderSystem_Impl::EnableZBuffer(bool bEnable)
 	m_CurrRenderState.m_bZBuffer = bEnable;
 }
 
+void COED3DRenderSystem_Impl::EnableAlphaTest(bool bEnable)
+{
+	m_CurrRenderState.m_bAlphaTest = bEnable;
+}
+
 void COED3DRenderSystem_Impl::EnableFog(bool bEnable)
 {
 	m_CurrRenderState.m_bFog = bEnable;
@@ -182,6 +204,21 @@ bool COED3DRenderSystem_Impl::ApplyRenderState()
 		else
 		{
 			g_pd3dDevice->SetRenderState(D3DRS_ZENABLE, FALSE);
+		}
+	}
+
+	// apply alpha test
+	if (m_LastRenderState.m_bAlphaTest != m_CurrRenderState.m_bAlphaTest)
+	{
+		if (m_CurrRenderState.m_bAlphaTest)
+		{
+			g_pd3dDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
+			g_pd3dDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
+			g_pd3dDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
+		}
+		else
+		{
+			g_pd3dDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
 		}
 	}
 
@@ -261,5 +298,17 @@ bool COED3DRenderSystem_Impl::DrawPrimitive(D3DPRIMITIVETYPE eType, const void* 
 	}
 	pEffect->End();
 
+	return true;
+}
+
+bool COED3DRenderSystem_Impl::OnPreRender3D(uint nMsgID, COEDataBufferRead* pDBRead)
+{
+	this->SetShader(NULL);
+	return true;
+}
+
+bool COED3DRenderSystem_Impl::OnPostRender3D(uint nMsgID, COEDataBufferRead* pDBRead)
+{
+	// TODO: 
 	return true;
 }

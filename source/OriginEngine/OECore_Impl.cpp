@@ -11,6 +11,7 @@
 #include <IOERenderMgr.h>
 #include <IOELogFileMgr.h>
 #include <IOERenderSystem.h>
+#include <OEUI/IOEUIRenderSystem.h>
 #include <IOEApp.h>
 #include <OEMsgID.h>
 #include <IOEMsgMgr.h>
@@ -51,6 +52,12 @@ bool COECore_Impl::Initialize()
 		return false;
 	}
 
+	if (!g_pOERenderSystem->Initialize())
+	{
+		LOGOUT(TS("IOECore::Initialize Failed"));
+		return false;
+	}
+
 	if (!g_pOEControlMgr->Initialize())
 	{
 		LOGOUT(TS("IOECore::Initialize Failed"));
@@ -63,14 +70,23 @@ bool COECore_Impl::Initialize()
 		return false;
 	}
 
+	if (!g_pOEUIRenderSystem->Initialize())
+	{
+		LOGOUT(TS("IOECore::Initialize Failed"));
+		return false;
+	}
+
 	// registe message
 	g_pOEMsgMgr->RegisterMessage(OMI_START_PERFORM, this, (MSG_FUNC)&COECore_Impl::OnStartPerform);
 	g_pOEMsgMgr->RegisterMessage(OMI_PRE_UPDATE, this, (MSG_FUNC)&COECore_Impl::OnPreUpdate);
 	g_pOEMsgMgr->RegisterMessage(OMI_UPDATE, this, (MSG_FUNC)&COECore_Impl::OnUpdate);
 	g_pOEMsgMgr->RegisterMessage(OMI_POST_UPDATE, this, (MSG_FUNC)&COECore_Impl::OnPostUpdate);
-	g_pOEMsgMgr->RegisterMessage(OMI_PRE_RENDER, this, (MSG_FUNC)&COECore_Impl::OnPreRender);
-	g_pOEMsgMgr->RegisterMessage(OMI_RENDER, this, (MSG_FUNC)&COECore_Impl::OnRender);
-	g_pOEMsgMgr->RegisterMessage(OMI_POST_RENDER, this, (MSG_FUNC)&COECore_Impl::OnPostRender);
+	g_pOEMsgMgr->RegisterMessage(OMI_PRE_RENDER_3D, this, (MSG_FUNC)&COECore_Impl::OnPreRender3D);
+	g_pOEMsgMgr->RegisterMessage(OMI_RENDER_3D, this, (MSG_FUNC)&COECore_Impl::OnRender3D);
+	g_pOEMsgMgr->RegisterMessage(OMI_POST_RENDER_3D, this, (MSG_FUNC)&COECore_Impl::OnPostRender3D);
+	g_pOEMsgMgr->RegisterMessage(OMI_PRE_RENDER_2D, this, (MSG_FUNC)&COECore_Impl::OnPreRender2D);
+	g_pOEMsgMgr->RegisterMessage(OMI_RENDER_2D, this, (MSG_FUNC)&COECore_Impl::OnRender2D);
+	g_pOEMsgMgr->RegisterMessage(OMI_POST_RENDER_2D, this, (MSG_FUNC)&COECore_Impl::OnPostRender2D);
 
 	// initialize fps string
 	m_pFontFPS = g_pOEUIFontMgr->CreateBitmapFont(TS("12px_Tahoma.fnt"));
@@ -87,8 +103,10 @@ void COECore_Impl::Terminate()
 	SAFE_RELEASE(m_pStringFPS);
 	SAFE_RELEASE(m_pFontFPS);
 
+	g_pOEUIRenderSystem->Terminate();
 	g_pOERenderMgr->Terminate();
 	g_pOEControlMgr->Terminate();
+	g_pOERenderSystem->Terminate();
 	g_pOEDevice->DestroyDevice();
 }
 
@@ -144,6 +162,8 @@ bool COECore_Impl::OnPreUpdate(uint nMsgID, COEDataBufferRead* pDBRead)
 bool COECore_Impl::OnUpdate(uint nMsgID, COEDataBufferRead* pDBRead)
 {
 	g_pOEApp->Update(g_pOEDevice->GetDetailTime());
+	// calculate fps
+	CalculateFPS();
 	return true;
 }
 
@@ -153,27 +173,40 @@ bool COECore_Impl::OnPostUpdate(uint nMsgID, COEDataBufferRead* pDBRead)
 	return true;
 }
 
-bool COECore_Impl::OnPreRender(uint nMsgID, COEDataBufferRead* pDBRead)
+bool COECore_Impl::OnPreRender3D(uint nMsgID, COEDataBufferRead* pDBRead)
 {
-	g_pOERenderSystem->SetShader(NULL);
+	// TODO: 
 	return true;
 }
 
-bool COECore_Impl::OnRender(uint nMsgID, COEDataBufferRead* pDBRead)
+bool COECore_Impl::OnRender3D(uint nMsgID, COEDataBufferRead* pDBRead)
 {
-	// render app
-	g_pOEApp->Render(g_pOEDevice->GetDetailTime());
+	g_pOEApp->Render3D(g_pOEDevice->GetDetailTime());
+	return true;
+}
 
+bool COECore_Impl::OnPostRender3D(uint nMsgID, COEDataBufferRead* pDBRead)
+{
+	// TODO: 
+	return true;
+}
+
+bool COECore_Impl::OnPreRender2D(uint nMsgID, COEDataBufferRead* pDBRead)
+{
+	// TODO: 
+	return true;
+}
+
+bool COECore_Impl::OnRender2D(uint nMsgID, COEDataBufferRead* pDBRead)
+{
+	g_pOEApp->Render2D(g_pOEDevice->GetDetailTime());
 	// render fps
-	CalculateFPS();
 	m_pStringFPS->Render(CPoint(0.0f, 0.0f));
-
 	return true;
 }
 
-bool COECore_Impl::OnPostRender(uint nMsgID, COEDataBufferRead* pDBRead)
+bool COECore_Impl::OnPostRender2D(uint nMsgID, COEDataBufferRead* pDBRead)
 {
-	g_pOEUIRenderSystem->FlushAll();
-	g_pOERenderSystem->SetShader(NULL);
+	// TODO: 
 	return true;
 }

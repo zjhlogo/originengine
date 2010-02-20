@@ -17,9 +17,11 @@
 #include <IOEShaderMgr.h>
 #include <OEFmtMesh.h>
 #include <OEFmtBone.h>
+#include <assert.h>
 
 COEResMgr_Impl::COEResMgr_Impl()
 {
+	assert(!g_pOEResMgr);
 	g_pOEResMgr = this;
 	m_bOK = Init();
 }

@@ -10,11 +10,12 @@
 #include "OEUIBitmapFont_Impl.h"
 
 #include <IOELogFileMgr.h>
-
 #include <algorithm>
+#include <assert.h>
 
 COEUIFontMgr_Impl::COEUIFontMgr_Impl()
 {
+	assert(!g_pOEUIFontMgr);
 	g_pOEUIFontMgr = this;
 	m_bOK = Init();
 }

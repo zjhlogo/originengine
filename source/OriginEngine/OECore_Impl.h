@@ -33,9 +33,12 @@ private:
 	bool OnPreUpdate(uint nMsgID, COEDataBufferRead* pDBRead);
 	bool OnUpdate(uint nMsgID, COEDataBufferRead* pDBRead);
 	bool OnPostUpdate(uint nMsgID, COEDataBufferRead* pDBRead);
-	bool OnPreRender(uint nMsgID, COEDataBufferRead* pDBRead);
-	bool OnRender(uint nMsgID, COEDataBufferRead* pDBRead);
-	bool OnPostRender(uint nMsgID, COEDataBufferRead* pDBRead);
+	bool OnPreRender3D(uint nMsgID, COEDataBufferRead* pDBRead);
+	bool OnRender3D(uint nMsgID, COEDataBufferRead* pDBRead);
+	bool OnPostRender3D(uint nMsgID, COEDataBufferRead* pDBRead);
+	bool OnPreRender2D(uint nMsgID, COEDataBufferRead* pDBRead);
+	bool OnRender2D(uint nMsgID, COEDataBufferRead* pDBRead);
+	bool OnPostRender2D(uint nMsgID, COEDataBufferRead* pDBRead);
 
 private:
 	bool m_bRunning;

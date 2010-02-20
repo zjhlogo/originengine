@@ -9,8 +9,11 @@
 #include "OESkinMeshRender_Impl.h"
 #include "OESkelectonRender_Impl.h"
 
+#include <assert.h>
+
 COERenderMgr_Impl::COERenderMgr_Impl()
 {
+	assert(!g_pOERenderMgr);
 	g_pOERenderMgr = this;
 	m_bOK = true;
 }
