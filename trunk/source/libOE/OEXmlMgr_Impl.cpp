@@ -11,9 +11,11 @@
 #include "OEXmlDocument_Impl.h"
 
 #include <IOELogFileMgr.h>
+#include <assert.h>
 
 COEXmlMgr_Impl::COEXmlMgr_Impl()
 {
+	assert(!g_pOEXmlMgr);
 	g_pOEXmlMgr = this;
 	m_bOK = Init();
 }

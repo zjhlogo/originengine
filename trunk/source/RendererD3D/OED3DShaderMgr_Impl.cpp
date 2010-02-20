@@ -10,9 +10,11 @@
 
 #include <IOELogFileMgr.h>
 #include <algorithm>
+#include <assert.h>
 
 COED3DShaderMgr_Impl::COED3DShaderMgr_Impl()
 {
+	assert(!g_pOEShaderMgr);
 	g_pOEShaderMgr = this;
 	m_bOK = Init();
 }

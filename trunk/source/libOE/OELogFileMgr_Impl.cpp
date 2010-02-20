@@ -9,9 +9,11 @@
 
 #include <IOEFileMgr.h>
 #include <OEOS.h>
+#include <assert.h>
 
 COELogFileMgr_Impl::COELogFileMgr_Impl()
 {
+	assert(!g_pOELogFileMgr);
 	g_pOELogFileMgr = this;
 	m_bOK = Init();
 }

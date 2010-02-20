@@ -37,6 +37,7 @@ static const tstring PARAM_HWIND = TS("HWIND");
 
 COED3DDevice_Impl::COED3DDevice_Impl()
 {
+	assert(!g_pOEDevice);
 	g_pOEDevice = this;
 	m_bOK = Init();
 }
@@ -363,17 +364,31 @@ void COED3DDevice_Impl::PerformOnce(float fDetailTime)
 	g_pd3dDevice->Clear(0, NULL, D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER, D3DCOLOR_XRGB(0, 0, 0), 1.0f, 0);
 	if (SUCCEEDED(g_pd3dDevice->BeginScene()))
 	{
-		// notify pre render
-		COEMsg msgPreRender(OMI_PRE_RENDER);
-		g_pOEMsgMgr->InvokeMessage(&msgPreRender);
+		// notify pre render 3d
+		COEMsg msgPreRender3D(OMI_PRE_RENDER_3D);
+		g_pOEMsgMgr->InvokeMessage(&msgPreRender3D);
 
-		// notify render
-		COEMsg msgRender(OMI_RENDER);
-		g_pOEMsgMgr->InvokeMessage(&msgRender);
+		// notify render 3d
+		COEMsg msgRender3D(OMI_RENDER_3D);
+		g_pOEMsgMgr->InvokeMessage(&msgRender3D);
 
-		// notify post render
-		COEMsg msgPostRender(OMI_POST_RENDER);
-		g_pOEMsgMgr->InvokeMessage(&msgPostRender);
+		// notify post render 3d
+		COEMsg msgPostRender3D(OMI_POST_RENDER_3D);
+		g_pOEMsgMgr->InvokeMessage(&msgPostRender3D);
+
+		g_pd3dDevice->Clear(0, NULL, D3DCLEAR_ZBUFFER, D3DCOLOR_XRGB(0, 0, 0), 1.0f, 0);
+
+		// notify pre render 2d
+		COEMsg msgPreRender2D(OMI_PRE_RENDER_2D);
+		g_pOEMsgMgr->InvokeMessage(&msgPreRender2D);
+
+		// notify render 2d
+		COEMsg msgRender2D(OMI_RENDER_2D);
+		g_pOEMsgMgr->InvokeMessage(&msgRender2D);
+
+		// notify post render 2d
+		COEMsg msgPostRender2D(OMI_POST_RENDER_2D);
+		g_pOEMsgMgr->InvokeMessage(&msgPostRender2D);
 
 		g_pd3dDevice->EndScene();
 		g_pd3dDevice->Present(NULL, NULL, NULL, NULL);

@@ -58,7 +58,12 @@ void CUIApp::Update(float fDetailTime)
 	// TODO: 
 }
 
-void CUIApp::Render(float fDetailTime)
+void CUIApp::Render3D(float fDetailTime)
+{
+	// TODO: 
+}
+
+void CUIApp::Render2D(float fDetailTime)
 {
 	if (m_pString) m_pString->Render(CPoint(100.0f, 100.0f));
 }

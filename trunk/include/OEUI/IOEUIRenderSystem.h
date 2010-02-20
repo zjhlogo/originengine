@@ -18,11 +18,14 @@ public:
 	IOEUIRenderSystem() {};
 	virtual ~IOEUIRenderSystem() {};
 
+	virtual bool Initialize() = 0;
+	virtual void Terminate() = 0;
+
 	virtual void SetTexture(IOETexture* pTexture) = 0;
 	virtual IOETexture* GetTexture() const = 0;
 
 	virtual void DrawTriList(const void* pVerts, uint nVerts, const ushort* pIndis, uint nIndis) = 0;
-	virtual void FlushAll() = 0;
+
 };
 
 extern IOEUIRenderSystem* g_pOEUIRenderSystem;

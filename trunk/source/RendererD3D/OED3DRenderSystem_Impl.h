@@ -25,6 +25,9 @@ public:
 	COED3DRenderSystem_Impl();
 	virtual ~COED3DRenderSystem_Impl();
 
+	virtual bool Initialize();
+	virtual void Terminate();
+
 	virtual void SetShader(IOEShader* pShader);
 	virtual IOEShader* GetShader() const;
 
@@ -43,6 +46,7 @@ public:
 	virtual bool PopRenderState();
 
 	virtual void EnableZBuffer(bool bEnable);
+	virtual void EnableAlphaTest(bool bEnable);
 
 	virtual void EnableFog(bool bEnable);
 	virtual void SetFogInfo(uint nColor, float fNear, float fFar);
@@ -56,6 +60,9 @@ private:
 
 	bool ApplyRenderState();
 	bool DrawPrimitive(D3DPRIMITIVETYPE eType, const void* pVerts, uint nVerts, const ushort* pIndis, uint nPrimCount);
+
+	bool OnPreRender3D(uint nMsgID, COEDataBufferRead* pDBRead);
+	bool OnPostRender3D(uint nMsgID, COEDataBufferRead* pDBRead);
 
 private:
 	COED3DShader_Impl* m_pShader;

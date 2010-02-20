@@ -6,12 +6,13 @@
  * \author zjhlogo (zjhlogo@163.com)
  */
 #include "OEConfigFileMgr_Impl.h"
-#include <IOEXmlMgr.h>
 
 #include <IOEXmlMgr.h>
+#include <assert.h>
 
 COEConfigFileMgr_Impl::COEConfigFileMgr_Impl()
 {
+	assert(!g_pOEConfigFileMgr);
 	g_pOEConfigFileMgr = this;
 	Init();
 	m_bOK = LoadConfigFile(m_strConfigFile);

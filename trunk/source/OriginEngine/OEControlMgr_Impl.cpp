@@ -8,8 +8,11 @@
 #include "OEControlMgr_Impl.h"
 #include "OESkinMeshControl_Impl.h"
 
+#include <assert.h>
+
 COEControlMgr_Impl::COEControlMgr_Impl()
 {
+	assert(!g_pOEControlMgr);
 	g_pOEControlMgr = this;
 	m_bOK = true;
 }

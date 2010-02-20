@@ -25,24 +25,29 @@ public:
 	COEUIRenderSystem_Impl();
 	virtual ~COEUIRenderSystem_Impl();
 
+	virtual bool Initialize();
+	virtual void Terminate();
+
 	virtual void SetTexture(IOETexture* pTexture);
 	virtual IOETexture* GetTexture() const;
 
 	virtual void DrawTriList(const void* pVerts, uint nVerts, const ushort* pIndis, uint nIndis);
-	virtual void FlushAll();
 
 private:
 	bool Init();
 	void Destroy();
 
-	bool Create();
+	void FlushAll();
+
+	bool OnPreRender2D(uint nMsgID, COEDataBufferRead* pDBRead);
+	bool OnPostRender2D(uint nMsgID, COEDataBufferRead* pDBRead);
 
 private:
 	IOETexture* m_pTexture;
 	IOEShader* m_pShader;
 
 	COEUIVertexCache* m_pVertsCache[VERTEX_CACHE_COUNT];
-	bool m_bInitialized;
+	bool m_bInRenderBlock;
 
 };
 #endif // __OEUIRENDERSYSTEM_IMPL_H__

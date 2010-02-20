@@ -38,7 +38,6 @@ bool COESkinMeshRender_Impl::Render(IOERenderData* pRenderData)
 	const TV_MATRIX& vmatSkins = pData->GetSkinMatrix();
 
 	CDefaultRenderState DefaultState;
-	g_pOERenderSystem->SetFillMode(FM_WIREFRAME);
 
 	for (int i = 0; i < nNumPiece; ++i)
 	{
