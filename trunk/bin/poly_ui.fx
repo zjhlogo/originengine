@@ -4,9 +4,9 @@ sampler sampleDiffuse =
 sampler_state
 {
 	Texture = <g_texDiffuse>;
-	MipFilter = LINEAR;
-	MinFilter = LINEAR;
-	MagFilter = LINEAR;
+	MipFilter = POINT;
+	MinFilter = POINT;
+	MagFilter = POINT;
 };
 
 struct VS_OUTPUT

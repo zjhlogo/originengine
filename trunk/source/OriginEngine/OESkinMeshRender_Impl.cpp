@@ -36,6 +36,13 @@ bool COESkinMeshRender_Impl::Render(IOERenderData* pRenderData)
 	const TV_MATERIAL& vMaterials = pData->GetMaterials();
 	const TV_MATRIX& vmatSkins = pData->GetSkinMatrix();
 
+	g_pOERenderSystem->PushRenderState();
+
+	g_pOERenderSystem->EnableZBuffer(true);
+	g_pOERenderSystem->EnableFog(false);
+	g_pOERenderSystem->SetCullMode(CMT_CCW);
+	g_pOERenderSystem->SetFillMode(FM_SOLID);
+
 	for (int i = 0; i < nNumPiece; ++i)
 	{
 		IOEPiece* pPiece = pMesh->GetPiece(i);
@@ -54,12 +61,14 @@ bool COESkinMeshRender_Impl::Render(IOERenderData* pRenderData)
 		// setup shader parameter
 		COEMsg msg(OMI_SETUP_SHADER_PARAM);
 		msg.Write(Material.pShader);
-		g_pOEMsgMgr->SendMessageAndBlocked(&msg);
+		g_pOEMsgMgr->InvokeMessage(&msg);
 
 		g_pOERenderSystem->SetShader(Material.pShader);
 
 		g_pOERenderSystem->DrawTriList(pPiece->GetVerts(), pPiece->GetNumVerts(), pPiece->GetIndis(), pPiece->GetNumIndis());
 	}
+
+	g_pOERenderSystem->PopRenderState();
 
 	return true;
 }

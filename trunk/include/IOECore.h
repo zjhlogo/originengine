@@ -22,7 +22,6 @@ public:
 	virtual void Run() = 0;
 	virtual void End() = 0;
 
-	virtual void Update() = 0;
 };
 
 extern IOECore* g_pOECore;

@@ -9,6 +9,7 @@
 #define __OECORE_IMPL_H__
 
 #include <IOECore.h>
+#include <OEUI/OEUI.h>
 
 class COECore_Impl : public IOECore
 {
@@ -22,14 +23,28 @@ public:
 	virtual void Run();
 	virtual void End();
 
-	virtual void Update();
-
 private:
 	bool Init();
 	void Destroy();
 
+	void CalculateFPS();
+
+	bool OnStartPerform(uint nMsgID, COEDataBufferRead* pDBRead);
+	bool OnPreUpdate(uint nMsgID, COEDataBufferRead* pDBRead);
+	bool OnUpdate(uint nMsgID, COEDataBufferRead* pDBRead);
+	bool OnPostUpdate(uint nMsgID, COEDataBufferRead* pDBRead);
+	bool OnPreRender(uint nMsgID, COEDataBufferRead* pDBRead);
+	bool OnRender(uint nMsgID, COEDataBufferRead* pDBRead);
+	bool OnPostRender(uint nMsgID, COEDataBufferRead* pDBRead);
+
 private:
 	bool m_bRunning;
+
+	float m_fCurrFPS;
+	float m_fLastFPSTime;
+	int m_nFPSCount;
+	IOEUIFont* m_pFontFPS;
+	IOEUIString* m_pStringFPS;
 
 };
 

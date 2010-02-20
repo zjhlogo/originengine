@@ -43,37 +43,9 @@ void CTestApp::Destroy()
 
 bool CTestApp::Initialize()
 {
-	//static const IOEVertDecl::ELEMENT s_Decl[] =
-	//{
-	//	IOEVertDecl::T_FLOAT3, IOEVertDecl::U_POSITION, 0,
-	//	IOEVertDecl::T_FLOAT2, IOEVertDecl::U_TEXCOORD, 0,
-	//	IOEVertDecl::T_UNKNOWN, IOEVertDecl::U_UNKNOWN, 0,
-	//};
-
-	//m_pDecl = g_pOEDevice->CreateVertDecl(s_Decl);
-	//if (!m_pDecl) return false;
-
 	m_pCamera = new CCamera();
 	m_pTerrainMgr = new CTerrainMgr();
 	if (!m_pTerrainMgr->LoadTerrain()) return false;
-
-	//g_pOERenderSystem->EnableFog(true);
-	//g_pOERenderSystem->SetFogInfo(0xFF000000, 600.0f, 800.0f);
-	////g_pOERenderSystem->SetFillMode(IOERenderSystem::FM_WIREFRAME);
-
-	//m_pShader = g_pOEShaderMgr->CreateShader(s_Decl, _T("terrain.fx"));
-	//if (!m_pShader) return false;
-
-	//m_pTexture = g_pOETextureMgr->CreateTextureFromFile(_T("grass.png"));
-	//if (!m_pTexture) return false;
-
-	//// 这里用来测试引用机制
-	//IOETexture* pTexture1 = g_pOETextureMgr->CreateTextureFromFile(_T("GRASS.PNG"));
-	//IOETexture* pTexture2 = g_pOETextureMgr->CreateTextureFromFile(_T("GrAsS.pNg"));
-	//IOETexture* pTexture3 = g_pOETextureMgr->CreateTextureFromFile(_T("grass.png"));
-	//SAFE_RELEASE(pTexture1);
-	//SAFE_RELEASE(pTexture2);
-	//SAFE_RELEASE(pTexture3);
 
 	// registe message
 	g_pOEMsgMgr->RegisterMessage(OMI_LBUTTON_DOWN, this, (MSG_FUNC)&CTestApp::OnLButtonDown);
@@ -87,9 +59,6 @@ bool CTestApp::Initialize()
 
 void CTestApp::Terminate()
 {
-	//SAFE_RELEASE(m_pDecl);
-	//SAFE_RELEASE(m_pShader);
-	//SAFE_RELEASE(m_pTexture);
 	SAFE_DELETE(m_pCamera);
 	SAFE_DELETE(m_pTerrainMgr);
 }
@@ -104,31 +73,6 @@ void CTestApp::Update(float fDetailTime)
 
 void CTestApp::Render(float fDetailTime)
 {
-	//static const VERTEX s_Verts[4] =
-	//{
-	//	{-10.0f, 0.0f, -10.0f, 0.0f, 1.0f},
-	//	{-10.0f, 0.0f, 10.0f, 0.0f, 0.0f},
-	//	{10.0f, 0.0f, 10.0f, 1.0f, 0.0f},
-	//	{10.0f, 0.0f, -10.0f, 1.0f, 1.0f},
-	//};
-
-	//static const ushort s_Indis[6] = {0, 1, 3, 1, 2, 3};
-
-	//CMatrix4x4 matView;
-	//CMatrix4x4 matProj;
-
-	//g_pOERenderSystem->GetTransform(matView, IOERenderSystem::TT_VIEW);
-	//g_pOERenderSystem->GetTransform(matProj, IOERenderSystem::TT_PROJECTION);
-
-	//CMatrix4x4 matViewProj = matView*matProj;
-	//m_pShader->SetMatrix(_T("g_matViewProj"), matViewProj);
-	//m_pShader->SetTexture(_T("g_texBase"), m_pTexture);
-	//m_pShader->DrawTriList(s_Verts, 4, s_Indis, 6);
-
-	//g_pOERenderSystem->SetFillMode(IOERenderSystem::FM_SOLID);
-	//g_pOERenderSystem->SetVertDecl(m_pDecl);
-	//g_pOERenderSystem->DrawTriList(s_Verts, 4, s_Indis, 6);
-
 	m_pTerrainMgr->Render(fDetailTime);
 }
 

@@ -145,6 +145,11 @@ void CWaterApp::Render(float fDetailTime)
 {
 	static float s_fTime = 0.0f;
 
+	g_pOERenderSystem->PushRenderState();
+
+	g_pOERenderSystem->EnableZBuffer(true);
+	g_pOERenderSystem->EnableFog(false);
+	g_pOERenderSystem->SetCullMode(CMT_CCW);
 	g_pOERenderSystem->SetFillMode(FM_WIREFRAME);
 
 	CMatrix4x4 matWorldViewProj;
@@ -163,6 +168,8 @@ void CWaterApp::Render(float fDetailTime)
 
 	g_pOERenderSystem->SetShader(m_pShader);
 	g_pOERenderSystem->DrawTriList(m_pVerts, m_nVerts, m_pIndis, m_nIndis);
+
+	g_pOERenderSystem->PopRenderState();
 }
 
 bool CWaterApp::OnLButtonDown(uint nMsgID, COEDataBufferRead* pDBRead)

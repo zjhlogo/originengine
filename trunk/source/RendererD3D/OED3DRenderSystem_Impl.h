@@ -12,9 +12,15 @@
 #include "OED3DVertDecl_Impl.h"
 #include "OED3DTexture_Impl.h"
 #include "OED3DShader_Impl.h"
+#include "OED3DRenderState.h"
+
+#include <stack>
 
 class COED3DRenderSystem_Impl : public IOERenderSystem
 {
+public:
+	typedef std::stack<COED3DRenderState> TK_RENDER_STATE;
+
 public:
 	COED3DRenderSystem_Impl();
 	virtual ~COED3DRenderSystem_Impl();
@@ -32,23 +38,30 @@ public:
 	virtual void DrawTriStrip(const void* pVerts, uint nVerts, const ushort* pIndis, uint nIndis);
 	virtual void DrawTriFan(const void* pVerts, uint nVerts, const ushort* pIndis, uint nIndis);
 
-	virtual void EnableLight(bool bEnable);
-	virtual void EnableZBuffer(bool bEnable);
-	virtual void EnableFog(bool bEnable);
+	virtual bool PushRenderState();
+	virtual bool PopRenderState();
 
-	virtual void SetCullMode(CULL_MODE_TYPE eMode);
-	virtual void SetFillMode(FILL_MODE eFillMode);
+	virtual void EnableZBuffer(bool bEnable);
+
+	virtual void EnableFog(bool bEnable);
 	virtual void SetFogInfo(uint nColor, float fNear, float fFar);
-	virtual void SetSampleFilter(OE_SAMPLE_FILTER eSampleFilter);
+
+	virtual void SetCullMode(CULL_MODE_TYPE eCullMode);
+	virtual void SetFillMode(FILL_MODE eFillMode);
 
 private:
 	bool Init();
 	void Destroy();
 
-	void DrawPrimitive(D3DPRIMITIVETYPE eType, const void* pVerts, uint nVerts, const ushort* pIndis, uint nPrimCount);
+	bool ApplyRenderState();
+	bool DrawPrimitive(D3DPRIMITIVETYPE eType, const void* pVerts, uint nVerts, const ushort* pIndis, uint nPrimCount);
 
 private:
 	COED3DShader_Impl* m_pShader;
+
+	TK_RENDER_STATE m_kRenderState;
+	COED3DRenderState m_CurrRenderState;
+	COED3DRenderState m_LastRenderState;
 
 	CMatrix4x4 m_matWorld;
 	CMatrix4x4 m_matView;

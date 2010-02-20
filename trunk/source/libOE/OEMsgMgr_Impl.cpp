@@ -53,24 +53,7 @@ bool COEMsgMgr_Impl::SendMessage(COEMsg* pMsg)
 	return true;
 }
 
-bool COEMsgMgr_Impl::SendMessageAndBlocked(COEMsg* pMsg)
-{
-	static COEDataBufferWrite s_DBWrite;
-
-	s_DBWrite.Reset();
-	if (!pMsg->ToBuffer(&s_DBWrite)) return false;
-
-	COEDataBufferRead dbRead(s_DBWrite.GetBuffer(), s_DBWrite.GetSize());
-
-	uint nMsgID = OMI_UNKNOWN;
-	dbRead.Read(&nMsgID, sizeof(nMsgID));
-
-	ProcessReceive(nMsgID, &dbRead);
-
-	return true;
-}
-
-void COEMsgMgr_Impl::DispatchRecvMessage()
+void COEMsgMgr_Impl::DispatchMessage()
 {
 	// TODO: thread lock
 
@@ -90,6 +73,23 @@ void COEMsgMgr_Impl::DispatchRecvMessage()
 	}
 
 	// TODO: thread unlock
+}
+
+bool COEMsgMgr_Impl::InvokeMessage(COEMsg* pMsg)
+{
+	static COEDataBufferWrite s_DBWrite;
+
+	s_DBWrite.Reset();
+	if (!pMsg->ToBuffer(&s_DBWrite)) return false;
+
+	COEDataBufferRead dbRead(s_DBWrite.GetBuffer(), s_DBWrite.GetSize());
+
+	uint nMsgID = OMI_UNKNOWN;
+	dbRead.Read(&nMsgID, sizeof(nMsgID));
+
+	ProcessReceive(nMsgID, &dbRead);
+
+	return true;
 }
 
 bool COEMsgMgr_Impl::RegisterMessage(uint nMsgID, IOEObject* pHandler, MSG_FUNC pFunc)

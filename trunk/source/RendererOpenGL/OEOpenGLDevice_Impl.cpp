@@ -21,7 +21,6 @@ COEOpenGLDevice_Impl::~COEOpenGLDevice_Impl()
 
 bool COEOpenGLDevice_Impl::Init()
 {
-	// TODO: 
 	return true;
 }
 
@@ -50,9 +49,16 @@ void COEOpenGLDevice_Impl::EndPerform()
 {
 	// TODO: 
 }
-float COEOpenGLDevice_Impl::GetFPS()
+
+float COEOpenGLDevice_Impl::GetCurrTime() const
 {
-	// TODO:
+	// TODO: 
+	return 0.0f;
+}
+
+float COEOpenGLDevice_Impl::GetDetailTime() const
+{
+	// TODO: 
 	return 0.0f;
 }
 

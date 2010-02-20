@@ -34,14 +34,17 @@ public:
 	virtual void DrawTriStrip(const void* pVerts, uint nVerts, const ushort* pIndis, uint nIndis) = 0;
 	virtual void DrawTriFan(const void* pVerts, uint nVerts, const ushort* pIndis, uint nIndis) = 0;
 
-	virtual void EnableLight(bool bEnable) = 0;
-	virtual void EnableZBuffer(bool bEnable) = 0;
-	virtual void EnableFog(bool bEnable) = 0;
+	virtual bool PushRenderState() = 0;
+	virtual bool PopRenderState() = 0;
 
-	virtual void SetCullMode(CULL_MODE_TYPE eMode) = 0;
-	virtual void SetFillMode(FILL_MODE eFillMode) = 0;
+	virtual void EnableZBuffer(bool bEnable) = 0;
+
+	virtual void EnableFog(bool bEnable) = 0;
 	virtual void SetFogInfo(uint nColor, float fNear, float fFar) = 0;
-	virtual void SetSampleFilter(OE_SAMPLE_FILTER eSampleFilter) = 0;
+
+	virtual void SetCullMode(CULL_MODE_TYPE eCullMode) = 0;
+	virtual void SetFillMode(FILL_MODE eFillMode) = 0;
+
 };
 
 extern IOERenderSystem* g_pOERenderSystem;

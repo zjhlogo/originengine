@@ -343,6 +343,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\OED3DRenderState.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\OED3DRenderSystem_Impl.cpp"
 				>
 			</File>
@@ -382,6 +386,10 @@
 			</File>
 			<File
 				RelativePath=".\OED3DDevice_Impl.h"
+				>
+			</File>
+			<File
+				RelativePath=".\OED3DRenderState.h"
 				>
 			</File>
 			<File

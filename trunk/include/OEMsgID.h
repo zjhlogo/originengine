@@ -30,6 +30,17 @@ enum OE_MSG_ID
 	OMI_CHAR,
 
 	//
+	// device message
+	//
+	OMI_START_PERFORM,
+	OMI_PRE_UPDATE,
+	OMI_UPDATE,
+	OMI_POST_UPDATE,
+	OMI_PRE_RENDER,
+	OMI_RENDER,
+	OMI_POST_RENDER,
+
+	//
 	// model render message
 	//
 	OMI_SETUP_SHADER_PARAM,
