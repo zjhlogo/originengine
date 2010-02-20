@@ -1,12 +1,12 @@
 /*!
- * \file OEBasicType.h
- * \date 24-5-2009 9:20:34
+ * \file OEBaseType.h
+ * \date 20-2-2010 21:45:24
  * 
  * 
  * \author zjhlogo (zjhlogo@163.com)
  */
-#ifndef __OEBASICTYPE_H__
-#define __OEBASICTYPE_H__
+#ifndef __OEBASETYPE_H__
+#define __OEBASETYPE_H__
 
 #include <string>
 #include "OEConfig.h"
@@ -43,5 +43,4 @@ extern const tstring EMPTY_STRING;
 #define SAFE_DELETE(x) if (x) {delete (x); (x) = NULL;}
 #define SAFE_DELETE_ARRAY(x) if (x) {delete[] (x); (x) = NULL;}
 #define SAFE_RELEASE(x) if (x) {(x)->Release(); (x) = NULL;}
-
-#endif // __OEBASICTYPE_H__
+#endif // __OEBASETYPE_H__

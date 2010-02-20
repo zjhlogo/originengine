@@ -8,7 +8,7 @@
 #ifndef __IOEOBJECT_H__
 #define __IOEOBJECT_H__
 
-#include "OEBasicType.h"
+#include "OEBaseType.h"
 #include "OEDataBufferRead.h"
 
 class IOEObject

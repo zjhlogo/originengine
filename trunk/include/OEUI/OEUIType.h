@@ -8,7 +8,7 @@
 #ifndef __OEUITYPE_H__
 #define __OEUITYPE_H__
 
-#include "../OEBasicType.h"
+#include "../OEBaseType.h"
 
 class CPoint
 {

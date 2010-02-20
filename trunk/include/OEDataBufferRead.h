@@ -8,7 +8,7 @@
 #ifndef __OEDATABUFFERREAD_H__
 #define __OEDATABUFFERREAD_H__
 
-#include "OEBasicType.h"
+#include "OEBaseType.h"
 
 class COEDataBufferRead
 {

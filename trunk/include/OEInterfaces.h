@@ -8,7 +8,7 @@
 #ifndef __OEINTERFACES_H__
 #define __OEINTERFACES_H__
 
-#include "OEBasicType.h"
+#include "OEBaseType.h"
 
 // »ù´¡Ä£¿é
 #include "IOEFileMgr.h"
