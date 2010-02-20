@@ -8,7 +8,7 @@
 #ifndef __MAPTILE_H__
 #define __MAPTILE_H__
 
-#include <OEBasicType.h>
+#include <OEBaseType.h>
 #include <OEInterfaces.h>
 #include <OEMath/OEMath.h>
 

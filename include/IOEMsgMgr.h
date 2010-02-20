@@ -8,7 +8,7 @@
 #ifndef __IOEMSGMGR_H__
 #define __IOEMSGMGR_H__
 
-#include "OEBasicType.h"
+#include "OEBaseType.h"
 #include "IOEObject.h"
 #include "OEMsg.h"
 

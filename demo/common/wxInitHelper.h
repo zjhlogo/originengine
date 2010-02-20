@@ -8,7 +8,7 @@
 #ifndef __WXINITHELPER_H__
 #define __WXINITHELPER_H__
 
-#include <OEBasicType.h>
+#include <OEBaseType.h>
 #include <windows.h>
 
 class wxInitHelper

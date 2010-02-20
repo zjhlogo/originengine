@@ -8,7 +8,7 @@
 #ifndef __OEBASETYPEEX_H__
 #define __OEBASETYPEEX_H__
 
-#include "OEBasicType.h"
+#include "OEBaseType.h"
 #include "OEMath/OEMath.h"
 #include <vector>
 

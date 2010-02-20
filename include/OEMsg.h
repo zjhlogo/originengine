@@ -8,7 +8,7 @@
 #ifndef __OEMSG_H__
 #define __OEMSG_H__
 
-#include "OEBasicType.h"
+#include "OEBaseType.h"
 #include "OEDataBufferRead.h"
 #include "OEDataBufferWrite.h"
 #include <assert.h>

@@ -8,7 +8,7 @@
 #ifndef __OEOS_H__
 #define __OEOS_H__
 
-#include "OEBasicType.h"
+#include "OEBaseType.h"
 
 class COEOS
 {

@@ -8,7 +8,7 @@
 #ifndef __IBASECONV_H__
 #define __IBASECONV_H__
 
-#include <OEBasicType.h>
+#include <OEBaseType.h>
 
 class IBaseConv
 {
