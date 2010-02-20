@@ -10,8 +10,6 @@
 #include <OEMath/OEMath.h>
 #include <IOEConfigFileMgr.h>
 #include <IOELogFileMgr.h>
-#include <IOECore.h>
-#include <IOEApp.h>
 #include <IOERenderSystem.h>
 #include <OEMsgID.h>
 #include <IOEMsgMgr.h>
@@ -60,13 +58,8 @@ bool COED3DDevice_Impl::Init()
 
 	m_fPrevTime = 0.0f;
 	m_fCurrTime = 0.0f;
+	m_fDetailTime = 0.0f;
 	m_vD3DVertDecl.clear();
-
-	m_fCurrFPS = 0.0f;
-	m_fLastFPSTime = 0.0f;
-	m_nFPSCount = 0;
-	m_pFontFPS = NULL;
-	m_pStringFPS = NULL;
 
 	return true;
 }
@@ -100,9 +93,6 @@ bool COED3DDevice_Impl::CreateDevice()
 
 void COED3DDevice_Impl::DestroyDevice()
 {
-	SAFE_RELEASE(m_pStringFPS);
-	SAFE_RELEASE(m_pFontFPS);
-
 	if (g_pd3dDevice) InternalDestroyD3D();
 	if (g_hWnd) InternalDestroyWindow();
 }
@@ -128,9 +118,11 @@ void COED3DDevice_Impl::StartPerform()
 	// reset time
 	m_fPrevTime = (float)timeGetTime()/1000.0f;
 	m_fCurrTime = m_fPrevTime;
+	m_fDetailTime = 0.0f;
 
-	// reset fps
-	ResetFPS(m_fCurrTime);
+	// notify start perform
+	COEMsg msgStartPerform(OMI_START_PERFORM);
+	g_pOEMsgMgr->InvokeMessage(&msgStartPerform);
 
 	MSG msg;
 	memset(&msg, 0, sizeof(msg));
@@ -139,15 +131,11 @@ void COED3DDevice_Impl::StartPerform()
 	{
 		if(WAIT_OBJECT_0 == MsgWaitForMultipleObjects(1, &hTickEvent, FALSE, 1000, QS_ALLINPUT))
 		{
-			g_pOECore->Update();
-
 			// calculate time
 			m_fCurrTime = (float)timeGetTime()/1000.0f;
-			PerformOnce(m_fCurrTime - m_fPrevTime);
+			m_fDetailTime = m_fCurrTime - m_fPrevTime;
+			PerformOnce(m_fDetailTime);
 			m_fPrevTime = m_fCurrTime;
-
-			// calculate fps
-			CalculateFPS();
 		}
 		else
 		{
@@ -179,14 +167,19 @@ void COED3DDevice_Impl::EndPerform()
 	PostQuitMessage(0);
 }
 
-float COED3DDevice_Impl::GetFPS()
+float COED3DDevice_Impl::GetCurrTime() const
 {
-	return m_fCurrFPS;
+	return m_fCurrTime;
+}
+
+float COED3DDevice_Impl::GetDetailTime() const
+{
+	return m_fDetailTime;
 }
 
 IOEVertDecl* COED3DDevice_Impl::CreateVertDecl(const VERT_DECL_ELEMENT* pElement)
 {
-	for (VOED3D_VERTDECL::iterator it = m_vD3DVertDecl.begin(); it != m_vD3DVertDecl.end(); ++it)
+	for (TV_OED3D_VERTDECL::iterator it = m_vD3DVertDecl.begin(); it != m_vD3DVertDecl.end(); ++it)
 	{
 		COED3DVertDecl_Impl* pDecl = (*it);
 		if (pDecl->Compare(pElement))
@@ -355,18 +348,32 @@ void COED3DDevice_Impl::InternalDestroyD3D()
 
 void COED3DDevice_Impl::PerformOnce(float fDetailTime)
 {
-	g_pOEApp->Update(fDetailTime);
+	// notify pre update
+	COEMsg msgPreUpdate(OMI_PRE_UPDATE);
+	g_pOEMsgMgr->InvokeMessage(&msgPreUpdate);
+
+	// notify update
+	COEMsg msgUpdate(OMI_UPDATE);
+	g_pOEMsgMgr->InvokeMessage(&msgUpdate);
+
+	// notify post update
+	COEMsg msgPostUpdate(OMI_POST_UPDATE);
+	g_pOEMsgMgr->InvokeMessage(&msgPostUpdate);
 
 	g_pd3dDevice->Clear(0, NULL, D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER, D3DCOLOR_XRGB(0, 0, 0), 1.0f, 0);
 	if (SUCCEEDED(g_pd3dDevice->BeginScene()))
 	{
-		// render scene
-		g_pOERenderSystem->SetSampleFilter(OESF_LINEAR);
-		g_pOERenderSystem->SetShader(NULL);
-		g_pOEApp->Render(fDetailTime);
+		// notify pre render
+		COEMsg msgPreRender(OMI_PRE_RENDER);
+		g_pOEMsgMgr->InvokeMessage(&msgPreRender);
 
-		// render fps
-		RenderFPS();
+		// notify render
+		COEMsg msgRender(OMI_RENDER);
+		g_pOEMsgMgr->InvokeMessage(&msgRender);
+
+		// notify post render
+		COEMsg msgPostRender(OMI_POST_RENDER);
+		g_pOEMsgMgr->InvokeMessage(&msgPostRender);
 
 		g_pd3dDevice->EndScene();
 		g_pd3dDevice->Present(NULL, NULL, NULL, NULL);
@@ -387,51 +394,6 @@ void COED3DDevice_Impl::InitializeD3D()
 	CMatrix4x4 matProj;
 	COEMath::BuildProjectMatrixLH(matProj, OEMATH_PI/4.0f, (float)m_nWindowWidth/(float)m_nWindowHeight, 1.0f, 10000.0f);
 	g_pOERenderSystem->SetTransform(TT_PROJECTION, matProj);
-
-	g_pOERenderSystem->EnableLight(false);
-}
-
-void COED3DDevice_Impl::ResetFPS(float fLastTime)
-{
-	m_fLastFPSTime = fLastTime;
-	m_nFPSCount = 0;
-}
-
-void COED3DDevice_Impl::CalculateFPS()
-{
-	++m_nFPSCount;
-	float fDetailFPS = m_fCurrTime - m_fLastFPSTime;
-	if (fDetailFPS > 1.0f)
-	{
-		m_fCurrFPS = m_nFPSCount/fDetailFPS;
-		m_nFPSCount = 0;
-		m_fLastFPSTime = m_fCurrTime;
-
-		if (m_pStringFPS)
-		{
-			tstring strText;
-			COEOS::strformat(strText, TS("%.2f FPS"), m_fCurrFPS);
-			m_pStringFPS->SetText(strText);
-		}
-	}
-}
-
-void COED3DDevice_Impl::RenderFPS()
-{
-	if (!m_pFontFPS)
-	{
-		SAFE_RELEASE(m_pStringFPS);
-		SAFE_RELEASE(m_pFontFPS);
-
-		m_pFontFPS = g_pOEUIFontMgr->CreateBitmapFont(TS("12px_Tahoma.fnt"));
-		m_pStringFPS = g_pOEUIStringMgr->CreateUIString(m_pFontFPS);
-	}
-
-	g_pOERenderSystem->SetSampleFilter(OESF_POINT);
-	g_pOERenderSystem->SetFillMode(FM_SOLID);
-	g_pOERenderSystem->SetShader(NULL);
-	if (m_pStringFPS) m_pStringFPS->Render(CPoint(0, 0));
-	g_pOEUIRenderSystem->FlushAll();
 }
 
 LRESULT CALLBACK COED3DDevice_Impl::MainWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
@@ -452,7 +414,7 @@ LRESULT CALLBACK COED3DDevice_Impl::MainWndProc(HWND hWnd, UINT uMsg, WPARAM wPa
 			COEMsg msg(OMI_LBUTTON_DOWN);
 			msg.Write((int)x);
 			msg.Write((int)y);
-			g_pOEMsgMgr->SendMessageAndBlocked(&msg);
+			g_pOEMsgMgr->InvokeMessage(&msg);
 		}
 		break;
 	case WM_LBUTTONUP:
@@ -464,7 +426,7 @@ LRESULT CALLBACK COED3DDevice_Impl::MainWndProc(HWND hWnd, UINT uMsg, WPARAM wPa
 			COEMsg msg(OMI_LBUTTON_UP);
 			msg.Write((int)x);
 			msg.Write((int)y);
-			g_pOEMsgMgr->SendMessageAndBlocked(&msg);
+			g_pOEMsgMgr->InvokeMessage(&msg);
 
 			ReleaseCapture();
 		}
@@ -478,7 +440,7 @@ LRESULT CALLBACK COED3DDevice_Impl::MainWndProc(HWND hWnd, UINT uMsg, WPARAM wPa
 			COEMsg msg(OMI_MOUSE_MOVE);
 			msg.Write((int)x-s_nLastMousePosX);
 			msg.Write((int)y-s_nLastMousePosY);
-			g_pOEMsgMgr->SendMessageAndBlocked(&msg);
+			g_pOEMsgMgr->InvokeMessage(&msg);
 
 			s_nLastMousePosX = x;
 			s_nLastMousePosY = y;
@@ -489,7 +451,7 @@ LRESULT CALLBACK COED3DDevice_Impl::MainWndProc(HWND hWnd, UINT uMsg, WPARAM wPa
 			// send message
 			COEMsg msg(OMI_KEY_DOWN);
 			msg.Write((int)wParam);
-			g_pOEMsgMgr->SendMessageAndBlocked(&msg);
+			g_pOEMsgMgr->InvokeMessage(&msg);
 		}
 		break;
 	case WM_KEYUP:
@@ -497,7 +459,7 @@ LRESULT CALLBACK COED3DDevice_Impl::MainWndProc(HWND hWnd, UINT uMsg, WPARAM wPa
 			// send message
 			COEMsg msg(OMI_KEY_UP);
 			msg.Write((int)wParam);
-			g_pOEMsgMgr->SendMessageAndBlocked(&msg);
+			g_pOEMsgMgr->InvokeMessage(&msg);
 		}
 		break;
 	case WM_DESTROY:

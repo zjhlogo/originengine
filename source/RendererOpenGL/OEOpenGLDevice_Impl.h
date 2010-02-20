@@ -22,7 +22,8 @@ public:
 	virtual void StartPerform();
 	virtual void EndPerform();
 
-	virtual float GetFPS();
+	virtual float GetCurrTime() const;
+	virtual float GetDetailTime() const;
 
 	virtual IOEVertDecl* CreateVertDecl(const VERT_DECL_ELEMENT* pElement);
 

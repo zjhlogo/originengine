@@ -13,13 +13,12 @@
 #include <d3dx9.h>
 
 #include "OED3DVertDecl_Impl.h"
-#include <OEUI/OEUI.h>
 #include <vector>
 
 class COED3DDevice_Impl : public IOEDevice
 {
 public:
-	typedef std::vector<COED3DVertDecl_Impl*> VOED3D_VERTDECL;
+	typedef std::vector<COED3DVertDecl_Impl*> TV_OED3D_VERTDECL;
 
 public:
 	COED3DDevice_Impl();
@@ -31,7 +30,8 @@ public:
 	virtual void StartPerform();
 	virtual void EndPerform();
 
-	virtual float GetFPS();
+	virtual float GetCurrTime() const;
+	virtual float GetDetailTime() const;
 
 	virtual IOEVertDecl* CreateVertDecl(const VERT_DECL_ELEMENT* pElement);
 
@@ -50,10 +50,6 @@ private:
 	void PerformOnce(float fDetailTime);
 	void InitializeD3D();
 
-	void ResetFPS(float fLastTime);
-	void CalculateFPS();
-	void RenderFPS();
-
 	static LRESULT CALLBACK MainWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
 private:
@@ -64,16 +60,11 @@ private:
 
 	float m_fPrevTime;
 	float m_fCurrTime;
+	float m_fDetailTime;
 
-	VOED3D_VERTDECL m_vD3DVertDecl;
-
-	// fps
+	TV_OED3D_VERTDECL m_vD3DVertDecl;
 	float m_fMaxFPS;
-	float m_fCurrFPS;
-	float m_fLastFPSTime;
-	int m_nFPSCount;
-	IOEUIFont* m_pFontFPS;
-	IOEUIString* m_pStringFPS;
+
 };
 
 #endif // __OED3DDEVICE_IMPL_H__

@@ -112,6 +112,13 @@ void CBumpMapApp::Render(float fDetailTime)
 
 	static const ushort s_Indis[6] = {0, 1, 3, 1, 2, 3};
 
+	g_pOERenderSystem->PushRenderState();
+
+	g_pOERenderSystem->EnableZBuffer(true);
+	g_pOERenderSystem->EnableFog(false);
+	g_pOERenderSystem->SetCullMode(CMT_CCW);
+	g_pOERenderSystem->SetFillMode(FM_SOLID);
+
 	CMatrix4x4 matWorldViewProj;
 	g_pOERenderSystem->GetTransform(matWorldViewProj, TT_WORLD_VIEW_PROJ);
 	m_pShader->SetMatrix(TS("g_matWorldViewProj"), matWorldViewProj);
@@ -130,6 +137,8 @@ void CBumpMapApp::Render(float fDetailTime)
 
 	g_pOERenderSystem->SetShader(m_pShader);
 	g_pOERenderSystem->DrawTriList(s_Verts, 4, s_Indis, 6);
+
+	g_pOERenderSystem->PopRenderState();
 
 	m_pSimpleShape->DrawCube(m_vLightPos);
 }

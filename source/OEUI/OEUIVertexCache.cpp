@@ -104,9 +104,18 @@ bool COEUIVertexCache::AddVerts(const void* pVerts, uint nVerts, const ushort* p
 
 void COEUIVertexCache::Flush()
 {
+	g_pOERenderSystem->PushRenderState();
+
+	g_pOERenderSystem->EnableZBuffer(true);
+	g_pOERenderSystem->EnableFog(false);
+	g_pOERenderSystem->SetCullMode(CMT_CCW);
+	g_pOERenderSystem->SetFillMode(FM_SOLID);
+
 	m_pShader->SetTexture(TS("g_texDiffuse"), m_pTexture);
 	g_pOERenderSystem->SetShader(m_pShader);
 	g_pOERenderSystem->DrawTriList(m_pVertsCache, m_nVertsCount, m_pIndisCache, m_nIndisCount);
+
+	g_pOERenderSystem->PopRenderState();
 
 	m_nVertsCount = 0;
 	m_nIndisCount = 0;

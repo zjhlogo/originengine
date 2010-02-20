@@ -19,8 +19,9 @@ public:
 	virtual ~IOEMsgMgr(){};
 
 	virtual bool SendMessage(COEMsg* pMsg) = 0;
-	virtual bool SendMessageAndBlocked(COEMsg* pMsg) = 0;
-	virtual void DispatchRecvMessage() = 0;
+	virtual void DispatchMessage() = 0;
+
+	virtual bool InvokeMessage(COEMsg* pMsg) = 0;
 
 	virtual bool RegisterMessage(uint nMsgID, IOEObject* pHandler, MSG_FUNC pFunc) = 0;
 	virtual bool UnregisterMessage(uint nMsgID, IOEObject* pHandler) = 0;

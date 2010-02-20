@@ -121,64 +121,125 @@ void COED3DRenderSystem_Impl::DrawTriFan(const void* pVerts, uint nVerts, const 
 	DrawPrimitive(D3DPT_TRIANGLEFAN, pVerts, nVerts, pIndis, nIndis-2);
 }
 
-void COED3DRenderSystem_Impl::EnableLight(bool bEnable)
+bool COED3DRenderSystem_Impl::PushRenderState()
 {
-	if (bEnable) g_pd3dDevice->SetRenderState(D3DRS_LIGHTING, TRUE);
-	else g_pd3dDevice->SetRenderState(D3DRS_LIGHTING, FALSE);
+	m_kRenderState.push(m_CurrRenderState);
+	return true;
+}
+
+bool COED3DRenderSystem_Impl::PopRenderState()
+{
+	if (m_kRenderState.empty()) return false;
+
+	m_CurrRenderState = m_kRenderState.top();
+	m_kRenderState.pop();
+	return true;
 }
 
 void COED3DRenderSystem_Impl::EnableZBuffer(bool bEnable)
 {
-	if (bEnable) g_pd3dDevice->SetRenderState(D3DRS_ZENABLE, TRUE);
-	else g_pd3dDevice->SetRenderState(D3DRS_ZENABLE, FALSE);
+	m_CurrRenderState.m_bZBuffer = bEnable;
 }
 
 void COED3DRenderSystem_Impl::EnableFog(bool bEnable)
 {
-	if (bEnable)
-	{
-		g_pd3dDevice->SetRenderState(D3DRS_FOGENABLE, TRUE);
-
-		// 这里不要用 D3DRS_FOGVERTEXMODE, 否则用 Shader 渲染时, 什么都看不见
-		g_pd3dDevice->SetRenderState(D3DRS_FOGTABLEMODE, D3DFOG_LINEAR);
-	}
-	else
-	{
-		g_pd3dDevice->SetRenderState(D3DRS_FOGENABLE, FALSE);
-	}
-}
-
-void COED3DRenderSystem_Impl::SetCullMode(CULL_MODE_TYPE eMode)
-{
-	D3DCULL eD3DCull = COED3DUtil::ToD3DCullMode(eMode);
-	g_pd3dDevice->SetRenderState(D3DRS_CULLMODE, eD3DCull);
-}
-
-void COED3DRenderSystem_Impl::SetFillMode(FILL_MODE eFillMode)
-{
-	D3DFILLMODE eD3DFill = COED3DUtil::ToD3DFillMode(eFillMode);
-	g_pd3dDevice->SetRenderState(D3DRS_FILLMODE, eD3DFill);
+	m_CurrRenderState.m_bFog = bEnable;
 }
 
 void COED3DRenderSystem_Impl::SetFogInfo(uint nColor, float fNear, float fFar)
 {
-	g_pd3dDevice->SetRenderState(D3DRS_FOGCOLOR, nColor);
-	g_pd3dDevice->SetRenderState(D3DRS_FOGSTART, *(DWORD*)&fNear);
-	g_pd3dDevice->SetRenderState(D3DRS_FOGEND, *(DWORD*)&fFar);
+	m_CurrRenderState.m_nFogColor = nColor;
+	m_CurrRenderState.m_fFogNear = fNear;
+	m_CurrRenderState.m_fFogFar = fFar;
 }
 
-void COED3DRenderSystem_Impl::SetSampleFilter(OE_SAMPLE_FILTER eSampleFilter)
+void COED3DRenderSystem_Impl::SetCullMode(CULL_MODE_TYPE eCullMode)
 {
-	D3DTEXTUREFILTERTYPE eD3DSampleFilter = COED3DUtil::ToD3DSampleFilter(eSampleFilter);
-	g_pd3dDevice->SetSamplerState(0, D3DSAMP_MAGFILTER, eD3DSampleFilter);
-	g_pd3dDevice->SetSamplerState(0, D3DSAMP_MINFILTER, eD3DSampleFilter);
-	g_pd3dDevice->SetSamplerState(0, D3DSAMP_MIPFILTER, eD3DSampleFilter);
+	m_CurrRenderState.m_eCullMode = eCullMode;
 }
 
-void COED3DRenderSystem_Impl::DrawPrimitive(D3DPRIMITIVETYPE eType, const void* pVerts, uint nVerts, const ushort* pIndis, uint nPrimCount)
+void COED3DRenderSystem_Impl::SetFillMode(FILL_MODE eFillMode)
 {
+	m_CurrRenderState.m_eFillMode = eFillMode;
+}
+
+bool COED3DRenderSystem_Impl::ApplyRenderState()
+{
+	// apply z-buffer
+	if (m_LastRenderState.m_bZBuffer != m_CurrRenderState.m_bZBuffer)
+	{
+		if (m_CurrRenderState.m_bZBuffer)
+		{
+			g_pd3dDevice->SetRenderState(D3DRS_ZENABLE, TRUE);
+		}
+		else
+		{
+			g_pd3dDevice->SetRenderState(D3DRS_ZENABLE, FALSE);
+		}
+	}
+
+	// apply fog
+	if (m_LastRenderState.m_bFog != m_CurrRenderState.m_bFog)
+	{
+		if (m_CurrRenderState.m_bFog)
+		{
+			g_pd3dDevice->SetRenderState(D3DRS_FOGENABLE, TRUE);
+			// 这里不要用 D3DRS_FOGVERTEXMODE, 否则用 Shader 渲染时, 什么都看不见
+			g_pd3dDevice->SetRenderState(D3DRS_FOGTABLEMODE, D3DFOG_LINEAR);
+		}
+		else
+		{
+			g_pd3dDevice->SetRenderState(D3DRS_FOGENABLE, FALSE);
+		}
+	}
+
+	// apply fog color
+	if (m_LastRenderState.m_nFogColor != m_CurrRenderState.m_nFogColor)
+	{
+		g_pd3dDevice->SetRenderState(D3DRS_FOGCOLOR, m_CurrRenderState.m_nFogColor);
+	}
+
+	// apply fog near
+	if (fabsf(m_LastRenderState.m_fFogNear - m_CurrRenderState.m_fFogNear) > 0.1f)
+	{
+		g_pd3dDevice->SetRenderState(D3DRS_FOGSTART, *(DWORD*)&m_CurrRenderState.m_fFogNear);
+	}
+
+	// apply fog far
+	if (fabsf(m_LastRenderState.m_fFogFar - m_CurrRenderState.m_fFogFar) > 0.1f)
+	{
+		g_pd3dDevice->SetRenderState(D3DRS_FOGEND, *(DWORD*)&m_CurrRenderState.m_fFogFar);
+	}
+
+	// apply cull mode
+	if (m_LastRenderState.m_eCullMode != m_CurrRenderState.m_eCullMode)
+	{
+		D3DCULL eD3DCull = COED3DUtil::ToD3DCullMode(m_CurrRenderState.m_eCullMode);
+		g_pd3dDevice->SetRenderState(D3DRS_CULLMODE, eD3DCull);
+	}
+
+	// apply fill mode
+	if (m_LastRenderState.m_eFillMode != m_CurrRenderState.m_eFillMode)
+	{
+		D3DFILLMODE eD3DFill = COED3DUtil::ToD3DFillMode(m_CurrRenderState.m_eFillMode);
+		g_pd3dDevice->SetRenderState(D3DRS_FILLMODE, eD3DFill);
+	}
+
+	m_LastRenderState = m_CurrRenderState;
+	return true;
+}
+
+bool COED3DRenderSystem_Impl::DrawPrimitive(D3DPRIMITIVETYPE eType, const void* pVerts, uint nVerts, const ushort* pIndis, uint nPrimCount)
+{
+	if (!m_pShader) return false;
+
 	ID3DXEffect* pEffect = m_pShader->GetEffect();
+	if (!pEffect) return false;
+
 	COED3DVertDecl_Impl* pVertDecl = (COED3DVertDecl_Impl*)m_pShader->GetVertDecl();
+	if (!pVertDecl) return false;
+
+	if (!ApplyRenderState()) return false;
 
 	uint nPass = 0;
 	pEffect->Begin(&nPass, 0);
@@ -192,4 +253,6 @@ void COED3DRenderSystem_Impl::DrawPrimitive(D3DPRIMITIVETYPE eType, const void* 
 		pEffect->EndPass();
 	}
 	pEffect->End();
+
+	return true;
 }

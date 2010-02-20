@@ -335,10 +335,6 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\OEUI.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\OEUIBitmapFont_Impl.cpp"
 				>
 			</File>
@@ -367,10 +363,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\OEUIType.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\OEUIVertexCache.cpp"
 				>
 			</File>
@@ -380,10 +372,6 @@
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
-			<File
-				RelativePath="..\..\include\Oeui\OEUI.h"
-				>
-			</File>
 			<File
 				RelativePath=".\OEUIBitmapFont_Impl.h"
 				>
@@ -413,10 +401,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\include\Oeui\OEUIType.h"
-				>
-			</File>
-			<File
 				RelativePath=".\OEUIVertexCache.h"
 				>
 			</File>
@@ -442,6 +426,14 @@
 			</File>
 			<File
 				RelativePath="..\..\include\Oeui\IOEUIStringMgr.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\include\Oeui\OEUI.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\include\Oeui\OEUIType.h"
 				>
 			</File>
 		</Filter>
