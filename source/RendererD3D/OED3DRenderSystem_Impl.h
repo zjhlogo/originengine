@@ -39,6 +39,7 @@ public:
 	virtual void DrawTriFan(const void* pVerts, uint nVerts, const ushort* pIndis, uint nIndis);
 
 	virtual bool PushRenderState();
+	virtual bool RestoreRenderState();
 	virtual bool PopRenderState();
 
 	virtual void EnableZBuffer(bool bEnable);

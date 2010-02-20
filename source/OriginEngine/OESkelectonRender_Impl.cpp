@@ -9,6 +9,7 @@
 #include "OEBaseTypeEx.h"
 #include <IOEShaderMgr.h>
 #include <IOERenderSystem.h>
+#include <OERenderSystemUtil.h>
 #include <OEFmtBone.h>
 
 COESkelectonRender_Impl::COESkelectonRender_Impl()
@@ -52,21 +53,13 @@ bool COESkelectonRender_Impl::Render(IOERenderData* pRenderData)
 		BuildBoneVerts(m_vVerts, m_vIndis, vBones, vmatSkins, pBone->GetID(), pBone->GetParentID());
 	}
 
-	g_pOERenderSystem->PushRenderState();
-
-	g_pOERenderSystem->EnableZBuffer(true);
-	g_pOERenderSystem->EnableFog(false);
-	g_pOERenderSystem->SetCullMode(CMT_CCW);
-	g_pOERenderSystem->SetFillMode(FM_SOLID);
+	CDefaultRenderState DefaultState;
 
 	CMatrix4x4 matWorldViewProj;
 	g_pOERenderSystem->GetTransform(matWorldViewProj, TT_WORLD_VIEW_PROJ);
 	m_pShader->SetMatrix(TS("g_matWorldViewProj"), matWorldViewProj);
 	g_pOERenderSystem->SetShader(m_pShader);
-
 	g_pOERenderSystem->DrawLineList(&m_vVerts[0], m_vVerts.size(), &m_vIndis[0], m_vIndis.size());
-
-	g_pOERenderSystem->PopRenderState();
 
 	return true;
 }

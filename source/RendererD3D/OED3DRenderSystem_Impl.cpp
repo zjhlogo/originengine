@@ -127,6 +127,13 @@ bool COED3DRenderSystem_Impl::PushRenderState()
 	return true;
 }
 
+bool COED3DRenderSystem_Impl::RestoreRenderState()
+{
+	static const COED3DRenderState s_DefaultRenderState;
+	m_CurrRenderState = s_DefaultRenderState;
+	return true;
+}
+
 bool COED3DRenderSystem_Impl::PopRenderState()
 {
 	if (m_kRenderState.empty()) return false;

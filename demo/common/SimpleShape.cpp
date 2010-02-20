@@ -7,6 +7,7 @@
  */
 #include "SimpleShape.h"
 #include <IOERenderSystem.h>
+#include <OERenderSystemUtil.h>
 
 CSimpleShape::CSimpleShape()
 {
@@ -75,15 +76,8 @@ void CSimpleShape::DrawCube(const CVector3& vPos, float fScale /* = 1.0f */, uin
 		Verts[i].nColor = nColor;
 	}
 
-	g_pOERenderSystem->PushRenderState();
-
-	g_pOERenderSystem->EnableZBuffer(true);
-	g_pOERenderSystem->EnableFog(false);
-	g_pOERenderSystem->SetCullMode(CMT_CCW);
-	g_pOERenderSystem->SetFillMode(FM_SOLID);
+	CDefaultRenderState DefaultState;
 
 	g_pOERenderSystem->SetShader(m_pShader);
 	g_pOERenderSystem->DrawTriList(&Verts, CUBE_VERTS_COUNT, s_Indis, CUBE_INDIS_COUNT);
-
-	g_pOERenderSystem->PopRenderState();
 }

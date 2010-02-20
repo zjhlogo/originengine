@@ -556,6 +556,10 @@
 				RelativePath="..\..\include\OEInterfaces.h"
 				>
 			</File>
+			<File
+				RelativePath="..\..\include\OERenderSystemUtil.h"
+				>
+			</File>
 		</Filter>
 	</Files>
 	<Globals>
