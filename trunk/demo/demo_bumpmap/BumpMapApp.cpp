@@ -7,6 +7,7 @@
  */
 #include "BumpMapApp.h"
 #include "../common/AppHelper.h"
+#include <OERenderSystemUtil.h>
 #include <OEMsgID.h>
 #include <assert.h>
 
@@ -112,12 +113,7 @@ void CBumpMapApp::Render(float fDetailTime)
 
 	static const ushort s_Indis[6] = {0, 1, 3, 1, 2, 3};
 
-	g_pOERenderSystem->PushRenderState();
-
-	g_pOERenderSystem->EnableZBuffer(true);
-	g_pOERenderSystem->EnableFog(false);
-	g_pOERenderSystem->SetCullMode(CMT_CCW);
-	g_pOERenderSystem->SetFillMode(FM_SOLID);
+	CDefaultRenderState DefaultState;
 
 	CMatrix4x4 matWorldViewProj;
 	g_pOERenderSystem->GetTransform(matWorldViewProj, TT_WORLD_VIEW_PROJ);
@@ -130,15 +126,11 @@ void CBumpMapApp::Render(float fDetailTime)
 
 	m_pShader->SetVector(TS("g_vLightPos"), m_vLightPos);
 	m_pShader->SetVector(TS("g_vEyePos"), m_pCamera->GetEyePos());
-
 	m_pShader->SetTexture(TS("g_texDiffuse"), m_pTexBase);
 	m_pShader->SetTexture(TS("g_texNormal"), m_pTexNormal);
 	m_pShader->SetTexture(TS("g_texHeightMap"), m_pTexHeight);
-
 	g_pOERenderSystem->SetShader(m_pShader);
 	g_pOERenderSystem->DrawTriList(s_Verts, 4, s_Indis, 6);
-
-	g_pOERenderSystem->PopRenderState();
 
 	m_pSimpleShape->DrawCube(m_vLightPos);
 }

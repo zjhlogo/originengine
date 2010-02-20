@@ -7,6 +7,7 @@
  */
 #include "OESkinMeshRender_Impl.h"
 #include <IOERenderSystem.h>
+#include <OERenderSystemUtil.h>
 #include <IOEMsgMgr.h>
 #include <OEMsgID.h>
 
@@ -36,12 +37,8 @@ bool COESkinMeshRender_Impl::Render(IOERenderData* pRenderData)
 	const TV_MATERIAL& vMaterials = pData->GetMaterials();
 	const TV_MATRIX& vmatSkins = pData->GetSkinMatrix();
 
-	g_pOERenderSystem->PushRenderState();
-
-	g_pOERenderSystem->EnableZBuffer(true);
-	g_pOERenderSystem->EnableFog(false);
-	g_pOERenderSystem->SetCullMode(CMT_CCW);
-	g_pOERenderSystem->SetFillMode(FM_SOLID);
+	CDefaultRenderState DefaultState;
+	g_pOERenderSystem->SetFillMode(FM_WIREFRAME);
 
 	for (int i = 0; i < nNumPiece; ++i)
 	{
@@ -53,22 +50,18 @@ bool COESkinMeshRender_Impl::Render(IOERenderData* pRenderData)
 		const MATERIAL& Material = vMaterials[nMaterialID];
 		if (pPiece->GetVertDecl() != Material.nVertDecl) continue;
 
-		Material.pShader->SetMatrix(TS("g_matWorldViewProj"), matWorldViewProj);
-		Material.pShader->SetTexture(TS("g_texDiffuse"), Material.pTexDiffuse);
-		Material.pShader->SetTexture(TS("g_texNormal"), Material.pTexNormal);
-		Material.pShader->SetMatrixArray(TS("g_matBoneMatrix"), &vmatSkins[0], vmatSkins.size());
-
 		// setup shader parameter
 		COEMsg msg(OMI_SETUP_SHADER_PARAM);
 		msg.Write(Material.pShader);
 		g_pOEMsgMgr->InvokeMessage(&msg);
 
+		Material.pShader->SetMatrix(TS("g_matWorldViewProj"), matWorldViewProj);
+		Material.pShader->SetTexture(TS("g_texDiffuse"), Material.pTexDiffuse);
+		Material.pShader->SetTexture(TS("g_texNormal"), Material.pTexNormal);
+		Material.pShader->SetMatrixArray(TS("g_matBoneMatrix"), &vmatSkins[0], vmatSkins.size());
 		g_pOERenderSystem->SetShader(Material.pShader);
-
 		g_pOERenderSystem->DrawTriList(pPiece->GetVerts(), pPiece->GetNumVerts(), pPiece->GetIndis(), pPiece->GetNumIndis());
 	}
-
-	g_pOERenderSystem->PopRenderState();
 
 	return true;
 }

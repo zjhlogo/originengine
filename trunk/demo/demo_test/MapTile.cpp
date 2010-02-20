@@ -7,6 +7,7 @@
  */
 #include "MapTile.h"
 #include "TerrainMgr.h"
+#include <OERenderSystemUtil.h>
 
 CMapTile::CMapTile()
 {
@@ -105,12 +106,7 @@ int CMapTile::GetID()
 
 void CMapTile::Render(float fDetailTime)
 {
-	g_pOERenderSystem->PushRenderState();
-
-	g_pOERenderSystem->EnableZBuffer(true);
-	g_pOERenderSystem->EnableFog(false);
-	g_pOERenderSystem->SetCullMode(CMT_CCW);
-	g_pOERenderSystem->SetFillMode(FM_SOLID);
+	CDefaultRenderState DefaultState;
 
 	CMatrix4x4 matWorld;
 	CalcMatrix(matWorld, m_nID);
@@ -121,11 +117,8 @@ void CMapTile::Render(float fDetailTime)
 
 	m_pShader->SetMatrix(TS("g_matWorldViewProj"), matWorldViewProj);
 	m_pShader->SetTexture(TS("g_texDiffuse"), m_pTexture);
-
 	g_pOERenderSystem->SetShader(m_pShader);
 	g_pOERenderSystem->DrawTriList(m_pVerts, TILE_SIZE*TILE_SIZE, m_pIndis, (TILE_SIZE-1)*(TILE_SIZE-1)*6);
-
-	g_pOERenderSystem->PopRenderState();
 }
 
 void CMapTile::Reset()
