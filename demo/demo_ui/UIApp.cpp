@@ -36,7 +36,7 @@ void CUIApp::Destroy()
 
 bool CUIApp::Initialize()
 {
-	m_pFont = g_pOEUIFontMgr->CreateBitmapFont(TS("12px_Tahoma.fnt"));
+	m_pFont = g_pOEUIFontMgr->CreateBitmapFont(TS("media\\12px_Tahoma.fnt"));
 	if (!m_pFont) return false;
 
 	m_pString = g_pOEUIStringMgr->CreateUIString(m_pFont);

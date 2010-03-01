@@ -2,10 +2,11 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9.00"
-	Name="MeshConv"
-	ProjectGUID="{AA283B70-9245-4C23-A1AD-C61D3E229ADB}"
+	Name="MatrixCalc"
+	ProjectGUID="{162968AD-81C4-4DD6-A837-1E29969FE064}"
+	RootNamespace="MatrixCalc"
 	Keyword="Win32Proj"
-	TargetFrameworkVersion="131072"
+	TargetFrameworkVersion="196613"
 	>
 	<Platforms>
 		<Platform
@@ -20,7 +21,6 @@
 			OutputDirectory="..\..\build\tools\$(ProjectName)\$(ConfigurationName)"
 			IntermediateDirectory="..\..\build\tools\$(ProjectName)\$(ConfigurationName)"
 			ConfigurationType="1"
-			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			CharacterSet="2"
 			>
 			<Tool
@@ -41,8 +41,8 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\..\include"
-				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
+				AdditionalIncludeDirectories="..\..\include;&quot;..\..\3rdsrc\wxMSW-2.8.10\include\msvc&quot;;&quot;..\..\3rdsrc\wxMSW-2.8.10\include&quot;"
+				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -61,14 +61,12 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				OutputFile="$(OutDir)/MeshConv_D.exe"
+				AdditionalDependencies="comctl32.lib rpcrt4.lib"
+				OutputFile="$(OutDir)\MatrixCalc_D.exe"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories=""
+				AdditionalLibraryDirectories="&quot;..\..\3rdsrc\wxMSW-2.8.10\lib\vc_lib&quot;"
 				GenerateDebugInformation="true"
-				ProgramDatabaseFile="$(OutDir)/MeshConv.pdb"
-				SubSystem="1"
-				RandomizedBaseAddress="1"
-				DataExecutionPrevention="0"
+				SubSystem="2"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -99,8 +97,8 @@
 			OutputDirectory="..\..\build\tools\$(ProjectName)\$(ConfigurationName)"
 			IntermediateDirectory="..\..\build\tools\$(ProjectName)\$(ConfigurationName)"
 			ConfigurationType="1"
-			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			CharacterSet="2"
+			WholeProgramOptimization="1"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -119,9 +117,12 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="..\..\include"
-				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
+				Optimization="2"
+				EnableIntrinsicFunctions="true"
+				AdditionalIncludeDirectories="..\..\include;&quot;..\..\3rdsrc\wxMSW-2.8.10\include\msvc&quot;;&quot;..\..\3rdsrc\wxMSW-2.8.10\include&quot;"
+				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS"
 				RuntimeLibrary="2"
+				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
 				DebugInformationFormat="3"
@@ -137,15 +138,14 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				OutputFile="$(OutDir)/MeshConv.exe"
+				AdditionalDependencies="comctl32.lib rpcrt4.lib"
+				OutputFile="$(OutDir)\MatrixCalc.exe"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories=""
+				AdditionalLibraryDirectories="&quot;..\..\3rdsrc\wxMSW-2.8.10\lib\vc_lib&quot;"
 				GenerateDebugInformation="true"
-				SubSystem="1"
+				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
-				RandomizedBaseAddress="1"
-				DataExecutionPrevention="0"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -176,7 +176,6 @@
 			OutputDirectory="..\..\build\tools\$(ProjectName)\$(ConfigurationName)"
 			IntermediateDirectory="..\..\build\tools\$(ProjectName)\$(ConfigurationName)"
 			ConfigurationType="1"
-			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			CharacterSet="1"
 			>
 			<Tool
@@ -197,8 +196,8 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\..\include"
-				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
+				AdditionalIncludeDirectories="..\..\include;&quot;..\..\3rdsrc\wxMSW-2.8.10\include\msvc&quot;;&quot;..\..\3rdsrc\wxMSW-2.8.10\include&quot;"
+				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -217,14 +216,12 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				OutputFile="$(OutDir)/MeshConv_UD.exe"
+				AdditionalDependencies="comctl32.lib rpcrt4.lib"
+				OutputFile="$(OutDir)\MatrixCalc_UD.exe"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories=""
+				AdditionalLibraryDirectories="&quot;..\..\3rdsrc\wxMSW-2.8.10\lib\vc_lib&quot;"
 				GenerateDebugInformation="true"
-				ProgramDatabaseFile="$(OutDir)/MeshConv.pdb"
-				SubSystem="1"
-				RandomizedBaseAddress="1"
-				DataExecutionPrevention="0"
+				SubSystem="2"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -255,8 +252,8 @@
 			OutputDirectory="..\..\build\tools\$(ProjectName)\$(ConfigurationName)"
 			IntermediateDirectory="..\..\build\tools\$(ProjectName)\$(ConfigurationName)"
 			ConfigurationType="1"
-			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			CharacterSet="1"
+			WholeProgramOptimization="1"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -275,9 +272,12 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="..\..\include"
-				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
+				Optimization="2"
+				EnableIntrinsicFunctions="true"
+				AdditionalIncludeDirectories="..\..\include;&quot;..\..\3rdsrc\wxMSW-2.8.10\include\msvc&quot;;&quot;..\..\3rdsrc\wxMSW-2.8.10\include&quot;"
+				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS"
 				RuntimeLibrary="2"
+				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
 				DebugInformationFormat="3"
@@ -293,15 +293,14 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				OutputFile="$(OutDir)/MeshConvU.exe"
+				AdditionalDependencies="comctl32.lib rpcrt4.lib"
+				OutputFile="$(OutDir)\MatrixCalcU.exe"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories=""
+				AdditionalLibraryDirectories="&quot;..\..\3rdsrc\wxMSW-2.8.10\lib\vc_lib&quot;"
 				GenerateDebugInformation="true"
-				SubSystem="1"
+				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
-				RandomizedBaseAddress="1"
-				DataExecutionPrevention="0"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -333,23 +332,23 @@
 	<Files>
 		<Filter
 			Name="Source Files"
-			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx"
+			Filter="cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx"
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\ConvMgr.cpp"
+				RelativePath=".\DlgMatrixCalc.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\IBaseConv.cpp"
+				RelativePath=".\MatrixCalcApp.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\MeshConvMain.cpp"
+				RelativePath=".\MatrixElement.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\Ms3dConv_Impl.cpp"
+				RelativePath="..\common\wxToolUtil.cpp"
 				>
 			</File>
 		</Filter>
@@ -359,27 +358,37 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath=".\ConvMgr.h"
+				RelativePath=".\DlgMatrixCalc.h"
 				>
 			</File>
 			<File
-				RelativePath=".\IBaseConv.h"
+				RelativePath=".\MatrixCalcApp.h"
 				>
 			</File>
 			<File
-				RelativePath=".\MeshConvMain.h"
+				RelativePath=".\MatrixElement.h"
 				>
 			</File>
 			<File
-				RelativePath=".\Ms3dConv_Impl.h"
+				RelativePath=".\resource.h"
+				>
+			</File>
+			<File
+				RelativePath="..\common\wxToolUtil.h"
 				>
 			</File>
 		</Filter>
 		<Filter
-			Name="Format Files"
+			Name="Resource Files"
+			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav"
+			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
 			>
 			<File
-				RelativePath=".\FmtMs3d.h"
+				RelativePath=".\DlgMatrixCalc.xrc"
+				>
+			</File>
+			<File
+				RelativePath=".\MatrixCalc.rc"
 				>
 			</File>
 		</Filter>

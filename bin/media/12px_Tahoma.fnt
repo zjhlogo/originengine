@@ -3,7 +3,7 @@
   <info face="Tahoma" size="-12" bold="0" italic="0" charset="" unicode="1" stretchH="100" smooth="0" aa="1" padding="0,0,0,0" spacing="1,1" outline="0"/>
   <common lineHeight="14" base="12" scaleW="128" scaleH="128" pages="1" packed="0" alphaChnl="0" redChnl="0" greenChnl="0" blueChnl="0"/>
   <pages>
-    <page id="0" file="12px_Tahoma_00.png" />
+    <page id="0" file="media\12px_Tahoma_00.png" />
   </pages>
   <chars count="192">
     <char id="-1" x="57" y="48" width="9" height="9" xoffset="2" yoffset="3" xadvance="12" page="0" chnl="15" />

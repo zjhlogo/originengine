@@ -16,7 +16,7 @@ public:
 	IBaseConv();
 	virtual ~IBaseConv();
 
-	virtual bool CanConvert(const tstring& strFileExt) = 0;
+	virtual bool CanConvert(const tstring& strFile) = 0;
 	virtual bool DoConvert(const tstring& strFileIn, const tstring& strFileOut) = 0;
 
 };

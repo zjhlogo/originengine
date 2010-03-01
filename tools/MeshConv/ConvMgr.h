@@ -22,8 +22,6 @@ public:
 
 	static CConvMgr& Get();
 
-	bool Initialized();
-	bool CanConvert(const tstring& strFile);
 	bool DoConvert(const tstring& strFileIn, const tstring& strFileOut);
 
 private:
@@ -31,7 +29,6 @@ private:
 	void Destroy();
 
 private:
-	bool m_bInitialized;
 	TV_BASE_CONV m_vConvList;
 
 };

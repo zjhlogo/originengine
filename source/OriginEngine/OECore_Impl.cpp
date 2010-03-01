@@ -89,7 +89,7 @@ bool COECore_Impl::Initialize()
 	g_pOEMsgMgr->RegisterMessage(OMI_POST_RENDER_2D, this, (MSG_FUNC)&COECore_Impl::OnPostRender2D);
 
 	// initialize fps string
-	m_pFontFPS = g_pOEUIFontMgr->CreateBitmapFont(TS("12px_Tahoma.fnt"));
+	m_pFontFPS = g_pOEUIFontMgr->CreateBitmapFont(TS("media\\12px_Tahoma.fnt"));
 	m_pStringFPS = g_pOEUIStringMgr->CreateUIString(m_pFontFPS);
 
 	LOGOUT(TS("IOECore::Initialize OK"));

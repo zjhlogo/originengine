@@ -39,24 +39,6 @@ public:
 	} FILE_HEADER;
 
 	// 2, following the nNumBones of BONE
-	typedef struct FRAME_ROT_tag
-	{
-		float fTime;
-		float qRot[4];
-	} FRAME_ROT;
-
-	typedef struct FRAME_POS_tag
-	{
-		float fTime;
-		float vPos[3];
-	} FRAME_POS;
-
-	typedef struct FRAME_SCALE_tag
-	{
-		float fTime;
-		float vScale[3];
-	} FRAME_SCALE;
-
 	typedef struct BONE_tag
 	{
 		char szName[BONE_NAME_SIZE];
@@ -76,6 +58,25 @@ public:
 		int nNumFrameScale;
 		uint nOffFrameScale;
 	} BONE;
+
+	// 3, bone rotation / translation / scale data
+	typedef struct FRAME_ROT_tag
+	{
+		float fTime;
+		float qRot[4];
+	} FRAME_ROT;
+
+	typedef struct FRAME_POS_tag
+	{
+		float fTime;
+		float vPos[3];
+	} FRAME_POS;
+
+	typedef struct FRAME_SCALE_tag
+	{
+		float fTime;
+		float vScale[3];
+	} FRAME_SCALE;
 };
 
 #endif // __OEFMTBONE_H__

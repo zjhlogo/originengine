@@ -100,7 +100,7 @@ bool CWaterApp::Initialize()
 		}
 	}
 
-	m_pShader = g_pOEShaderMgr->CreateShader(s_Decl, TS("water.fx"));
+	m_pShader = g_pOEShaderMgr->CreateShader(s_Decl, TS("shader\\water.fx"));
 	if (!m_pShader) return false;
 
 	m_pCamera = new CCamera();

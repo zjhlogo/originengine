@@ -34,7 +34,8 @@ public:
 	static void BuildQuaternionFromMatrix(CQuaternion& qOut, const CMatrix4x4& matIn);
 	static void BuildMatrixFromQuaternion(CMatrix4x4& matOut, const CQuaternion& qIn);
 
-	static void BuildQuaternionFromEuler(CQuaternion& qOut, float fRoll, float fPitch, float fYaw);
+	static void BuildMatrixFromEulerXYZ(CMatrix4x4& matOut, float x, float y, float z);
+	static void BuildQuaternionFromEulerXYZ(CQuaternion& qOut, float x, float y, float z);
 
 	static void VectorLerp(CVector3& vOut, const CVector3& v1, const CVector3& v2, float t);
 	static void MatrixLerp(CMatrix4x4& matOut, const CMatrix4x4& mat1, const CMatrix4x4& mat2, float t);
