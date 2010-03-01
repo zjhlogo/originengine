@@ -8,8 +8,8 @@
 #ifndef __IOETEXTURE_H__
 #define __IOETEXTURE_H__
 
-#include "IOEObject.h"
 #include "OEBaseTypeEx.h"
+#include "IOEObject.h"
 
 class IOETexture : public IOEObject
 {

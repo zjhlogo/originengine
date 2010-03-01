@@ -8,8 +8,8 @@
 #ifndef __IOERENDERDATA_H__
 #define __IOERENDERDATA_H__
 
-#include "IOEObject.h"
 #include "OEBaseTypeEx.h"
+#include "IOEObject.h"
 
 class IOERenderData : public IOEObject
 {

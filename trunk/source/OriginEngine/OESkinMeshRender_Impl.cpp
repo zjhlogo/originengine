@@ -34,31 +34,34 @@ bool COESkinMeshRender_Impl::Render(IOERenderData* pRenderData)
 	CMatrix4x4 matWorldViewProj;
 	g_pOERenderSystem->GetTransform(matWorldViewProj, TT_WORLD_VIEW_PROJ);
 
-	const TV_MATERIAL& vMaterials = pData->GetMaterials();
-	const TV_MATRIX& vmatSkins = pData->GetSkinMatrix();
-
 	CDefaultRenderState DefaultState;
 
 	for (int i = 0; i < nNumPiece; ++i)
 	{
 		IOEPiece* pPiece = pMesh->GetPiece(i);
+		if (!pPiece) continue;
 
-		int nMaterialID = pPiece->GetMaterialID();
-		if (nMaterialID >= (int)vMaterials.size()) continue;
+		IOEMaterial* pMaterial = pData->GetMaterial(pPiece->GetMaterialID());
+		if (!pMaterial) continue;
 
-		const MATERIAL& Material = vMaterials[nMaterialID];
-		if (pPiece->GetVertDecl() != Material.nVertDecl) continue;
+		IOEShader* pShader = pMaterial->GetShader();
+		if (!pShader) continue;
+
+		if (pPiece->GetVertDeclMask() != pMaterial->GetVertDeclMask()) continue;
 
 		// setup shader parameter
 		COEMsg msg(OMI_SETUP_SHADER_PARAM);
-		msg.Write(Material.pShader);
+		msg.Write(pShader);
 		g_pOEMsgMgr->InvokeMessage(&msg);
 
-		Material.pShader->SetMatrix(TS("g_matWorldViewProj"), matWorldViewProj);
-		Material.pShader->SetTexture(TS("g_texDiffuse"), Material.pTexDiffuse);
-		Material.pShader->SetTexture(TS("g_texNormal"), Material.pTexNormal);
-		Material.pShader->SetMatrixArray(TS("g_matBoneMatrix"), &vmatSkins[0], vmatSkins.size());
-		g_pOERenderSystem->SetShader(Material.pShader);
+		pShader->SetMatrix(TS("g_matWorldViewProj"), matWorldViewProj);
+		pShader->SetTexture(TS("g_texDiffuse"), pMaterial->GetTexture(MTT_DIFFUSE));
+		pShader->SetTexture(TS("g_texNormal"), pMaterial->GetTexture(MTT_NORMAL));
+
+		const TV_MATRIX4X4& vmatSkins = pData->GetSkinMatrix();
+		pShader->SetMatrixArray(TS("g_matBoneMatrix"), &vmatSkins[0], vmatSkins.size());
+
+		g_pOERenderSystem->SetShader(pShader);
 		g_pOERenderSystem->DrawTriList(pPiece->GetVerts(), pPiece->GetNumVerts(), pPiece->GetIndis(), pPiece->GetNumIndis());
 	}
 

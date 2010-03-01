@@ -18,6 +18,7 @@ extern const float OEMATH_TOL;		// float type tolerance
 #include "Vector4.h"
 #include "Matrix4x4.h"
 #include "Quaternion.h"
+#include <vector>
 
 CMatrix4x4 operator *(const CMatrix4x4& m1, const CMatrix4x4& m2);
 
@@ -55,5 +56,7 @@ public:
 };
 
 #include "OEMath.inl"
+
+typedef std::vector<CMatrix4x4> TV_MATRIX4X4;
 
 #endif // __OEMATH_H__

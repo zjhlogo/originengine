@@ -8,13 +8,6 @@
 #include "OESkinMeshRenderData_Impl.h"
 #include "OEBone_Impl.h"
 
-#include <IOEFileMgr.h>
-#include <IOETextureMgr.h>
-#include <IOEShaderMgr.h>
-
-#include <OEFmtMesh.h>
-#include <OEFmtBone.h>
-
 COESkinMeshRenderData_Impl::COESkinMeshRenderData_Impl()
 :IOERenderData(OERDT_SKINMESH)
 {
@@ -29,7 +22,7 @@ COESkinMeshRenderData_Impl::~COESkinMeshRenderData_Impl()
 bool COESkinMeshRenderData_Impl::Init()
 {
 	m_pMesh = NULL;
-	m_pBones = NULL;
+	m_pSkeleton = NULL;
 	m_fAnimLength = 0.0f;
 	m_fTotalTime = 0.0f;
 	return true;
@@ -38,7 +31,8 @@ bool COESkinMeshRenderData_Impl::Init()
 void COESkinMeshRenderData_Impl::Destroy()
 {
 	DestroyMesh();
-	DestroyBone();
+	DestroySkeleton();
+	DestroyMaterials();
 }
 
 bool COESkinMeshRenderData_Impl::LoadMesh(const tstring& strFile)
@@ -47,10 +41,10 @@ bool COESkinMeshRenderData_Impl::LoadMesh(const tstring& strFile)
 	return CreateMesh(strFile);
 }
 
-bool COESkinMeshRenderData_Impl::LoadBone(const tstring& strFile)
+bool COESkinMeshRenderData_Impl::LoadSkeleton(const tstring& strFile)
 {
-	DestroyBone();
-	return CreateBone(strFile);
+	DestroySkeleton();
+	return CreateSkeleton(strFile);
 }
 
 bool COESkinMeshRenderData_Impl::LoadMaterials(IOEXmlNode* pXmlMaterials)
@@ -64,19 +58,21 @@ IOEMesh* COESkinMeshRenderData_Impl::GetMesh()
 	return m_pMesh;
 }
 
-IOEBones* COESkinMeshRenderData_Impl::GetBones()
+IOESkeleton* COESkinMeshRenderData_Impl::GetSkeleton()
 {
-	return m_pBones;
+	return m_pSkeleton;
 }
 
-TV_MATRIX& COESkinMeshRenderData_Impl::GetSkinMatrix()
+TV_MATRIX4X4& COESkinMeshRenderData_Impl::GetSkinMatrix()
 {
 	return m_vmatSkin;
 }
 
-TV_MATERIAL& COESkinMeshRenderData_Impl::GetMaterials()
+IOEMaterial* COESkinMeshRenderData_Impl::GetMaterial(int nIndex)
 {
-	return m_vMaterials;
+	TM_MATERIAL::iterator itfound = m_MaterialMap.find(nIndex);
+	if (itfound == m_MaterialMap.end()) return NULL;
+	return itfound->second;
 }
 
 void COESkinMeshRenderData_Impl::SetAnimLength(float fAnimLength)
@@ -109,17 +105,17 @@ bool COESkinMeshRenderData_Impl::CreateMesh(const tstring& strFile)
 	return true;
 }
 
-bool COESkinMeshRenderData_Impl::CreateBone(const tstring& strFile)
+bool COESkinMeshRenderData_Impl::CreateSkeleton(const tstring& strFile)
 {
-	DestroyBone();
+	DestroySkeleton();
 
-	m_pBones = g_pOEResMgr->CreateBones(strFile);
-	if (!m_pBones) return false;
+	m_pSkeleton = g_pOEResMgr->CreateSkeleton(strFile);
+	if (!m_pSkeleton) return false;
 
-	int nBonesCount = m_pBones->GetBonesCount();
+	int nBonesCount = m_pSkeleton->GetBonesCount();
 	for (int i = 0; i < nBonesCount; ++i)
 	{
-		IOEBone* pBone = m_pBones->GetBone(i);
+		IOEBone* pBone = m_pSkeleton->GetBone(i);
 		if (m_fAnimLength < pBone->GetTimeLength()) m_fAnimLength = pBone->GetTimeLength();
 	}
 
@@ -137,9 +133,16 @@ bool COESkinMeshRenderData_Impl::CreateMaterials(IOEXmlNode* pXmlMaterials)
 	IOEXmlNode* pXmlMaterial = pXmlMaterials->FirstChild(TS("Material"));
 	for (int i = 0; i < nMaterialCount; ++i)
 	{
-		MATERIAL Material;
-		if (!g_pOEResMgr->CreateMaterial(Material, pXmlMaterial)) return false;
-		m_vMaterials.push_back(Material);
+		IOEMaterial* pMaterial = g_pOEResMgr->CreateMaterial(pXmlMaterial);
+		if (!pMaterial) return false;
+
+		if (GetMaterial(pMaterial->GetID()))
+		{
+			SAFE_RELEASE(pMaterial);
+			return false;
+		}
+
+		m_MaterialMap.insert(std::make_pair(pMaterial->GetID(), pMaterial));
 
 		pXmlMaterial = pXmlMaterial->NextSibling(TS("Material"));
 	}
@@ -152,18 +155,18 @@ void COESkinMeshRenderData_Impl::DestroyMesh()
 	SAFE_RELEASE(m_pMesh);
 }
 
-void COESkinMeshRenderData_Impl::DestroyBone()
+void COESkinMeshRenderData_Impl::DestroySkeleton()
 {
-	SAFE_RELEASE(m_pBones);
+	SAFE_RELEASE(m_pSkeleton);
 	m_fAnimLength = 0.0f;
 }
 
 void COESkinMeshRenderData_Impl::DestroyMaterials()
 {
-	for (TV_MATERIAL::iterator it = m_vMaterials.begin(); it != m_vMaterials.end(); ++it)
+	for (TM_MATERIAL::iterator it = m_MaterialMap.begin(); it != m_MaterialMap.end(); ++it)
 	{
-		MATERIAL& Material = (*it);
-		g_pOEResMgr->DestroyMaterial(Material);
+		IOEMaterial* pMaterial = it->second;
+		SAFE_RELEASE(pMaterial);
 	}
-	m_vMaterials.clear();
+	m_MaterialMap.clear();
 }

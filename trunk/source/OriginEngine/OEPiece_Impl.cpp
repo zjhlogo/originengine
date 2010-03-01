@@ -50,7 +50,7 @@ int COEPiece_Impl::GetMaterialID() const
 	return m_nMaterialID;
 }
 
-int COEPiece_Impl::GetVertDecl() const
+int COEPiece_Impl::GetVertDeclMask() const
 {
 	return m_nVertDecl;
 }

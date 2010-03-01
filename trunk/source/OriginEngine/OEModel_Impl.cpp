@@ -73,7 +73,7 @@ bool COEModel_Impl::Create(const tstring& strFile)
 	if (pRender) m_vRenders.push_back(pRender);
 
 	// for draw skelecton
-	pRender = g_pOERenderMgr->GetRender(OERT_SKELECTON);
+	pRender = g_pOERenderMgr->GetRender(OERT_SKELETON);
 	if (pRender) m_vRenders.push_back(pRender);
 
 	return true;
@@ -95,13 +95,13 @@ bool COEModel_Impl::CreateRenderData(IOEXmlNode* pXmlRoot)
 	if (!pXmlMesh->GetText(strMeshFile)) return false;
 	if (!m_pRenderData->LoadMesh(strMeshFile)) return false;
 
-	// create bone
-	IOEXmlNode* pXmlBone = pXmlRoot->FirstChild(TS("Bone"));
-	if (!pXmlBone) return false;
+	// create skeleton
+	IOEXmlNode* pXmlSkeleton = pXmlRoot->FirstChild(TS("Skeleton"));
+	if (!pXmlSkeleton) return false;
 
-	tstring strBoneFile;
-	if (!pXmlBone->GetText(strBoneFile)) return false;
-	if (!m_pRenderData->LoadBone(strBoneFile)) return false;
+	tstring strSkeletonFile;
+	if (!pXmlSkeleton->GetText(strSkeletonFile)) return false;
+	if (!m_pRenderData->LoadSkeleton(strSkeletonFile)) return false;
 
 	// create materials
 	IOEXmlNode* pXmlMaterials = pXmlRoot->FirstChild(TS("Materials"));

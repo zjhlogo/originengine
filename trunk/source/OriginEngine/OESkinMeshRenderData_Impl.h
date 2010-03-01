@@ -11,21 +11,25 @@
 #include <IOERenderData.h>
 #include <IOEResMgr.h>
 #include <IOEXmlMgr.h>
+#include <map>
 
 class COESkinMeshRenderData_Impl : public IOERenderData
 {
+public:
+	typedef std::map<int, IOEMaterial*> TM_MATERIAL;
+
 public:
 	COESkinMeshRenderData_Impl();
 	virtual ~COESkinMeshRenderData_Impl();
 
 	bool LoadMesh(const tstring& strFile);
-	bool LoadBone(const tstring& strFile);
+	bool LoadSkeleton(const tstring& strFile);
 	bool LoadMaterials(IOEXmlNode* pXmlMaterials);
 
 	IOEMesh* GetMesh();
-	IOEBones* GetBones();
-	TV_MATRIX& GetSkinMatrix();
-	TV_MATERIAL& GetMaterials();
+	IOESkeleton* GetSkeleton();
+	TV_MATRIX4X4& GetSkinMatrix();
+	IOEMaterial* GetMaterial(int nIndex);
 
 	void SetAnimLength(float fAnimLength);
 	float GetAnimLength() const;
@@ -38,19 +42,19 @@ private:
 	void Destroy();
 
 	bool CreateMesh(const tstring& strFile);
-	bool CreateBone(const tstring& strFile);
+	bool CreateSkeleton(const tstring& strFile);
 	bool CreateMaterials(IOEXmlNode* pXmlMaterials);
 
 	void DestroyMesh();
-	void DestroyBone();
+	void DestroySkeleton();
 	void DestroyMaterials();
 
 private:
 	IOEMesh* m_pMesh;
-	IOEBones* m_pBones;
+	IOESkeleton* m_pSkeleton;
 
-	TV_MATRIX m_vmatSkin;
-	TV_MATERIAL m_vMaterials;
+	TV_MATRIX4X4 m_vmatSkin;
+	TM_MATERIAL m_MaterialMap;
 
 	float m_fAnimLength;
 	float m_fTotalTime;

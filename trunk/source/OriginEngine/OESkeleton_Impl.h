@@ -1,21 +1,20 @@
 /*!
- * \file OEBones_Impl.h
- * \date 1-3-2010 14:53:26
+ * \file OESkeleton_Impl.h
+ * \date 1-3-2010 19:21:09
  * 
  * 
  * \author zjhlogo (zjhlogo@163.com)
  */
-#ifndef __OEBONES_IMPL_H__
-#define __OEBONES_IMPL_H__
+#ifndef __OESKELETON_IMPL_H__
+#define __OESKELETON_IMPL_H__
 
-#include <IOEBones.h>
-#include <OEBaseTypeEx.h>
+#include <IOESkeleton.h>
 
-class COEBones_Impl : public IOEBones
+class COESkeleton_Impl : public IOESkeleton
 {
 public:
-	COEBones_Impl(const tstring& strFile);
-	virtual ~COEBones_Impl();
+	COESkeleton_Impl(const tstring& strFile);
+	virtual ~COESkeleton_Impl();
 
 	virtual int GetBonesCount();
 	virtual IOEBone* GetBone(int nIndex);
@@ -31,4 +30,4 @@ private:
 	TV_BONE m_vBones;
 
 };
-#endif // __OEBONES_IMPL_H__
+#endif // __OESKELETON_IMPL_H__

@@ -8,12 +8,11 @@
 #ifndef __IOERENDERSYSTEM_H__
 #define __IOERENDERSYSTEM_H__
 
+#include "OEBaseTypeEx.h"
 #include "IOEObject.h"
 #include "IOEVertDecl.h"
 #include "IOETexture.h"
 #include "IOEShader.h"
-
-#include "OEBaseTypeEx.h"
 
 class IOERenderSystem : public IOEObject
 {

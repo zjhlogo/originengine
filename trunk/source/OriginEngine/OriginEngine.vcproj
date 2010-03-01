@@ -335,10 +335,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\OEBones_Impl.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\OEConfigFileMgr_Impl.cpp"
 				>
 			</File>
@@ -348,6 +344,10 @@
 			</File>
 			<File
 				RelativePath=".\OECore_Impl.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\OEMaterial_Impl.cpp"
 				>
 			</File>
 			<File
@@ -375,7 +375,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\OESkelectonRender_Impl.cpp"
+				RelativePath=".\OESkeleton_Impl.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\OESkeletonRender_Impl.cpp"
 				>
 			</File>
 			<File
@@ -401,10 +405,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\OEBones_Impl.h"
-				>
-			</File>
-			<File
 				RelativePath=".\OEConfigFileMgr_Impl.h"
 				>
 			</File>
@@ -414,6 +414,10 @@
 			</File>
 			<File
 				RelativePath=".\OECore_Impl.h"
+				>
+			</File>
+			<File
+				RelativePath=".\OEMaterial_Impl.h"
 				>
 			</File>
 			<File
@@ -441,7 +445,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\OESkelectonRender_Impl.h"
+				RelativePath=".\OESkeleton_Impl.h"
+				>
+			</File>
+			<File
+				RelativePath=".\OESkeletonRender_Impl.h"
 				>
 			</File>
 			<File
@@ -469,10 +477,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\include\IOEBones.h"
-				>
-			</File>
-			<File
 				RelativePath="..\..\include\IOEConfigFileMgr.h"
 				>
 			</File>
@@ -490,6 +494,10 @@
 			</File>
 			<File
 				RelativePath="..\..\include\IOEDevice.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\include\IOEMaterial.h"
 				>
 			</File>
 			<File
@@ -537,6 +545,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\include\IOESkeleton.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\include\IOETexture.h"
 				>
 			</File>
@@ -557,11 +569,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\include\OEFmtBone.h"
+				RelativePath="..\..\include\OEFmtMesh.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\include\OEFmtMesh.h"
+				RelativePath="..\..\include\OEFmtSkeleton.h"
 				>
 			</File>
 			<File

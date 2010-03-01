@@ -7,7 +7,7 @@
  */
 #include "OERenderMgr_Impl.h"
 #include "OESkinMeshRender_Impl.h"
-#include "OESkelectonRender_Impl.h"
+#include "OESkeletonRender_Impl.h"
 
 #include <assert.h>
 
@@ -26,7 +26,7 @@ COERenderMgr_Impl::~COERenderMgr_Impl()
 bool COERenderMgr_Impl::Initialize()
 {
 	AddRenderHandle(new COESkinMeshRender_Impl());
-	AddRenderHandle(new COESkelectonRender_Impl());
+	AddRenderHandle(new COESkeletonRender_Impl());
 
 	return true;
 }

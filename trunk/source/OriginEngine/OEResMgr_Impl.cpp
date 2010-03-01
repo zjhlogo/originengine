@@ -8,13 +8,10 @@
 #include "OEResMgr_Impl.h"
 #include "OEModel_Impl.h"
 #include "OEMesh_Impl.h"
-#include "OEBones_Impl.h"
+#include "OESkeleton_Impl.h"
+#include "OEMaterial_Impl.h"
 
 #include <IOELogFileMgr.h>
-#include <IOEFileMgr.h>
-#include <IOETextureMgr.h>
-#include <IOEShaderMgr.h>
-#include <OEFmtMesh.h>
 #include <assert.h>
 
 COEResMgr_Impl::COEResMgr_Impl()
@@ -86,7 +83,7 @@ IOEMesh* COEResMgr_Impl::CreateMesh(const tstring& strFile)
 	return pMesh;
 }
 
-IOEBones* COEResMgr_Impl::CreateBones(const tstring& strFile)
+IOESkeleton* COEResMgr_Impl::CreateSkeleton(const tstring& strFile)
 {
 	// get file path
 	tstring strFilePath;
@@ -96,13 +93,13 @@ IOEBones* COEResMgr_Impl::CreateBones(const tstring& strFile)
 	TM_BONES::iterator itfound = m_BonesMap.find(strFilePath);
 	if (itfound != m_BonesMap.end())
 	{
-		IOEBones* pBones = itfound->second;
+		IOESkeleton* pBones = itfound->second;
 		pBones->IncRef();
 		return pBones;
 	}
 
 	// create new
-	COEBones_Impl* pBones = new COEBones_Impl(strFilePath);
+	COESkeleton_Impl* pBones = new COESkeleton_Impl(strFilePath);
 	if (!pBones || !pBones->IsOK())
 	{
 		LOGOUT(TS("IOEMeshMgr::CreateMesh Failed %s"), strFilePath.c_str());
@@ -114,48 +111,18 @@ IOEBones* COEResMgr_Impl::CreateBones(const tstring& strFile)
 	return pBones;
 }
 
-bool COEResMgr_Impl::CreateMaterial(MATERIAL& MaterialOut, IOEXmlNode* pXmlMaterial)
+
+IOEMaterial* COEResMgr_Impl::CreateMaterial(IOEXmlNode* pXmlMaterial)
 {
-	if (!pXmlMaterial) return false;
-
-	EmptyMaterial(MaterialOut);
-
-	if (!pXmlMaterial->GetAttribute(MaterialOut.nID, TS("id"))) return false;
-
-	if (!pXmlMaterial->GetAttribute(MaterialOut.nVertDecl, TS("vertdecl"))) return false;
-
-	if (!pXmlMaterial->GetAttribute(MaterialOut.strShader, TS("shader"))) return false;
-
-	if (!pXmlMaterial->GetAttribute(MaterialOut.strTexDiffuse, TS("texdiffuse"))) return false;
-
-	if (!pXmlMaterial->GetAttribute(MaterialOut.strTexNormal, TS("texnormal"))) return false;
-
-	MaterialOut.pShader = CreateShaderFromVertDecl(MaterialOut.nVertDecl, MaterialOut.strShader);
-	if (!MaterialOut.pShader) return false;
-
-	MaterialOut.pTexDiffuse = g_pOETextureMgr->CreateTextureFromFile(MaterialOut.strTexDiffuse);
-	if (!MaterialOut.pTexDiffuse)
+	COEMaterial_Impl* pMaterial = new COEMaterial_Impl(pXmlMaterial);
+	if (!pMaterial || !pMaterial->IsOK())
 	{
-		DestroyMaterial(MaterialOut);
-		return false;
+		LOGOUT(TS("IOEModelMgr::CreateMaterial Failed"));
+		SAFE_DELETE(pMaterial);
+		return NULL;
 	}
 
-	MaterialOut.pTexNormal = g_pOETextureMgr->CreateTextureFromFile(MaterialOut.strTexNormal);
-	if (!MaterialOut.pTexDiffuse)
-	{
-		DestroyMaterial(MaterialOut);
-		return false;
-	}
-
-	return true;
-}
-
-void COEResMgr_Impl::DestroyMaterial(MATERIAL& Material)
-{
-	SAFE_RELEASE(Material.pShader);
-	SAFE_RELEASE(Material.pTexDiffuse);
-	SAFE_RELEASE(Material.pTexNormal);
-	EmptyMaterial(Material);
+	return pMaterial;
 }
 
 void COEResMgr_Impl::SetDefaultDir(const tstring& strDir)
@@ -166,98 +133,6 @@ void COEResMgr_Impl::SetDefaultDir(const tstring& strDir)
 const tstring& COEResMgr_Impl::GetDefaultDir()
 {
 	return m_strDefaultDir;
-}
-
-void COEResMgr_Impl::EmptyMaterial(MATERIAL& MaterialOut)
-{
-	MaterialOut.nID = 0;
-	MaterialOut.nVertDecl = 0;
-	MaterialOut.strShader.clear();
-	MaterialOut.strTexDiffuse.clear();
-	MaterialOut.strTexNormal.clear();
-	MaterialOut.pShader = NULL;
-	MaterialOut.pTexDiffuse = NULL;
-	MaterialOut.pTexNormal = NULL;
-}
-
-IOEShader* COEResMgr_Impl::CreateShaderFromVertDecl(int nVertDecl, const tstring& strFile)
-{
-	std::vector<VERT_DECL_ELEMENT> vDecl;
-	int nTexCoordIndex = 0;
-
-	// position
-	if (nVertDecl & COEFmtMesh::VDM_XYZ)
-	{
-		VERT_DECL_ELEMENT Element;
-		Element.eType = VDT_FLOAT3;
-		Element.eUsage = VDU_POSITION;
-		Element.nIndex = 0;
-		vDecl.push_back(Element);
-	}
-
-	// color
-	if (nVertDecl & COEFmtMesh::VDM_COLOR)
-	{
-		VERT_DECL_ELEMENT Element;
-		Element.eType = VDT_COLOR;
-		Element.eUsage = VDU_COLOR;
-		Element.nIndex = 0;
-		vDecl.push_back(Element);
-	}
-
-	// texcoord
-	if (nVertDecl & COEFmtMesh::VDM_UV)
-	{
-		VERT_DECL_ELEMENT Element;
-		Element.eType = VDT_FLOAT2;
-		Element.eUsage = VDU_TEXCOORD;
-		Element.nIndex = nTexCoordIndex++;
-		vDecl.push_back(Element);
-	}
-
-	// normal
-	if (nVertDecl & COEFmtMesh::VDM_NXNYNZ)
-	{
-		VERT_DECL_ELEMENT Element;
-		Element.eType = VDT_FLOAT3;
-		Element.eUsage = VDU_TEXCOORD;
-		Element.nIndex = nTexCoordIndex++;
-		vDecl.push_back(Element);
-	}
-
-	// tangent
-	if (nVertDecl & COEFmtMesh::VDM_TXTYTZ)
-	{
-		VERT_DECL_ELEMENT Element;
-		Element.eType = VDT_FLOAT3;
-		Element.eUsage = VDU_TEXCOORD;
-		Element.nIndex = nTexCoordIndex++;
-		vDecl.push_back(Element);
-	}
-
-	// blendindex, blendweight
-	if (nVertDecl & COEFmtMesh::VDM_BONE)
-	{
-		VERT_DECL_ELEMENT Element;
-		Element.eType = VDT_UBYTE4;
-		Element.eUsage = VDU_BLENDINDICES;
-		Element.nIndex = 0;
-		vDecl.push_back(Element);
-
-		Element.eType = VDT_FLOAT4;
-		Element.eUsage = VDU_BLENDWEIGHT;
-		Element.nIndex = 0;
-		vDecl.push_back(Element);
-	}
-
-	// push back empty element to indicate the end
-	VERT_DECL_ELEMENT Element;
-	Element.eType = VDT_UNKNOWN;
-	Element.eUsage = VDU_UNKNOWN;
-	Element.nIndex = 0;
-	vDecl.push_back(Element);
-
-	return g_pOEShaderMgr->CreateShader(&vDecl[0], strFile);
 }
 
 bool COEResMgr_Impl::GetMediaFilePath(tstring& strFilePathOut, const tstring& strFile)

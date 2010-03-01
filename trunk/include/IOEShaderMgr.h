@@ -8,10 +8,10 @@
 #ifndef __IOESHADERMGR_H__
 #define __IOESHADERMGR_H__
 
+#include "OEBaseTypeEx.h"
 #include "IOEObject.h"
 #include "IOEShader.h"
 #include "IOEVertDecl.h"
-#include "OEBaseTypeEx.h"
 
 class IOEShaderMgr : public IOEObject
 {

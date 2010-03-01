@@ -9,17 +9,7 @@
 #define __OEBASETYPEEX_H__
 
 #include "OEBaseType.h"
-#include "OEMath/OEMath.h"
 #include <vector>
-
-class IOEShader;
-class IOETexture;
-class IOEPiece;
-class IOEBone;
-
-typedef std::vector<CMatrix4x4> TV_MATRIX;
-typedef std::vector<IOEPiece*> TV_PIECE;
-typedef std::vector<IOEBone*> TV_BONE;
 
 enum TRANSFORM_TYPE
 {
@@ -107,20 +97,6 @@ enum ELEMENT_CONST_DEFINE
 	MAX_ELEMENT_COUNT = 32,
 };
 
-typedef struct MATERIAL_tag
-{
-	int nID;
-	int nVertDecl;
-	tstring strShader;
-	tstring strTexDiffuse;
-	tstring strTexNormal;
-	IOEShader* pShader;
-	IOETexture* pTexDiffuse;
-	IOETexture* pTexNormal;
-} MATERIAL;
-
-typedef std::vector<MATERIAL> TV_MATERIAL;
-
 enum OE_RENDER_DATA_TYPE
 {
 	OERDT_UNKNOWN = 0,
@@ -142,7 +118,7 @@ enum OE_RENDER_TYPE
 	OERT_UNKNOWN = 0,
 	OERT_SKINMESH,
 	OERT_BOUNDBOX,
-	OERT_SKELECTON,
+	OERT_SKELETON,
 
 	OERT_USER = 1000,
 };
@@ -181,5 +157,20 @@ typedef struct VERTEX_POLY_UI_tag
 	uint nColor;
 	float u, v;
 } VERTEX_POLY_UI;
+
+typedef std::vector<ushort> TV_VERTEX_INDEX;
+
+enum MATERIAL_TEXTURE_TYPE
+{
+	MTT_DIFFUSE = 0,
+	MTT_NORMAL,
+	MTT_TEXTURE2,
+	MTT_TEXTURE3,
+	MTT_TEXTURE4,
+	MTT_TEXTURE5,
+	MTT_TEXTURE6,
+	MTT_TEXTURE7,
+	MTT_NUM,
+};
 
 #endif // __OEBASETYPEEX_H__

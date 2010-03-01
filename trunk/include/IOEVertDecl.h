@@ -8,8 +8,8 @@
 #ifndef __IOEVERTDECL_H__
 #define __IOEVERTDECL_H__
 
-#include "IOEObject.h"
 #include "OEBaseTypeEx.h"
+#include "IOEObject.h"
 
 class IOEVertDecl : public IOEObject
 {

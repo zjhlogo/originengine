@@ -11,10 +11,8 @@
 #include "IOEObject.h"
 #include "IOEModel.h"
 #include "IOEMesh.h"
-#include "IOEBones.h"
-#include "IOEControl.h"
-#include "IOERender.h"
-#include "OEBaseTypeEx.h"
+#include "IOESkeleton.h"
+#include "IOEMaterial.h"
 #include "IOEXmlNode.h"
 
 class IOEResMgr : public IOEObject
@@ -25,10 +23,8 @@ public:
 
 	virtual IOEModel* CreateModel(const tstring& strFile) = 0;
 	virtual IOEMesh* CreateMesh(const tstring& strFile) = 0;
-	virtual IOEBones* CreateBones(const tstring& strFile) = 0;
-
-	virtual bool CreateMaterial(MATERIAL& MaterialOut, IOEXmlNode* pXmlMaterial) = 0;
-	virtual void DestroyMaterial(MATERIAL& Material) = 0;
+	virtual IOESkeleton* CreateSkeleton(const tstring& strFile) = 0;
+	virtual IOEMaterial* CreateMaterial(IOEXmlNode* pXmlMaterial) = 0;
 
 	virtual void SetDefaultDir(const tstring& strDir) = 0;
 	virtual const tstring& GetDefaultDir() = 0;

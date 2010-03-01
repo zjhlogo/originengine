@@ -9,6 +9,7 @@
 #define __IOEPIECE_H__
 
 #include "IOEObject.h"
+#include <vector>
 
 class IOEPiece : public IOEObject
 {
@@ -19,7 +20,7 @@ public:
 	virtual const tstring& GetName() const = 0;
 
 	virtual int GetMaterialID() const = 0;
-	virtual int GetVertDecl() const = 0;
+	virtual int GetVertDeclMask() const = 0;
 
 	virtual int GetNumVerts() const = 0;
 	virtual int GetNumIndis() const = 0;
@@ -27,4 +28,7 @@ public:
 	virtual ushort* GetIndis() const = 0;
 
 };
+
+typedef std::vector<IOEPiece*> TV_PIECE;
+
 #endif // __IOEPIECE_H__

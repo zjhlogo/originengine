@@ -10,6 +10,7 @@
 
 #include "IOEObject.h"
 #include "OEMath/OEMath.h"
+#include <vector>
 
 class IOEBone : public IOEObject
 {
@@ -29,4 +30,7 @@ public:
 	virtual bool SlerpMatrix(CMatrix4x4& matOut, float fTime, bool bLoop = true) = 0;
 
 };
+
+typedef std::vector<IOEBone*> TV_BONE;
+
 #endif // __IOEBONE_H__
