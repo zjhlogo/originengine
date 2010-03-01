@@ -32,6 +32,12 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libOE", "source\libOE\libOE
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libOEMath", "source\libOEMath\libOEMath.vcproj", "{BF852F28-01B5-4492-9273-6E69EE1E4929}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "demo_model", "demo\demo_model\demo_model.vcproj", "{15B22B2A-76B5-47D3-94BD-F96E0B757280}"
+	ProjectSection(ProjectDependencies) = postProject
+		{BF852F28-01B5-4492-9273-6E69EE1E4929} = {BF852F28-01B5-4492-9273-6E69EE1E4929}
+		{FC86443B-245B-4F29-BEF2-2D39A8F8B063} = {FC86443B-245B-4F29-BEF2-2D39A8F8B063}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -96,6 +102,14 @@ Global
 		{BF852F28-01B5-4492-9273-6E69EE1E4929}.Unicode Debug|Win32.Build.0 = Unicode Debug|Win32
 		{BF852F28-01B5-4492-9273-6E69EE1E4929}.Unicode Release|Win32.ActiveCfg = Unicode Release|Win32
 		{BF852F28-01B5-4492-9273-6E69EE1E4929}.Unicode Release|Win32.Build.0 = Unicode Release|Win32
+		{15B22B2A-76B5-47D3-94BD-F96E0B757280}.Debug|Win32.ActiveCfg = Debug|Win32
+		{15B22B2A-76B5-47D3-94BD-F96E0B757280}.Debug|Win32.Build.0 = Debug|Win32
+		{15B22B2A-76B5-47D3-94BD-F96E0B757280}.Release|Win32.ActiveCfg = Release|Win32
+		{15B22B2A-76B5-47D3-94BD-F96E0B757280}.Release|Win32.Build.0 = Release|Win32
+		{15B22B2A-76B5-47D3-94BD-F96E0B757280}.Unicode Debug|Win32.ActiveCfg = Unicode Debug|Win32
+		{15B22B2A-76B5-47D3-94BD-F96E0B757280}.Unicode Debug|Win32.Build.0 = Unicode Debug|Win32
+		{15B22B2A-76B5-47D3-94BD-F96E0B757280}.Unicode Release|Win32.ActiveCfg = Unicode Release|Win32
+		{15B22B2A-76B5-47D3-94BD-F96E0B757280}.Unicode Release|Win32.Build.0 = Unicode Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
