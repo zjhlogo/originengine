@@ -3,6 +3,6 @@
 	<Mesh>casual.mesh</Mesh>
 	<Skeleton>casual.skel</Skeleton>
 	<Materials count="1">
-		<Material id="0" vertdecl="61" shader="skinmesh.fx" texdiffuse="casual_diffuse.png" texnormal="casual_normal.png" />
+		<Material id="0" vertdecl="61" shader="skinmesh.fx" texture0="casual_diffuse.png" texture1="casual_normal.png" />
 	</Materials>
 </Model>
