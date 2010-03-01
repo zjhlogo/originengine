@@ -38,13 +38,28 @@ void CMs3dConv_Impl::Destroy()
 bool CMs3dConv_Impl::DoConvert(const tstring& strFileIn, const tstring& strFileOut)
 {
 	if (!LoadFromFile(strFileIn)) return false;
-	if (!SaveToFile(strFileOut)) return false;
+
+	tstring strMeshFile;
+	COEOS::GetFileName(strMeshFile, strFileOut);
+	strMeshFile += TS(".mesh");
+	if (!SaveToMeshFile(strMeshFile)) return false;
+
+	tstring strBoneFile;
+	COEOS::GetFileName(strBoneFile, strFileOut);
+	strBoneFile += TS(".bone");
+	if (!SaveToBoneFile(strBoneFile)) return false;
+
 	return true;
 }
 
-bool CMs3dConv_Impl::CanConvert(const tstring& strFileExt)
+bool CMs3dConv_Impl::CanConvert(const tstring& strFile)
 {
-	if (strFileExt == TS("ms3d")) return true;
+	tstring strExt;
+	COEOS::GetFileExt(strExt, strFile);
+
+	COEOS::tolower(strExt, strExt);
+	if (strExt == TS("ms3d")) return true;
+
 	return false;
 }
 
@@ -183,13 +198,10 @@ bool CMs3dConv_Impl::LoadFromFile(const tstring& strFile)
 		COEOS::char2tchar(m_vBoneInfo[i].strName, szName);
 		COEOS::char2tchar(m_vBoneInfo[i].strParentName, szParentName);
 		m_vBoneInfo[i].nIndex = i;
-		m_vBoneInfo[i].nParentIndex = COEFmtMesh::INVALID_BONE_ID;
+		m_vBoneInfo[i].nParentIndex = COEFmtBone::INVALID_BONE_ID;
 		m_vBoneInfo[i].fTimeLength = fTotalTime;
-		Ms3dTrans2OETrans(m_vBoneInfo[i].TransLocal, rRot, vPos);
-		m_vBoneInfo[i].nNumBoneFrames = nNumKeyFramesRot;
-		m_vBoneInfo[i].vBoneFrames.resize(m_vBoneInfo[i].nNumBoneFrames);
 
-		assert(nNumKeyFramesRot == nNumKeyFramesTrans);
+		Ms3dTrans2OETrans(m_vBoneInfo[i].matLocal, rRot, vPos);
 
 		for (int j = 0; j < nNumKeyFramesRot; ++j)
 		{
@@ -200,8 +212,15 @@ bool CMs3dConv_Impl::LoadFromFile(const tstring& strFile)
 			ms3drot.rotation[0] = -ms3drot.rotation[0];
 			ms3drot.rotation[1] = -ms3drot.rotation[1];
 
-			m_vBoneInfo[i].vBoneFrames[j].fTime = ms3drot.time;
-			Ms3dRot2OERot(m_vBoneInfo[i].vBoneFrames[j].BoneTrans, ms3drot.rotation);
+			COEFmtBone::FRAME_ROT FrameRot;
+			FrameRot.fTime = ms3drot.time;
+			CQuaternion qRot;
+			Ms3dRot2OERot(qRot, ms3drot.rotation);
+			FrameRot.qRot[0] = qRot.x;
+			FrameRot.qRot[1] = qRot.y;
+			FrameRot.qRot[2] = qRot.z;
+			FrameRot.qRot[3] = qRot.w;
+			m_vBoneInfo[i].vFrameRot.push_back(FrameRot);
 		}
 
 		for (int j = 0; j < nNumKeyFramesTrans; ++j)
@@ -212,8 +231,14 @@ bool CMs3dConv_Impl::LoadFromFile(const tstring& strFile)
 			// 右手到左手坐标转换
 			ms3dpos.position[2] = -ms3dpos.position[2];
 
-			Ms3dPos2OEPos(m_vBoneInfo[i].vBoneFrames[j].BoneTrans, ms3dpos.position);
-			Ms3dScale2OEScale(m_vBoneInfo[i].vBoneFrames[j].BoneTrans);
+			COEFmtBone::FRAME_POS FramePos;
+			FramePos.fTime = ms3dpos.time;
+			CVector3 vPos;
+			Ms3dPos2OEPos(vPos, ms3dpos.position);
+			FramePos.vPos[0] = vPos.x;
+			FramePos.vPos[1] = vPos.y;
+			FramePos.vPos[2] = vPos.z;
+			m_vBoneInfo[i].vFramePos.push_back(FramePos);
 		}
 	}
 
@@ -354,50 +379,32 @@ bool CMs3dConv_Impl::LoadFromFile(const tstring& strFile)
 	return true;
 }
 
-bool CMs3dConv_Impl::SaveToFile(const tstring& strFile)
+bool CMs3dConv_Impl::SaveToMeshFile(const tstring& strFile)
 {
 	IOEFile* pFile = g_pOEFileMgr->OpenFile(strFile, IOEFile::OFF_WRITE);
 	if (!pFile) return false;
-
-	int nNumMeshes = 1;		// TODO: 
-	int nNumBones = m_vBoneInfo.size();
 
 	// write header
 	COEFmtMesh::FILE_HEADER Header;
 	Header.nMagicNumber = COEFmtMesh::MAGIC_NUMBER;
 	Header.nVersion = COEFmtMesh::CURRENT_VERSION;
-	Header.nNumPieces = nNumMeshes;
-	Header.nNumBones = nNumBones;
+	Header.nNumPieces = 1;									// TODO: 
 	pFile->Write(&Header, sizeof(Header));
 
 	// make room for piece list
 	uint nPieceListPos = pFile->Tell();
 	std::vector<COEFmtMesh::PIECE> vPiece;
-	if (nNumMeshes > 0)
+	if (Header.nNumPieces > 0)
 	{
-		vPiece.resize(nNumMeshes);
-		memset(&vPiece[0], 0, sizeof(COEFmtMesh::PIECE)*nNumMeshes);
-		pFile->Write(&vPiece[0], sizeof(COEFmtMesh::PIECE)*nNumMeshes);
-	}
-
-	// make room for bone list
-	uint nBoneListPos = pFile->Tell();
-	std::vector<COEFmtMesh::BONE> vBone;
-	if (nNumBones > 0)
-	{
-		vBone.resize(nNumBones);
-		memset(&vBone[0], 0, sizeof(COEFmtMesh::BONE)*nNumBones);
-		pFile->Write(&vBone[0], sizeof(COEFmtMesh::BONE)*nNumBones);
+		vPiece.resize(Header.nNumPieces);
+		memset(&vPiece[0], 0, sizeof(COEFmtMesh::PIECE)*Header.nNumPieces);
+		pFile->Write(&vPiece[0], sizeof(COEFmtMesh::PIECE)*Header.nNumPieces);
 	}
 
 	// write mesh
-	for (int i = 0; i < nNumMeshes; ++i)
+	for (int i = 0; i < Header.nNumPieces; ++i)
 	{
-		//std::string strName;
-		//COEOS::tchar2char(strName, m_vSkinMesh[i].strName.c_str());
-		//strncpy_s(vPiece[i].szName, COEFmtMesh::PIECE_NAME_SIZE, strName.c_str(), _TRUNCATE);
 		strncpy_s(vPiece[i].szName, COEFmtMesh::PIECE_NAME_SIZE, "mesh", _TRUNCATE);
-
 		vPiece[i].nPieceMask = COEFmtMesh::PM_VISIBLE;
 		vPiece[i].nVertexDataMask = COEFmtMesh::VDM_XYZ | COEFmtMesh::VDM_UV | COEFmtMesh::VDM_BONE;
 		vPiece[i].nMaterialID = 0;										// TODO: 
@@ -440,76 +447,133 @@ bool CMs3dConv_Impl::SaveToFile(const tstring& strFile)
 		pFile->Write(&m_vIndis[0], sizeof(INDEX)*nNumFaces);
 	}
 
-	// write bone data
-	for (int i = 0; i < nNumBones; ++i)
-	{
-		// bone list info
-		std::string strName;
-		COEOS::tchar2char(strName, m_vBoneInfo[i].strName.c_str());
-		strncpy_s(vBone[i].szName, COEFmtMesh::BONE_NAME_SIZE, strName.c_str(), _TRUNCATE);
-		vBone[i].nParentIndex = m_vBoneInfo[i].nParentIndex;
-		vBone[i].fTimeLength = m_vBoneInfo[i].fTimeLength;
-		vBone[i].BoneTrans = m_vBoneInfo[i].TransLocal;
-		vBone[i].nNumBoneFrame = m_vBoneInfo[i].nNumBoneFrames;
-		vBone[i].nOffBoneFrame = pFile->Tell();
-
-		// bone data
-		int nNumFrame = m_vBoneInfo[i].nNumBoneFrames;
-		for (int j = 0; j < nNumFrame; ++j)
-		{
-			COEFmtMesh::BONE_FRAME& BoneFrame = m_vBoneInfo[i].vBoneFrames[j];
-			pFile->Write(&BoneFrame, sizeof(BoneFrame));
-		}
-	}
-
 	// write true piece list
 	pFile->Seek(nPieceListPos);
-	if (nNumMeshes > 0)
+	if (Header.nNumPieces > 0)
 	{
-		pFile->Write(&vPiece[0], sizeof(COEFmtMesh::PIECE)*nNumMeshes);
-	}
-
-	// write true bone list
-	pFile->Seek(nBoneListPos);
-	if (nNumBones > 0)
-	{
-		pFile->Write(&vBone[0], sizeof(COEFmtMesh::BONE)*nNumBones);
+		pFile->Write(&vPiece[0], sizeof(COEFmtMesh::PIECE)*Header.nNumPieces);
 	}
 
 	SAFE_RELEASE(pFile);
 	return true;
 }
 
-void CMs3dConv_Impl::Ms3dRot2OERot(COEFmtMesh::BONE_TRANSFORM& TransOut, const float* rRot)
+bool CMs3dConv_Impl::SaveToBoneFile(const tstring& strFile)
 {
-	CQuaternion qOut;
-	COEMath::BuildQuaternionFromEuler(qOut, rRot[0], rRot[1], rRot[2]);
+	IOEFile* pFile = g_pOEFileMgr->OpenFile(strFile, IOEFile::OFF_WRITE);
+	if (!pFile) return false;
 
-	TransOut.vRotation[0] = qOut.x;
-	TransOut.vRotation[1] = qOut.y;
-	TransOut.vRotation[2] = qOut.z;
-	TransOut.vRotation[3] = qOut.w;
+	// write header
+	COEFmtBone::FILE_HEADER Header;
+	Header.nMagicNumber = COEFmtBone::MAGIC_NUMBER;
+	Header.nVersion = COEFmtBone::CURRENT_VERSION;
+	Header.nNumBones = m_vBoneInfo.size();
+	pFile->Write(&Header, sizeof(Header));
+
+	// make room for bone list
+	uint nBoneListPos = pFile->Tell();
+	std::vector<COEFmtBone::BONE> vBone;
+	if (Header.nNumBones > 0)
+	{
+		vBone.resize(Header.nNumBones);
+		memset(&vBone[0], 0, sizeof(COEFmtBone::BONE)*Header.nNumBones);
+		pFile->Write(&vBone[0], sizeof(COEFmtBone::BONE)*Header.nNumBones);
+	}
+
+	// write bone
+	for (int i = 0; i < Header.nNumBones; ++i)
+	{
+		COEFmtBone::BONE& Bone = vBone[i];
+		BONE_INFO& BoneInfo = m_vBoneInfo[i];
+
+		// bone list info
+		std::string strName;
+		COEOS::tchar2char(strName, BoneInfo.strName.c_str());
+		strncpy_s(Bone.szName, COEFmtBone::BONE_NAME_SIZE, strName.c_str(), _TRUNCATE);
+
+		Bone.nParentIndex = BoneInfo.nParentIndex;
+		memcpy(Bone.matLocal, BoneInfo.matLocal.m, sizeof(float)*16);
+
+		Bone.fTimeLength = 0.0f;
+		Bone.nNumFrameRot = (int)BoneInfo.vFrameRot.size();
+		Bone.nNumFramePos = (int)BoneInfo.vFramePos.size();
+		Bone.nNumFrameScale = (int)BoneInfo.vFrameScale.size();
+
+		// frame rot
+		Bone.nOffFrameRot = pFile->Tell();
+		for (TV_FRAME_ROT::iterator it = BoneInfo.vFrameRot.begin(); it != BoneInfo.vFrameRot.end(); ++it)
+		{
+			COEFmtBone::FRAME_ROT& FrameRot = (*it);
+			pFile->Write(&FrameRot, sizeof(FrameRot));
+
+			if (Bone.fTimeLength < FrameRot.fTime) Bone.fTimeLength = FrameRot.fTime;
+		}
+
+		// frame pos
+		Bone.nOffFramePos = pFile->Tell();
+		for (TV_FRAME_POS::iterator it = BoneInfo.vFramePos.begin(); it != BoneInfo.vFramePos.end(); ++it)
+		{
+			COEFmtBone::FRAME_POS& FramePos = (*it);
+			pFile->Write(&FramePos, sizeof(FramePos));
+
+			if (Bone.fTimeLength < FramePos.fTime) Bone.fTimeLength = FramePos.fTime;
+		}
+
+		// frame scale
+		Bone.nOffFrameScale = pFile->Tell();
+		for (TV_FRAME_SCALE::iterator it = BoneInfo.vFrameScale.begin(); it != BoneInfo.vFrameScale.end(); ++it)
+		{
+			COEFmtBone::FRAME_SCALE& FrameScale = (*it);
+			pFile->Write(&FrameScale, sizeof(FrameScale));
+
+			if (Bone.fTimeLength < FrameScale.fTime) Bone.fTimeLength = FrameScale.fTime;
+		}
+	}
+
+	// really write bone list
+	pFile->Seek(nBoneListPos);
+	if (Header.nNumBones > 0)
+	{
+		pFile->Write(&vBone[0], sizeof(COEFmtBone::BONE)*Header.nNumBones);
+	}
+
+	SAFE_RELEASE(pFile);
+	return true;
 }
 
-void CMs3dConv_Impl::Ms3dPos2OEPos(COEFmtMesh::BONE_TRANSFORM& TransOut, const float* vPos)
+void CMs3dConv_Impl::Ms3dRot2OERot(CQuaternion& qOut, const float* rRot)
 {
-	TransOut.vPos[0] = vPos[0];
-	TransOut.vPos[1] = vPos[1];
-	TransOut.vPos[2] = vPos[2];
+	COEMath::BuildQuaternionFromEulerXYZ(qOut, rRot[0], rRot[1], rRot[2]);
 }
 
-void CMs3dConv_Impl::Ms3dScale2OEScale(COEFmtMesh::BONE_TRANSFORM& TransOut)
+void CMs3dConv_Impl::Ms3dPos2OEPos(CVector3& vOut, const float* vPos)
 {
-	TransOut.vScale[0] = 1.0f;
-	TransOut.vScale[1] = 1.0f;
-	TransOut.vScale[2] = 1.0f;
+	vOut.x = vPos[0];
+	vOut.y = vPos[1];
+	vOut.z = vPos[2];
 }
 
-void CMs3dConv_Impl::Ms3dTrans2OETrans(COEFmtMesh::BONE_TRANSFORM& TransOut, const float* rRot, const float* vPos)
+void CMs3dConv_Impl::Ms3dScale2OEScale(CVector3& vScale)
 {
-	Ms3dRot2OERot(TransOut, rRot);
-	Ms3dPos2OEPos(TransOut, vPos);
-	Ms3dScale2OEScale(TransOut);
+	vScale.x = 1.0f;
+	vScale.y = 1.0f;
+	vScale.z = 1.0f;
+}
+
+void CMs3dConv_Impl::Ms3dTrans2OETrans(CMatrix4x4& matOut, const float* rRot, const float* vPos)
+{
+	CQuaternion qOERot;
+	Ms3dRot2OERot(qOERot, rRot);
+
+	CVector3 vOEPos;
+	Ms3dPos2OEPos(vOEPos, vPos);
+
+	CVector3 vOEScale;
+	Ms3dScale2OEScale(vOEScale);
+
+	COEMath::BuildMatrixFromQuaternion(matOut, qOERot);
+	COEMath::SetMatrixTranslation(matOut, vOEPos);
+	COEMath::SetMatrixScale(matOut, vOEScale);
 }
 
 int CMs3dConv_Impl::FindParentIndex(const TV_BONE_INFO& vBoneInfo, const tstring& strParentName)
@@ -519,7 +583,7 @@ int CMs3dConv_Impl::FindParentIndex(const TV_BONE_INFO& vBoneInfo, const tstring
 		if (it->strName == strParentName) return it->nIndex;
 	}
 
-	return COEFmtMesh::INVALID_BONE_ID;
+	return COEFmtBone::INVALID_BONE_ID;
 }
 
 void CMs3dConv_Impl::SetupParentBoneIndex(TV_BONE_INFO& vBoneInfo)

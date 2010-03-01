@@ -1,0 +1,449 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resource version="2.3.0.1" xmlns="http://www.wxwidgets.org/wxxrc">
+    <object class="wxDialog" name="ID_DLG_MATRIXCALC">
+        <style>wxCAPTION|wxRESIZE_BORDER|wxSYSTEM_MENU|wxCLOSE_BOX|wxTAB_TRAVERSAL</style>
+        <exstyle>wxWS_EX_BLOCK_EVENTS</exstyle>
+        <title>Matrix Calculation</title>
+        <centered>1</centered>
+        <object class="wxBoxSizer">
+            <orient>wxVERTICAL</orient>
+            <object class="sizeritem">
+                <flag>wxALIGN_LEFT|wxALL</flag>
+                <border>5</border>
+                <object class="wxBoxSizer">
+                    <orient>wxHORIZONTAL</orient>
+                    <object class="sizeritem">
+                        <flag>wxALIGN_CENTER_VERTICAL|wxALL</flag>
+                        <border>5</border>
+                        <object class="wxStaticText" name="wxID_STATIC">
+                            <label>MatrixSize:</label>
+                        </object>
+                    </object>
+                    <object class="sizeritem">
+                        <flag>wxALIGN_CENTER_VERTICAL|wxALL</flag>
+                        <border>5</border>
+                        <object class="wxComboBox" name="ID_CMB_MATRIXSIZE">
+                            <style>wxCB_DROPDOWN</style>
+                            <content>
+                                <item>2</item>
+                                <item>3</item>
+                                <item>4</item>
+                            </content>
+                            <selection>2</selection>
+                        </object>
+                    </object>
+                </object>
+            </object>
+            <object class="sizeritem">
+                <flag>wxALIGN_CENTER_HORIZONTAL|wxALL</flag>
+                <border>5</border>
+                <object class="wxBoxSizer">
+                    <orient>wxHORIZONTAL</orient>
+                    <object class="sizeritem">
+                        <flag>wxALIGN_CENTER_VERTICAL|wxALL</flag>
+                        <border>5</border>
+                        <object class="wxGridSizer">
+                            <cols>4</cols>
+                            <rows>4</rows>
+                            <vgap>0</vgap>
+                            <hgap>0</hgap>
+                            <object class="sizeritem">
+                                <flag>wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL</flag>
+                                <border>1</border>
+                                <object class="wxTextCtrl" name="ID_TEXTCTRL0">
+                                    <size>50,-1</size>
+                                </object>
+                            </object>
+                            <object class="sizeritem">
+                                <flag>wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL</flag>
+                                <border>1</border>
+                                <object class="wxTextCtrl" name="ID_TEXTCTRL1">
+                                    <size>50,-1</size>
+                                </object>
+                            </object>
+                            <object class="sizeritem">
+                                <flag>wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL</flag>
+                                <border>1</border>
+                                <object class="wxTextCtrl" name="ID_TEXTCTRL2">
+                                    <size>50,-1</size>
+                                </object>
+                            </object>
+                            <object class="sizeritem">
+                                <flag>wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL</flag>
+                                <border>1</border>
+                                <object class="wxTextCtrl" name="ID_TEXTCTRL3">
+                                    <size>50,-1</size>
+                                </object>
+                            </object>
+                            <object class="sizeritem">
+                                <flag>wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL</flag>
+                                <border>1</border>
+                                <object class="wxTextCtrl" name="ID_TEXTCTRL4">
+                                    <size>50,-1</size>
+                                </object>
+                            </object>
+                            <object class="sizeritem">
+                                <flag>wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL</flag>
+                                <border>1</border>
+                                <object class="wxTextCtrl" name="ID_TEXTCTRL5">
+                                    <size>50,-1</size>
+                                </object>
+                            </object>
+                            <object class="sizeritem">
+                                <flag>wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL</flag>
+                                <border>1</border>
+                                <object class="wxTextCtrl" name="ID_TEXTCTRL6">
+                                    <size>50,-1</size>
+                                </object>
+                            </object>
+                            <object class="sizeritem">
+                                <flag>wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL</flag>
+                                <border>1</border>
+                                <object class="wxTextCtrl" name="ID_TEXTCTRL7">
+                                    <size>50,-1</size>
+                                </object>
+                            </object>
+                            <object class="sizeritem">
+                                <flag>wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL</flag>
+                                <border>1</border>
+                                <object class="wxTextCtrl" name="ID_TEXTCTRL8">
+                                    <size>50,-1</size>
+                                </object>
+                            </object>
+                            <object class="sizeritem">
+                                <flag>wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL</flag>
+                                <border>1</border>
+                                <object class="wxTextCtrl" name="ID_TEXTCTRL9">
+                                    <size>50,-1</size>
+                                </object>
+                            </object>
+                            <object class="sizeritem">
+                                <flag>wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL</flag>
+                                <border>1</border>
+                                <object class="wxTextCtrl" name="ID_TEXTCTRL10">
+                                    <size>50,-1</size>
+                                </object>
+                            </object>
+                            <object class="sizeritem">
+                                <flag>wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL</flag>
+                                <border>1</border>
+                                <object class="wxTextCtrl" name="ID_TEXTCTRL11">
+                                    <size>50,-1</size>
+                                </object>
+                            </object>
+                            <object class="sizeritem">
+                                <flag>wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL</flag>
+                                <border>1</border>
+                                <object class="wxTextCtrl" name="ID_TEXTCTRL12">
+                                    <size>50,-1</size>
+                                </object>
+                            </object>
+                            <object class="sizeritem">
+                                <flag>wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL</flag>
+                                <border>1</border>
+                                <object class="wxTextCtrl" name="ID_TEXTCTRL13">
+                                    <size>50,-1</size>
+                                </object>
+                            </object>
+                            <object class="sizeritem">
+                                <flag>wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL</flag>
+                                <border>1</border>
+                                <object class="wxTextCtrl" name="ID_TEXTCTRL14">
+                                    <size>50,-1</size>
+                                </object>
+                            </object>
+                            <object class="sizeritem">
+                                <flag>wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL</flag>
+                                <border>1</border>
+                                <object class="wxTextCtrl" name="ID_TEXTCTRL15">
+                                    <size>50,-1</size>
+                                </object>
+                            </object>
+                        </object>
+                    </object>
+                    <object class="sizeritem">
+                        <flag>wxALIGN_CENTER_VERTICAL|wxALL</flag>
+                        <border>5</border>
+                        <object class="wxGridSizer">
+                            <cols>4</cols>
+                            <rows>4</rows>
+                            <vgap>0</vgap>
+                            <hgap>0</hgap>
+                            <object class="sizeritem">
+                                <flag>wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL</flag>
+                                <border>1</border>
+                                <object class="wxTextCtrl" name="ID_TEXTCTRL16">
+                                    <size>50,-1</size>
+                                </object>
+                            </object>
+                            <object class="sizeritem">
+                                <flag>wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL</flag>
+                                <border>1</border>
+                                <object class="wxTextCtrl" name="ID_TEXTCTRL17">
+                                    <size>50,-1</size>
+                                </object>
+                            </object>
+                            <object class="sizeritem">
+                                <flag>wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL</flag>
+                                <border>1</border>
+                                <object class="wxTextCtrl" name="ID_TEXTCTRL18">
+                                    <size>50,-1</size>
+                                </object>
+                            </object>
+                            <object class="sizeritem">
+                                <flag>wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL</flag>
+                                <border>1</border>
+                                <object class="wxTextCtrl" name="ID_TEXTCTRL19">
+                                    <size>50,-1</size>
+                                </object>
+                            </object>
+                            <object class="sizeritem">
+                                <flag>wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL</flag>
+                                <border>1</border>
+                                <object class="wxTextCtrl" name="ID_TEXTCTRL20">
+                                    <size>50,-1</size>
+                                </object>
+                            </object>
+                            <object class="sizeritem">
+                                <flag>wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL</flag>
+                                <border>1</border>
+                                <object class="wxTextCtrl" name="ID_TEXTCTRL21">
+                                    <size>50,-1</size>
+                                </object>
+                            </object>
+                            <object class="sizeritem">
+                                <flag>wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL</flag>
+                                <border>1</border>
+                                <object class="wxTextCtrl" name="ID_TEXTCTRL22">
+                                    <size>50,-1</size>
+                                </object>
+                            </object>
+                            <object class="sizeritem">
+                                <flag>wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL</flag>
+                                <border>1</border>
+                                <object class="wxTextCtrl" name="ID_TEXTCTRL23">
+                                    <size>50,-1</size>
+                                </object>
+                            </object>
+                            <object class="sizeritem">
+                                <flag>wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL</flag>
+                                <border>1</border>
+                                <object class="wxTextCtrl" name="ID_TEXTCTRL24">
+                                    <size>50,-1</size>
+                                </object>
+                            </object>
+                            <object class="sizeritem">
+                                <flag>wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL</flag>
+                                <border>1</border>
+                                <object class="wxTextCtrl" name="ID_TEXTCTRL25">
+                                    <size>50,-1</size>
+                                </object>
+                            </object>
+                            <object class="sizeritem">
+                                <flag>wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL</flag>
+                                <border>1</border>
+                                <object class="wxTextCtrl" name="ID_TEXTCTRL26">
+                                    <size>50,-1</size>
+                                </object>
+                            </object>
+                            <object class="sizeritem">
+                                <flag>wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL</flag>
+                                <border>1</border>
+                                <object class="wxTextCtrl" name="ID_TEXTCTRL27">
+                                    <size>50,-1</size>
+                                </object>
+                            </object>
+                            <object class="sizeritem">
+                                <flag>wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL</flag>
+                                <border>1</border>
+                                <object class="wxTextCtrl" name="ID_TEXTCTRL28">
+                                    <size>50,-1</size>
+                                </object>
+                            </object>
+                            <object class="sizeritem">
+                                <flag>wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL</flag>
+                                <border>1</border>
+                                <object class="wxTextCtrl" name="ID_TEXTCTRL29">
+                                    <size>50,-1</size>
+                                </object>
+                            </object>
+                            <object class="sizeritem">
+                                <flag>wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL</flag>
+                                <border>1</border>
+                                <object class="wxTextCtrl" name="ID_TEXTCTRL30">
+                                    <size>50,-1</size>
+                                </object>
+                            </object>
+                            <object class="sizeritem">
+                                <flag>wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL</flag>
+                                <border>1</border>
+                                <object class="wxTextCtrl" name="ID_TEXTCTRL31">
+                                    <size>50,-1</size>
+                                </object>
+                            </object>
+                        </object>
+                    </object>
+                    <object class="sizeritem">
+                        <flag>wxALIGN_CENTER_VERTICAL|wxALL</flag>
+                        <border>5</border>
+                        <object class="wxGridSizer">
+                            <cols>4</cols>
+                            <rows>4</rows>
+                            <vgap>0</vgap>
+                            <hgap>0</hgap>
+                            <object class="sizeritem">
+                                <flag>wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL</flag>
+                                <border>1</border>
+                                <object class="wxTextCtrl" name="ID_TEXTCTRL32">
+                                    <size>50,-1</size>
+                                    <enabled>0</enabled>
+                                </object>
+                            </object>
+                            <object class="sizeritem">
+                                <flag>wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL</flag>
+                                <border>1</border>
+                                <object class="wxTextCtrl" name="ID_TEXTCTRL33">
+                                    <size>50,-1</size>
+                                    <enabled>0</enabled>
+                                </object>
+                            </object>
+                            <object class="sizeritem">
+                                <flag>wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL</flag>
+                                <border>1</border>
+                                <object class="wxTextCtrl" name="ID_TEXTCTRL34">
+                                    <size>50,-1</size>
+                                    <enabled>0</enabled>
+                                </object>
+                            </object>
+                            <object class="sizeritem">
+                                <flag>wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL</flag>
+                                <border>1</border>
+                                <object class="wxTextCtrl" name="ID_TEXTCTRL35">
+                                    <size>50,-1</size>
+                                    <enabled>0</enabled>
+                                </object>
+                            </object>
+                            <object class="sizeritem">
+                                <flag>wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL</flag>
+                                <border>1</border>
+                                <object class="wxTextCtrl" name="ID_TEXTCTRL36">
+                                    <size>50,-1</size>
+                                    <enabled>0</enabled>
+                                </object>
+                            </object>
+                            <object class="sizeritem">
+                                <flag>wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL</flag>
+                                <border>1</border>
+                                <object class="wxTextCtrl" name="ID_TEXTCTRL37">
+                                    <size>50,-1</size>
+                                    <enabled>0</enabled>
+                                </object>
+                            </object>
+                            <object class="sizeritem">
+                                <flag>wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL</flag>
+                                <border>1</border>
+                                <object class="wxTextCtrl" name="ID_TEXTCTRL38">
+                                    <size>50,-1</size>
+                                    <enabled>0</enabled>
+                                </object>
+                            </object>
+                            <object class="sizeritem">
+                                <flag>wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL</flag>
+                                <border>1</border>
+                                <object class="wxTextCtrl" name="ID_TEXTCTRL39">
+                                    <size>50,-1</size>
+                                    <enabled>0</enabled>
+                                </object>
+                            </object>
+                            <object class="sizeritem">
+                                <flag>wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL</flag>
+                                <border>1</border>
+                                <object class="wxTextCtrl" name="ID_TEXTCTRL40">
+                                    <size>50,-1</size>
+                                    <enabled>0</enabled>
+                                </object>
+                            </object>
+                            <object class="sizeritem">
+                                <flag>wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL</flag>
+                                <border>1</border>
+                                <object class="wxTextCtrl" name="ID_TEXTCTRL41">
+                                    <size>50,-1</size>
+                                    <enabled>0</enabled>
+                                </object>
+                            </object>
+                            <object class="sizeritem">
+                                <flag>wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL</flag>
+                                <border>1</border>
+                                <object class="wxTextCtrl" name="ID_TEXTCTRL42">
+                                    <size>50,-1</size>
+                                    <enabled>0</enabled>
+                                </object>
+                            </object>
+                            <object class="sizeritem">
+                                <flag>wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL</flag>
+                                <border>1</border>
+                                <object class="wxTextCtrl" name="ID_TEXTCTRL43">
+                                    <size>50,-1</size>
+                                    <enabled>0</enabled>
+                                </object>
+                            </object>
+                            <object class="sizeritem">
+                                <flag>wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL</flag>
+                                <border>1</border>
+                                <object class="wxTextCtrl" name="ID_TEXTCTRL44">
+                                    <size>50,-1</size>
+                                    <enabled>0</enabled>
+                                </object>
+                            </object>
+                            <object class="sizeritem">
+                                <flag>wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL</flag>
+                                <border>1</border>
+                                <object class="wxTextCtrl" name="ID_TEXTCTRL45">
+                                    <size>50,-1</size>
+                                    <enabled>0</enabled>
+                                </object>
+                            </object>
+                            <object class="sizeritem">
+                                <flag>wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL</flag>
+                                <border>1</border>
+                                <object class="wxTextCtrl" name="ID_TEXTCTRL46">
+                                    <size>50,-1</size>
+                                    <enabled>0</enabled>
+                                </object>
+                            </object>
+                            <object class="sizeritem">
+                                <flag>wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL</flag>
+                                <border>1</border>
+                                <object class="wxTextCtrl" name="ID_TEXTCTRL47">
+                                    <size>50,-1</size>
+                                    <enabled>0</enabled>
+                                </object>
+                            </object>
+                        </object>
+                    </object>
+                </object>
+            </object>
+            <object class="sizeritem">
+                <flag>wxALIGN_RIGHT|wxALL</flag>
+                <border>5</border>
+                <object class="wxBoxSizer">
+                    <orient>wxHORIZONTAL</orient>
+                    <object class="sizeritem">
+                        <flag>wxALIGN_CENTER_VERTICAL|wxALL</flag>
+                        <border>5</border>
+                        <object class="wxButton" name="ID_BTN_CALCULATE">
+                            <label>Calculate</label>
+                        </object>
+                    </object>
+                    <object class="sizeritem">
+                        <flag>wxALIGN_CENTER_VERTICAL|wxALL</flag>
+                        <border>5</border>
+                        <object class="wxButton" name="ID_BTN_CLOSE">
+                            <label>Close</label>
+                        </object>
+                    </object>
+                </object>
+            </object>
+        </object>
+    </object>
+</resource>

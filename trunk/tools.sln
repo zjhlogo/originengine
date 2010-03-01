@@ -17,6 +17,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libOE", "source\libOE\libOE
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libOEMath", "source\libOEMath\libOEMath.vcproj", "{BF852F28-01B5-4492-9273-6E69EE1E4929}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MatrixCalc", "tools\MatrixCalc\MatrixCalc.vcproj", "{162968AD-81C4-4DD6-A837-1E29969FE064}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -57,6 +59,14 @@ Global
 		{BF852F28-01B5-4492-9273-6E69EE1E4929}.Unicode Debug|Win32.Build.0 = Unicode Debug|Win32
 		{BF852F28-01B5-4492-9273-6E69EE1E4929}.Unicode Release|Win32.ActiveCfg = Unicode Release|Win32
 		{BF852F28-01B5-4492-9273-6E69EE1E4929}.Unicode Release|Win32.Build.0 = Unicode Release|Win32
+		{162968AD-81C4-4DD6-A837-1E29969FE064}.Debug|Win32.ActiveCfg = Debug|Win32
+		{162968AD-81C4-4DD6-A837-1E29969FE064}.Debug|Win32.Build.0 = Debug|Win32
+		{162968AD-81C4-4DD6-A837-1E29969FE064}.Release|Win32.ActiveCfg = Release|Win32
+		{162968AD-81C4-4DD6-A837-1E29969FE064}.Release|Win32.Build.0 = Release|Win32
+		{162968AD-81C4-4DD6-A837-1E29969FE064}.Unicode Debug|Win32.ActiveCfg = Unicode Debug|Win32
+		{162968AD-81C4-4DD6-A837-1E29969FE064}.Unicode Debug|Win32.Build.0 = Unicode Debug|Win32
+		{162968AD-81C4-4DD6-A837-1E29969FE064}.Unicode Release|Win32.ActiveCfg = Unicode Release|Win32
+		{162968AD-81C4-4DD6-A837-1E29969FE064}.Unicode Release|Win32.Build.0 = Unicode Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

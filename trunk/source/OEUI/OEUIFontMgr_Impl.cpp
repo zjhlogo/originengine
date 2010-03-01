@@ -47,7 +47,7 @@ IOEUIFont* COEUIFontMgr_Impl::CreateBitmapFont(const tstring& strFileName)
 {
 	// transform string to lower
 	tstring strLowName = strFileName;
-	std::transform(strLowName.begin(), strLowName.end(), strLowName.begin(), tolower);
+	COEOS::tolower(strLowName, strFileName);
 
 	// find from map, if exist just increase reference and return
 	UIFONT_MAP::iterator itfound = m_UIFontMap.find(strLowName);

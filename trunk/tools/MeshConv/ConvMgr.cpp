@@ -20,7 +20,7 @@ CConvMgr::~CConvMgr()
 
 void CConvMgr::Init()
 {
-	m_bInitialized = false;
+	m_vConvList.push_back(new CMs3dConv_Impl());
 }
 
 void CConvMgr::Destroy()
@@ -39,32 +39,16 @@ CConvMgr& CConvMgr::Get()
 	return s_ConvMgr;
 }
 
-bool CConvMgr::Initialized()
-{
-	if (m_bInitialized) return true;
-
-	m_vConvList.push_back(new CMs3dConv_Impl());
-
-	m_bInitialized = true;
-	return true;
-}
-
-bool CConvMgr::CanConvert(const tstring& strFile)
-{
-	// TODO: 
-	return true;
-}
-
 bool CConvMgr::DoConvert(const tstring& strFileIn, const tstring& strFileOut)
 {
-	// TODO: 
-	IBaseConv* pBaseConv = NULL;
 	for (TV_BASE_CONV::iterator it = m_vConvList.begin(); it != m_vConvList.end(); ++it)
 	{
-		// TODO: 
-		pBaseConv = (*it);
-		break;
+		IBaseConv* pConv = (*it);
+		if (pConv->CanConvert(strFileIn))
+		{
+			return pConv->DoConvert(strFileIn, strFileOut);
+		}
 	}
 
-	return pBaseConv->DoConvert(strFileIn, strFileOut);
+	return false;
 }

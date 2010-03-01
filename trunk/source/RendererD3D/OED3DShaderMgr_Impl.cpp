@@ -42,8 +42,8 @@ void COED3DShaderMgr_Impl::Destroy()
 IOEShader* COED3DShaderMgr_Impl::CreateShader(const VERT_DECL_ELEMENT* pElement, const tstring& strFile)
 {
 	// transform string to lower
-	tstring strLowName = strFile;
-	std::transform(strLowName.begin(), strLowName.end(), strLowName.begin(), tolower);
+	tstring strLowName;
+	COEOS::tolower(strLowName, strFile);
 
 	// find it first
 	IOEShader* pShaderFound = FindShader(strLowName);
@@ -156,22 +156,22 @@ bool COED3DShaderMgr_Impl::GetDefaultShaderFile(tstring& strOut, DEFAULT_SHADER_
 	{
 	case DST_LINE:
 		{
-			strOut = TS("line.fx");
+			strOut = TS("shader\\line.fx");
 		}
 		break;
 	case DST_POLYC:
 		{
-			strOut = TS("poly_color.fx");
+			strOut = TS("shader\\poly_color.fx");
 		}
 		break;
 	case DST_POLYT:
 		{
-			strOut = TS("poly_texture.fx");
+			strOut = TS("shader\\poly_texture.fx");
 		}
 		break;
 	case DST_POLY_UI:
 		{
-			strOut = TS("poly_ui.fx");
+			strOut = TS("shader\\poly_ui.fx");
 		}
 		break;
 	default:

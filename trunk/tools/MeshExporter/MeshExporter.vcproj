@@ -66,7 +66,7 @@
 				AdditionalDependencies="comctl32.lib rpcrt4.lib core.lib geom.lib maxutil.lib igame.lib"
 				OutputFile="$(OutDir)/MeshExporter_D.dle"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="..\..\lib;&quot;..\..\3rdsrc\wxMSW-2.8.10\lib\vc_lib&quot;"
+				AdditionalLibraryDirectories="&quot;..\..\3rdsrc\wxMSW-2.8.10\lib\vc_lib&quot;"
 				ModuleDefinitionFile="MeshExporter_D.def"
 				GenerateDebugInformation="true"
 				SubSystem="2"
@@ -96,6 +96,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
+				CommandLine="echo copy &quot;$(TargetPath)&quot; &quot;..\..\bin\tools\&quot;&#x0D;&#x0A;copy &quot;$(TargetPath)&quot; &quot;..\..\bin\tools\&quot;&#x0D;&#x0A;"
 			/>
 		</Configuration>
 		<Configuration
@@ -145,7 +146,7 @@
 				AdditionalDependencies="comctl32.lib rpcrt4.lib core.lib geom.lib maxutil.lib igame.lib"
 				OutputFile="$(OutDir)/MeshExporter.dle"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="..\..\lib;&quot;..\..\3rdsrc\wxMSW-2.8.10\lib\vc_lib&quot;"
+				AdditionalLibraryDirectories="&quot;..\..\3rdsrc\wxMSW-2.8.10\lib\vc_lib&quot;"
 				ModuleDefinitionFile="MeshExporter.def"
 				GenerateDebugInformation="true"
 				SubSystem="2"
@@ -176,6 +177,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
+				CommandLine="echo copy &quot;$(TargetPath)&quot; &quot;..\..\bin\tools\&quot;&#x0D;&#x0A;copy &quot;$(TargetPath)&quot; &quot;..\..\bin\tools\&quot;&#x0D;&#x0A;"
 			/>
 		</Configuration>
 		<Configuration
@@ -228,7 +230,7 @@
 				AdditionalDependencies="comctl32.lib rpcrt4.lib core.lib geom.lib maxutil.lib igame.lib"
 				OutputFile="$(OutDir)/MeshExporter_UD.dle"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="..\..\lib;&quot;..\..\3rdsrc\wxMSW-2.8.10\lib\vc_lib&quot;"
+				AdditionalLibraryDirectories="&quot;..\..\3rdsrc\wxMSW-2.8.10\lib\vc_lib&quot;"
 				ModuleDefinitionFile="MeshExporter_UD.def"
 				GenerateDebugInformation="true"
 				SubSystem="2"
@@ -257,6 +259,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
+				CommandLine="echo copy &quot;$(TargetPath)&quot; &quot;..\..\bin\tools\&quot;&#x0D;&#x0A;copy &quot;$(TargetPath)&quot; &quot;..\..\bin\tools\&quot;&#x0D;&#x0A;"
 			/>
 		</Configuration>
 		<Configuration
@@ -306,7 +309,7 @@
 				AdditionalDependencies="comctl32.lib rpcrt4.lib core.lib geom.lib maxutil.lib igame.lib"
 				OutputFile="$(OutDir)/MeshExporterU.dle"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="..\..\lib;&quot;..\..\3rdsrc\wxMSW-2.8.10\lib\vc_lib&quot;"
+				AdditionalLibraryDirectories="&quot;..\..\3rdsrc\wxMSW-2.8.10\lib\vc_lib&quot;"
 				ModuleDefinitionFile="MeshExporterU.def"
 				GenerateDebugInformation="true"
 				SubSystem="2"
@@ -337,6 +340,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
+				CommandLine="echo copy &quot;$(TargetPath)&quot; &quot;..\..\bin\tools\&quot;&#x0D;&#x0A;copy &quot;$(TargetPath)&quot; &quot;..\..\bin\tools\&quot;&#x0D;&#x0A;"
 			/>
 		</Configuration>
 	</Configurations>
@@ -365,7 +369,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\demo\common\wxInitHelper.cpp"
+				RelativePath="..\common\wxToolUtil.cpp"
 				>
 			</File>
 		</Filter>
@@ -395,7 +399,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\demo\common\wxInitHelper.h"
+				RelativePath="..\common\wxToolUtil.h"
 				>
 			</File>
 		</Filter>

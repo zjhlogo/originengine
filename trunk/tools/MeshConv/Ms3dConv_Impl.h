@@ -12,6 +12,7 @@
 #include "FmtMs3d.h"
 
 #include <OEFmtMesh.h>
+#include <OEFmtBone.h>
 
 #include <vector>
 
@@ -34,22 +35,6 @@ public:
 	} INDEX;
 	typedef std::vector<INDEX> TV_INDEX;
 
-	typedef std::vector<COEFmtMesh::BONE_FRAME> TV_BONE_FRAME;
-	typedef struct BONE_INFO_tag
-	{
-		tstring strName;
-		tstring strParentName;
-		int nIndex;
-		int nParentIndex;
-
-		float fTimeLength;
-		COEFmtMesh::BONE_TRANSFORM TransLocal;
-
-		int nNumBoneFrames;
-		TV_BONE_FRAME vBoneFrames;
-	} BONE_INFO;
-	typedef std::vector<BONE_INFO> TV_BONE_INFO;
-
 	typedef struct FILE_VERTEX_tag
 	{
 		float x, y, z;
@@ -58,11 +43,31 @@ public:
 		float fWeight[4];
 	} FILE_VERTEX;
 
+	typedef std::vector<COEFmtBone::FRAME_ROT> TV_FRAME_ROT;
+	typedef std::vector<COEFmtBone::FRAME_POS> TV_FRAME_POS;
+	typedef std::vector<COEFmtBone::FRAME_SCALE> TV_FRAME_SCALE;
+
+	typedef struct BONE_INFO_tag
+	{
+		tstring strName;
+		tstring strParentName;
+		int nIndex;
+		int nParentIndex;
+
+		float fTimeLength;
+		CMatrix4x4 matLocal;
+
+		TV_FRAME_ROT vFrameRot;
+		TV_FRAME_POS vFramePos;
+		TV_FRAME_SCALE vFrameScale;
+	} BONE_INFO;
+	typedef std::vector<BONE_INFO> TV_BONE_INFO;
+
 public:
 	CMs3dConv_Impl();
 	virtual ~CMs3dConv_Impl();
 
-	virtual bool CanConvert(const tstring& strFileExt);
+	virtual bool CanConvert(const tstring& strFile);
 	virtual bool DoConvert(const tstring& strFileIn, const tstring& strFileOut);
 
 private:
@@ -70,12 +75,13 @@ private:
 	void Destroy();
 
 	bool LoadFromFile(const tstring& strFile);
-	bool SaveToFile(const tstring& strFile);
+	bool SaveToMeshFile(const tstring& strFile);
+	bool SaveToBoneFile(const tstring& strFile);
 
-	void Ms3dRot2OERot(COEFmtMesh::BONE_TRANSFORM& TransOut, const float* rRot);
-	void Ms3dPos2OEPos(COEFmtMesh::BONE_TRANSFORM& TransOut, const float* vPos);
-	void Ms3dScale2OEScale(COEFmtMesh::BONE_TRANSFORM& TransOut);
-	void Ms3dTrans2OETrans(COEFmtMesh::BONE_TRANSFORM& TransOut, const float* rRot, const float* vPos);
+	void Ms3dRot2OERot(CQuaternion& qOut, const float* rRot);
+	void Ms3dPos2OEPos(CVector3& vOut, const float* vPos);
+	void Ms3dScale2OEScale(CVector3& vScale);
+	void Ms3dTrans2OETrans(CMatrix4x4& matOut, const float* rRot, const float* vPos);
 
 	int FindParentIndex(const TV_BONE_INFO& vBoneInfo, const tstring& strParentName);
 	void SetupParentBoneIndex(TV_BONE_INFO& vBoneInfo);

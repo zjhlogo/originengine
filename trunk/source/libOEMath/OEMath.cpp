@@ -188,33 +188,72 @@ void COEMath::BuildMatrixFromQuaternion(CMatrix4x4& matOut, const CQuaternion& q
 	matOut.m[15] = 1.0f;
 }
 
-void COEMath::BuildQuaternionFromEuler(CQuaternion& qOut, float fRoll, float fPitch, float fYaw)
+void COEMath::BuildMatrixFromEulerXYZ(CMatrix4x4& matOut, float x, float y, float z)
 {
-	//from : http://www.azure.com.cn
-	//根据欧拉转动计算四元数的变换如下:
-	//q = qyaw qpitch qroll
+	// 公式
+	// [  cy*cz              -cy*sz               sy         0.0f ]
+	// [  cz*sx*sy+cx*sz      cx*cz-sx*sy*sz     -cy*sx      0.0f ]
+	// [ -cx*cz*sy+sx*sz      cz*sx+cx*sy*sz      cx*cy      0.0f ]
+	// [  0.0f                0.0f                0.0f       1.0f ]
 
-	//其中
-	//qroll  = [cos(y/2), (sin(y/2), 0, 0)];
-	//qpitch = [cos(q/2), (0, sin(q/2), 0)];
-	//qyaw   = [cos(f/2), (0, 0, sin(f/2))];
+	float cx = cosf(x);
+	float cy = cosf(y);
+	float cz = cosf(z);
+	float sx = sinf(x);
+	float sy = sinf(y);
+	float sz = sinf(z);
 
-	//计算求四元数时使用到的所有三角值
-	float cr = cosf(fRoll / 2.0f);
-	float cp = cosf(fPitch / 2.0f);
-	float cy = cosf(fYaw / 2.0f);
+	matOut.m[0] = cy*cz;
+	matOut.m[1] = -cy*sz;
+	matOut.m[2] = sy;
+	matOut.m[3] = 0.0f;
 
-	float sr = sinf(fRoll / 2.0f);
-	float sp = sinf(fPitch / 2.0f);
-	float sy = sinf(fYaw / 2.0f);
-	float cpcy = cp * cy;
-	float spsy = sp * sy;
+	matOut.m[4] = cz*sx*sy + cx*sz;
+	matOut.m[5] = cx*cz - sx*sy*sz;
+	matOut.m[6] = -cy*sx;
+	matOut.m[7] = 0.0f;
+
+	matOut.m[8] = -cx*cz*sy + sx*sz;
+	matOut.m[9] = cz*sx + cx*sy*sz;
+	matOut.m[10] = cx*cy;
+	matOut.m[11] = 0.0f;
+
+	matOut.m[12] = 0.0f;
+	matOut.m[13] = 0.0f;
+	matOut.m[14] = 0.0f;
+	matOut.m[15] = 1.0f;
+}
+
+void COEMath::BuildQuaternionFromEulerXYZ(CQuaternion& qOut, float x, float y, float z)
+{
+	// from http://en.wikipedia.org/wiki/Conversion_between_quaternions_and_Euler_angles
+	// 根据欧拉角计算四元数的变换如下(四元数的连接顺序是从右到左):
+	// q = qz * qy * qx
+
+	// 其中
+	// qz = [ cos(z/2), [0, 0, sin(z/2)] ];
+	// qy = [ cos(y/2), [0, sin(y/2), 0] ];
+	// qx = [ cos(x/2), [sin(x/2), 0, 0] ];
+
+	// 结果
+	// q.w = [ cos(x/2)*cos(y/2)*cos(z/2) + sin(x/2)*sin(y/2)*sin(z/2) ]
+	// q.x = [ sin(x/2)*cos(y/2)*cos(z/2) - cos(x/2)*sin(y/2)*sin(z/2) ]
+	// q.y = [ cos(x/2)*sin(y/2)*cos(z/2) + sin(x/2)*cos(y/2)*sin(z/2) ]
+	// q.z = [ cos(x/2)*cos(y/2)*sin(z/2) - sin(x/2)*sin(y/2)*cos(z/2) ]
+
+	// 计算求四元数时使用到的所有三角值
+	float cx = cosf(x/2.0f);
+	float cy = cosf(y/2.0f);
+	float cz = cosf(z/2.0f);
+	float sx = sinf(x/2.0f);
+	float sy = sinf(y/2.0f);
+	float sz = sinf(z/2.0f);
 
 	//组合这些值,生成四元数的向量和w
-	qOut.x = sr*cpcy - cr*spsy;
-	qOut.y = cr*sp*cy + sr*cp*sy;
-	qOut.z = cr*cp*sy - sr*sp*cy;
-	qOut.w = cr*cpcy + sr*spsy;
+	qOut.w = cx*cy*cz + sx*sy*sz;
+	qOut.x = sx*cy*cz - cx*sy*sz;
+	qOut.y = cx*sy*cz + sx*cy*sz;
+	qOut.z = cx*cy*sz - sx*sy*cz;
 }
 
 void COEMath::VectorLerp(CVector3& vOut, const CVector3& v1, const CVector3& v2, float t)

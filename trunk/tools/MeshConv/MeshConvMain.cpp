@@ -9,11 +9,16 @@
 #include "ConvMgr.h"
 
 #include <OEOS.h>
+#include <iostream>
 
 bool CheckParameter(int argc, char** argv)
 {
-	// TODO: 
-	if (argc < 2) return false;
+	if (argc < 2)
+	{
+		std::cout << "usage: MeshConv.exe filename" << std::endl;
+		return false;
+	}
+
 	return true;
 }
 
@@ -28,21 +33,10 @@ int main(int argc, char** argv)
 	}
 
 	tstring strFileIn;
-	if (!COEOS::char2tchar(strFileIn, argv[1]))
-	{
-		COEOS::Terminate();
-		return 0;
-	}
-
-	if (!CConvMgr::Get().Initialized())
-	{
-		COEOS::Terminate();
-		return 0;
-	}
+	COEOS::char2tchar(strFileIn, argv[1]);
 
 	tstring strFileOut;
-	COEOS::GetFileName(strFileOut, strFileOut);
-	strFileOut += TS(".mesh");
+	COEOS::GetFileName(strFileOut, strFileIn);
 
 	CConvMgr::Get().DoConvert(strFileIn, strFileOut);
 

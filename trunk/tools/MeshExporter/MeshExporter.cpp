@@ -764,7 +764,7 @@ bool CMeshExporter::DumpController(BONE_INFO& BoneInfo, IGameNode* pGameNode)
 				assert(false);
 			}
 
-			COEMath::BuildQuaternionFromEuler(KeyFrame.qRot, KeyFrame.vRot.x, KeyFrame.vRot.y, KeyFrame.vRot.z);
+			COEMath::BuildQuaternionFromEulerXYZ(KeyFrame.qRot, KeyFrame.vRot.x, KeyFrame.vRot.y, KeyFrame.vRot.z);
 		}
 		else if (KeyFrame.nMask & KFM_QUAT)
 		{

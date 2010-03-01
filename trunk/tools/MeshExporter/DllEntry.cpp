@@ -8,22 +8,28 @@
 #include "DllEntry.h"
 #include "MeshExporterDesc.h"
 #include "resource.h"
-#include "../../demo/common/wxInitHelper.h"
+#include "../common/wxToolUtil.h"
 #include <OEOS.h>
+#include <wx/app.h>
+#include <wx/xrc/xmlres.h>
 
 static int g_nInitCount = 0;
+
+IMPLEMENT_APP_NO_MAIN(wxApp);
 
 static void Initialize(HINSTANCE hInstDLL)
 {
 	if (g_nInitCount <= 0)
 	{
 		InitCommonControls();
-		InitCustomControls(hInstDLL);
+		//InitCustomControls(hInstDLL);
 
 		COEOS::Initialize(COEOS::IS_FILE | COEOS::IS_XML);
 
-		wxInitHelper::Initialize(hInstDLL);
-		wxInitHelper::AddMemoryXrc(TS("XRC"), IDR_XRC_DLGMESHEXPORTEROPTION, TS("DlgMeshExporterOption.xrc"));
+		wxInitialize();
+		wxXmlResource::Get()->InitAllHandlers();
+
+		wxToolUtil::AddMemoryXrc(TS("XRC"), IDR_XRC_DLGMESHEXPORTEROPTION, TS("DlgMeshExporterOption.xrc"));
 	}
 
 	++g_nInitCount;
@@ -35,7 +41,7 @@ static void Uninitialize()
 
 	if (g_nInitCount <= 0)
 	{
-		wxInitHelper::Uninitialize();
+		wxUninitialize();
 		COEOS::Terminate();
 	}
 }

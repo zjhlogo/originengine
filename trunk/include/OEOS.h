@@ -57,7 +57,9 @@ public:
 	static bool strformat(tstring& strOut, const tchar* strFormat, ...);
 	static void toupper(tstring& strOut, const tstring& strIn);
 	static void tolower(tstring& strOut, const tstring& strIn);
+
 	static void GetFileName(tstring& strOut, const tstring& strIn);
+	static void GetFileExt(tstring& strOut, const tstring& strIn);
 
 	// file system relate
 	static OEFILE FileOpen(const tstring& strFile, const tstring& strOption);
