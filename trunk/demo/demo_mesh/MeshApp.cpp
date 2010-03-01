@@ -42,7 +42,7 @@ bool CMeshApp::Initialize()
 	m_pCamera = new CCamera();
 	if (!m_pCamera) return false;
 
-	m_pModel = g_pOEResMgr->CreateModel(TS("media\\Model.xml"));
+	m_pModel = g_pOEResMgr->CreateModel(TS("Model.xml"));
 	if (!m_pModel) return false;
 
 	// registe message

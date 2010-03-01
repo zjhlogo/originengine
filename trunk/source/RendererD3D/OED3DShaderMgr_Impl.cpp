@@ -42,11 +42,11 @@ void COED3DShaderMgr_Impl::Destroy()
 IOEShader* COED3DShaderMgr_Impl::CreateShader(const VERT_DECL_ELEMENT* pElement, const tstring& strFile)
 {
 	// transform string to lower
-	tstring strLowName;
-	COEOS::tolower(strLowName, strFile);
+	tstring strFilePath;
+	if (!GetShaderFilePath(strFilePath, strFile)) return NULL;
 
 	// find it first
-	IOEShader* pShaderFound = FindShader(strLowName);
+	IOEShader* pShaderFound = FindShader(strFilePath);
 	if (pShaderFound)
 	{
 		pShaderFound->IncRef();
@@ -54,15 +54,15 @@ IOEShader* COED3DShaderMgr_Impl::CreateShader(const VERT_DECL_ELEMENT* pElement,
 	}
 
 	// not found, create new
-	COED3DShader_Impl* pShader = new COED3DShader_Impl(pElement, strLowName);
+	COED3DShader_Impl* pShader = new COED3DShader_Impl(pElement, strFilePath);
 	if (!pShader || !pShader->IsOK())
 	{
-		LOGOUT(TS("IOEShaderMgr::CreateShader Failed \"%s\""), strFile.c_str());
+		LOGOUT(TS("IOEShaderMgr::CreateShader Failed \"%s\""), strFilePath.c_str());
 		SAFE_RELEASE(pShader);
 		return NULL;
 	}
 
-	m_ShaderMap.insert(std::make_pair(strLowName, pShader));
+	m_ShaderMap.insert(std::make_pair(strFilePath, pShader));
 	return pShader;
 }
 
@@ -80,13 +80,13 @@ IOEShader* COED3DShaderMgr_Impl::CreateDefaultShader(DEFAULT_SHADER_TYPE eType)
 	const VERT_DECL_ELEMENT* pElement = GetDefaultVertDecl(eType);
 	if (!pElement) return NULL;
 
-	tstring strFile;
-	if (!GetDefaultShaderFile(strFile, eType)) return NULL;
+	tstring strFilePath;
+	if (!GetDefaultShaderFile(strFilePath, eType)) return NULL;
 
-	COED3DShader_Impl* pShader = new COED3DShader_Impl(pElement, strFile);
+	COED3DShader_Impl* pShader = new COED3DShader_Impl(pElement, strFilePath);
 	if (!pShader || !pShader->IsOK())
 	{
-		LOGOUT(TS("IOEShaderMgr::CreateDefaultShader Failed \"%s\""), strFile.c_str());
+		LOGOUT(TS("IOEShaderMgr::CreateDefaultShader Failed \"%s\""), strFilePath.c_str());
 		SAFE_RELEASE(pShader);
 		return NULL;
 	}
@@ -95,9 +95,19 @@ IOEShader* COED3DShaderMgr_Impl::CreateDefaultShader(DEFAULT_SHADER_TYPE eType)
 	return m_pDefaultShader[eType];
 }
 
-IOEShader* COED3DShaderMgr_Impl::FindShader(const tstring& strLowerFile)
+void COED3DShaderMgr_Impl::SetDefaultDir(const tstring& strDir)
 {
-	SHADER_MAP::iterator itfound = m_ShaderMap.find(strLowerFile);
+	m_strDefaultDir = strDir;
+}
+
+const tstring& COED3DShaderMgr_Impl::GetDefaultDir()
+{
+	return m_strDefaultDir;
+}
+
+IOEShader* COED3DShaderMgr_Impl::FindShader(const tstring& strFilePath)
+{
+	SHADER_MAP::iterator itfound = m_ShaderMap.find(strFilePath);
 	if (itfound != m_ShaderMap.end()) return itfound->second;
 
 	return NULL;
@@ -152,40 +162,29 @@ const VERT_DECL_ELEMENT* COED3DShaderMgr_Impl::GetDefaultVertDecl(DEFAULT_SHADER
 
 bool COED3DShaderMgr_Impl::GetDefaultShaderFile(tstring& strOut, DEFAULT_SHADER_TYPE eType)
 {
-	switch (eType)
+	static const tstring s_DefaultShader[DST_NUM] =
 	{
-	case DST_LINE:
-		{
-			strOut = TS("shader\\line.fx");
-		}
-		break;
-	case DST_POLYC:
-		{
-			strOut = TS("shader\\poly_color.fx");
-		}
-		break;
-	case DST_POLYT:
-		{
-			strOut = TS("shader\\poly_texture.fx");
-		}
-		break;
-	case DST_POLY_UI:
-		{
-			strOut = TS("shader\\poly_ui.fx");
-		}
-		break;
-	default:
-		{
-			return false;
-		}
-		break;
-	}
+		TS(""),
+		TS("line.fx"),
+		TS("poly_color.fx"),
+		TS("poly_texture.fx"),
+		TS("poly_ui.fx"),
+	};
+	assert(DST_NUM == 5);
 
-	return true;
+	if (eType <= 0 || eType >= DST_NUM) return false;
+	return GetShaderFilePath(strOut, s_DefaultShader[eType]);
 }
 
 IOEShader* COED3DShaderMgr_Impl::FindDefaultShader(DEFAULT_SHADER_TYPE eType)
 {
-	if (eType < 0 && eType >= DST_NUM) return NULL;
+	if (eType <= 0 && eType >= DST_NUM) return NULL;
 	return m_pDefaultShader[eType];
+}
+
+bool COED3DShaderMgr_Impl::GetShaderFilePath(tstring& strFilePathOut, const tstring& strFile)
+{
+	strFilePathOut = m_strDefaultDir + TS("\\") + strFile;
+	COEOS::tolower(strFilePathOut, strFilePathOut);
+	return true;
 }

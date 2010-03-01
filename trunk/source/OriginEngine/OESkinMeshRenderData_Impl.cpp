@@ -29,6 +29,7 @@ COESkinMeshRenderData_Impl::~COESkinMeshRenderData_Impl()
 bool COESkinMeshRenderData_Impl::Init()
 {
 	m_pMesh = NULL;
+	m_pBones = NULL;
 	m_fAnimLength = 0.0f;
 	m_fTotalTime = 0.0f;
 	return true;
@@ -63,9 +64,9 @@ IOEMesh* COESkinMeshRenderData_Impl::GetMesh()
 	return m_pMesh;
 }
 
-TV_BONE& COESkinMeshRenderData_Impl::GetBones()
+IOEBones* COESkinMeshRenderData_Impl::GetBones()
 {
-	return m_vBones;
+	return m_pBones;
 }
 
 TV_MATRIX& COESkinMeshRenderData_Impl::GetSkinMatrix()
@@ -112,17 +113,17 @@ bool COESkinMeshRenderData_Impl::CreateBone(const tstring& strFile)
 {
 	DestroyBone();
 
-	bool bOK = g_pOEResMgr->CreateBones(m_vBones, strFile);
-	if (!bOK) return false;
+	m_pBones = g_pOEResMgr->CreateBones(strFile);
+	if (!m_pBones) return false;
 
-	for (TV_BONE::iterator it = m_vBones.begin(); it != m_vBones.end(); ++it)
+	int nBonesCount = m_pBones->GetBonesCount();
+	for (int i = 0; i < nBonesCount; ++i)
 	{
-		IOEBone* pBone = (*it);
+		IOEBone* pBone = m_pBones->GetBone(i);
 		if (m_fAnimLength < pBone->GetTimeLength()) m_fAnimLength = pBone->GetTimeLength();
 	}
 
-	m_vmatSkin.resize(m_vBones.size());
-
+	m_vmatSkin.resize(nBonesCount);
 	return true;
 }
 
@@ -153,7 +154,7 @@ void COESkinMeshRenderData_Impl::DestroyMesh()
 
 void COESkinMeshRenderData_Impl::DestroyBone()
 {
-	g_pOEResMgr->DestroyBones(m_vBones);
+	SAFE_RELEASE(m_pBones);
 	m_fAnimLength = 0.0f;
 }
 

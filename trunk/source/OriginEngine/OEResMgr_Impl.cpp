@@ -8,15 +8,13 @@
 #include "OEResMgr_Impl.h"
 #include "OEModel_Impl.h"
 #include "OEMesh_Impl.h"
-#include "OEPiece_Impl.h"
-#include "OEBone_Impl.h"
+#include "OEBones_Impl.h"
 
 #include <IOELogFileMgr.h>
 #include <IOEFileMgr.h>
 #include <IOETextureMgr.h>
 #include <IOEShaderMgr.h>
 #include <OEFmtMesh.h>
-#include <OEFmtBone.h>
 #include <assert.h>
 
 COEResMgr_Impl::COEResMgr_Impl()
@@ -40,19 +38,19 @@ bool COEResMgr_Impl::Init()
 
 void COEResMgr_Impl::Destroy()
 {
-	// TODO: check m_MeshMap whether is empty, and logout
+	// TODO: check m_MeshMap/m_BonesMap whether is empty, and logout
 }
 
 IOEModel* COEResMgr_Impl::CreateModel(const tstring& strFile)
 {
-	// transform string to lower
-	tstring strLowName;
-	COEOS::tolower(strLowName, strFile);
+	// get file path
+	tstring strFilePath;
+	if (!GetMediaFilePath(strFilePath, strFile)) return NULL;
 
-	COEModel_Impl* pModel = new COEModel_Impl(strLowName);
+	COEModel_Impl* pModel = new COEModel_Impl(strFilePath);
 	if (!pModel || !pModel->IsOK())
 	{
-		LOGOUT(TS("IOEModelMgr::CreateModel Failed"));
+		LOGOUT(TS("IOEModelMgr::CreateModel Failed %s"), strFilePath.c_str());
 		SAFE_DELETE(pModel);
 		return NULL;
 	}
@@ -62,12 +60,12 @@ IOEModel* COEResMgr_Impl::CreateModel(const tstring& strFile)
 
 IOEMesh* COEResMgr_Impl::CreateMesh(const tstring& strFile)
 {
-	// transform string to lower
-	tstring strLowName;
-	COEOS::tolower(strLowName, strFile);
+	// get file path
+	tstring strFilePath;
+	if (!GetMediaFilePath(strFilePath, strFile)) return NULL;
 
 	// check whether the mesh created
-	MESH_MAP::iterator itfound = m_MeshMap.find(strLowName);
+	TM_MESH::iterator itfound = m_MeshMap.find(strFilePath);
 	if (itfound != m_MeshMap.end())
 	{
 		IOEMesh* pMesh = itfound->second;
@@ -76,147 +74,44 @@ IOEMesh* COEResMgr_Impl::CreateMesh(const tstring& strFile)
 	}
 
 	// create new
-	COEMesh_Impl* pMesh = new COEMesh_Impl(strLowName);
+	COEMesh_Impl* pMesh = new COEMesh_Impl(strFilePath);
 	if (!pMesh || !pMesh->IsOK())
 	{
-		LOGOUT(TS("IOEMeshMgr::CreateMesh Failed"));
+		LOGOUT(TS("IOEMeshMgr::CreateMesh Failed %s"), strFilePath.c_str());
 		SAFE_RELEASE(pMesh);
 		return NULL;
 	}
 
-	m_MeshMap.insert(std::make_pair(strLowName, pMesh));
-
+	m_MeshMap.insert(std::make_pair(strFilePath, pMesh));
 	return pMesh;
 }
 
-bool COEResMgr_Impl::CreatePieces(TV_PIECE& vPiecesOut, const tstring& strFile)
+IOEBones* COEResMgr_Impl::CreateBones(const tstring& strFile)
 {
-	// transform string to lower
-	tstring strLowName;
-	COEOS::tolower(strLowName, strFile);
+	// get file path
+	tstring strFilePath;
+	if (!GetMediaFilePath(strFilePath, strFile)) return NULL;
 
-	vPiecesOut.clear();
-
-	IOEFile* pFile = g_pOEFileMgr->OpenFile(strLowName);
-	if (!pFile) return false;
-
-	COEFmtMesh::FILE_HEADER Header;
-	pFile->Read(&Header, sizeof(Header));
-
-	if (Header.nMagicNumber != COEFmtMesh::MAGIC_NUMBER
-		|| Header.nVersion != COEFmtMesh::CURRENT_VERSION)
+	// check whether the bones created
+	TM_BONES::iterator itfound = m_BonesMap.find(strFilePath);
+	if (itfound != m_BonesMap.end())
 	{
-		SAFE_RELEASE(pFile);
-		return false;
+		IOEBones* pBones = itfound->second;
+		pBones->IncRef();
+		return pBones;
 	}
 
-	// read piece info
-	std::vector<COEFmtMesh::PIECE> vPieces;
-	if (Header.nNumPieces > 0)
+	// create new
+	COEBones_Impl* pBones = new COEBones_Impl(strFilePath);
+	if (!pBones || !pBones->IsOK())
 	{
-		vPieces.resize(Header.nNumPieces);
-		pFile->Read(&vPieces[0], sizeof(COEFmtMesh::PIECE)*Header.nNumPieces);
+		LOGOUT(TS("IOEMeshMgr::CreateMesh Failed %s"), strFilePath.c_str());
+		SAFE_RELEASE(pBones);
+		return NULL;
 	}
 
-	// create pieces
-	for (int i = 0; i < Header.nNumPieces; ++i)
-	{
-		COEPiece_Impl* pPiece = new COEPiece_Impl(vPieces[i], pFile);
-		if (!pPiece || !pPiece->IsOK())
-		{
-			SAFE_RELEASE(pFile);
-			DestroyPieces(vPiecesOut);
-			return false;
-		}
-		vPiecesOut.push_back(pPiece);
-	}
-
-	SAFE_RELEASE(pFile);
-	return true;
-}
-
-void COEResMgr_Impl::DestroyPieces(TV_PIECE& vPieces)
-{
-	for (TV_PIECE::iterator it = vPieces.begin(); it != vPieces.end(); ++it)
-	{
-		IOEPiece* pPiece = (*it);
-		SAFE_RELEASE(pPiece);
-	}
-	vPieces.clear();
-}
-
-bool COEResMgr_Impl::CreateBones(TV_BONE& vBonesOut, const tstring& strFile)
-{
-	// transform string to lower
-	tstring strLowName;
-	COEOS::tolower(strLowName, strFile);
-
-	vBonesOut.clear();
-
-	IOEFile* pFile = g_pOEFileMgr->OpenFile(strLowName);
-	if (!pFile) return false;
-
-	COEFmtBone::FILE_HEADER Header;
-	pFile->Read(&Header, sizeof(Header));
-
-	if (Header.nMagicNumber != COEFmtBone::MAGIC_NUMBER
-		|| Header.nVersion != COEFmtBone::CURRENT_VERSION)
-	{
-		SAFE_RELEASE(pFile);
-		return false;
-	}
-
-	// read bone info
-	std::vector<COEFmtBone::BONE> vBones;
-	if (Header.nNumBones > 0)
-	{
-		vBones.resize(Header.nNumBones);
-		pFile->Read(&vBones[0], sizeof(COEFmtBone::BONE)*Header.nNumBones);
-	}
-
-	// create bones
-	for (int i = 0; i < Header.nNumBones; ++i)
-	{
-		COEBone_Impl* pBone = new COEBone_Impl(vBones[i], i, pFile);
-		if (!pBone || !pBone->IsOK())
-		{
-			SAFE_RELEASE(pFile);
-			DestroyBones(vBonesOut);
-			return false;
-		}
-		vBonesOut.push_back(pBone);
-	}
-
-	SAFE_RELEASE(pFile);
-
-	// build bone matrix
-	for (int i = 0; i < Header.nNumBones; ++i)
-	{
-		int nParentID = vBonesOut[i]->GetParentID();
-		if (nParentID != COEFmtBone::INVALID_BONE_ID)
-		{
-			COEBone_Impl* pCurrBone = (COEBone_Impl*)vBonesOut[i];
-			COEBone_Impl* pParentBone = (COEBone_Impl*)vBonesOut[nParentID];
-
-			pCurrBone->SetWorldMatrix(pCurrBone->GetLocalMatrix() * pParentBone->GetWorldMatrix());
-		}
-		else
-		{
-			COEBone_Impl* pCurrBone = (COEBone_Impl*)vBonesOut[i];
-			pCurrBone->SetWorldMatrix(pCurrBone->GetLocalMatrix());
-		}
-	}
-
-	return true;
-}
-
-void COEResMgr_Impl::DestroyBones(TV_BONE& vBones)
-{
-	for (TV_BONE::iterator it = vBones.begin(); it != vBones.end(); ++it)
-	{
-		SAFE_RELEASE(*it);
-	}
-	vBones.clear();
+	m_BonesMap.insert(std::make_pair(strFilePath, pBones));
+	return pBones;
 }
 
 bool COEResMgr_Impl::CreateMaterial(MATERIAL& MaterialOut, IOEXmlNode* pXmlMaterial)
@@ -261,6 +156,16 @@ void COEResMgr_Impl::DestroyMaterial(MATERIAL& Material)
 	SAFE_RELEASE(Material.pTexDiffuse);
 	SAFE_RELEASE(Material.pTexNormal);
 	EmptyMaterial(Material);
+}
+
+void COEResMgr_Impl::SetDefaultDir(const tstring& strDir)
+{
+	m_strDefaultDir = strDir;
+}
+
+const tstring& COEResMgr_Impl::GetDefaultDir()
+{
+	return m_strDefaultDir;
 }
 
 void COEResMgr_Impl::EmptyMaterial(MATERIAL& MaterialOut)
@@ -354,3 +259,11 @@ IOEShader* COEResMgr_Impl::CreateShaderFromVertDecl(int nVertDecl, const tstring
 
 	return g_pOEShaderMgr->CreateShader(&vDecl[0], strFile);
 }
+
+bool COEResMgr_Impl::GetMediaFilePath(tstring& strFilePathOut, const tstring& strFile)
+{
+	strFilePathOut = m_strDefaultDir + TS("\\") + strFile;
+	COEOS::tolower(strFilePathOut, strFilePathOut);
+	return true;
+}
+

@@ -14,21 +14,27 @@
 class COEUIFontMgr_Impl : public IOEUIFontMgr
 {
 public:
-	typedef std::map<tstring, IOEUIFont*> UIFONT_MAP;
+	typedef std::map<tstring, IOEUIFont*> TM_FONT;
 
 public:
 	COEUIFontMgr_Impl();
 	virtual ~COEUIFontMgr_Impl();
 
-	virtual IOEUIFont* CreateFont(const tstring& strFileName);
-	virtual IOEUIFont* CreateBitmapFont(const tstring& strFileName);
+	virtual IOEUIFont* CreateFont(const tstring& strFile);
+	virtual IOEUIFont* CreateBitmapFont(const tstring& strFile);
+
+	virtual void SetDefaultDir(const tstring& strDir);
+	virtual const tstring& GetDefaultDir();
 
 private:
 	bool Init();
 	void Destroy();
 
+	bool GetFontFilePath(tstring& strFilePathOut, const tstring& strFile);
+
 private:
-	UIFONT_MAP m_UIFontMap;
+	TM_FONT m_FontMap;
+	tstring m_strDefaultDir;
 
 };
 #endif // __OEUIFONTMGR_IMPL_H__

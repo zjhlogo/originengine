@@ -34,13 +34,13 @@ bool COESkinMeshControl_Impl::Update(IOERenderData* pRenderData, float fDetailTi
 
 	pData->SetTotalTime(fTotalTime);
 
-	TV_BONE& vBones = pData->GetBones();
+	IOEBones* pBones = pData->GetBones();
 	TV_MATRIX& vSkinMatrix = pData->GetSkinMatrix();
 
-	int nNumBones = (int)vBones.size();
+	int nNumBones = (int)pBones->GetBonesCount();
 	for (int i = 0; i < nNumBones; ++i)
 	{
-		IOEBone* pBone = vBones[i];
+		IOEBone* pBone = pBones->GetBone(i);
 
 		if (fTotalTime > pBone->GetTimeLength())
 		{
@@ -60,7 +60,7 @@ bool COESkinMeshControl_Impl::Update(IOERenderData* pRenderData, float fDetailTi
 
 	for (int i = 0; i < nNumBones; ++i)
 	{
-		IOEBone* pBone = vBones[i];
+		IOEBone* pBone = pBones->GetBone(i);
 		vSkinMatrix[i] = pBone->GetWorldMatrixInv()*vSkinMatrix[i];
 	}
 

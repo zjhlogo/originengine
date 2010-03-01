@@ -17,8 +17,11 @@ public:
 	IOEUIFontMgr() {};
 	virtual ~IOEUIFontMgr() {};
 
-	virtual IOEUIFont* CreateFont(const tstring& strFileName) = 0;
-	virtual IOEUIFont* CreateBitmapFont(const tstring& strFileName) = 0;
+	virtual IOEUIFont* CreateFont(const tstring& strFile) = 0;
+	virtual IOEUIFont* CreateBitmapFont(const tstring& strFile) = 0;
+
+	virtual void SetDefaultDir(const tstring& strDir) = 0;
+	virtual const tstring& GetDefaultDir() = 0;
 
 };
 

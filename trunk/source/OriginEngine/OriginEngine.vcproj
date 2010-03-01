@@ -335,6 +335,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\OEBones_Impl.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\OEConfigFileMgr_Impl.cpp"
 				>
 			</File>
@@ -394,6 +398,10 @@
 			>
 			<File
 				RelativePath=".\OEBone_Impl.h"
+				>
+			</File>
+			<File
+				RelativePath=".\OEBones_Impl.h"
 				>
 			</File>
 			<File
@@ -458,6 +466,10 @@
 			</File>
 			<File
 				RelativePath="..\..\include\IOEBone.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\include\IOEBones.h"
 				>
 			</File>
 			<File

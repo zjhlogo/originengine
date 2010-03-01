@@ -6,11 +6,14 @@
  * \author zjhlogo (zjhlogo@163.com)
  */
 #include "OEMesh_Impl.h"
+#include "OEPiece_Impl.h"
+#include <IOEFileMgr.h>
+#include <OEFmtMesh.h>
 
 COEMesh_Impl::COEMesh_Impl(const tstring& strFile)
 {
 	Init();
-	m_bOK = Create(strFile);
+	m_bOK = CreatePieces(strFile);
 }
 
 COEMesh_Impl::~COEMesh_Impl()
@@ -25,7 +28,7 @@ void COEMesh_Impl::Init()
 
 void COEMesh_Impl::Destroy()
 {
-	g_pOEResMgr->DestroyPieces(m_vPiece);
+	DestroyPieces();
 }
 
 int COEMesh_Impl::GetNumPieces() const
@@ -49,10 +52,54 @@ IOEPiece* COEMesh_Impl::FindPiece(const tstring& strName) const
 	return NULL;
 }
 
-bool COEMesh_Impl::Create(const tstring& strFile)
+bool COEMesh_Impl::CreatePieces(const tstring& strFile)
 {
-	bool bOK = g_pOEResMgr->CreatePieces(m_vPiece, strFile);
-	if (!bOK) return false;
+	DestroyPieces();
 
+	IOEFile* pFile = g_pOEFileMgr->OpenFile(strFile);
+	if (!pFile) return false;
+
+	COEFmtMesh::FILE_HEADER Header;
+	pFile->Read(&Header, sizeof(Header));
+
+	if (Header.nMagicNumber != COEFmtMesh::MAGIC_NUMBER
+		|| Header.nVersion != COEFmtMesh::CURRENT_VERSION)
+	{
+		SAFE_RELEASE(pFile);
+		return false;
+	}
+
+	// read piece info
+	std::vector<COEFmtMesh::PIECE> vPieces;
+	if (Header.nNumPieces > 0)
+	{
+		vPieces.resize(Header.nNumPieces);
+		pFile->Read(&vPieces[0], sizeof(COEFmtMesh::PIECE)*Header.nNumPieces);
+	}
+
+	// create pieces
+	for (int i = 0; i < Header.nNumPieces; ++i)
+	{
+		COEPiece_Impl* pPiece = new COEPiece_Impl(vPieces[i], pFile);
+		if (!pPiece || !pPiece->IsOK())
+		{
+			SAFE_RELEASE(pFile);
+			DestroyPieces();
+			return false;
+		}
+		m_vPiece.push_back(pPiece);
+	}
+
+	SAFE_RELEASE(pFile);
 	return true;
+}
+
+void COEMesh_Impl::DestroyPieces()
+{
+	for (TV_PIECE::iterator it = m_vPiece.begin(); it != m_vPiece.end(); ++it)
+	{
+		IOEPiece* pPiece = (*it);
+		SAFE_RELEASE(pPiece);
+	}
+	m_vPiece.clear();
 }

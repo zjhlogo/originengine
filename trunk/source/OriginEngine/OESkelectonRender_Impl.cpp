@@ -11,6 +11,7 @@
 #include <IOERenderSystem.h>
 #include <OERenderSystemUtil.h>
 #include <OEFmtBone.h>
+#include <assert.h>
 
 COESkelectonRender_Impl::COESkelectonRender_Impl()
 :IOERender(OERT_SKELECTON)
@@ -44,13 +45,14 @@ bool COESkelectonRender_Impl::Render(IOERenderData* pRenderData)
 	m_vVerts.clear();
 	m_vIndis.clear();
 
-	const TV_BONE& vBones = pData->GetBones();
+	IOEBones* pBones = pData->GetBones();
 	const TV_MATRIX& vmatSkins = pData->GetSkinMatrix();
 
-	for (TV_BONE::const_iterator it = vBones.begin(); it != vBones.end(); ++it)
+	int nNumBones = pBones->GetBonesCount();
+	for (int i = 0; i < nNumBones; ++i)
 	{
-		IOEBone* pBone = (*it);
-		BuildBoneVerts(m_vVerts, m_vIndis, vBones, vmatSkins, pBone->GetID(), pBone->GetParentID());
+		IOEBone* pBone = pBones->GetBone(i);
+		BuildBoneVerts(m_vVerts, m_vIndis, pBones, vmatSkins, pBone->GetID(), pBone->GetParentID());
 	}
 
 	CDefaultRenderState DefaultState;
@@ -73,11 +75,13 @@ COESkinMeshRenderData_Impl* COESkelectonRender_Impl::ConvertData(IOERenderData* 
 	return (COESkinMeshRenderData_Impl*)pRenderData;
 }
 
-bool COESkelectonRender_Impl::BuildBoneVerts(TV_VERTEX& vVertsOut, TV_SHORT& vIndisOut, const TV_BONE& vBones, const TV_MATRIX& vmatSkins, int nBoneID, int nParentBoneID)
+bool COESkelectonRender_Impl::BuildBoneVerts(TV_VERTEX& vVertsOut, TV_SHORT& vIndisOut, IOEBones* pBones, const TV_MATRIX& vmatSkins, int nBoneID, int nParentBoneID)
 {
 	if (nParentBoneID == COEFmtBone::INVALID_BONE_ID) return false;
 
-	CMatrix4x4 matSkin = vBones[nBoneID]->GetWorldMatrix() * vmatSkins[nBoneID];
+	IOEBone* pBone = pBones->GetBone(nBoneID);
+	assert(pBone);
+	CMatrix4x4 matSkin = pBone->GetWorldMatrix() * vmatSkins[nBoneID];
 	VERTEX Vertex;
 	Vertex.x = matSkin.m[12];
 	Vertex.y = matSkin.m[13];
@@ -88,7 +92,9 @@ bool COESkelectonRender_Impl::BuildBoneVerts(TV_VERTEX& vVertsOut, TV_SHORT& vIn
 	vVertsOut.push_back(Vertex);
 	vIndisOut.push_back(nSelfIndex);
 
-	matSkin = vBones[nParentBoneID]->GetWorldMatrix() * vmatSkins[nParentBoneID];
+	IOEBone* pBoneParent = pBones->GetBone(nParentBoneID);
+	assert(pBoneParent);
+	matSkin = pBoneParent->GetWorldMatrix() * vmatSkins[nParentBoneID];
 	Vertex.x = matSkin.m[12];
 	Vertex.y = matSkin.m[13];
 	Vertex.z = matSkin.m[14];
