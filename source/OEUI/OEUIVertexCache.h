@@ -10,6 +10,7 @@
 
 #include <IOEVertDecl.h>
 #include <IOETexture.h>
+#include <IOEShader.h>
 
 class COEUIVertexCache
 {

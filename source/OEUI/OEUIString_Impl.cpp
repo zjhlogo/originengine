@@ -6,7 +6,7 @@
  * \author zjhlogo (zjhlogo@163.com)
  */
 #include "OEUIString_Impl.h"
-#include "OEBaseTypeEx.h"
+#include <OEBaseTypeEx.h>
 #include <OEUI/IOEUIRenderSystem.h>
 
 COEUIString_Impl::COEUIString_Impl(IOEUIFont* pFont)

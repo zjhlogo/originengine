@@ -6,7 +6,7 @@
  * \author zjhlogo (zjhlogo@163.com)
  */
 #include "OESkinMeshControl_Impl.h"
-#include <OEFmtBone.h>
+#include <OEFmtSkeleton.h>
 
 COESkinMeshControl_Impl::COESkinMeshControl_Impl()
 :IOEControl(OECT_SKINMESH)
@@ -34,13 +34,13 @@ bool COESkinMeshControl_Impl::Update(IOERenderData* pRenderData, float fDetailTi
 
 	pData->SetTotalTime(fTotalTime);
 
-	IOEBones* pBones = pData->GetBones();
-	TV_MATRIX& vSkinMatrix = pData->GetSkinMatrix();
+	IOESkeleton* pSkeleton = pData->GetSkeleton();
+	TV_MATRIX4X4& vSkinMatrix = pData->GetSkinMatrix();
 
-	int nNumBones = (int)pBones->GetBonesCount();
+	int nNumBones = (int)pSkeleton->GetBonesCount();
 	for (int i = 0; i < nNumBones; ++i)
 	{
-		IOEBone* pBone = pBones->GetBone(i);
+		IOEBone* pBone = pSkeleton->GetBone(i);
 
 		if (fTotalTime > pBone->GetTimeLength())
 		{
@@ -52,7 +52,7 @@ bool COESkinMeshControl_Impl::Update(IOERenderData* pRenderData, float fDetailTi
 		}
 
 		int nParentID = pBone->GetParentID();
-		if (nParentID != COEFmtBone::INVALID_BONE_ID)
+		if (nParentID != COEFmtSkeleton::INVALID_BONE_ID)
 		{
 			vSkinMatrix[i] *= vSkinMatrix[nParentID];
 		}
@@ -60,7 +60,7 @@ bool COESkinMeshControl_Impl::Update(IOERenderData* pRenderData, float fDetailTi
 
 	for (int i = 0; i < nNumBones; ++i)
 	{
-		IOEBone* pBone = pBones->GetBone(i);
+		IOEBone* pBone = pSkeleton->GetBone(i);
 		vSkinMatrix[i] = pBone->GetWorldMatrixInv()*vSkinMatrix[i];
 	}
 

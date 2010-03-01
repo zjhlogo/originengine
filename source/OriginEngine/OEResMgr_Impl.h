@@ -15,7 +15,7 @@ class COEResMgr_Impl : public IOEResMgr
 {
 public:
 	typedef std::map<tstring, IOEMesh*> TM_MESH;
-	typedef std::map<tstring, IOEBones*> TM_BONES;
+	typedef std::map<tstring, IOESkeleton*> TM_BONES;
 
 public:
 	COEResMgr_Impl();
@@ -23,10 +23,8 @@ public:
 
 	virtual IOEModel* CreateModel(const tstring& strFile);
 	virtual IOEMesh* CreateMesh(const tstring& strFile);
-	virtual IOEBones* CreateBones(const tstring& strFile);
-
-	virtual bool CreateMaterial(MATERIAL& MaterialOut, IOEXmlNode* pXmlMaterial);
-	virtual void DestroyMaterial(MATERIAL& Material);
+	virtual IOESkeleton* CreateSkeleton(const tstring& strFile);
+	virtual IOEMaterial* CreateMaterial(IOEXmlNode* pXmlMaterial);
 
 	virtual void SetDefaultDir(const tstring& strDir);
 	virtual const tstring& GetDefaultDir();
@@ -34,9 +32,6 @@ public:
 private:
 	bool Init();
 	void Destroy();
-
-	void EmptyMaterial(MATERIAL& MaterialOut);
-	IOEShader* CreateShaderFromVertDecl(int nVertDecl, const tstring& strFile);
 
 	bool GetMediaFilePath(tstring& strFilePathOut, const tstring& strFile);
 

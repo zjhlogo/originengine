@@ -1,30 +1,30 @@
 /*!
- * \file OESkelectonRender_Impl.cpp
- * \date 14-2-2010 8:56:13
+ * \file OESkeletonRender_Impl.cpp
+ * \date 1-3-2010 19:23:47
  * 
  * 
  * \author zjhlogo (zjhlogo@163.com)
  */
-#include "OESkelectonRender_Impl.h"
-#include "OEBaseTypeEx.h"
+#include "OESkeletonRender_Impl.h"
+
 #include <IOEShaderMgr.h>
 #include <IOERenderSystem.h>
 #include <OERenderSystemUtil.h>
-#include <OEFmtBone.h>
+#include <OEFmtSkeleton.h>
 #include <assert.h>
 
-COESkelectonRender_Impl::COESkelectonRender_Impl()
-:IOERender(OERT_SKELECTON)
+COESkeletonRender_Impl::COESkeletonRender_Impl()
+:IOERender(OERT_SKELETON)
 {
 	m_bOK = Init();
 }
 
-COESkelectonRender_Impl::~COESkelectonRender_Impl()
+COESkeletonRender_Impl::~COESkeletonRender_Impl()
 {
 	Destroy();
 }
 
-bool COESkelectonRender_Impl::Init()
+bool COESkeletonRender_Impl::Init()
 {
 	m_pShader = g_pOEShaderMgr->CreateDefaultShader(DST_LINE);
 	if (!m_pShader) return false;
@@ -32,12 +32,12 @@ bool COESkelectonRender_Impl::Init()
 	return true;
 }
 
-void COESkelectonRender_Impl::Destroy()
+void COESkeletonRender_Impl::Destroy()
 {
 	SAFE_RELEASE(m_pShader);
 }
 
-bool COESkelectonRender_Impl::Render(IOERenderData* pRenderData)
+bool COESkeletonRender_Impl::Render(IOERenderData* pRenderData)
 {
 	COESkinMeshRenderData_Impl* pData = ConvertData(pRenderData);
 	if (!pData) return false;
@@ -45,14 +45,14 @@ bool COESkelectonRender_Impl::Render(IOERenderData* pRenderData)
 	m_vVerts.clear();
 	m_vIndis.clear();
 
-	IOEBones* pBones = pData->GetBones();
-	const TV_MATRIX& vmatSkins = pData->GetSkinMatrix();
+	IOESkeleton* pSkeleton = pData->GetSkeleton();
+	const TV_MATRIX4X4& vmatSkins = pData->GetSkinMatrix();
 
-	int nNumBones = pBones->GetBonesCount();
+	int nNumBones = pSkeleton->GetBonesCount();
 	for (int i = 0; i < nNumBones; ++i)
 	{
-		IOEBone* pBone = pBones->GetBone(i);
-		BuildBoneVerts(m_vVerts, m_vIndis, pBones, vmatSkins, pBone->GetID(), pBone->GetParentID());
+		IOEBone* pBone = pSkeleton->GetBone(i);
+		BuildBoneVerts(m_vVerts, m_vIndis, pSkeleton, vmatSkins, pBone->GetID(), pBone->GetParentID());
 	}
 
 	CDefaultRenderState DefaultState;
@@ -66,7 +66,7 @@ bool COESkelectonRender_Impl::Render(IOERenderData* pRenderData)
 	return true;
 }
 
-COESkinMeshRenderData_Impl* COESkelectonRender_Impl::ConvertData(IOERenderData* pRenderData)
+COESkinMeshRenderData_Impl* COESkeletonRender_Impl::ConvertData(IOERenderData* pRenderData)
 {
 	if (!pRenderData) return NULL;
 
@@ -75,30 +75,30 @@ COESkinMeshRenderData_Impl* COESkelectonRender_Impl::ConvertData(IOERenderData* 
 	return (COESkinMeshRenderData_Impl*)pRenderData;
 }
 
-bool COESkelectonRender_Impl::BuildBoneVerts(TV_VERTEX& vVertsOut, TV_SHORT& vIndisOut, IOEBones* pBones, const TV_MATRIX& vmatSkins, int nBoneID, int nParentBoneID)
+bool COESkeletonRender_Impl::BuildBoneVerts(TV_VERTEX_LINE& vVertsOut, TV_VERTEX_INDEX& vIndisOut, IOESkeleton* pSkeleton, const TV_MATRIX4X4& vmatSkins, int nBoneID, int nParentBoneID)
 {
-	if (nParentBoneID == COEFmtBone::INVALID_BONE_ID) return false;
+	if (nParentBoneID == COEFmtSkeleton::INVALID_BONE_ID) return false;
 
-	IOEBone* pBone = pBones->GetBone(nBoneID);
+	IOEBone* pBone = pSkeleton->GetBone(nBoneID);
 	assert(pBone);
 	CMatrix4x4 matSkin = pBone->GetWorldMatrix() * vmatSkins[nBoneID];
-	VERTEX Vertex;
+	VERTEX_LINE Vertex;
 	Vertex.x = matSkin.m[12];
 	Vertex.y = matSkin.m[13];
 	Vertex.z = matSkin.m[14];
-	Vertex.color = 0xFFFFFFFF;
+	Vertex.nColor = 0xFFFFFFFF;
 
 	int nSelfIndex = vVertsOut.size();
 	vVertsOut.push_back(Vertex);
 	vIndisOut.push_back(nSelfIndex);
 
-	IOEBone* pBoneParent = pBones->GetBone(nParentBoneID);
+	IOEBone* pBoneParent = pSkeleton->GetBone(nParentBoneID);
 	assert(pBoneParent);
 	matSkin = pBoneParent->GetWorldMatrix() * vmatSkins[nParentBoneID];
 	Vertex.x = matSkin.m[12];
 	Vertex.y = matSkin.m[13];
 	Vertex.z = matSkin.m[14];
-	Vertex.color = 0xFFFFFFFF;
+	Vertex.nColor = 0xFFFFFFFF;
 
 	int nParentIndex = vVertsOut.size();
 	vVertsOut.push_back(Vertex);

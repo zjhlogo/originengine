@@ -10,7 +10,7 @@
 
 #include <IOEBone.h>
 #include <IOEFile.h>
-#include <OEFmtBone.h>
+#include <OEFmtSkeleton.h>
 
 #include <vector>
 
@@ -40,7 +40,7 @@ public:
 	typedef std::vector<KEYFRAME_SCALE> TV_KEYFRAME_SCALE;
 
 public:
-	COEBone_Impl(const COEFmtBone::BONE& Bone, int nID, IOEFile* pFile);
+	COEBone_Impl(const COEFmtSkeleton::BONE& Bone, int nID, IOEFile* pFile);
 	virtual ~COEBone_Impl();
 
 	virtual const tstring& GetName() const;
@@ -59,7 +59,7 @@ private:
 	void Init();
 	void Destroy();
 
-	bool Create(const COEFmtBone::BONE& Bone, int nID, IOEFile* pFile);
+	bool Create(const COEFmtSkeleton::BONE& Bone, int nID, IOEFile* pFile);
 
 	bool SlerpRot(CQuaternion& qRotOut, float fTime);
 	bool LerpPos(CVector3& vPosOut, float fTime);

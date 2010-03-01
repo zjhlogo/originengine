@@ -1,17 +1,17 @@
 /*!
- * \file OEFmtBone.h
- * \date 1-11-2009 8:23:56
+ * \file OEFmtSkeleton.h
+ * \date 1-3-2010 20:49:48
  * 
  * 
  * \author zjhlogo (zjhlogo@163.com)
  */
-#ifndef __OEFMTBONE_H__
-#define __OEFMTBONE_H__
+#ifndef __OEFMTSKELETON_H__
+#define __OEFMTSKELETON_H__
 
 #include "OEBaseType.h"
 #include "OEMath/OEMath.h"
 
-class COEFmtBone
+class COEFmtSkeleton
 {
 public:
 	enum CONST_DEFINE
@@ -22,11 +22,11 @@ public:
 		INVALID_BONE_ID = -1,
 	};
 
-	enum BONE_MASK
+	enum SKELETON_MASK
 	{
-		BM_UNKNOWN			= 0x00000000,
-		BM_LOOP_ANIM		= 0x00000001,
-		BM_CLAMP_ANIM		= 0x00000002,
+		SM_UNKNOWN			= 0x00000000,
+		SM_LOOP_ANIM		= 0x00000001,
+		SM_CLAMP_ANIM		= 0x00000002,
 	};
 
 	// 1, first the file header
@@ -78,5 +78,4 @@ public:
 		float vScale[3];
 	} FRAME_SCALE;
 };
-
-#endif // __OEFMTBONE_H__
+#endif // __OEFMTSKELETON_H__

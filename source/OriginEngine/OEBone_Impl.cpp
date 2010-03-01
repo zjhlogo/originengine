@@ -8,7 +8,7 @@
 #include "OEBone_Impl.h"
 #include <OEOS.h>
 
-COEBone_Impl::COEBone_Impl(const COEFmtBone::BONE& Bone, int nID, IOEFile* pFile)
+COEBone_Impl::COEBone_Impl(const COEFmtSkeleton::BONE& Bone, int nID, IOEFile* pFile)
 {
 	Init();
 	m_bOK = Create(Bone, nID, pFile);
@@ -21,8 +21,8 @@ COEBone_Impl::~COEBone_Impl()
 
 void COEBone_Impl::Init()
 {
-	m_nID = COEFmtBone::INVALID_BONE_ID;
-	m_nParentID = COEFmtBone::INVALID_BONE_ID;
+	m_nID = COEFmtSkeleton::INVALID_BONE_ID;
+	m_nParentID = COEFmtSkeleton::INVALID_BONE_ID;
 	m_fTimeLength = 0.0f;
 
 	m_vKeyFrameRot.clear();
@@ -95,7 +95,7 @@ void COEBone_Impl::SetWorldMatrix(const CMatrix4x4& matWorld)
 	m_matWorldInv = m_matWorld.Inverse();
 }
 
-bool COEBone_Impl::Create(const COEFmtBone::BONE& Bone, int nID, IOEFile* pFile)
+bool COEBone_Impl::Create(const COEFmtSkeleton::BONE& Bone, int nID, IOEFile* pFile)
 {
 	COEOS::char2tchar(m_strName, Bone.szName);
 	m_nID = nID;
@@ -110,7 +110,7 @@ bool COEBone_Impl::Create(const COEFmtBone::BONE& Bone, int nID, IOEFile* pFile)
 	pFile->Seek(Bone.nOffFrameRot);
 	for (int i = 0; i < Bone.nNumFrameRot; ++i)
 	{
-		COEFmtBone::FRAME_ROT KeyFrame;
+		COEFmtSkeleton::FRAME_ROT KeyFrame;
 		pFile->Read(&KeyFrame, sizeof(KeyFrame));
 
 		KEYFRAME_ROT KeyFrameRot;
@@ -123,7 +123,7 @@ bool COEBone_Impl::Create(const COEFmtBone::BONE& Bone, int nID, IOEFile* pFile)
 	pFile->Seek(Bone.nOffFramePos);
 	for (int i = 0; i < Bone.nNumFramePos; ++i)
 	{
-		COEFmtBone::FRAME_POS KeyFrame;
+		COEFmtSkeleton::FRAME_POS KeyFrame;
 		pFile->Read(&KeyFrame, sizeof(KeyFrame));
 
 		KEYFRAME_POS KeyFramePos;
@@ -136,7 +136,7 @@ bool COEBone_Impl::Create(const COEFmtBone::BONE& Bone, int nID, IOEFile* pFile)
 	pFile->Seek(Bone.nOffFrameScale);
 	for (int i = 0; i < Bone.nNumFrameScale; ++i)
 	{
-		COEFmtBone::FRAME_SCALE KeyFrame;
+		COEFmtSkeleton::FRAME_SCALE KeyFrame;
 		pFile->Read(&KeyFrame, sizeof(KeyFrame));
 
 		KEYFRAME_SCALE KeyFrameScale;
