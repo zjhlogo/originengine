@@ -37,7 +37,7 @@ private:
 	void Destroy();
 
 	COESkinMeshRenderData_Impl* ConvertData(IOERenderData* pRenderData);
-	bool BuildBoneVerts(TV_VERTEX& vVertsOut, TV_SHORT& vIndisOut, const TV_BONE& vBones, const TV_MATRIX& vmatSkins, int nBoneID, int nParentBoneID);
+	bool BuildBoneVerts(TV_VERTEX& vVertsOut, TV_SHORT& vIndisOut, IOEBones* pBones, const TV_MATRIX& vmatSkins, int nBoneID, int nParentBoneID);
 
 private:
 	TV_VERTEX m_vVerts;

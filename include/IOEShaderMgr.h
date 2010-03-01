@@ -22,6 +22,9 @@ public:
 	virtual IOEShader* CreateShader(const VERT_DECL_ELEMENT* pElement, const tstring& strFile) = 0;
 	virtual IOEShader* CreateDefaultShader(DEFAULT_SHADER_TYPE eType) = 0;
 
+	virtual void SetDefaultDir(const tstring& strDir) = 0;
+	virtual const tstring& GetDefaultDir() = 0;
+
 };
 
 extern IOEShaderMgr* g_pOEShaderMgr;

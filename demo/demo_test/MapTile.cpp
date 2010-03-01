@@ -42,7 +42,7 @@ bool CMapTile::LoadMap(const ushort* pHeightField, int nID)
 
 	if (!m_pTexture)
 	{
-		m_pTexture = g_pOETextureMgr->CreateTextureFromFile(TS("media\\grass.png"));
+		m_pTexture = g_pOETextureMgr->CreateTextureFromFile(TS("grass.png"));
 		if (!m_pTexture) return false;
 	}
 

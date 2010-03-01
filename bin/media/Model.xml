@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Model>
-	<Mesh>media\\casual.mesh</Mesh>
-	<Bone>media\\casual.bone</Bone>
+	<Mesh>casual.mesh</Mesh>
+	<Bone>casual.bone</Bone>
 	<Materials count="1">
-		<Material id="0" vertdecl="61" shader="shader\\skinmesh.fx" texdiffuse="media\\casual_diffuse.png" texnormal="media\\casual_normal.png" />
+		<Material id="0" vertdecl="61" shader="skinmesh.fx" texdiffuse="casual_diffuse.png" texnormal="casual_normal.png" />
 	</Materials>
 </Model>

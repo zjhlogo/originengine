@@ -23,7 +23,7 @@ public:
 	bool LoadMaterials(IOEXmlNode* pXmlMaterials);
 
 	IOEMesh* GetMesh();
-	TV_BONE& GetBones();
+	IOEBones* GetBones();
 	TV_MATRIX& GetSkinMatrix();
 	TV_MATERIAL& GetMaterials();
 
@@ -47,7 +47,8 @@ private:
 
 private:
 	IOEMesh* m_pMesh;
-	TV_BONE m_vBones;
+	IOEBones* m_pBones;
+
 	TV_MATRIX m_vmatSkin;
 	TV_MATERIAL m_vMaterials;
 

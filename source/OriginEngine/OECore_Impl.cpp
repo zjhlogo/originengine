@@ -6,12 +6,18 @@
  * \author zjhlogo (zjhlogo@163.com)
  */
 #include "OECore_Impl.h"
-#include <IOEDevice.h>
+
+#include <IOELogFileMgr.h>
+#include <IOEConfigFileMgr.h>
+#include <IOEResMgr.h>
 #include <IOEControlMgr.h>
 #include <IOERenderMgr.h>
-#include <IOELogFileMgr.h>
+#include <IOEDevice.h>
+#include <IOETextureMgr.h>
+#include <IOEShaderMgr.h>
 #include <IOERenderSystem.h>
 #include <OEUI/IOEUIRenderSystem.h>
+#include <OEUI/IOEUIFontMgr.h>
 #include <IOEApp.h>
 #include <OEMsgID.h>
 #include <IOEMsgMgr.h>
@@ -46,6 +52,24 @@ void COECore_Impl::Destroy()
 
 bool COECore_Impl::Initialize()
 {
+	// set default dir
+	tstring strDefaultTextureDir;
+	g_pOEConfigFileMgr->GetValue(strDefaultTextureDir, TS("DefaultTextureDir"), TS("media"));
+	g_pOETextureMgr->SetDefaultDir(strDefaultTextureDir);
+
+	tstring strDefaultShaderDir;
+	g_pOEConfigFileMgr->GetValue(strDefaultShaderDir, TS("DefaultShaderDir"), TS("shader"));
+	g_pOEShaderMgr->SetDefaultDir(strDefaultShaderDir);
+
+	tstring strDefaultMediaDir;
+	g_pOEConfigFileMgr->GetValue(strDefaultMediaDir, TS("DefaultMediaDir"), TS("media"));
+	g_pOEResMgr->SetDefaultDir(strDefaultMediaDir);
+
+	tstring strDefaultFontDir;
+	g_pOEConfigFileMgr->GetValue(strDefaultFontDir, TS("DefaultFontDir"), TS("media"));
+	g_pOEUIFontMgr->SetDefaultDir(strDefaultFontDir);
+
+	// initialize singleton
 	if (!g_pOEDevice->CreateDevice())
 	{
 		LOGOUT(TS("IOECore::Initialize Failed"));
@@ -89,7 +113,7 @@ bool COECore_Impl::Initialize()
 	g_pOEMsgMgr->RegisterMessage(OMI_POST_RENDER_2D, this, (MSG_FUNC)&COECore_Impl::OnPostRender2D);
 
 	// initialize fps string
-	m_pFontFPS = g_pOEUIFontMgr->CreateBitmapFont(TS("media\\12px_Tahoma.fnt"));
+	m_pFontFPS = g_pOEUIFontMgr->CreateBitmapFont(TS("12px_Tahoma.fnt"));
 	m_pStringFPS = g_pOEUIStringMgr->CreateUIString(m_pFontFPS);
 
 	LOGOUT(TS("IOECore::Initialize OK"));

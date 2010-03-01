@@ -25,7 +25,8 @@ private:
 	void Init();
 	void Destroy();
 
-	bool Create(const tstring& strFile);
+	bool CreatePieces(const tstring& strFile);
+	void DestroyPieces();
 
 private:
 	TV_PIECE m_vPiece;

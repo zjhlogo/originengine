@@ -27,24 +27,24 @@ COED3DTextureMgr_Impl::~COED3DTextureMgr_Impl()
 
 bool COED3DTextureMgr_Impl::Init()
 {
-	m_TextureMap.clear();
+	m_FileTextureMap.clear();
 	return true;
 }
 
 void COED3DTextureMgr_Impl::Destroy()
 {
-	// TODO: check m_TextureMap whether is empty, and logout
+	// TODO: check m_FileTextureMap/m_vMemoryTexture whether is empty, and logout
 }
 
-IOETexture* COED3DTextureMgr_Impl::CreateTextureFromFile(const tstring& strFileName)
+IOETexture* COED3DTextureMgr_Impl::CreateTextureFromFile(const tstring& strFile)
 {
 	// transform string to lower
-	tstring strLowName;
-	COEOS::tolower(strLowName, strFileName);
+	tstring strFilePath;
+	if (!GetTextureFilePath(strFilePath, strFile)) return NULL;
 
 	// find from map, if exist just increase reference and return
-	TEXTURE_MAP::iterator itfound = m_TextureMap.find(strLowName);
-	if (itfound != m_TextureMap.end())
+	TM_TEXTURE::iterator itfound = m_FileTextureMap.find(strFilePath);
+	if (itfound != m_FileTextureMap.end())
 	{
 		IOETexture* pTexture = itfound->second;
 		pTexture->IncRef();
@@ -52,16 +52,15 @@ IOETexture* COED3DTextureMgr_Impl::CreateTextureFromFile(const tstring& strFileN
 	}
 
 	// no lucky, really create texture
-	COED3DTexture_Impl* pTexture = new COED3DTexture_Impl(strLowName);
+	COED3DTexture_Impl* pTexture = new COED3DTexture_Impl(strFilePath);
 	if (!pTexture || !pTexture->IsOK())
 	{
-		LOGOUT(TS("IOETextureMgr::CreateTextureFromFile Failed \"%s\""), strLowName.c_str());
+		LOGOUT(TS("IOETextureMgr::CreateTextureFromFile Failed \"%s\""), strFilePath.c_str());
 		SAFE_RELEASE(pTexture);
 		return NULL;
 	}
 
-	m_TextureMap.insert(std::make_pair(strLowName, pTexture));
-
+	m_FileTextureMap.insert(std::make_pair(strFilePath, pTexture));
 	return pTexture;
 }
 
@@ -75,5 +74,23 @@ IOETexture* COED3DTextureMgr_Impl::CreateTexture(int nWidth, int nHeight, TEXTUR
 		return NULL;
 	}
 
+	m_vMemoryTexture.push_back(pTexture);
 	return pTexture;
+}
+
+void COED3DTextureMgr_Impl::SetDefaultDir(const tstring& strDir)
+{
+	m_strDefaultDir = strDir;
+}
+
+const tstring& COED3DTextureMgr_Impl::GetDefaultDir()
+{
+	return m_strDefaultDir;
+}
+
+bool COED3DTextureMgr_Impl::GetTextureFilePath(tstring& strFilePathOut, const tstring& strFile)
+{
+	strFilePathOut = m_strDefaultDir + TS("\\") + strFile;
+	COEOS::tolower(strFilePathOut, strFilePathOut);
+	return true;
 }

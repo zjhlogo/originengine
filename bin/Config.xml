@@ -5,4 +5,8 @@
 	<ClassName>OriginEngine</ClassName>
 	<WindowName>Origin Engine</WindowName>
 	<MaxFPS>60</MaxFPS>
+	<DefaultMediaDir>media</DefaultMediaDir>
+	<DefaultTextureDir>media</DefaultTextureDir>
+	<DefaultShaderDir>shader</DefaultShaderDir>
+	<DefaultFontDir>media</DefaultFontDir>
 </Config>

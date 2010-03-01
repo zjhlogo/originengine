@@ -37,21 +37,21 @@ void COEUIFontMgr_Impl::Destroy()
 	// TODO: check m_UIFontMap whether is empty, and logout
 }
 
-IOEUIFont* COEUIFontMgr_Impl::CreateFont(const tstring& strFileName)
+IOEUIFont* COEUIFontMgr_Impl::CreateFont(const tstring& strFile)
 {
 	// TODO: 
 	return NULL;
 }
 
-IOEUIFont* COEUIFontMgr_Impl::CreateBitmapFont(const tstring& strFileName)
+IOEUIFont* COEUIFontMgr_Impl::CreateBitmapFont(const tstring& strFile)
 {
-	// transform string to lower
-	tstring strLowName = strFileName;
-	COEOS::tolower(strLowName, strFileName);
+	// get font file path
+	tstring strFilePath;
+	if (!GetFontFilePath(strFilePath, strFile)) return NULL;
 
 	// find from map, if exist just increase reference and return
-	UIFONT_MAP::iterator itfound = m_UIFontMap.find(strLowName);
-	if (itfound != m_UIFontMap.end())
+	TM_FONT::iterator itfound = m_FontMap.find(strFilePath);
+	if (itfound != m_FontMap.end())
 	{
 		IOEUIFont* pFont = itfound->second;
 		pFont->IncRef();
@@ -59,15 +59,31 @@ IOEUIFont* COEUIFontMgr_Impl::CreateBitmapFont(const tstring& strFileName)
 	}
 
 	// no lucky, really create font
-	COEUIBitmapFont_Impl* pFont = new COEUIBitmapFont_Impl(strLowName);
+	COEUIBitmapFont_Impl* pFont = new COEUIBitmapFont_Impl(strFilePath);
 	if (!pFont || !pFont->IsOK())
 	{
-		LOGOUT(TS("IOEUIFontMgr::CreateFont Failed \"%s\""), strLowName.c_str());
+		LOGOUT(TS("IOEUIFontMgr::CreateFont Failed \"%s\""), strFilePath.c_str());
 		SAFE_RELEASE(pFont);
 		return NULL;
 	}
 
-	m_UIFontMap.insert(std::make_pair(strLowName, pFont));
-
+	m_FontMap.insert(std::make_pair(strFilePath, pFont));
 	return pFont;
+}
+
+void COEUIFontMgr_Impl::SetDefaultDir(const tstring& strDir)
+{
+	m_strDefaultDir = strDir;
+}
+
+const tstring& COEUIFontMgr_Impl::GetDefaultDir()
+{
+	return m_strDefaultDir;
+}
+
+bool COEUIFontMgr_Impl::GetFontFilePath(tstring& strFilePathOut, const tstring& strFile)
+{
+	strFilePathOut = m_strDefaultDir + TS("\\") + strFile;
+	COEOS::tolower(strFilePathOut, strFilePathOut);
+	return true;
 }
