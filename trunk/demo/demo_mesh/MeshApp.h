@@ -10,10 +10,9 @@
 
 #include <IOEApp.h>
 #include <OEInterfaces.h>
+#include <vector>
 
 #include "../common/Camera.h"
-
-#include <vector>
 
 class CMeshApp : public IOEApp
 {
@@ -52,7 +51,9 @@ private:
 
 private:
 	CCamera* m_pCamera;
-	IOEModel* m_pModel;
+	IOEMesh* m_pMesh;
+	IOETexture* m_pTexture;
+	IOEShader* m_pShader;
 
 	bool m_bLButtonDown;
 	int m_nMouseDetailX;

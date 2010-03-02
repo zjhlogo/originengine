@@ -49,7 +49,7 @@ bool COESkinMeshRender_Impl::Render(IOERenderData* pRenderData)
 
 		if (pPiece->GetVertDeclMask() != pMaterial->GetVertDeclMask()) continue;
 
-		// setup shader parameter
+		// give user chance to setup shader parameter
 		COEMsg msg(OMI_SETUP_SHADER_PARAM);
 		msg.Write(pShader);
 		g_pOEMsgMgr->InvokeMessage(&msg);

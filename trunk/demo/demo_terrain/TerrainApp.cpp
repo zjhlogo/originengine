@@ -1,28 +1,28 @@
 /*!
- * \file TestApp.cpp
+ * \file TerrainApp.cpp
  * \date 24-5-2009 0:11:30
  * 
  * 
  * \author zjhlogo (zjhlogo@163.com)
  */
-#include "TestApp.h"
+#include "TerrainApp.h"
 #include "../common/AppHelper.h"
 #include <OEMsgID.h>
 #include <assert.h>
 
-IMPLEMENT_OEAPP(CTestApp);
+IMPLEMENT_OEAPP(CTerrainApp);
 
-CTestApp::CTestApp()
+CTerrainApp::CTerrainApp()
 {
 	Init();
 }
 
-CTestApp::~CTestApp()
+CTerrainApp::~CTerrainApp()
 {
 	Destroy();
 }
 
-void CTestApp::Init()
+void CTerrainApp::Init()
 {
 	//m_pDecl = NULL;
 	m_pCamera = NULL;
@@ -36,34 +36,34 @@ void CTestApp::Init()
 	memset(m_KeyDown, 0, sizeof(m_KeyDown));
 }
 
-void CTestApp::Destroy()
+void CTerrainApp::Destroy()
 {
 	// TODO: 
 }
 
-bool CTestApp::Initialize()
+bool CTerrainApp::Initialize()
 {
 	m_pCamera = new CCamera();
 	m_pTerrainMgr = new CTerrainMgr();
 	if (!m_pTerrainMgr->LoadTerrain()) return false;
 
 	// registe message
-	g_pOEMsgMgr->RegisterMessage(OMI_LBUTTON_DOWN, this, (MSG_FUNC)&CTestApp::OnLButtonDown);
-	g_pOEMsgMgr->RegisterMessage(OMI_LBUTTON_UP, this, (MSG_FUNC)&CTestApp::OnLButtonUp);
-	g_pOEMsgMgr->RegisterMessage(OMI_MOUSE_MOVE, this, (MSG_FUNC)&CTestApp::OnMouseMove);
-	g_pOEMsgMgr->RegisterMessage(OMI_KEY_DOWN, this, (MSG_FUNC)&CTestApp::OnKeyDown);
-	g_pOEMsgMgr->RegisterMessage(OMI_KEY_UP, this, (MSG_FUNC)&CTestApp::OnKeyUp);
+	g_pOEMsgMgr->RegisterMessage(OMI_LBUTTON_DOWN, this, (MSG_FUNC)&CTerrainApp::OnLButtonDown);
+	g_pOEMsgMgr->RegisterMessage(OMI_LBUTTON_UP, this, (MSG_FUNC)&CTerrainApp::OnLButtonUp);
+	g_pOEMsgMgr->RegisterMessage(OMI_MOUSE_MOVE, this, (MSG_FUNC)&CTerrainApp::OnMouseMove);
+	g_pOEMsgMgr->RegisterMessage(OMI_KEY_DOWN, this, (MSG_FUNC)&CTerrainApp::OnKeyDown);
+	g_pOEMsgMgr->RegisterMessage(OMI_KEY_UP, this, (MSG_FUNC)&CTerrainApp::OnKeyUp);
 
 	return true;
 }
 
-void CTestApp::Terminate()
+void CTerrainApp::Terminate()
 {
 	SAFE_DELETE(m_pCamera);
 	SAFE_DELETE(m_pTerrainMgr);
 }
 
-void CTestApp::Update(float fDetailTime)
+void CTerrainApp::Update(float fDetailTime)
 {
 	bool bRot = UpdateRotation(fDetailTime);
 	bool bMov = UpdateMovement(fDetailTime);
@@ -71,29 +71,29 @@ void CTestApp::Update(float fDetailTime)
 	m_pTerrainMgr->UpdateTerrain(m_pCamera->GetEyePos());
 }
 
-void CTestApp::Render3D(float fDetailTime)
+void CTerrainApp::Render3D(float fDetailTime)
 {
 	m_pTerrainMgr->Render(fDetailTime);
 }
 
-void CTestApp::Render2D(float fDetailTime)
+void CTerrainApp::Render2D(float fDetailTime)
 {
 	// TODO: 
 }
 
-bool CTestApp::OnLButtonDown(uint nMsgID, COEDataBufferRead* pDBRead)
+bool CTerrainApp::OnLButtonDown(uint nMsgID, COEDataBufferRead* pDBRead)
 {
 	m_bLButtonDown = true;
 	return true;
 }
 
-bool CTestApp::OnLButtonUp(uint nMsgID, COEDataBufferRead* pDBRead)
+bool CTerrainApp::OnLButtonUp(uint nMsgID, COEDataBufferRead* pDBRead)
 {
 	m_bLButtonDown = false;
 	return true;
 }
 
-bool CTestApp::OnMouseMove(uint nMsgID, COEDataBufferRead* pDBRead)
+bool CTerrainApp::OnMouseMove(uint nMsgID, COEDataBufferRead* pDBRead)
 {
 	if (!m_bLButtonDown) return true;
 	COEMsg msg(pDBRead);
@@ -102,7 +102,7 @@ bool CTestApp::OnMouseMove(uint nMsgID, COEDataBufferRead* pDBRead)
 	return true;
 }
 
-bool CTestApp::OnKeyUp(uint nMsgID, COEDataBufferRead* pDBRead)
+bool CTerrainApp::OnKeyUp(uint nMsgID, COEDataBufferRead* pDBRead)
 {
 	COEMsg msg(pDBRead);
 
@@ -115,7 +115,7 @@ bool CTestApp::OnKeyUp(uint nMsgID, COEDataBufferRead* pDBRead)
 	return true;
 }
 
-bool CTestApp::OnKeyDown(uint nMsgID, COEDataBufferRead* pDBRead)
+bool CTerrainApp::OnKeyDown(uint nMsgID, COEDataBufferRead* pDBRead)
 {
 	COEMsg msg(pDBRead);
 
@@ -129,7 +129,7 @@ bool CTestApp::OnKeyDown(uint nMsgID, COEDataBufferRead* pDBRead)
 	return true;
 }
 
-bool CTestApp::UpdateMovement(float fDetailTime)
+bool CTerrainApp::UpdateMovement(float fDetailTime)
 {
 	static const float MOVE_DIST = 400.0f;
 
@@ -144,7 +144,7 @@ bool CTestApp::UpdateMovement(float fDetailTime)
 	return true;
 }
 
-bool CTestApp::UpdateRotation(float fDetailTime)
+bool CTerrainApp::UpdateRotation(float fDetailTime)
 {
 	static const float ROTATE_ADJUST = 0.3f;
 

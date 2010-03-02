@@ -44,10 +44,10 @@ bool CMs3dConverter_Impl::DoConvert(const tstring& strFileIn, const tstring& str
 	strMeshFile += TS(".mesh");
 	if (!SaveToMeshFile(strMeshFile)) return false;
 
-	tstring strBoneFile;
-	COEOS::GetFileName(strBoneFile, strFileOut);
-	strBoneFile += TS(".bone");
-	if (!SaveToBoneFile(strBoneFile)) return false;
+	tstring strSkeletonFile;
+	COEOS::GetFileName(strSkeletonFile, strFileOut);
+	strSkeletonFile += TS(".skel");
+	if (!SaveToSkeletonFile(strSkeletonFile)) return false;
 
 	return true;
 }
@@ -458,7 +458,7 @@ bool CMs3dConverter_Impl::SaveToMeshFile(const tstring& strFile)
 	return true;
 }
 
-bool CMs3dConverter_Impl::SaveToBoneFile(const tstring& strFile)
+bool CMs3dConverter_Impl::SaveToSkeletonFile(const tstring& strFile)
 {
 	IOEFile* pFile = g_pOEFileMgr->OpenFile(strFile, IOEFile::OFF_WRITE);
 	if (!pFile) return false;

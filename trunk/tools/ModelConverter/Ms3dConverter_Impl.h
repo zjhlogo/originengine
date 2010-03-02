@@ -76,7 +76,7 @@ private:
 
 	bool LoadFromFile(const tstring& strFile);
 	bool SaveToMeshFile(const tstring& strFile);
-	bool SaveToBoneFile(const tstring& strFile);
+	bool SaveToSkeletonFile(const tstring& strFile);
 
 	void Ms3dRot2OERot(CQuaternion& qOut, const float* rRot);
 	void Ms3dPos2OEPos(CVector3& vOut, const float* vPos);

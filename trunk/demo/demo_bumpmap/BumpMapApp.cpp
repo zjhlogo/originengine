@@ -55,10 +55,10 @@ bool CBumpMapApp::Initialize()
 		VDT_UNKNOWN, VDU_UNKNOWN, 0,
 	};
 
-	m_pShader = g_pOEShaderMgr->CreateShader(s_Decl, TS("bumpmap.fx"));
+	m_pShader = g_pOEShaderMgr->CreateShader(s_Decl, TS("demo_bumpmap.fx"));
 	if (!m_pShader) return false;
 
-	m_pTexBase = g_pOETextureMgr->CreateTextureFromFile(TS("rock.png"));
+	m_pTexBase = g_pOETextureMgr->CreateTextureFromFile(TS("rock_diffuse.png"));
 	if (!m_pTexBase) return false;
 
 	m_pTexNormal = g_pOETextureMgr->CreateTextureFromFile(TS("rock_normal.png"));

@@ -1,12 +1,12 @@
 /*!
- * \file TestApp.h
+ * \file TerrainApp.h
  * \date 24-5-2009 0:10:43
  * 
  * 
  * \author zjhlogo (zjhlogo@163.com)
  */
-#ifndef __TESTAPP_H__
-#define __TESTAPP_H__
+#ifndef __TERRAINAPP_H__
+#define __TERRAINAPP_H__
 
 #include <IOEApp.h>
 #include <OEInterfaces.h>
@@ -14,7 +14,7 @@
 #include "../common/Camera.h"
 #include "TerrainMgr.h"
 
-class CTestApp : public IOEApp
+class CTerrainApp : public IOEApp
 {
 public:
 	enum CONST_DEFINE
@@ -23,8 +23,8 @@ public:
 	};
 
 public:
-	CTestApp();
-	virtual ~CTestApp();
+	CTerrainApp();
+	virtual ~CTerrainApp();
 
 	virtual bool Initialize();
 	virtual void Terminate();
@@ -56,5 +56,4 @@ private:
 	bool m_KeyDown[KEY_COUNT];
 
 };
-
-#endif // __TESTAPP_H__
+#endif // __TERRAINAPP_H__
