@@ -243,6 +243,8 @@ private:
 	TV_SKIN_MESH m_vSkinMesh;
 	TV_BONE_INFO m_vBoneInfo;
 	TM_BONE_INFO m_vBoneInfoMap;
+	CVector3 m_vBoundingBoxMin;
+	CVector3 m_vBoundingBoxMax;
 	Interface* m_pInterface;
 
 	bool m_bExportMesh;

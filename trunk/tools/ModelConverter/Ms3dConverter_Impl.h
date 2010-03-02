@@ -90,6 +90,8 @@ private:
 	TV_VERTEX m_vVerts;
 	TV_INDEX m_vIndis;
 	TV_BONE_INFO m_vBoneInfo;
+	CVector3 m_vBoundingBoxMin;
+	CVector3 m_vBoundingBoxMax;
 
 };
 #endif // __MS3DCONVERTER_IMPL_H__

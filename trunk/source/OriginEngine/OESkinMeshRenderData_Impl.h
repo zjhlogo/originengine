@@ -22,11 +22,12 @@ public:
 	COESkinMeshRenderData_Impl();
 	virtual ~COESkinMeshRenderData_Impl();
 
+	virtual IOEMesh* GetMesh();
+
 	bool LoadMesh(const tstring& strFile);
 	bool LoadSkeleton(const tstring& strFile);
 	bool LoadMaterials(IOEXmlNode* pXmlMaterials);
 
-	IOEMesh* GetMesh();
 	IOESkeleton* GetSkeleton();
 	TV_MATRIX4X4& GetSkinMatrix();
 	IOEMaterial* GetMaterial(int nIndex);

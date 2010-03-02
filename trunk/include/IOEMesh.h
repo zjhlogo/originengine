@@ -22,5 +22,8 @@ public:
 	virtual IOEPiece* GetPiece(int nIndex) const = 0;
 	virtual IOEPiece* FindPiece(const tstring& strName) const = 0;
 
+	virtual const CVector3& GetBoundingBoxMin() const = 0;
+	virtual const CVector3& GetBoundingBoxMax() const = 0;
+
 };
 #endif // __IOEMESH_H__

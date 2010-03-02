@@ -70,12 +70,12 @@ const TCHAR* CModelExporter::Ext(int n)
 
 const TCHAR* CModelExporter::LongDesc()
 {
-	return _T("Export to origin engine mesh file format");
+	return _T("Export to origin engine model file format");
 }
 
 const TCHAR* CModelExporter::ShortDesc()
 {
-	return _T("Origin Engine Mesh");
+	return _T("Origin Engine Model Exporter Desc");
 }
 
 const TCHAR* CModelExporter::AuthorName()
@@ -105,7 +105,7 @@ unsigned int CModelExporter::Version()
 
 void CModelExporter::ShowAbout(HWND hWnd)
 {
-	MessageBox(hWnd, _T("Origin Engine Mesh Exporter"), _T("Copyright (c) 2009, zjhlogo All rights reserved"), MB_OK);
+	MessageBox(hWnd, _T("Origin Engine Model Exporter"), _T("Copyright (c) 2009, zjhlogo All rights reserved"), MB_OK);
 }
 
 int CModelExporter::DoExport(const TCHAR* name, ExpInterface* ei, Interface* i, BOOL suppressPrompts /* = FALSE */, DWORD options /* = 0 */)
@@ -163,6 +163,8 @@ void CModelExporter::Cleanup()
 	m_vSkinMesh.clear();
 	m_vBoneInfo.clear();
 	m_vBoneInfoMap.clear();
+	m_vBoundingBoxMin.Init(OEMATH_FLOAT_MAX, OEMATH_FLOAT_MAX, OEMATH_FLOAT_MAX);
+	m_vBoundingBoxMax.Init(OEMATH_FLOAT_MIN, OEMATH_FLOAT_MIN, OEMATH_FLOAT_MIN);
 	m_pInterface = NULL;
 
 	m_bExportMesh = true;
@@ -288,6 +290,15 @@ bool CModelExporter::SaveMeshFile(const tstring& strFileName)
 	COEFmtMesh::FILE_HEADER Header;
 	Header.nMagicNumber = COEFmtMesh::MAGIC_NUMBER;
 	Header.nVersion = COEFmtMesh::CURRENT_VERSION;
+
+	// 左右手坐标转化
+	Header.fBoundingBoxMin[0] = m_vBoundingBoxMin.x;
+	Header.fBoundingBoxMin[1] = m_vBoundingBoxMin.z;
+	Header.fBoundingBoxMin[2] = m_vBoundingBoxMin.y;
+	Header.fBoundingBoxMax[0] = m_vBoundingBoxMax.x;
+	Header.fBoundingBoxMax[1] = m_vBoundingBoxMax.z;
+	Header.fBoundingBoxMax[2] = m_vBoundingBoxMax.y;
+
 	Header.nNumPieces = (int)m_vSkinMesh.size();
 	pFile->Write(&Header, sizeof(Header));
 
@@ -632,6 +643,15 @@ bool CModelExporter::DumpMesh(SKIN_MESH& SkinMeshOut, IGameNode* pGameNode)
 
 		// get position
 		pGameMesh->GetVertex(LocalSlot.nVertIndex, LocalSlot.pos, false);
+
+		if (LocalSlot.pos.x < m_vBoundingBoxMin.x) m_vBoundingBoxMin.x = LocalSlot.pos.x;
+		if (LocalSlot.pos.x > m_vBoundingBoxMax.x) m_vBoundingBoxMax.x = LocalSlot.pos.x;
+
+		if (LocalSlot.pos.y < m_vBoundingBoxMin.y) m_vBoundingBoxMin.y = LocalSlot.pos.y;
+		if (LocalSlot.pos.y > m_vBoundingBoxMax.y) m_vBoundingBoxMax.y = LocalSlot.pos.y;
+
+		if (LocalSlot.pos.z < m_vBoundingBoxMin.z) m_vBoundingBoxMin.z = LocalSlot.pos.z;
+		if (LocalSlot.pos.z > m_vBoundingBoxMax.z) m_vBoundingBoxMax.z = LocalSlot.pos.z;
 
 		// get normal and tangent
 		if (i != LocalSlot.nVertIndex)

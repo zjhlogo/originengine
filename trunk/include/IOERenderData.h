@@ -8,8 +8,8 @@
 #ifndef __IOERENDERDATA_H__
 #define __IOERENDERDATA_H__
 
-#include "OEBaseTypeEx.h"
 #include "IOEObject.h"
+#include "IOEMesh.h"
 
 class IOERenderData : public IOEObject
 {
@@ -18,6 +18,8 @@ public:
 	virtual ~IOERenderData() {};
 
 	uint GetType() {return m_nType;};
+
+	virtual IOEMesh* GetMesh() = 0;
 
 private:
 	uint m_nType;

@@ -17,9 +17,6 @@
 class COESkeletonRender_Impl : public IOERender
 {
 public:
-	typedef std::vector<VERTEX_LINE> TV_VERTEX_LINE;
-
-public:
 	COESkeletonRender_Impl();
 	virtual ~COESkeletonRender_Impl();
 

@@ -335,6 +335,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\OEBoundingBoxRender_Impl.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\OEConfigFileMgr_Impl.cpp"
 				>
 			</File>
@@ -402,6 +406,10 @@
 			>
 			<File
 				RelativePath=".\OEBone_Impl.h"
+				>
+			</File>
+			<File
+				RelativePath=".\OEBoundingBoxRender_Impl.h"
 				>
 			</File>
 			<File

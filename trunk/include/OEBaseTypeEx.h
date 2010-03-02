@@ -117,7 +117,7 @@ enum OE_RENDER_TYPE
 {
 	OERT_UNKNOWN = 0,
 	OERT_SKINMESH,
-	OERT_BOUNDBOX,
+	OERT_BOUNDINGBOX,
 	OERT_SKELETON,
 
 	OERT_USER = 1000,
@@ -139,11 +139,15 @@ typedef struct VERTEX_LINE_tag
 	uint nColor;
 } VERTEX_LINE;
 
+typedef std::vector<VERTEX_LINE> TV_VERTEX_LINE;
+
 typedef struct VERTEX_POLYC_tag
 {
 	float x, y, z;
 	uint nColor;
 } VERTEX_POLYC;
+
+typedef std::vector<VERTEX_POLYC> TV_VERTEX_POLYC;
 
 typedef struct VERTEX_POLYT_tag
 {
@@ -151,12 +155,16 @@ typedef struct VERTEX_POLYT_tag
 	float u, v;
 } VERTEX_POLYT;
 
+typedef std::vector<VERTEX_POLYT> TV_VERTEX_POLYT;
+
 typedef struct VERTEX_POLY_UI_tag
 {
 	float x, y, z, w;
 	uint nColor;
 	float u, v;
 } VERTEX_POLY_UI;
+
+typedef std::vector<VERTEX_POLY_UI> TV_VERTEX_POLY_UI;
 
 typedef std::vector<ushort> TV_VERTEX_INDEX;
 

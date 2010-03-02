@@ -21,6 +21,9 @@ public:
 	virtual IOEPiece* GetPiece(int nIndex) const;
 	virtual IOEPiece* FindPiece(const tstring& strName) const;
 
+	virtual const CVector3& GetBoundingBoxMin() const;
+	virtual const CVector3& GetBoundingBoxMax() const;
+
 private:
 	void Init();
 	void Destroy();
@@ -30,6 +33,8 @@ private:
 
 private:
 	TV_PIECE m_vPiece;
+	CVector3 m_vBoundingBoxMin;
+	CVector3 m_vBoundingBoxMax;
 
 };
 
