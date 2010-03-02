@@ -8,6 +8,7 @@
 #include "OERenderMgr_Impl.h"
 #include "OESkinMeshRender_Impl.h"
 #include "OESkeletonRender_Impl.h"
+#include "OEBoundingBoxRender_Impl.h"
 
 #include <assert.h>
 
@@ -27,6 +28,7 @@ bool COERenderMgr_Impl::Initialize()
 {
 	AddRenderHandle(new COESkinMeshRender_Impl());
 	AddRenderHandle(new COESkeletonRender_Impl());
+	AddRenderHandle(new COEBoundingBoxRender_Impl());
 
 	return true;
 }

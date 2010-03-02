@@ -68,6 +68,8 @@ bool CMs3dConverter_Impl::LoadFromFile(const tstring& strFile)
 	m_vVerts.clear();
 	m_vIndis.clear();
 	m_vBoneInfo.clear();
+	m_vBoundingBoxMin.Init(OEMATH_FLOAT_MAX, OEMATH_FLOAT_MAX, OEMATH_FLOAT_MAX);
+	m_vBoundingBoxMax.Init(OEMATH_FLOAT_MIN, OEMATH_FLOAT_MIN, OEMATH_FLOAT_MIN);
 
 	IOEFile* pFile = g_pOEFileMgr->OpenFile(strFile);
 	if (!pFile) return false;
@@ -104,6 +106,15 @@ bool CMs3dConverter_Impl::LoadFromFile(const tstring& strFile)
 		NewVert.ny = 0.0f;
 		NewVert.nz = 0.0f;
 		NewVert.nBoneID = arrVertices[i].boneId;
+
+		if (NewVert.x < m_vBoundingBoxMin.x) m_vBoundingBoxMin.x = NewVert.x;
+		if (NewVert.x > m_vBoundingBoxMax.x) m_vBoundingBoxMax.x = NewVert.x;
+
+		if (NewVert.y < m_vBoundingBoxMin.y) m_vBoundingBoxMin.y = NewVert.y;
+		if (NewVert.y > m_vBoundingBoxMax.y) m_vBoundingBoxMax.y = NewVert.y;
+
+		if (NewVert.z < m_vBoundingBoxMin.z) m_vBoundingBoxMin.z = NewVert.z;
+		if (NewVert.z > m_vBoundingBoxMax.z) m_vBoundingBoxMax.z = NewVert.z;
 
 		m_vVerts.push_back(NewVert);
 	}
@@ -388,6 +399,12 @@ bool CMs3dConverter_Impl::SaveToMeshFile(const tstring& strFile)
 	COEFmtMesh::FILE_HEADER Header;
 	Header.nMagicNumber = COEFmtMesh::MAGIC_NUMBER;
 	Header.nVersion = COEFmtMesh::CURRENT_VERSION;
+	Header.fBoundingBoxMin[0] = m_vBoundingBoxMin.x;
+	Header.fBoundingBoxMin[1] = m_vBoundingBoxMin.y;
+	Header.fBoundingBoxMin[2] = m_vBoundingBoxMin.z;
+	Header.fBoundingBoxMax[0] = m_vBoundingBoxMax.x;
+	Header.fBoundingBoxMax[1] = m_vBoundingBoxMax.y;
+	Header.fBoundingBoxMax[2] = m_vBoundingBoxMax.z;
 	Header.nNumPieces = 1;									// TODO: 
 	pFile->Write(&Header, sizeof(Header));
 
@@ -404,7 +421,7 @@ bool CMs3dConverter_Impl::SaveToMeshFile(const tstring& strFile)
 	// write mesh
 	for (int i = 0; i < Header.nNumPieces; ++i)
 	{
-		strncpy_s(vPiece[i].szName, COEFmtMesh::PIECE_NAME_SIZE, "mesh", _TRUNCATE);
+		strncpy_s(vPiece[i].szName, COEFmtMesh::PIECE_NAME_SIZE, "ms3d_mesh", _TRUNCATE);
 		vPiece[i].nPieceMask = COEFmtMesh::PM_VISIBLE;
 		vPiece[i].nVertexDataMask = COEFmtMesh::VDM_XYZ | COEFmtMesh::VDM_UV | COEFmtMesh::VDM_BONE;
 		vPiece[i].nMaterialID = 0;										// TODO: 

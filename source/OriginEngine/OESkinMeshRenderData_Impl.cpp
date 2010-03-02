@@ -35,6 +35,11 @@ void COESkinMeshRenderData_Impl::Destroy()
 	DestroyMaterials();
 }
 
+IOEMesh* COESkinMeshRenderData_Impl::GetMesh()
+{
+	return m_pMesh;
+}
+
 bool COESkinMeshRenderData_Impl::LoadMesh(const tstring& strFile)
 {
 	DestroyMesh();
@@ -51,11 +56,6 @@ bool COESkinMeshRenderData_Impl::LoadMaterials(IOEXmlNode* pXmlMaterials)
 {
 	DestroyMaterials();
 	return CreateMaterials(pXmlMaterials);
-}
-
-IOEMesh* COESkinMeshRenderData_Impl::GetMesh()
-{
-	return m_pMesh;
 }
 
 IOESkeleton* COESkinMeshRenderData_Impl::GetSkeleton()

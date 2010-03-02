@@ -14,7 +14,7 @@
 class wxToolUtil
 {
 public:
-	static bool AddMemoryXrc(const tstring& strResType, uint nResID, const tstring& strMemoryFileName);
+	static bool AddMemoryXrc(const tstring& strResType, uint nResID, const tstring& strMemoryFileName, HINSTANCE hInstance = NULL);
 
 private:
 	static bool InitFileHandler();

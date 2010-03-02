@@ -9,9 +9,11 @@
 
 const float OEMATH_PI = 3.14159265f;
 const float OEMATH_2PI = 2.0f*OEMATH_PI;
-const float OEMATH_G = -32.174f;				// acceleration due to gravity, ft/s^2
-const float OEMATH_RHO = 0.0023769f;			// desity of air at sea level, slugs/ft^3
-const float OEMATH_TOL = 1E-5f;					// float type tolerance
+const float OEMATH_G = -32.174f;							// acceleration due to gravity, ft/s^2
+const float OEMATH_RHO = 0.0023769f;						// desity of air at sea level, slugs/ft^3
+const float OEMATH_TOL = 1E-5f;								// float type tolerance
+const float OEMATH_FLOAT_MIN = 1.175494351e-38F;			// 1.175494351e-38F
+const float OEMATH_FLOAT_MAX = 3.402823466e+38F;			// 3.402823466e+38F
 
 CMatrix4x4 operator *(const CMatrix4x4& m1, const CMatrix4x4& m2)
 {

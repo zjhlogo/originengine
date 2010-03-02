@@ -23,7 +23,8 @@ COEMesh_Impl::~COEMesh_Impl()
 
 void COEMesh_Impl::Init()
 {
-	// TODO: 
+	m_vBoundingBoxMin.Init(OEMATH_FLOAT_MAX, OEMATH_FLOAT_MAX, OEMATH_FLOAT_MAX);
+	m_vBoundingBoxMax.Init(OEMATH_FLOAT_MIN, OEMATH_FLOAT_MIN, OEMATH_FLOAT_MIN);
 }
 
 void COEMesh_Impl::Destroy()
@@ -52,6 +53,16 @@ IOEPiece* COEMesh_Impl::FindPiece(const tstring& strName) const
 	return NULL;
 }
 
+const CVector3& COEMesh_Impl::GetBoundingBoxMin() const
+{
+	return m_vBoundingBoxMin;
+}
+
+const CVector3& COEMesh_Impl::GetBoundingBoxMax() const
+{
+	return m_vBoundingBoxMax;
+}
+
 bool COEMesh_Impl::CreatePieces(const tstring& strFile)
 {
 	DestroyPieces();
@@ -68,6 +79,9 @@ bool COEMesh_Impl::CreatePieces(const tstring& strFile)
 		SAFE_RELEASE(pFile);
 		return false;
 	}
+
+	m_vBoundingBoxMin.Init(Header.fBoundingBoxMin[0], Header.fBoundingBoxMin[1], Header.fBoundingBoxMin[2]);
+	m_vBoundingBoxMax.Init(Header.fBoundingBoxMax[0], Header.fBoundingBoxMax[1], Header.fBoundingBoxMax[2]);
 
 	// read piece info
 	std::vector<COEFmtMesh::PIECE> vPieces;

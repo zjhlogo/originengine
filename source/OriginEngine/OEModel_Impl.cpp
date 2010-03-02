@@ -76,6 +76,10 @@ bool COEModel_Impl::Create(const tstring& strFile)
 	pRender = g_pOERenderMgr->GetRender(OERT_SKELETON);
 	if (pRender) m_vRenders.push_back(pRender);
 
+	// for draw bounding box
+	pRender = g_pOERenderMgr->GetRender(OERT_BOUNDINGBOX);
+	if (pRender) m_vRenders.push_back(pRender);
+
 	return true;
 }
 

@@ -21,16 +21,16 @@ bool wxToolUtil::InitFileHandler()
 	return m_bOK;
 }
 
-bool wxToolUtil::AddMemoryXrc(const tstring& strResType, uint nResID, const tstring& strMemoryFileName)
+bool wxToolUtil::AddMemoryXrc(const tstring& strResType, uint nResID, const tstring& strMemoryFileName, HINSTANCE hInstance /* = NULL */)
 {
 	if (!m_bOK) InitFileHandler();
 
 	// load the resource
-	HRSRC hRes = FindResource(NULL, MAKEINTRESOURCE(nResID), strResType.c_str());
-	HGLOBAL hResData = LoadResource(NULL, hRes);
+	HRSRC hRes = FindResource(hInstance, MAKEINTRESOURCE(nResID), strResType.c_str());
+	HGLOBAL hResData = LoadResource(hInstance, hRes);
 	void* pResBuffer = LockResource(hResData);
 	if (!pResBuffer) return false;
-	int nResSize = SizeofResource(NULL, hRes);
+	int nResSize = SizeofResource(hInstance, hRes);
 
 	// add resource into memory file system
 	wxMemoryFSHandler::AddFile(strMemoryFileName.c_str(), pResBuffer, nResSize);

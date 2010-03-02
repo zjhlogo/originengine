@@ -31,7 +31,7 @@ static void Initialize(HINSTANCE hInstDLL)
 		wxInitialize();
 		wxXmlResource::Get()->InitAllHandlers();
 
-		wxToolUtil::AddMemoryXrc(TS("XRC"), IDR_XRC_DLGMODELEXPORTEROPTION, TS("DlgModelExporterOption.xrc"));
+		wxToolUtil::AddMemoryXrc(TS("XRC"), IDR_XRC_DLGMODELEXPORTEROPTION, TS("DlgModelExporterOption.xrc"), hInstDLL);
 	}
 
 	++g_nInitCount;
@@ -71,7 +71,7 @@ BOOL WINAPI DllMain(HINSTANCE hInstDLL, DWORD fdwReason, LPVOID lpvReserved)
 
 __declspec(dllexport) const TCHAR* LibDescription()
 {
-	return _T("Mesh Exporter Desc");
+	return _T("Model Exporter Desc");
 }
 
 __declspec(dllexport) int LibNumberClasses()

@@ -43,6 +43,9 @@ public:
 		uint nMagicNumber;				// always MAGIC_NUMBER
 		int nVersion;					// CURRENT_VERSION
 
+		float fBoundingBoxMin[3];
+		float fBoundingBoxMax[3];
+
 		int nNumPieces;
 	} FILE_HEADER;
 
