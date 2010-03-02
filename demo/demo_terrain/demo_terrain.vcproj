@@ -2,7 +2,7 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9.00"
-	Name="demo_test"
+	Name="demo_terrain"
 	ProjectGUID="{EC3D2159-59A9-4FA6-B332-DAAC72C9280A}"
 	Keyword="Win32Proj"
 	TargetFrameworkVersion="131072"
@@ -61,7 +61,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				OutputFile="$(OutDir)/demo_test_D.exe"
+				OutputFile="$(OutDir)/demo_terrain_D.exe"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories=""
 				GenerateDebugInformation="true"
@@ -136,7 +136,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				OutputFile="$(OutDir)/demo_test.exe"
+				OutputFile="$(OutDir)/demo_terrain.exe"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories=""
 				GenerateDebugInformation="true"
@@ -216,7 +216,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				OutputFile="$(OutDir)/demo_test_UD.exe"
+				OutputFile="$(OutDir)/demo_terrain_UD.exe"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories=""
 				GenerateDebugInformation="true"
@@ -291,7 +291,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				OutputFile="$(OutDir)/demo_testU.exe"
+				OutputFile="$(OutDir)/demo_terrainU.exe"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories=""
 				GenerateDebugInformation="true"
@@ -347,7 +347,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\TestApp.cpp"
+				RelativePath=".\TerrainApp.cpp"
 				>
 			</File>
 		</Filter>
@@ -369,7 +369,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\TestApp.h"
+				RelativePath=".\TerrainApp.h"
 				>
 			</File>
 		</Filter>

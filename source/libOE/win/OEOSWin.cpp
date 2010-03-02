@@ -259,7 +259,7 @@ void COEOS::GetFileExt(tstring& strOut, const tstring& strIn)
 	size_t nPos = strIn.rfind(TS('.'));
 	if (nPos != tstring::npos)
 	{
-		strOut = strIn.substr(nPos, tstring::npos);
+		strOut = strIn.substr(nPos+1, tstring::npos);
 	}
 	else
 	{

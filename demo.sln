@@ -1,10 +1,5 @@
 Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "demo_test", "demo\demo_test\demo_test.vcproj", "{EC3D2159-59A9-4FA6-B332-DAAC72C9280A}"
-	ProjectSection(ProjectDependencies) = postProject
-		{FC86443B-245B-4F29-BEF2-2D39A8F8B063} = {FC86443B-245B-4F29-BEF2-2D39A8F8B063}
-	EndProjectSection
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "demo_water", "demo\demo_water\demo_water.vcproj", "{CEFDEEC2-9346-4590-82B4-EFC8E816EE21}"
 	ProjectSection(ProjectDependencies) = postProject
 		{FC86443B-245B-4F29-BEF2-2D39A8F8B063} = {FC86443B-245B-4F29-BEF2-2D39A8F8B063}
@@ -38,6 +33,12 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "demo_model", "demo\demo_mod
 		{FC86443B-245B-4F29-BEF2-2D39A8F8B063} = {FC86443B-245B-4F29-BEF2-2D39A8F8B063}
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "demo_terrain", "demo\demo_terrain\demo_terrain.vcproj", "{EC3D2159-59A9-4FA6-B332-DAAC72C9280A}"
+	ProjectSection(ProjectDependencies) = postProject
+		{BF852F28-01B5-4492-9273-6E69EE1E4929} = {BF852F28-01B5-4492-9273-6E69EE1E4929}
+		{FC86443B-245B-4F29-BEF2-2D39A8F8B063} = {FC86443B-245B-4F29-BEF2-2D39A8F8B063}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -46,14 +47,6 @@ Global
 		Unicode Release|Win32 = Unicode Release|Win32
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{EC3D2159-59A9-4FA6-B332-DAAC72C9280A}.Debug|Win32.ActiveCfg = Debug|Win32
-		{EC3D2159-59A9-4FA6-B332-DAAC72C9280A}.Debug|Win32.Build.0 = Debug|Win32
-		{EC3D2159-59A9-4FA6-B332-DAAC72C9280A}.Release|Win32.ActiveCfg = Release|Win32
-		{EC3D2159-59A9-4FA6-B332-DAAC72C9280A}.Release|Win32.Build.0 = Release|Win32
-		{EC3D2159-59A9-4FA6-B332-DAAC72C9280A}.Unicode Debug|Win32.ActiveCfg = Unicode Debug|Win32
-		{EC3D2159-59A9-4FA6-B332-DAAC72C9280A}.Unicode Debug|Win32.Build.0 = Unicode Debug|Win32
-		{EC3D2159-59A9-4FA6-B332-DAAC72C9280A}.Unicode Release|Win32.ActiveCfg = Unicode Release|Win32
-		{EC3D2159-59A9-4FA6-B332-DAAC72C9280A}.Unicode Release|Win32.Build.0 = Unicode Release|Win32
 		{CEFDEEC2-9346-4590-82B4-EFC8E816EE21}.Debug|Win32.ActiveCfg = Debug|Win32
 		{CEFDEEC2-9346-4590-82B4-EFC8E816EE21}.Debug|Win32.Build.0 = Debug|Win32
 		{CEFDEEC2-9346-4590-82B4-EFC8E816EE21}.Release|Win32.ActiveCfg = Release|Win32
@@ -110,6 +103,14 @@ Global
 		{15B22B2A-76B5-47D3-94BD-F96E0B757280}.Unicode Debug|Win32.Build.0 = Unicode Debug|Win32
 		{15B22B2A-76B5-47D3-94BD-F96E0B757280}.Unicode Release|Win32.ActiveCfg = Unicode Release|Win32
 		{15B22B2A-76B5-47D3-94BD-F96E0B757280}.Unicode Release|Win32.Build.0 = Unicode Release|Win32
+		{EC3D2159-59A9-4FA6-B332-DAAC72C9280A}.Debug|Win32.ActiveCfg = Debug|Win32
+		{EC3D2159-59A9-4FA6-B332-DAAC72C9280A}.Debug|Win32.Build.0 = Debug|Win32
+		{EC3D2159-59A9-4FA6-B332-DAAC72C9280A}.Release|Win32.ActiveCfg = Release|Win32
+		{EC3D2159-59A9-4FA6-B332-DAAC72C9280A}.Release|Win32.Build.0 = Release|Win32
+		{EC3D2159-59A9-4FA6-B332-DAAC72C9280A}.Unicode Debug|Win32.ActiveCfg = Unicode Debug|Win32
+		{EC3D2159-59A9-4FA6-B332-DAAC72C9280A}.Unicode Debug|Win32.Build.0 = Unicode Debug|Win32
+		{EC3D2159-59A9-4FA6-B332-DAAC72C9280A}.Unicode Release|Win32.ActiveCfg = Unicode Release|Win32
+		{EC3D2159-59A9-4FA6-B332-DAAC72C9280A}.Unicode Release|Win32.Build.0 = Unicode Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -7,7 +7,9 @@
  */
 #include "MeshApp.h"
 #include "../common/AppHelper.h"
+
 #include <OEMsgID.h>
+#include <OERenderSystemUtil.h>
 #include <assert.h>
 
 IMPLEMENT_OEAPP(CMeshApp);
@@ -25,7 +27,9 @@ CMeshApp::~CMeshApp()
 void CMeshApp::Init()
 {
 	m_pCamera = NULL;
-	m_pModel = NULL;
+	m_pTexture = NULL;
+	m_pShader = NULL;
+	m_pMesh = NULL;
 	m_bLButtonDown = false;
 	m_nMouseDetailX = 0;
 	m_nMouseDetailY = 0;
@@ -39,11 +43,26 @@ void CMeshApp::Destroy()
 
 bool CMeshApp::Initialize()
 {
+	static const VERT_DECL_ELEMENT s_Decl[] =
+	{
+		{VDT_FLOAT3, VDU_POSITION, 0},
+		{VDT_FLOAT2, VDU_TEXCOORD, 0},
+		{VDT_UBYTE4, VDU_BLENDINDICES, 0},
+		{VDT_FLOAT4, VDU_BLENDWEIGHT, 0},
+		{VDT_UNKNOWN, VDU_UNKNOWN, 0},
+	};
+
 	m_pCamera = new CCamera();
 	if (!m_pCamera) return false;
 
-	m_pModel = g_pOEResMgr->CreateModel(TS("Model.xml"));
-	if (!m_pModel) return false;
+	m_pTexture = g_pOETextureMgr->CreateTextureFromFile(TS("felhound_diffuse.jpg"));
+	if (!m_pTexture) return false;
+
+	m_pShader = g_pOEShaderMgr->CreateShader(s_Decl, TS("demo_mesh.fx"));
+	if (!m_pShader) return false;
+
+	m_pMesh = g_pOEResMgr->CreateMesh(TS("felhound.mesh"));
+	if (!m_pMesh) return false;
 
 	// registe message
 	g_pOEMsgMgr->RegisterMessage(OMI_LBUTTON_DOWN, this, (MSG_FUNC)&CMeshApp::OnLButtonDown);
@@ -58,7 +77,9 @@ bool CMeshApp::Initialize()
 
 void CMeshApp::Terminate()
 {
-	SAFE_RELEASE(m_pModel);
+	SAFE_RELEASE(m_pMesh);
+	SAFE_RELEASE(m_pShader);
+	SAFE_RELEASE(m_pTexture);
 	SAFE_DELETE(m_pCamera);
 }
 
@@ -67,13 +88,28 @@ void CMeshApp::Update(float fDetailTime)
 	bool bRot = UpdateRotation(fDetailTime);
 	bool bMov = UpdateMovement(fDetailTime);
 	if (bRot || bMov) g_pOERenderSystem->SetTransform(TT_VIEW, m_pCamera->GetViewMatrix());
-
-	m_pModel->Update(fDetailTime);
 }
 
 void CMeshApp::Render3D(float fDetailTime)
 {
-	m_pModel->Render();
+	int nNumPiece = m_pMesh->GetNumPieces();
+
+	CMatrix4x4 matWorldViewProj;
+	g_pOERenderSystem->GetTransform(matWorldViewProj, TT_WORLD_VIEW_PROJ);
+
+	CDefaultRenderState DefaultState;
+
+	for (int i = 0; i < nNumPiece; ++i)
+	{
+		IOEPiece* pPiece = m_pMesh->GetPiece(i);
+		if (!pPiece) continue;
+
+		m_pShader->SetMatrix(TS("g_matWorldViewProj"), matWorldViewProj);
+		m_pShader->SetTexture(TS("g_texDiffuse"), m_pTexture);
+
+		g_pOERenderSystem->SetShader(m_pShader);
+		g_pOERenderSystem->DrawTriList(pPiece->GetVerts(), pPiece->GetNumVerts(), pPiece->GetIndis(), pPiece->GetNumIndis());
+	}
 }
 
 void CMeshApp::Render2D(float fDetailTime)
