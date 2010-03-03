@@ -35,6 +35,17 @@ void COEUIStringMgr_Impl::Destroy()
 	// TODO: 
 }
 
+bool COEUIStringMgr_Impl::Initialize()
+{
+	// TODO: 
+	return true;
+}
+
+void COEUIStringMgr_Impl::Terminate()
+{
+	// TODO: 
+}
+
 IOEUIString* COEUIStringMgr_Impl::CreateUIString(IOEUIFont* pFont)
 {
 	COEUIString_Impl* pString = new COEUIString_Impl(pFont);

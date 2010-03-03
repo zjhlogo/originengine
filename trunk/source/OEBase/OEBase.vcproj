@@ -2,10 +2,11 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9.00"
-	Name="OriginEngine"
-	ProjectGUID="{D075752D-2334-4F70-B398-75BEA302E0F7}"
+	Name="OEBase"
+	ProjectGUID="{8354A989-14F3-4A53-A458-C86BD5D3520A}"
+	RootNamespace="OEBase"
 	Keyword="Win32Proj"
-	TargetFrameworkVersion="131072"
+	TargetFrameworkVersion="196613"
 	>
 	<Platforms>
 		<Platform
@@ -20,7 +21,6 @@
 			OutputDirectory="..\..\build\source\$(ProjectName)\$(ConfigurationName)"
 			IntermediateDirectory="..\..\build\source\$(ProjectName)\$(ConfigurationName)"
 			ConfigurationType="2"
-			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			CharacterSet="2"
 			>
 			<Tool
@@ -42,7 +42,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="..\..\include"
-				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;ORIGINENGINE_EXPORTS"
+				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -61,12 +61,10 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				OutputFile="$(OutDir)/OriginEngine_D.dll"
+				OutputFile="$(OutDir)\OEBase_D.dll"
 				LinkIncremental="2"
 				GenerateDebugInformation="true"
 				SubSystem="2"
-				RandomizedBaseAddress="1"
-				DataExecutionPrevention="0"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -97,8 +95,8 @@
 			OutputDirectory="..\..\build\source\$(ProjectName)\$(ConfigurationName)"
 			IntermediateDirectory="..\..\build\source\$(ProjectName)\$(ConfigurationName)"
 			ConfigurationType="2"
-			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			CharacterSet="2"
+			WholeProgramOptimization="1"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -117,9 +115,12 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				Optimization="2"
+				EnableIntrinsicFunctions="true"
 				AdditionalIncludeDirectories="..\..\include"
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;ORIGINENGINE_EXPORTS"
+				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS"
 				RuntimeLibrary="2"
+				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
 				DebugInformationFormat="3"
@@ -135,14 +136,12 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				OutputFile="$(OutDir)/OriginEngine.dll"
+				OutputFile="$(OutDir)\OEBase.dll"
 				LinkIncremental="1"
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
-				RandomizedBaseAddress="1"
-				DataExecutionPrevention="0"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -173,7 +172,6 @@
 			OutputDirectory="..\..\build\source\$(ProjectName)\$(ConfigurationName)"
 			IntermediateDirectory="..\..\build\source\$(ProjectName)\$(ConfigurationName)"
 			ConfigurationType="2"
-			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			CharacterSet="1"
 			>
 			<Tool
@@ -195,7 +193,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="..\..\include"
-				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;ORIGINENGINE_EXPORTS"
+				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -214,12 +212,10 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				OutputFile="$(OutDir)/OriginEngine_UD.dll"
+				OutputFile="$(OutDir)\OEBase_UD.dll"
 				LinkIncremental="2"
 				GenerateDebugInformation="true"
 				SubSystem="2"
-				RandomizedBaseAddress="1"
-				DataExecutionPrevention="0"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -250,8 +246,8 @@
 			OutputDirectory="..\..\build\source\$(ProjectName)\$(ConfigurationName)"
 			IntermediateDirectory="..\..\build\source\$(ProjectName)\$(ConfigurationName)"
 			ConfigurationType="2"
-			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			CharacterSet="1"
+			WholeProgramOptimization="1"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -270,9 +266,12 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				Optimization="2"
+				EnableIntrinsicFunctions="true"
 				AdditionalIncludeDirectories="..\..\include"
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;ORIGINENGINE_EXPORTS"
+				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS"
 				RuntimeLibrary="2"
+				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
 				DebugInformationFormat="3"
@@ -288,14 +287,12 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				OutputFile="$(OutDir)/OriginEngineU.dll"
+				OutputFile="$(OutDir)\OEBaseU.dll"
 				LinkIncremental="1"
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
-				RandomizedBaseAddress="1"
-				DataExecutionPrevention="0"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -327,75 +324,55 @@
 	<Files>
 		<Filter
 			Name="Source Files"
-			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx"
+			Filter="cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx"
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\OEBone_Impl.cpp"
+				RelativePath=".\OEBaseModule.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\OEBoundingBoxRender_Impl.cpp"
+				RelativePath=".\OEFile_Impl.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\OEConfigFileMgr_Impl.cpp"
+				RelativePath=".\OEFileMgr_Impl.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\OEControlMgr_Impl.cpp"
+				RelativePath=".\OELogFileMgr_Impl.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\OECore_Impl.cpp"
+				RelativePath=".\OEMsgMgr_Impl.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\OEMaterial_Impl.cpp"
+				RelativePath=".\OEXmlAttribute_Impl.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\OEMesh_Impl.cpp"
+				RelativePath=".\OEXmlDocument_Impl.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\OEModel_Impl.cpp"
+				RelativePath=".\OEXmlMgr_Impl.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\OEModule.cpp"
+				RelativePath=".\OEXmlNode_Impl.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\OEPiece_Impl.cpp"
+				RelativePath=".\XmlGenerator.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\OERenderMgr_Impl.cpp"
+				RelativePath=".\XmlParser.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\OEResMgr_Impl.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\OESkeleton_Impl.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\OESkeletonRender_Impl.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\OESkinMeshControl_Impl.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\OESkinMeshRender_Impl.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\OESkinMeshRenderData_Impl.cpp"
+				RelativePath=".\XmlScanner.cpp"
 				>
 			</File>
 		</Filter>
@@ -405,71 +382,65 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath=".\OEBone_Impl.h"
+				RelativePath=".\OEBaseModule.h"
 				>
 			</File>
 			<File
-				RelativePath=".\OEBoundingBoxRender_Impl.h"
+				RelativePath=".\OEFile_Impl.h"
 				>
 			</File>
 			<File
-				RelativePath=".\OEConfigFileMgr_Impl.h"
+				RelativePath=".\OEFileMgr_Impl.h"
 				>
 			</File>
 			<File
-				RelativePath=".\OEControlMgr_Impl.h"
+				RelativePath=".\OELogFileMgr_Impl.h"
 				>
 			</File>
 			<File
-				RelativePath=".\OECore_Impl.h"
+				RelativePath=".\OEMsgMgr_Impl.h"
 				>
 			</File>
 			<File
-				RelativePath=".\OEMaterial_Impl.h"
+				RelativePath=".\OEXmlAttribute_Impl.h"
 				>
 			</File>
 			<File
-				RelativePath=".\OEMesh_Impl.h"
+				RelativePath=".\OEXmlDocument_Impl.h"
 				>
 			</File>
 			<File
-				RelativePath=".\OEModel_Impl.h"
+				RelativePath=".\OEXmlMgr_Impl.h"
 				>
 			</File>
 			<File
-				RelativePath=".\OEModule.h"
+				RelativePath=".\OEXmlNode_Impl.h"
 				>
 			</File>
 			<File
-				RelativePath=".\OEPiece_Impl.h"
+				RelativePath=".\XmlGenerator.h"
 				>
 			</File>
 			<File
-				RelativePath=".\OERenderMgr_Impl.h"
+				RelativePath=".\XmlParser.hpp"
 				>
 			</File>
 			<File
-				RelativePath=".\OEResMgr_Impl.h"
+				RelativePath=".\XmlScanner.hpp"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="Resource Files"
+			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav"
+			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
+			>
+			<File
+				RelativePath=".\parser.y"
 				>
 			</File>
 			<File
-				RelativePath=".\OESkeleton_Impl.h"
-				>
-			</File>
-			<File
-				RelativePath=".\OESkeletonRender_Impl.h"
-				>
-			</File>
-			<File
-				RelativePath=".\OESkinMeshControl_Impl.h"
-				>
-			</File>
-			<File
-				RelativePath=".\OESkinMeshRender_Impl.h"
-				>
-			</File>
-			<File
-				RelativePath=".\OESkinMeshRenderData_Impl.h"
+				RelativePath=".\scanner.l"
 				>
 			</File>
 		</Filter>
@@ -477,123 +448,35 @@
 			Name="SDK Header Files"
 			>
 			<File
-				RelativePath="..\..\include\IOEApp.h"
+				RelativePath="..\..\include\IOEFile.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\include\IOEBone.h"
+				RelativePath="..\..\include\IOEFileMgr.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\include\IOEConfigFileMgr.h"
+				RelativePath="..\..\include\IOELogFileMgr.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\include\IOEControl.h"
+				RelativePath="..\..\include\IOEMsgMgr.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\include\IOEControlMgr.h"
+				RelativePath="..\..\include\IOEXmlAttribute.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\include\IOECore.h"
+				RelativePath="..\..\include\IOEXmlDocument.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\include\IOEDevice.h"
+				RelativePath="..\..\include\IOEXmlMgr.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\include\IOEMaterial.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\include\IOEMesh.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\include\IOEMgr.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\include\IOEModel.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\include\IOEObject.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\include\IOEPiece.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\include\IOERender.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\include\IOERenderData.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\include\IOERenderMgr.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\include\IOERenderSystem.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\include\IOEResMgr.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\include\IOEShader.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\include\IOEShaderMgr.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\include\IOESkeleton.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\include\IOETexture.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\include\IOETextureMgr.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\include\IOEVertDecl.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\include\OEBaseTypeEx.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\include\OEConfig.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\include\OEFmtMesh.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\include\OEFmtSkeleton.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\include\OEInterfaces.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\include\OERenderSystemUtil.h"
+				RelativePath="..\..\include\IOEXmlNode.h"
 				>
 			</File>
 		</Filter>

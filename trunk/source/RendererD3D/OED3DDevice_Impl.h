@@ -24,8 +24,8 @@ public:
 	COED3DDevice_Impl();
 	virtual ~COED3DDevice_Impl();
 
-	virtual bool CreateDevice();
-	virtual void DestroyDevice();
+	virtual bool Initialize();
+	virtual void Terminate();
 
 	virtual void StartPerform();
 	virtual void EndPerform();

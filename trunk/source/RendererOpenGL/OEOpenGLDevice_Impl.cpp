@@ -29,13 +29,13 @@ void COEOpenGLDevice_Impl::Destroy()
 	// TODO: 
 }
 
-bool COEOpenGLDevice_Impl::CreateDevice()
+bool COEOpenGLDevice_Impl::Initialize()
 {
 	// TODO: 
 	return false;
 }
 
-void COEOpenGLDevice_Impl::DestroyDevice()
+void COEOpenGLDevice_Impl::Terminate()
 {
 	// TODO: 
 }

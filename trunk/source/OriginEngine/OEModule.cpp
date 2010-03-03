@@ -14,7 +14,8 @@
 
 #include <OEOS.h>
 
-static COEOS::OEMODULE g_hModuleRenderer = NULL;
+static COEOS::OEMODULE g_hModuleBase = NULL;
+static COEOS::OEMODULE g_hModuleRenderSystem = NULL;
 static COEOS::OEMODULE g_hModuleUI = NULL;
 
 COECore_Impl* g_pOECore_Impl = NULL;
@@ -22,6 +23,7 @@ COEConfigFileMgr_Impl* g_pOEConfigFileMgr_Impl = NULL;
 COEResMgr_Impl* g_pOEResMgr_Impl = NULL;
 COEControlMgr_Impl* g_pOEControlMgr_Impl = NULL;
 COERenderMgr_Impl* g_pOERenderMgr_Impl = NULL;
+static COEHolder g_OEHolder;
 
 bool CreateSingleton()
 {
@@ -74,9 +76,7 @@ void DestroySingleton()
 
 bool OEModuleInit(COEHolder& Holder)
 {
-	g_OEHolder.SetupInterfaces();
-
-	g_OEHolder.MergeInterface(Holder);
+	g_OEHolder.MergeFrom(Holder);
 
 	if (!CreateSingleton())
 	{
@@ -84,40 +84,18 @@ bool OEModuleInit(COEHolder& Holder)
 		return false;
 	}
 
-	Holder.MergeInterface(g_OEHolder);
-
-	// load renderer module
-	g_hModuleRenderer = COEOS::LoadOEModule(MODULE_RENDERER);
-	if (!g_hModuleRenderer) return false;
-	Holder.MergeInterface(g_OEHolder);
-
-	// load ui module
-	g_hModuleUI = COEOS::LoadOEModule(MODULE_UI);
-	if (!g_hModuleUI) return false;
-	Holder.MergeInterface(g_OEHolder);
+	Holder.MergeFrom(g_OEHolder);
 
 	return true;
 }
 
 void OEModuleTerm(COEHolder& Holder)
 {
-	// free ui module
-	COEOS::FreeOEModule(g_hModuleUI);
-	g_hModuleUI = NULL;
-
-	// free renderer module
-	COEOS::FreeOEModule(g_hModuleRenderer);
-	g_hModuleRenderer = NULL;
-
 	DestroySingleton();
-
-	Holder.MergeInterface(g_OEHolder);
+	Holder.MergeFrom(g_OEHolder);
 }
 
 void OEModuleSyncInterfaces(COEHolder& Holder)
 {
-	g_OEHolder.MergeInterface(Holder);
-
-	COEOS::SyncModuleInterfaces(g_hModuleRenderer);
-	COEOS::SyncModuleInterfaces(g_hModuleUI);
+	g_OEHolder.MergeFrom(Holder);
 }

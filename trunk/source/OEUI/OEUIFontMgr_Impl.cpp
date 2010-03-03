@@ -10,6 +10,7 @@
 #include "OEUIBitmapFont_Impl.h"
 
 #include <IOELogFileMgr.h>
+#include <IOEConfigFileMgr.h>
 #include <algorithm>
 #include <assert.h>
 
@@ -33,6 +34,20 @@ bool COEUIFontMgr_Impl::Init()
 }
 
 void COEUIFontMgr_Impl::Destroy()
+{
+	// TODO: 
+}
+
+bool COEUIFontMgr_Impl::Initialize()
+{
+	tstring strDefaultFontDir;
+	g_pOEConfigFileMgr->GetValue(strDefaultFontDir, TS("DefaultFontDir"), TS("media"));
+	SetDefaultDir(strDefaultFontDir);
+
+	return true;
+}
+
+void COEUIFontMgr_Impl::Terminate()
 {
 	// TODO: check m_UIFontMap whether is empty, and logout
 }

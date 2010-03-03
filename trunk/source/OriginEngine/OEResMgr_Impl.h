@@ -21,6 +21,9 @@ public:
 	COEResMgr_Impl();
 	virtual ~COEResMgr_Impl();
 
+	virtual bool Initialize();
+	virtual void Terminate();
+
 	virtual IOEModel* CreateModel(const tstring& strFile);
 	virtual IOEMesh* CreateMesh(const tstring& strFile);
 	virtual IOESkeleton* CreateSkeleton(const tstring& strFile);

@@ -20,6 +20,9 @@ public:
 	COEUIFontMgr_Impl();
 	virtual ~COEUIFontMgr_Impl();
 
+	virtual bool Initialize();
+	virtual void Terminate();
+
 	virtual IOEUIFont* CreateFont(const tstring& strFile);
 	virtual IOEUIFont* CreateBitmapFont(const tstring& strFile);
 

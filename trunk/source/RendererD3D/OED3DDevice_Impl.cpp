@@ -50,12 +50,11 @@ COED3DDevice_Impl::~COED3DDevice_Impl()
 
 bool COED3DDevice_Impl::Init()
 {
-	// read from config file
-	g_pOEConfigFileMgr->GetValue(m_nWindowWidth, NODE_WINDOW_WIDTH, WINDOW_WIDTH);
-	g_pOEConfigFileMgr->GetValue(m_nWindowHeight, NODE_WINDOW_HEIGHT, WINDOW_HEIGHT);
-	g_pOEConfigFileMgr->GetValue(m_strClassName, NODE_CLASS_NAME, CLASS_NAME);
-	g_pOEConfigFileMgr->GetValue(m_strWindowName, NODE_WINDOW_NAME, WINDOW_NAME);
-	g_pOEConfigFileMgr->GetValue(m_fMaxFPS, NODE_MAX_FPS, MAX_FPS);
+	m_nWindowWidth = WINDOW_WIDTH;
+	m_nWindowHeight = WINDOW_HEIGHT;
+	m_strClassName = CLASS_NAME;
+	m_strWindowName = WINDOW_NAME;
+	m_fMaxFPS = MAX_FPS;
 
 	m_fPrevTime = 0.0f;
 	m_fCurrTime = 0.0f;
@@ -67,22 +66,29 @@ bool COED3DDevice_Impl::Init()
 
 void COED3DDevice_Impl::Destroy()
 {
-	DestroyDevice();
+	// TODO: 
 }
 
-bool COED3DDevice_Impl::CreateDevice()
+bool COED3DDevice_Impl::Initialize()
 {
+	// read from config file
+	g_pOEConfigFileMgr->GetValue(m_nWindowWidth, NODE_WINDOW_WIDTH, WINDOW_WIDTH);
+	g_pOEConfigFileMgr->GetValue(m_nWindowHeight, NODE_WINDOW_HEIGHT, WINDOW_HEIGHT);
+	g_pOEConfigFileMgr->GetValue(m_strClassName, NODE_CLASS_NAME, CLASS_NAME);
+	g_pOEConfigFileMgr->GetValue(m_strWindowName, NODE_WINDOW_NAME, WINDOW_NAME);
+	g_pOEConfigFileMgr->GetValue(m_fMaxFPS, NODE_MAX_FPS, MAX_FPS);
+
 	// create window
 	if (!InternalCreateWindow())
 	{
-		DestroyDevice();
+		Terminate();
 		return false;
 	}
 
 	// create direct3d
 	if (!InternalCreateD3D())
 	{
-		DestroyDevice();
+		Terminate();
 		return false;
 	}
 
@@ -92,10 +98,14 @@ bool COED3DDevice_Impl::CreateDevice()
 	return true;
 }
 
-void COED3DDevice_Impl::DestroyDevice()
+void COED3DDevice_Impl::Terminate()
 {
 	if (g_pd3dDevice) InternalDestroyD3D();
 	if (g_hWnd) InternalDestroyWindow();
+
+	g_pd3dDevice = NULL;
+	g_pD3D = NULL;
+	g_hWnd = NULL;
 }
 
 void COED3DDevice_Impl::StartPerform()

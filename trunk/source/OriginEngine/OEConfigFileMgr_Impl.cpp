@@ -15,8 +15,7 @@ COEConfigFileMgr_Impl::COEConfigFileMgr_Impl()
 {
 	assert(!g_pOEConfigFileMgr);
 	g_pOEConfigFileMgr = this;
-	Init();
-	m_bOK = LoadConfigFile(m_strConfigFile);
+	m_bOK = Init();
 }
 
 COEConfigFileMgr_Impl::~COEConfigFileMgr_Impl()
@@ -25,13 +24,24 @@ COEConfigFileMgr_Impl::~COEConfigFileMgr_Impl()
 	g_pOEConfigFileMgr = NULL;
 }
 
-void COEConfigFileMgr_Impl::Init()
+bool COEConfigFileMgr_Impl::Init()
 {
 	m_strConfigFile = TS("Config.xml");
 	m_pXmlDocument = NULL;
+	return true;
 }
 
 void COEConfigFileMgr_Impl::Destroy()
+{
+	// TODO: 
+}
+
+bool COEConfigFileMgr_Impl::Initialize()
+{
+	return LoadConfigFile(m_strConfigFile);
+}
+
+void COEConfigFileMgr_Impl::Terminate()
 {
 	SAFE_RELEASE(m_pXmlDocument);
 }

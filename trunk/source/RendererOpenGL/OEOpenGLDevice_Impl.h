@@ -16,8 +16,8 @@ public:
 	COEOpenGLDevice_Impl();
 	virtual ~COEOpenGLDevice_Impl();
 
-	virtual bool CreateDevice();
-	virtual void DestroyDevice();
+	virtual bool Initialize();
+	virtual void Terminate();
 
 	virtual void StartPerform();
 	virtual void EndPerform();
