@@ -1,20 +1,20 @@
 /*!
- * \file OEOpenGLDevice_Impl.h
- * \date 24-5-2009 10:57:28
+ * \file OEOGLDevice_Impl.h
+ * \date 3-3-2010 11:05:14
  * 
  * 
  * \author zjhlogo (zjhlogo@163.com)
  */
-#ifndef __OEOPENGLDEVICE_IMPL_H__
-#define __OEOPENGLDEVICE_IMPL_H__
+#ifndef __OEOGLDEVICE_IMPL_H__
+#define __OEOGLDEVICE_IMPL_H__
 
 #include <IOEDevice.h>
 
-class COEOpenGLDevice_Impl : public IOEDevice
+class COEOGLevice_Impl : public IOEDevice
 {
 public:
-	COEOpenGLDevice_Impl();
-	virtual ~COEOpenGLDevice_Impl();
+	COEOGLevice_Impl();
+	virtual ~COEOGLevice_Impl();
 
 	virtual bool Initialize();
 	virtual void Terminate();
@@ -34,5 +34,4 @@ private:
 	void Destroy();
 
 };
-
-#endif // __OEOPENGLDEVICE_IMPL_H__
+#endif // __OEOGLDEVICE_IMPL_H__

@@ -331,11 +331,11 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\OEOpenGLDevice_Impl.cpp"
+				RelativePath=".\OEOGLDevice_Impl.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\OpenGLModule.cpp"
+				RelativePath=".\RenderSystemOGLModule.cpp"
 				>
 			</File>
 		</Filter>
@@ -345,11 +345,11 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath=".\OEOpenGLDevice_Impl.h"
+				RelativePath=".\OEOGLDevice_Impl.h"
 				>
 			</File>
 			<File
-				RelativePath=".\OpenGLModule.h"
+				RelativePath=".\RenderSystemOGLModule.h"
 				>
 			</File>
 		</Filter>

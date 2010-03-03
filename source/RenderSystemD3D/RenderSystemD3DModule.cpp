@@ -1,11 +1,11 @@
 /*!
- * \file D3DModule.cpp
- * \date 24-5-2009 10:42:30
+ * \file RenderSystemD3DModule.cpp
+ * \date 3-3-2010 11:00:21
  * 
  * 
  * \author zjhlogo (zjhlogo@163.com)
  */
-#include "D3DModule.h"
+#include "RenderSystemD3DModule.h"
 #include "OED3DDevice_Impl.h"
 #include "OED3DRenderSystem_Impl.h"
 #include "OED3DTextureMgr_Impl.h"
