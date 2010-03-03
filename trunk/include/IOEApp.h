@@ -8,16 +8,13 @@
 #ifndef __IOEAPP_H__
 #define __IOEAPP_H__
 
-#include "IOEObject.h"
+#include "IOEMgr.h"
 
-class IOEApp : public IOEObject
+class IOEApp : public IOEMgr
 {
 public:
 	IOEApp();
 	virtual ~IOEApp();
-
-	virtual bool Initialize() = 0;
-	virtual void Terminate() = 0;
 
 	virtual void Update(float fDetailTime) = 0;
 	virtual void Render3D(float fDetailTime) = 0;

@@ -7,12 +7,12 @@
  */
 #include "WaterApp.h"
 #include "resource.h"
-#include "DlgWaveSetting.h"
-
 #include "../common/AppHelper.h"
 #include "../common/wxInitHelper.h"
 
 #include <OERenderSystemUtil.h>
+#include <IOECore.h>
+#include <IOEMsgMgr.h>
 #include <OEMsgID.h>
 #include <assert.h>
 

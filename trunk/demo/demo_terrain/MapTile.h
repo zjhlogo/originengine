@@ -8,9 +8,10 @@
 #ifndef __MAPTILE_H__
 #define __MAPTILE_H__
 
-#include <OEBaseType.h>
-#include <OEInterfaces.h>
+#include <OEBaseTypeEx.h>
 #include <OEMath/OEMath.h>
+#include <IOETextureMgr.h>
+#include <IOEShaderMgr.h>
 
 class CMapTile
 {

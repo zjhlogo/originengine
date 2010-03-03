@@ -8,10 +8,10 @@
 #ifndef __IOELOGFILEMGR_H__
 #define __IOELOGFILEMGR_H__
 
-#include "IOEObject.h"
+#include "IOEMgr.h"
 #include <OEOS.h>
 
-class IOELogFileMgr : public IOEObject
+class IOELogFileMgr : public IOEMgr
 {
 public:
 	IOELogFileMgr() {};

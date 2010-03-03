@@ -7,6 +7,10 @@
  */
 #include "ModelApp.h"
 #include "../common/AppHelper.h"
+#include <IOERenderSystem.h>
+#include <IOECore.h>
+#include <IOEResMgr.h>
+#include <IOEMsgMgr.h>
 #include <OEMsgID.h>
 #include <assert.h>
 

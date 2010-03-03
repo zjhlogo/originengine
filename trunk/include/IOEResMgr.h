@@ -8,14 +8,14 @@
 #ifndef __IOERESMGR_H__
 #define __IOERESMGR_H__
 
-#include "IOEObject.h"
+#include "IOEMgr.h"
 #include "IOEModel.h"
 #include "IOEMesh.h"
 #include "IOESkeleton.h"
 #include "IOEMaterial.h"
 #include "IOEXmlNode.h"
 
-class IOEResMgr : public IOEObject
+class IOEResMgr : public IOEMgr
 {
 public:
 	IOEResMgr() {};

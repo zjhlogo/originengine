@@ -8,9 +8,9 @@
 #ifndef __IOECONFIGFILEMGR_H__
 #define __IOECONFIGFILEMGR_H__
 
-#include "IOEObject.h"
+#include "IOEMgr.h"
 
-class IOEConfigFileMgr : public IOEObject
+class IOEConfigFileMgr : public IOEMgr
 {
 public:
 	IOEConfigFileMgr() {};

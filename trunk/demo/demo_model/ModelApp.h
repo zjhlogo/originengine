@@ -9,11 +9,10 @@
 #define __MODELAPP_H__
 
 #include <IOEApp.h>
-#include <OEInterfaces.h>
+#include <IOEModel.h>
+#include <vector>
 
 #include "../common/Camera.h"
-
-#include <vector>
 
 class CModelApp : public IOEApp
 {
@@ -47,8 +46,6 @@ private:
 
 	bool UpdateMovement(float fDetailTime);
 	bool UpdateRotation(float fDetailTime);
-
-	void RenderPieceNormal(IOEPiece* pPiece);
 
 private:
 	CCamera* m_pCamera;

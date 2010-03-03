@@ -9,7 +9,9 @@
 #define __MESHAPP_H__
 
 #include <IOEApp.h>
-#include <OEInterfaces.h>
+#include <IOEResMgr.h>
+#include <IOETextureMgr.h>
+#include <IOEShaderMgr.h>
 #include <vector>
 
 #include "../common/Camera.h"

@@ -7,6 +7,7 @@
  */
 #include "SimpleShape.h"
 #include <IOERenderSystem.h>
+#include <IOEShaderMgr.h>
 #include <OERenderSystemUtil.h>
 
 CSimpleShape::CSimpleShape()

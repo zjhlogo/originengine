@@ -8,10 +8,10 @@
 #ifndef __IOEUISTRINGMGR_H__
 #define __IOEUISTRINGMGR_H__
 
-#include "IOEObject.h"
+#include "IOEMgr.h"
 #include "IOEUIString.h"
 
-class IOEUIStringMgr : public IOEObject
+class IOEUIStringMgr : public IOEMgr
 {
 public:
 	IOEUIStringMgr() {};

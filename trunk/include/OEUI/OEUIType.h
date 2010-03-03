@@ -85,4 +85,8 @@ public:
 
 };
 
+extern const CPoint OEUI_ZERO_POINT;
+extern const CSize OEUI_ZERO_SIZE;
+extern const CRect OEUI_ZERO_RECT;
+
 #endif // __OEUITYPE_H__
