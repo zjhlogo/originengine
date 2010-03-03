@@ -1,11 +1,11 @@
 /*!
- * \file OEModule.cpp
- * \date 24-5-2009 10:25:25
+ * \file OECoreModule.cpp
+ * \date 3-3-2010 10:58:27
  * 
  * 
  * \author zjhlogo (zjhlogo@163.com)
  */
-#include "OEModule.h"
+#include "OECoreModule.h"
 #include "OECore_Impl.h"
 #include "OEConfigFileMgr_Impl.h"
 #include "OEResMgr_Impl.h"
@@ -13,10 +13,6 @@
 #include "OERenderMgr_Impl.h"
 
 #include <OEOS.h>
-
-static COEOS::OEMODULE g_hModuleBase = NULL;
-static COEOS::OEMODULE g_hModuleRenderSystem = NULL;
-static COEOS::OEMODULE g_hModuleUI = NULL;
 
 COECore_Impl* g_pOECore_Impl = NULL;
 COEConfigFileMgr_Impl* g_pOEConfigFileMgr_Impl = NULL;

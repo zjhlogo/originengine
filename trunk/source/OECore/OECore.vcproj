@@ -2,7 +2,7 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9.00"
-	Name="OriginEngine"
+	Name="OECore"
 	ProjectGUID="{D075752D-2334-4F70-B398-75BEA302E0F7}"
 	Keyword="Win32Proj"
 	TargetFrameworkVersion="131072"
@@ -42,7 +42,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="..\..\include"
-				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;ORIGINENGINE_EXPORTS"
+				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;OECORE_EXPORTS"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -61,7 +61,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				OutputFile="$(OutDir)/OriginEngine_D.dll"
+				OutputFile="$(OutDir)/OECore_D.dll"
 				LinkIncremental="2"
 				GenerateDebugInformation="true"
 				SubSystem="2"
@@ -118,7 +118,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				AdditionalIncludeDirectories="..\..\include"
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;ORIGINENGINE_EXPORTS"
+				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;OECORE_EXPORTS"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
@@ -135,7 +135,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				OutputFile="$(OutDir)/OriginEngine.dll"
+				OutputFile="$(OutDir)/OECore.dll"
 				LinkIncremental="1"
 				GenerateDebugInformation="true"
 				SubSystem="2"
@@ -195,7 +195,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="..\..\include"
-				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;ORIGINENGINE_EXPORTS"
+				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;OECORE_EXPORTS"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -214,7 +214,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				OutputFile="$(OutDir)/OriginEngine_UD.dll"
+				OutputFile="$(OutDir)/OECore_UD.dll"
 				LinkIncremental="2"
 				GenerateDebugInformation="true"
 				SubSystem="2"
@@ -271,7 +271,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				AdditionalIncludeDirectories="..\..\include"
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;ORIGINENGINE_EXPORTS"
+				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;OECORE_EXPORTS"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
@@ -288,7 +288,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				OutputFile="$(OutDir)/OriginEngineU.dll"
+				OutputFile="$(OutDir)/OECoreU.dll"
 				LinkIncremental="1"
 				GenerateDebugInformation="true"
 				SubSystem="2"
@@ -351,6 +351,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\OECoreModule.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\OEMaterial_Impl.cpp"
 				>
 			</File>
@@ -360,10 +364,6 @@
 			</File>
 			<File
 				RelativePath=".\OEModel_Impl.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\OEModule.cpp"
 				>
 			</File>
 			<File
@@ -425,6 +425,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\OECoreModule.h"
+				>
+			</File>
+			<File
 				RelativePath=".\OEMaterial_Impl.h"
 				>
 			</File>
@@ -434,10 +438,6 @@
 			</File>
 			<File
 				RelativePath=".\OEModel_Impl.h"
-				>
-			</File>
-			<File
-				RelativePath=".\OEModule.h"
 				>
 			</File>
 			<File

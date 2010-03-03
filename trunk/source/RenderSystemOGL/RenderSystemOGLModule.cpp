@@ -1,22 +1,22 @@
 /*!
- * \file OpenGLModule.cpp
- * \date 24-5-2009 10:55:38
+ * \file RenderSystemOGLModule.cpp
+ * \date 3-3-2010 11:00:54
  * 
  * 
  * \author zjhlogo (zjhlogo@163.com)
  */
-#include "OpenGLModule.h"
-#include "OEOpenGLDevice_Impl.h"
+#include "RenderSystemOGLModule.h"
+#include "OEOGLDevice_Impl.h"
 
-COEOpenGLDevice_Impl* g_pOEOpenGLDevice_Impl = NULL;
+COEOGLevice_Impl* g_pOEOGLDevice_Impl = NULL;
 static COEHolder g_OEHolder;
 
 bool CreateSingleton()
 {
-	g_pOEOpenGLDevice_Impl = new COEOpenGLDevice_Impl();
-	if (!g_pOEOpenGLDevice_Impl || !g_pOEOpenGLDevice_Impl->IsOK())
+	g_pOEOGLDevice_Impl = new COEOGLevice_Impl();
+	if (!g_pOEOGLDevice_Impl || !g_pOEOGLDevice_Impl->IsOK())
 	{
-		SAFE_DELETE(g_pOEOpenGLDevice_Impl);
+		SAFE_DELETE(g_pOEOGLDevice_Impl);
 		return false;
 	}
 
@@ -25,7 +25,7 @@ bool CreateSingleton()
 
 void DestroySingleton()
 {
-	SAFE_DELETE(g_pOEOpenGLDevice_Impl);
+	SAFE_DELETE(g_pOEOGLDevice_Impl);
 }
 
 bool OEModuleInit(COEHolder& Holder)

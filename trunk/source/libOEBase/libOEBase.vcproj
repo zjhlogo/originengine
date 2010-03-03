@@ -341,6 +341,10 @@
 			Name="SDK Header Files"
 			>
 			<File
+				RelativePath="..\..\include\OEConfig.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\include\OEMsgID.h"
 				>
 			</File>

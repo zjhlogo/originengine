@@ -335,10 +335,6 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\D3DModule.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\OED3DDevice_Impl.cpp"
 				>
 			</File>
@@ -374,16 +370,16 @@
 				RelativePath=".\OED3DVertDecl_Impl.cpp"
 				>
 			</File>
+			<File
+				RelativePath=".\RenderSystemD3DModule.cpp"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
-			<File
-				RelativePath=".\D3DModule.h"
-				>
-			</File>
 			<File
 				RelativePath=".\OED3DDevice_Impl.h"
 				>
@@ -418,6 +414,10 @@
 			</File>
 			<File
 				RelativePath=".\OED3DVertDecl_Impl.h"
+				>
+			</File>
+			<File
+				RelativePath=".\RenderSystemD3DModule.h"
 				>
 			</File>
 		</Filter>

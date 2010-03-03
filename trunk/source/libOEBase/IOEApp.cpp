@@ -23,7 +23,7 @@ static bool LoadModules(COEHolder& Holder)
 	if (!g_hModuleBase) return false;
 
 	// load core module
-	g_hModuleOE = COEOS::LoadOEModule(MODULE_ORIGINENGINE, Holder);
+	g_hModuleOE = COEOS::LoadOEModule(MODULE_CORE, Holder);
 	if (!g_hModuleOE) return false;
 
 	// load renderer module
