@@ -8,7 +8,6 @@
 #include "ModelExporter.h"
 #include "DlgModelExporterOption.h"
 
-#include <OEInterfaces.h>
 #include <OEOS.h>
 #include <IPathConfigMgr.h>
 
@@ -75,7 +74,7 @@ const TCHAR* CModelExporter::LongDesc()
 
 const TCHAR* CModelExporter::ShortDesc()
 {
-	return _T("Origin Engine Model Exporter Desc");
+	return _T("Origin Engine Model");
 }
 
 const TCHAR* CModelExporter::AuthorName()

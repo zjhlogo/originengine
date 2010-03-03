@@ -7,6 +7,7 @@
  */
 #include "ModelConverterMain.h"
 #include "ConverterMgr.h"
+#include "../common/OEModuleLoader.h"
 
 #include <OEOS.h>
 #include <iostream>
@@ -24,13 +25,9 @@ bool CheckParameter(int argc, char** argv)
 
 int main(int argc, char** argv)
 {
-	if (!COEOS::Initialize(COEOS::IS_FILE)) return 0;
+	if (!CheckParameter(argc, argv)) return 0;
 
-	if (!CheckParameter(argc, argv))
-	{
-		COEOS::Terminate();
-		return 0;
-	}
+	if (!COEModuleLoader::Initialize()) return 0;
 
 	tstring strFileIn;
 	COEOS::char2tchar(strFileIn, argv[1]);
@@ -40,6 +37,7 @@ int main(int argc, char** argv)
 
 	CConverterMgr::Get().DoConvert(strFileIn, strFileOut);
 
-	COEOS::Terminate();
+	COEModuleLoader::Terminate();
+
 	return 0;
 }

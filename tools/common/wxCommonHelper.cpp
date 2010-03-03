@@ -1,30 +1,41 @@
 /*!
- * \file wxToolUtil.cpp
- * \date 1-3-2010 12:03:17
+ * \file wxCommonHelper.cpp
+ * \date 3-3-2010 15:39:20
  * 
  * 
  * \author zjhlogo (zjhlogo@163.com)
  */
-#include "wxToolUtil.h"
+#include "wxCommonHelper.h"
 #include <wx/app.h>
 #include <wx/fs_mem.h>
 #include <wx/xrc/xmlres.h>
 
-bool wxToolUtil::m_bOK = false;
-
-bool wxToolUtil::InitFileHandler()
+bool wxCommonHelper::Initialize()
 {
+	if (!wxInitialize()) return false;
+
+	if (!InitializeXrc()) return false;
+
+	return true;
+}
+
+void wxCommonHelper::Terminate()
+{
+	wxUninitialize();
+}
+
+bool wxCommonHelper::InitializeXrc()
+{
+	wxXmlResource::Get()->InitAllHandlers();
+
 	// add memory file system
 	wxFileSystem::AddHandler(new wxMemoryFSHandler());
 
-	m_bOK = true;
-	return m_bOK;
+	return true;
 }
 
-bool wxToolUtil::AddMemoryXrc(const tstring& strResType, uint nResID, const tstring& strMemoryFileName, HINSTANCE hInstance /* = NULL */)
+bool wxCommonHelper::AddMemoryXrc(const tstring& strResType, uint nResID, const tstring& strMemoryFileName, HINSTANCE hInstance /* = NULL */)
 {
-	if (!m_bOK) InitFileHandler();
-
 	// load the resource
 	HRSRC hRes = FindResource(hInstance, MAKEINTRESOURCE(nResID), strResType.c_str());
 	HGLOBAL hResData = LoadResource(hInstance, hRes);

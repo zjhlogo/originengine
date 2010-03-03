@@ -12,35 +12,31 @@
 
 IMPLEMENT_APP_NO_MAIN(wxApp);
 
-static HINSTANCE g_hInst = NULL;
-
-bool wxInitHelper::Initialize(HINSTANCE hInst /* = NULL */)
+bool wxInitHelper::Initialize()
 {
 	if (!wxInitialize()) return false;
 
-	g_hInst = hInst;
+	wxXmlResource::Get()->InitAllHandlers();
 
 	// add memory file system
 	wxFileSystem::AddHandler(new wxMemoryFSHandler());
-	wxXmlResource::Get()->InitAllHandlers();
 
 	return true;
 }
 
 void wxInitHelper::Uninitialize()
 {
-	g_hInst = NULL;
 	wxUninitialize();
 }
 
-bool wxInitHelper::AddMemoryXrc(const tstring& strResType, uint nResID, const tstring& strMemoryFileName)
+bool wxInitHelper::AddMemoryXrc(const tstring& strResType, uint nResID, const tstring& strMemoryFileName, HINSTANCE hInstance /* = NULL */)
 {
 	// load the resource
-	HRSRC hRes = FindResource(g_hInst, MAKEINTRESOURCE(nResID), strResType.c_str());
-	HGLOBAL hResData = LoadResource(g_hInst, hRes);
+	HRSRC hRes = FindResource(hInstance, MAKEINTRESOURCE(nResID), strResType.c_str());
+	HGLOBAL hResData = LoadResource(hInstance, hRes);
 	void* pResBuffer = LockResource(hResData);
 	if (!pResBuffer) return false;
-	int nResSize = SizeofResource(g_hInst, hRes);
+	int nResSize = SizeofResource(hInstance, hRes);
 
 	// add resource into memory file system
 	wxMemoryFSHandler::AddFile(strMemoryFileName.c_str(), pResBuffer, nResSize);

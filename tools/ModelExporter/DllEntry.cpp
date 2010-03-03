@@ -8,60 +8,72 @@
 #include "DllEntry.h"
 #include "ModelExporterDesc.h"
 #include "resource.h"
+#include "../common/wxCommonHelper.h"
+#include "../common/OEModuleLoader.h"
 
-#include "../common/wxToolUtil.h"
-
-#include <OEOS.h>
 #include <wx/app.h>
-#include <wx/xrc/xmlres.h>
-
-static int g_nInitCount = 0;
+#include <OEOS.h>
 
 IMPLEMENT_APP_NO_MAIN(wxApp);
 
-static void Initialize(HINSTANCE hInstDLL)
+static bool Initialize(HINSTANCE hInstDLL)
 {
-	if (g_nInitCount <= 0)
+	InitCommonControls();
+
+	if (!COEModuleLoader::Initialize(hInstDLL))
 	{
-		InitCommonControls();
-		//InitCustomControls(hInstDLL);
-
-		COEOS::Initialize(COEOS::IS_FILE | COEOS::IS_XML);
-
-		wxInitialize();
-		wxXmlResource::Get()->InitAllHandlers();
-
-		wxToolUtil::AddMemoryXrc(TS("XRC"), IDR_XRC_DLGMODELEXPORTEROPTION, TS("DlgModelExporterOption.xrc"), hInstDLL);
+		MessageBox(NULL, TS("Load OEBase Failed"), TS("ModelExporter"), MB_OK);
+		return false;
 	}
 
-	++g_nInitCount;
+	if (!wxCommonHelper::Initialize())
+	{
+		MessageBox(NULL, TS("wxWidget Initialize Failed"), TS("ModelExporter"), MB_OK);
+		return false;
+	}
+
+	if (!wxCommonHelper::AddMemoryXrc(TS("XRC"), IDR_XRC_DLGMODELEXPORTEROPTION, TS("DlgModelExporterOption.xrc"), hInstDLL))
+	{
+		MessageBox(NULL, TS("Load Dialog DlgModelExporterOption Failed"), TS("ModelExporter"), MB_OK);
+		return false;
+	}
+
+	return true;
 }
 
 static void Uninitialize()
 {
-	--g_nInitCount;
-
-	if (g_nInitCount <= 0)
-	{
-		wxUninitialize();
-		COEOS::Terminate();
-	}
+	wxCommonHelper::Terminate();
+	COEModuleLoader::Terminate();
 }
 
 BOOL WINAPI DllMain(HINSTANCE hInstDLL, DWORD fdwReason, LPVOID lpvReserved)
 {
+	static int s_nInitCount = 0;
+	static bool s_bInitialized = false;
+
 	switch (fdwReason)
 	{
 	case DLL_PROCESS_ATTACH:
 	case DLL_THREAD_ATTACH:
 		{
-			Initialize(hInstDLL);
+			++s_nInitCount;
+			if (!s_bInitialized && s_nInitCount > 0)
+			{
+				s_bInitialized = true;
+				if (!Initialize(hInstDLL)) return FALSE;
+			}
 		}
 		break;
 	case DLL_THREAD_DETACH:
 	case DLL_PROCESS_DETACH:
 		{
-			Uninitialize();
+			--s_nInitCount;
+			if (s_bInitialized && s_nInitCount <= 0)
+			{
+				s_bInitialized = false;
+				Uninitialize();
+			}
 		}
 		break;
 	}

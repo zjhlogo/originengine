@@ -87,7 +87,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="echo copy &quot;$(TargetPath)&quot; &quot;..\..\bin\&quot;&#x0D;&#x0A;copy &quot;$(TargetPath)&quot; &quot;..\..\bin\&quot;&#x0D;&#x0A;"
+				CommandLine="echo copy &quot;$(TargetPath)&quot; &quot;..\..\bin\&quot;&#x0D;&#x0A;copy &quot;$(TargetPath)&quot; &quot;..\..\bin\&quot;&#x0D;&#x0A;&#x0D;&#x0A;echo copy &quot;$(TargetPath)&quot; &quot;..\..\bin\tools\&quot;&#x0D;&#x0A;copy &quot;$(TargetPath)&quot; &quot;..\..\bin\tools\&quot;&#x0D;&#x0A;"
 			/>
 		</Configuration>
 		<Configuration
@@ -164,7 +164,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="echo copy &quot;$(TargetPath)&quot; &quot;..\..\bin\&quot;&#x0D;&#x0A;copy &quot;$(TargetPath)&quot; &quot;..\..\bin\&quot;&#x0D;&#x0A;"
+				CommandLine="echo copy &quot;$(TargetPath)&quot; &quot;..\..\bin\&quot;&#x0D;&#x0A;copy &quot;$(TargetPath)&quot; &quot;..\..\bin\&quot;&#x0D;&#x0A;&#x0D;&#x0A;echo copy &quot;$(TargetPath)&quot; &quot;..\..\bin\tools\&quot;&#x0D;&#x0A;copy &quot;$(TargetPath)&quot; &quot;..\..\bin\tools\&quot;&#x0D;&#x0A;"
 			/>
 		</Configuration>
 		<Configuration
@@ -238,7 +238,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="echo copy &quot;$(TargetPath)&quot; &quot;..\..\bin\&quot;&#x0D;&#x0A;copy &quot;$(TargetPath)&quot; &quot;..\..\bin\&quot;&#x0D;&#x0A;"
+				CommandLine="echo copy &quot;$(TargetPath)&quot; &quot;..\..\bin\&quot;&#x0D;&#x0A;copy &quot;$(TargetPath)&quot; &quot;..\..\bin\&quot;&#x0D;&#x0A;&#x0D;&#x0A;echo copy &quot;$(TargetPath)&quot; &quot;..\..\bin\tools\&quot;&#x0D;&#x0A;copy &quot;$(TargetPath)&quot; &quot;..\..\bin\tools\&quot;&#x0D;&#x0A;"
 			/>
 		</Configuration>
 		<Configuration
@@ -315,7 +315,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="echo copy &quot;$(TargetPath)&quot; &quot;..\..\bin\&quot;&#x0D;&#x0A;copy &quot;$(TargetPath)&quot; &quot;..\..\bin\&quot;&#x0D;&#x0A;"
+				CommandLine="echo copy &quot;$(TargetPath)&quot; &quot;..\..\bin\&quot;&#x0D;&#x0A;copy &quot;$(TargetPath)&quot; &quot;..\..\bin\&quot;&#x0D;&#x0A;&#x0D;&#x0A;echo copy &quot;$(TargetPath)&quot; &quot;..\..\bin\tools\&quot;&#x0D;&#x0A;copy &quot;$(TargetPath)&quot; &quot;..\..\bin\tools\&quot;&#x0D;&#x0A;"
 			/>
 		</Configuration>
 	</Configurations>

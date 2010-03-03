@@ -1,23 +1,25 @@
 /*!
- * \file wxInitHelper.h
- * \date 28-11-2009 9:25:54
+ * \file wxCommonHelper.h
+ * \date 3-3-2010 15:39:07
  * 
  * 
  * \author zjhlogo (zjhlogo@163.com)
  */
-#ifndef __WXINITHELPER_H__
-#define __WXINITHELPER_H__
+#ifndef __WXCOMMONHELPER_H__
+#define __WXCOMMONHELPER_H__
 
 #include <OEBaseType.h>
 #include <windows.h>
 
-class wxInitHelper
+class wxCommonHelper
 {
 public:
 	static bool Initialize();
-	static void Uninitialize();
+	static void Terminate();
+
+	static bool InitializeXrc();
 
 	static bool AddMemoryXrc(const tstring& strResType, uint nResID, const tstring& strMemoryFileName, HINSTANCE hInstance = NULL);
 
 };
-#endif // __WXINITHELPER_H__
+#endif // __WXCOMMONHELPER_H__

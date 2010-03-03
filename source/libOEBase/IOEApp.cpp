@@ -12,7 +12,7 @@
 #include <assert.h>
 
 static COEOS::OEMODULE g_hModuleBase = NULL;
-static COEOS::OEMODULE g_hModuleOE = NULL;
+static COEOS::OEMODULE g_hModuleCore = NULL;
 static COEOS::OEMODULE g_hModuleRenderSystem = NULL;
 static COEOS::OEMODULE g_hModuleUI = NULL;
 
@@ -23,8 +23,8 @@ static bool LoadModules(COEHolder& Holder)
 	if (!g_hModuleBase) return false;
 
 	// load core module
-	g_hModuleOE = COEOS::LoadOEModule(MODULE_CORE, Holder);
-	if (!g_hModuleOE) return false;
+	g_hModuleCore = COEOS::LoadOEModule(MODULE_CORE, Holder);
+	if (!g_hModuleCore) return false;
 
 	// load renderer module
 	g_hModuleRenderSystem = COEOS::LoadOEModule(MODULE_RENDERSYSTEM, Holder);
@@ -35,7 +35,7 @@ static bool LoadModules(COEHolder& Holder)
 	if (!g_hModuleUI) return false;
 
 	COEOS::SyncModuleInterfaces(g_hModuleBase, Holder);
-	COEOS::SyncModuleInterfaces(g_hModuleOE, Holder);
+	COEOS::SyncModuleInterfaces(g_hModuleCore, Holder);
 	COEOS::SyncModuleInterfaces(g_hModuleRenderSystem, Holder);
 	COEOS::SyncModuleInterfaces(g_hModuleUI, Holder);
 	return true;
@@ -52,8 +52,8 @@ static void FreeModules(COEHolder& Holder)
 	g_hModuleRenderSystem = NULL;
 
 	// free core module
-	COEOS::FreeOEModule(g_hModuleOE, Holder);
-	g_hModuleOE = NULL;
+	COEOS::FreeOEModule(g_hModuleCore, Holder);
+	g_hModuleCore = NULL;
 
 	// free base module
 	COEOS::FreeOEModule(g_hModuleBase, Holder);
@@ -74,9 +74,9 @@ IOEApp::~IOEApp()
 
 void IOEApp::Run()
 {
-	COEHolder Holder;
+	static COEHolder s_OEHolder;
 
-	if (LoadModules(Holder))
+	if (LoadModules(s_OEHolder))
 	{
 		if (g_pOECore->Initialize())
 		{
@@ -86,5 +86,5 @@ void IOEApp::Run()
 		g_pOECore->Terminate();
 	}
 
-	FreeModules(Holder);
+	FreeModules(s_OEHolder);
 }

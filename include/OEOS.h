@@ -26,15 +26,6 @@ public:
 		int nSecond;		// second [0, 59]
 	} LOCAL_TIME;
 
-	enum INITIALIZE_SYSTEM
-	{
-		IS_FILE				= 0x00000001,
-		IS_LOG				= 0x00000002,
-		IS_XML				= 0x00000004,
-		IS_MSG				= 0x00000008,
-		IS_ALL				= IS_FILE|IS_LOG|IS_XML|IS_MSG,
-	};
-
 	typedef void* OEMODULE;
 	typedef void* OEFILE;
 
@@ -59,6 +50,7 @@ public:
 
 	static void GetFileName(tstring& strOut, const tstring& strIn);
 	static void GetFileExt(tstring& strOut, const tstring& strIn);
+	static void GetFileDir(tstring& strOut, const tstring& strIn);
 
 	// file system relate
 	static OEFILE FileOpen(const tstring& strFile, const tstring& strOption);

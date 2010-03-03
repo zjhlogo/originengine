@@ -201,6 +201,19 @@ void COEOS::GetFileExt(tstring& strOut, const tstring& strIn)
 	}
 }
 
+void COEOS::GetFileDir(tstring& strOut, const tstring& strIn)
+{
+	size_t nPos = strIn.rfind(TS('\\'));
+	if (nPos != tstring::npos)
+	{
+		strOut = strIn.substr(0, nPos);
+	}
+	else
+	{
+		strOut.clear();
+	}
+}
+
 COEOS::OEFILE COEOS::FileOpen(const tstring& strFile, const tstring& strOption)
 {
 	FILE* pFile = NULL;

@@ -350,6 +350,10 @@
 				RelativePath=".\Ms3dConverter_Impl.cpp"
 				>
 			</File>
+			<File
+				RelativePath="..\common\OEModuleLoader.cpp"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -370,6 +374,10 @@
 			</File>
 			<File
 				RelativePath=".\Ms3dConverter_Impl.h"
+				>
+			</File>
+			<File
+				RelativePath="..\common\OEModuleLoader.h"
 				>
 			</File>
 		</Filter>

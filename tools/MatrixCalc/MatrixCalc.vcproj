@@ -348,7 +348,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\common\wxToolUtil.cpp"
+				RelativePath="..\common\wxCommonHelper.cpp"
 				>
 			</File>
 		</Filter>
@@ -370,11 +370,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\resource.h"
-				>
-			</File>
-			<File
-				RelativePath="..\common\wxToolUtil.h"
+				RelativePath="..\common\wxCommonHelper.h"
 				>
 			</File>
 		</Filter>
@@ -389,6 +385,10 @@
 			</File>
 			<File
 				RelativePath=".\MatrixCalc.rc"
+				>
+			</File>
+			<File
+				RelativePath=".\resource.h"
 				>
 			</File>
 		</Filter>

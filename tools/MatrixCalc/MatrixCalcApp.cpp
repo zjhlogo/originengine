@@ -8,7 +8,7 @@
 #include "MatrixCalcApp.h"
 #include "DlgMatrixCalc.h"
 #include "resource.h"
-#include "../common/wxToolUtil.h"
+#include "../common/wxCommonHelper.h"
 
 #include <wx/frame.h>
 #include <wx/xrc/xmlres.h>
@@ -27,9 +27,9 @@ CMatrixCalcApp::~CMatrixCalcApp()
 
 bool CMatrixCalcApp::OnInit()
 {
-	wxXmlResource::Get()->InitAllHandlers();
+	if (!wxCommonHelper::InitializeXrc()) return false;
 
-	if (!wxToolUtil::AddMemoryXrc(TS("XRC"), IDR_XRC_DLGMATRIXCALC, TS("DlgMatrixCalc.xrc")))
+	if (!wxCommonHelper::AddMemoryXrc(TS("XRC"), IDR_XRC_DLGMATRIXCALC, TS("DlgMatrixCalc.xrc")))
 	{
 		// TODO: logout
 		return false;

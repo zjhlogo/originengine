@@ -20,44 +20,32 @@ static COEHolder g_OEHolder;
 
 bool CreateSingleton()
 {
-	if (!g_pOEFileMgr_Impl)
+	g_pOEFileMgr_Impl = new COEFileMgr_Impl();
+	if (!g_pOEFileMgr_Impl || !g_pOEFileMgr_Impl->IsOK())
 	{
-		g_pOEFileMgr_Impl = new COEFileMgr_Impl();
-		if (!g_pOEFileMgr_Impl || !g_pOEFileMgr_Impl->IsOK())
-		{
-			SAFE_DELETE(g_pOEFileMgr_Impl);
-			return false;
-		}
+		SAFE_DELETE(g_pOEFileMgr_Impl);
+		return false;
 	}
 
-	if (!g_pOELogFileMgr_Impl)
+	g_pOELogFileMgr_Impl = new COELogFileMgr_Impl();
+	if (!g_pOELogFileMgr_Impl || !g_pOELogFileMgr_Impl->IsOK())
 	{
-		g_pOELogFileMgr_Impl = new COELogFileMgr_Impl();
-		if (!g_pOELogFileMgr_Impl || !g_pOELogFileMgr_Impl->IsOK())
-		{
-			SAFE_DELETE(g_pOELogFileMgr_Impl);
-			return false;
-		}
+		SAFE_DELETE(g_pOELogFileMgr_Impl);
+		return false;
 	}
 
-	if (!g_pOEXmlMgr_Impl)
+	g_pOEXmlMgr_Impl = new COEXmlMgr_Impl();
+	if (!g_pOEXmlMgr_Impl || !g_pOEXmlMgr_Impl->IsOK())
 	{
-		g_pOEXmlMgr_Impl = new COEXmlMgr_Impl();
-		if (!g_pOEXmlMgr_Impl || !g_pOEXmlMgr_Impl->IsOK())
-		{
-			SAFE_DELETE(g_pOEXmlMgr_Impl);
-			return false;
-		}
+		SAFE_DELETE(g_pOEXmlMgr_Impl);
+		return false;
 	}
 
-	if (!g_pOEMsgMgr_Impl)
+	g_pOEMsgMgr_Impl = new COEMsgMgr_Impl();
+	if (!g_pOEMsgMgr_Impl || !g_pOEMsgMgr_Impl->IsOK())
 	{
-		g_pOEMsgMgr_Impl = new COEMsgMgr_Impl();
-		if (!g_pOEMsgMgr_Impl || !g_pOEMsgMgr_Impl->IsOK())
-		{
-			SAFE_DELETE(g_pOEMsgMgr_Impl);
-			return false;
-		}
+		SAFE_DELETE(g_pOEMsgMgr_Impl);
+		return false;
 	}
 
 	return true;
