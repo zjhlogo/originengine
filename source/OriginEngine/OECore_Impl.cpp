@@ -7,8 +7,10 @@
  */
 #include "OECore_Impl.h"
 
+#include <IOEFileMgr.h>
 #include <IOELogFileMgr.h>
 #include <IOEConfigFileMgr.h>
+#include <IOEXmlMgr.h>
 #include <IOEResMgr.h>
 #include <IOEControlMgr.h>
 #include <IOERenderMgr.h>
@@ -17,7 +19,6 @@
 #include <IOEShaderMgr.h>
 #include <IOERenderSystem.h>
 #include <OEUI/IOEUIRenderSystem.h>
-#include <OEUI/IOEUIFontMgr.h>
 #include <IOEApp.h>
 #include <OEMsgID.h>
 #include <IOEMsgMgr.h>
@@ -52,65 +53,14 @@ void COECore_Impl::Destroy()
 
 bool COECore_Impl::Initialize()
 {
-	// set default dir
-	tstring strDefaultTextureDir;
-	g_pOEConfigFileMgr->GetValue(strDefaultTextureDir, TS("DefaultTextureDir"), TS("media"));
-	g_pOETextureMgr->SetDefaultDir(strDefaultTextureDir);
-
-	tstring strDefaultShaderDir;
-	g_pOEConfigFileMgr->GetValue(strDefaultShaderDir, TS("DefaultShaderDir"), TS("shader"));
-	g_pOEShaderMgr->SetDefaultDir(strDefaultShaderDir);
-
-	tstring strDefaultMediaDir;
-	g_pOEConfigFileMgr->GetValue(strDefaultMediaDir, TS("DefaultMediaDir"), TS("media"));
-	g_pOEResMgr->SetDefaultDir(strDefaultMediaDir);
-
-	tstring strDefaultFontDir;
-	g_pOEConfigFileMgr->GetValue(strDefaultFontDir, TS("DefaultFontDir"), TS("media"));
-	g_pOEUIFontMgr->SetDefaultDir(strDefaultFontDir);
-
-	// initialize singleton
-	if (!g_pOEDevice->CreateDevice())
-	{
-		LOGOUT(TS("IOECore::Initialize Failed"));
-		return false;
-	}
-
-	if (!g_pOERenderSystem->Initialize())
-	{
-		LOGOUT(TS("IOECore::Initialize Failed"));
-		return false;
-	}
-
-	if (!g_pOEControlMgr->Initialize())
-	{
-		LOGOUT(TS("IOECore::Initialize Failed"));
-		return false;
-	}
-
-	if (!g_pOERenderMgr->Initialize())
-	{
-		LOGOUT(TS("IOECore::Initialize Failed"));
-		return false;
-	}
-
-	if (!g_pOEUIRenderSystem->Initialize())
+	if (!InitializeInterfaces())
 	{
 		LOGOUT(TS("IOECore::Initialize Failed"));
 		return false;
 	}
 
 	// registe message
-	g_pOEMsgMgr->RegisterMessage(OMI_START_PERFORM, this, (MSG_FUNC)&COECore_Impl::OnStartPerform);
-	g_pOEMsgMgr->RegisterMessage(OMI_PRE_UPDATE, this, (MSG_FUNC)&COECore_Impl::OnPreUpdate);
-	g_pOEMsgMgr->RegisterMessage(OMI_UPDATE, this, (MSG_FUNC)&COECore_Impl::OnUpdate);
-	g_pOEMsgMgr->RegisterMessage(OMI_POST_UPDATE, this, (MSG_FUNC)&COECore_Impl::OnPostUpdate);
-	g_pOEMsgMgr->RegisterMessage(OMI_PRE_RENDER_3D, this, (MSG_FUNC)&COECore_Impl::OnPreRender3D);
-	g_pOEMsgMgr->RegisterMessage(OMI_RENDER_3D, this, (MSG_FUNC)&COECore_Impl::OnRender3D);
-	g_pOEMsgMgr->RegisterMessage(OMI_POST_RENDER_3D, this, (MSG_FUNC)&COECore_Impl::OnPostRender3D);
-	g_pOEMsgMgr->RegisterMessage(OMI_PRE_RENDER_2D, this, (MSG_FUNC)&COECore_Impl::OnPreRender2D);
-	g_pOEMsgMgr->RegisterMessage(OMI_RENDER_2D, this, (MSG_FUNC)&COECore_Impl::OnRender2D);
-	g_pOEMsgMgr->RegisterMessage(OMI_POST_RENDER_2D, this, (MSG_FUNC)&COECore_Impl::OnPostRender2D);
+	RegisterMessage();
 
 	// initialize fps string
 	m_pFontFPS = g_pOEUIFontMgr->CreateBitmapFont(TS("12px_Tahoma.fnt"));
@@ -127,11 +77,7 @@ void COECore_Impl::Terminate()
 	SAFE_RELEASE(m_pStringFPS);
 	SAFE_RELEASE(m_pFontFPS);
 
-	g_pOEUIRenderSystem->Terminate();
-	g_pOERenderMgr->Terminate();
-	g_pOEControlMgr->Terminate();
-	g_pOERenderSystem->Terminate();
-	g_pOEDevice->DestroyDevice();
+	TerminateInterfaces();
 }
 
 void COECore_Impl::Run()
@@ -148,6 +94,138 @@ void COECore_Impl::End()
 	m_bRunning = false;
 
 	g_pOEDevice->EndPerform();
+}
+
+bool COECore_Impl::InitializeInterfaces()
+{
+	// 文件管理类
+	if (!g_pOEFileMgr->Initialize()) return false;
+
+	// 日志管理类
+	if (!g_pOELogFileMgr->Initialize()) return false;
+
+	// Xml 管理类
+	if (!g_pOEXmlMgr->Initialize()) return false;
+
+	// 消息管理类
+	if (!g_pOEMsgMgr->Initialize()) return false;
+
+	// 配置文件管理类
+	if (!g_pOEConfigFileMgr->Initialize()) return false;
+
+	// 渲染设备管理类
+	if (!g_pOEDevice->Initialize()) return false;
+
+	// 渲染接口管理类
+	if (!g_pOERenderSystem->Initialize()) return false;
+
+	// 纹理管理类
+	if (!g_pOETextureMgr->Initialize()) return false;
+
+	// Shader 管理类
+	if (!g_pOEShaderMgr->Initialize()) return false;
+
+	// 核心资源理类
+	if (!g_pOEResMgr->Initialize()) return false;
+
+	// 模型控制器管理类
+	if (!g_pOEControlMgr->Initialize()) return false;
+
+	// 模型渲染器管理类
+	if (!g_pOERenderMgr->Initialize()) return false;
+
+	// UI 渲染管理类
+	if (!g_pOEUIRenderSystem->Initialize()) return false;
+
+	// UI 字体管理类
+	if (!g_pOEUIFontMgr->Initialize()) return false;
+
+	// UI 字符串管理类
+	if (!g_pOEUIStringMgr->Initialize()) return false;
+
+	// 应用程序接口类
+	if (!g_pOEApp->Initialize()) return false;
+
+	return true;
+}
+
+void COECore_Impl::TerminateInterfaces()
+{
+	// 应用程序接口类
+	g_pOEApp->Initialize();
+
+	// UI 字符串管理类
+	g_pOEUIStringMgr->Initialize();
+
+	// UI 字体管理类
+	g_pOEUIFontMgr->Initialize();
+
+	// UI 渲染管理类
+	g_pOEUIRenderSystem->Initialize();
+
+	// 模型渲染器管理类
+	g_pOERenderMgr->Initialize();
+
+	// 模型控制器管理类
+	g_pOEControlMgr->Initialize();
+
+	// 核心资源理类
+	g_pOEResMgr->Initialize();
+
+	// Shader 管理类
+	g_pOEShaderMgr->Initialize();
+
+	// 纹理管理类
+	g_pOETextureMgr->Initialize();
+
+	// 渲染接口管理类
+	g_pOERenderSystem->Initialize();
+
+	// 渲染设备管理类
+	g_pOEDevice->Initialize();
+
+	// 消息管理类
+	g_pOEMsgMgr->Initialize();
+
+	// Xml 管理类
+	g_pOEXmlMgr->Initialize();
+
+	// 配置文件管理类
+	g_pOEConfigFileMgr->Initialize();
+
+	// 日志管理类
+	g_pOELogFileMgr->Initialize();
+
+	// 文件管理类
+	g_pOEFileMgr->Initialize();
+}
+
+void COECore_Impl::RegisterMessage()
+{
+	g_pOEMsgMgr->RegisterMessage(OMI_START_PERFORM, this, (MSG_FUNC)&COECore_Impl::OnStartPerform);
+	g_pOEMsgMgr->RegisterMessage(OMI_PRE_UPDATE, this, (MSG_FUNC)&COECore_Impl::OnPreUpdate);
+	g_pOEMsgMgr->RegisterMessage(OMI_UPDATE, this, (MSG_FUNC)&COECore_Impl::OnUpdate);
+	g_pOEMsgMgr->RegisterMessage(OMI_POST_UPDATE, this, (MSG_FUNC)&COECore_Impl::OnPostUpdate);
+	g_pOEMsgMgr->RegisterMessage(OMI_PRE_RENDER_3D, this, (MSG_FUNC)&COECore_Impl::OnPreRender3D);
+	g_pOEMsgMgr->RegisterMessage(OMI_RENDER_3D, this, (MSG_FUNC)&COECore_Impl::OnRender3D);
+	g_pOEMsgMgr->RegisterMessage(OMI_POST_RENDER_3D, this, (MSG_FUNC)&COECore_Impl::OnPostRender3D);
+	g_pOEMsgMgr->RegisterMessage(OMI_PRE_RENDER_2D, this, (MSG_FUNC)&COECore_Impl::OnPreRender2D);
+	g_pOEMsgMgr->RegisterMessage(OMI_RENDER_2D, this, (MSG_FUNC)&COECore_Impl::OnRender2D);
+	g_pOEMsgMgr->RegisterMessage(OMI_POST_RENDER_2D, this, (MSG_FUNC)&COECore_Impl::OnPostRender2D);
+}
+
+void COECore_Impl::UnregisterMessage()
+{
+	g_pOEMsgMgr->UnregisterMessage(OMI_START_PERFORM, this);
+	g_pOEMsgMgr->UnregisterMessage(OMI_PRE_UPDATE, this);
+	g_pOEMsgMgr->UnregisterMessage(OMI_UPDATE, this);
+	g_pOEMsgMgr->UnregisterMessage(OMI_POST_UPDATE, this);
+	g_pOEMsgMgr->UnregisterMessage(OMI_PRE_RENDER_3D, this);
+	g_pOEMsgMgr->UnregisterMessage(OMI_RENDER_3D, this);
+	g_pOEMsgMgr->UnregisterMessage(OMI_POST_RENDER_3D, this);
+	g_pOEMsgMgr->UnregisterMessage(OMI_PRE_RENDER_2D, this);
+	g_pOEMsgMgr->UnregisterMessage(OMI_RENDER_2D, this);
+	g_pOEMsgMgr->UnregisterMessage(OMI_POST_RENDER_2D, this);
 }
 
 void COECore_Impl::CalculateFPS()

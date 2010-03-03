@@ -9,6 +9,7 @@
 #include "OED3DTexture_Impl.h"
 
 #include <IOELogFileMgr.h>
+#include <IOEConfigFileMgr.h>
 #include <OEOS.h>
 #include <assert.h>
 
@@ -27,11 +28,25 @@ COED3DTextureMgr_Impl::~COED3DTextureMgr_Impl()
 
 bool COED3DTextureMgr_Impl::Init()
 {
-	m_FileTextureMap.clear();
+	// TODO: 
 	return true;
 }
 
 void COED3DTextureMgr_Impl::Destroy()
+{
+	// TODO: 
+}
+
+bool COED3DTextureMgr_Impl::Initialize()
+{
+	tstring strDefaultTextureDir;
+	g_pOEConfigFileMgr->GetValue(strDefaultTextureDir, TS("DefaultTextureDir"), TS("media"));
+	SetDefaultDir(strDefaultTextureDir);
+
+	return true;
+}
+
+void COED3DTextureMgr_Impl::Terminate()
 {
 	// TODO: check m_FileTextureMap/m_vMemoryTexture whether is empty, and logout
 }

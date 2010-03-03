@@ -9,7 +9,8 @@
 #define __OECORE_IMPL_H__
 
 #include <IOECore.h>
-#include <OEUI/OEUI.h>
+#include <OEUI/IOEUIFontMgr.h>
+#include <OEUI/IOEUIStringMgr.h>
 
 class COECore_Impl : public IOECore
 {
@@ -26,6 +27,12 @@ public:
 private:
 	bool Init();
 	void Destroy();
+
+	bool InitializeInterfaces();
+	void TerminateInterfaces();
+
+	void RegisterMessage();
+	void UnregisterMessage();
 
 	void CalculateFPS();
 

@@ -9,6 +9,7 @@
 #include "OEOpenGLDevice_Impl.h"
 
 COEOpenGLDevice_Impl* g_pOEOpenGLDevice_Impl = NULL;
+static COEHolder g_OEHolder;
 
 bool CreateSingleton()
 {
@@ -29,9 +30,7 @@ void DestroySingleton()
 
 bool OEModuleInit(COEHolder& Holder)
 {
-	g_OEHolder.SetupInterfaces();
-
-	g_OEHolder.MergeInterface(Holder);
+	g_OEHolder.MergeFrom(Holder);
 
 	if (!CreateSingleton())
 	{
@@ -39,7 +38,7 @@ bool OEModuleInit(COEHolder& Holder)
 		return false;
 	}
 
-	Holder.MergeInterface(g_OEHolder);
+	Holder.MergeFrom(g_OEHolder);
 
 	return true;
 }
@@ -47,11 +46,10 @@ bool OEModuleInit(COEHolder& Holder)
 void OEModuleTerm(COEHolder& Holder)
 {
 	DestroySingleton();
-
-	Holder.MergeInterface(g_OEHolder);
+	Holder.MergeFrom(g_OEHolder);
 }
 
 void OEModuleSyncInterfaces(COEHolder& Holder)
 {
-	g_OEHolder.MergeInterface(Holder);
+	g_OEHolder.MergeFrom(Holder);
 }

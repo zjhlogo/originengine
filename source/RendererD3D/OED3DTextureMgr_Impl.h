@@ -21,6 +21,9 @@ public:
 	COED3DTextureMgr_Impl();
 	virtual ~COED3DTextureMgr_Impl();
 
+	virtual bool Initialize();
+	virtual void Terminate();
+
 	virtual IOETexture* CreateTextureFromFile(const tstring& strFile);
 	virtual IOETexture* CreateTexture(int nWidth, int nHeight, TEXTURE_FORMAT eFormat);
 

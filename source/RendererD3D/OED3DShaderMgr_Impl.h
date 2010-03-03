@@ -20,6 +20,9 @@ public:
 	COED3DShaderMgr_Impl();
 	virtual ~COED3DShaderMgr_Impl();
 
+	virtual bool Initialize();
+	virtual void Terminate();
+
 	virtual IOEShader* CreateShader(const VERT_DECL_ELEMENT* pElement, const tstring& strFile);
 	virtual IOEShader* CreateDefaultShader(DEFAULT_SHADER_TYPE eType);
 

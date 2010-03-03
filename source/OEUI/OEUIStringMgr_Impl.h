@@ -16,6 +16,9 @@ public:
 	COEUIStringMgr_Impl();
 	virtual ~COEUIStringMgr_Impl();
 
+	virtual bool Initialize();
+	virtual void Terminate();
+
 	virtual IOEUIString* CreateUIString(IOEUIFont* pFont);
 
 private:

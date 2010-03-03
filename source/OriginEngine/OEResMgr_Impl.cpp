@@ -12,6 +12,7 @@
 #include "OEMaterial_Impl.h"
 
 #include <IOELogFileMgr.h>
+#include <IOEConfigFileMgr.h>
 #include <assert.h>
 
 COEResMgr_Impl::COEResMgr_Impl()
@@ -34,6 +35,20 @@ bool COEResMgr_Impl::Init()
 }
 
 void COEResMgr_Impl::Destroy()
+{
+	// TODO: 
+}
+
+bool COEResMgr_Impl::Initialize()
+{
+	tstring strDefaultMediaDir;
+	g_pOEConfigFileMgr->GetValue(strDefaultMediaDir, TS("DefaultMediaDir"), TS("media"));
+	SetDefaultDir(strDefaultMediaDir);
+
+	return true;
+}
+
+void COEResMgr_Impl::Terminate()
 {
 	// TODO: check m_MeshMap/m_BonesMap whether is empty, and logout
 }
@@ -141,4 +156,3 @@ bool COEResMgr_Impl::GetMediaFilePath(tstring& strFilePathOut, const tstring& st
 	COEOS::tolower(strFilePathOut, strFilePathOut);
 	return true;
 }
-

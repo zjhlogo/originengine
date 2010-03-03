@@ -17,12 +17,15 @@ public:
 	COEConfigFileMgr_Impl();
 	virtual ~COEConfigFileMgr_Impl();
 
+	virtual bool Initialize();
+	virtual void Terminate();
+
 	virtual bool GetValue(int& nValue, const tstring& strParamName, int nDefaultValue = 0);
 	virtual bool GetValue(float& fValue, const tstring& strParamName, float fDefaultValue = 0.0f);
 	virtual bool GetValue(tstring& strValue, const tstring& strParamName, const tstring& strDefaultValue = EMPTY_STRING);
 
 private:
-	void Init();
+	bool Init();
 	void Destroy();
 
 	bool LoadConfigFile(const tstring& strFileName);

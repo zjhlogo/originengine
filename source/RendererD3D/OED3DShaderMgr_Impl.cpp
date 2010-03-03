@@ -9,6 +9,7 @@
 #include "OED3DShader_Impl.h"
 
 #include <IOELogFileMgr.h>
+#include <IOEConfigFileMgr.h>
 #include <algorithm>
 #include <assert.h>
 
@@ -27,13 +28,25 @@ COED3DShaderMgr_Impl::~COED3DShaderMgr_Impl()
 
 bool COED3DShaderMgr_Impl::Init()
 {
-	m_ShaderMap.clear();
 	memset(m_pDefaultShader, 0, sizeof(m_pDefaultShader));
-
 	return true;
 }
 
 void COED3DShaderMgr_Impl::Destroy()
+{
+	// TODO: 
+}
+
+bool COED3DShaderMgr_Impl::Initialize()
+{
+	tstring strDefaultShaderDir;
+	g_pOEConfigFileMgr->GetValue(strDefaultShaderDir, TS("DefaultShaderDir"), TS("shader"));
+	SetDefaultDir(strDefaultShaderDir);
+
+	return true;
+}
+
+void COED3DShaderMgr_Impl::Terminate()
 {
 	// TODO: check m_ShaderMap whether is empty, and logout
 	// TODO: check m_DefaultShaderMap whether is empty, and logout

@@ -2,8 +2,8 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9.00"
-	Name="OEUI"
-	ProjectGUID="{CBCC086D-37D5-4C44-AA7E-C539DF7DE73E}"
+	Name="libOEBase"
+	ProjectGUID="{FC86443B-245B-4F29-BEF2-2D39A8F8B063}"
 	Keyword="Win32Proj"
 	TargetFrameworkVersion="131072"
 	>
@@ -19,7 +19,7 @@
 			Name="Debug|Win32"
 			OutputDirectory="..\..\build\source\$(ProjectName)\$(ConfigurationName)"
 			IntermediateDirectory="..\..\build\source\$(ProjectName)\$(ConfigurationName)"
-			ConfigurationType="2"
+			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			CharacterSet="2"
 			>
@@ -42,7 +42,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="..\..\include"
-				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;OEUI_EXPORTS"
+				PreprocessorDefinitions="WIN32;_DEBUG;_LIB"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -60,21 +60,11 @@
 				Name="VCPreLinkEventTool"
 			/>
 			<Tool
-				Name="VCLinkerTool"
-				OutputFile="$(OutDir)/OEUI_D.dll"
-				LinkIncremental="2"
-				GenerateDebugInformation="true"
-				SubSystem="2"
-				RandomizedBaseAddress="1"
-				DataExecutionPrevention="0"
-				ImportLibrary="$(OutDir)/OEUI.lib"
-				TargetMachine="1"
+				Name="VCLibrarianTool"
+				OutputFile="$(OutDir)/libOEBase_D.lib"
 			/>
 			<Tool
 				Name="VCALinkTool"
-			/>
-			<Tool
-				Name="VCManifestTool"
 			/>
 			<Tool
 				Name="VCXDCMakeTool"
@@ -86,18 +76,14 @@
 				Name="VCFxCopTool"
 			/>
 			<Tool
-				Name="VCAppVerifierTool"
-			/>
-			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="echo copy &quot;$(TargetPath)&quot; &quot;..\..\bin\&quot;&#x0D;&#x0A;copy &quot;$(TargetPath)&quot; &quot;..\..\bin\&quot;&#x0D;&#x0A;"
 			/>
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
 			OutputDirectory="..\..\build\source\$(ProjectName)\$(ConfigurationName)"
 			IntermediateDirectory="..\..\build\source\$(ProjectName)\$(ConfigurationName)"
-			ConfigurationType="2"
+			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			CharacterSet="2"
 			>
@@ -119,7 +105,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				AdditionalIncludeDirectories="..\..\include"
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;OEUI_EXPORTS"
+				PreprocessorDefinitions="WIN32;NDEBUG;_LIB"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
@@ -135,23 +121,11 @@
 				Name="VCPreLinkEventTool"
 			/>
 			<Tool
-				Name="VCLinkerTool"
-				OutputFile="$(OutDir)/OEUI.dll"
-				LinkIncremental="1"
-				GenerateDebugInformation="true"
-				SubSystem="2"
-				OptimizeReferences="2"
-				EnableCOMDATFolding="2"
-				RandomizedBaseAddress="1"
-				DataExecutionPrevention="0"
-				ImportLibrary="$(OutDir)/OEUI.lib"
-				TargetMachine="1"
+				Name="VCLibrarianTool"
+				OutputFile="$(OutDir)/libOEBase.lib"
 			/>
 			<Tool
 				Name="VCALinkTool"
-			/>
-			<Tool
-				Name="VCManifestTool"
 			/>
 			<Tool
 				Name="VCXDCMakeTool"
@@ -163,18 +137,14 @@
 				Name="VCFxCopTool"
 			/>
 			<Tool
-				Name="VCAppVerifierTool"
-			/>
-			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="echo copy &quot;$(TargetPath)&quot; &quot;..\..\bin\&quot;&#x0D;&#x0A;copy &quot;$(TargetPath)&quot; &quot;..\..\bin\&quot;&#x0D;&#x0A;"
 			/>
 		</Configuration>
 		<Configuration
 			Name="Unicode Debug|Win32"
 			OutputDirectory="..\..\build\source\$(ProjectName)\$(ConfigurationName)"
 			IntermediateDirectory="..\..\build\source\$(ProjectName)\$(ConfigurationName)"
-			ConfigurationType="2"
+			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			CharacterSet="1"
 			>
@@ -197,7 +167,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="..\..\include"
-				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;OEUI_EXPORTS"
+				PreprocessorDefinitions="WIN32;_DEBUG;_LIB"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -215,21 +185,11 @@
 				Name="VCPreLinkEventTool"
 			/>
 			<Tool
-				Name="VCLinkerTool"
-				OutputFile="$(OutDir)/OEUI_UD.dll"
-				LinkIncremental="2"
-				GenerateDebugInformation="true"
-				SubSystem="2"
-				RandomizedBaseAddress="1"
-				DataExecutionPrevention="0"
-				ImportLibrary="$(OutDir)/OEUI.lib"
-				TargetMachine="1"
+				Name="VCLibrarianTool"
+				OutputFile="$(OutDir)/libOEBase_UD.lib"
 			/>
 			<Tool
 				Name="VCALinkTool"
-			/>
-			<Tool
-				Name="VCManifestTool"
 			/>
 			<Tool
 				Name="VCXDCMakeTool"
@@ -241,18 +201,14 @@
 				Name="VCFxCopTool"
 			/>
 			<Tool
-				Name="VCAppVerifierTool"
-			/>
-			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="echo copy &quot;$(TargetPath)&quot; &quot;..\..\bin\&quot;&#x0D;&#x0A;copy &quot;$(TargetPath)&quot; &quot;..\..\bin\&quot;&#x0D;&#x0A;"
 			/>
 		</Configuration>
 		<Configuration
 			Name="Unicode Release|Win32"
 			OutputDirectory="..\..\build\source\$(ProjectName)\$(ConfigurationName)"
 			IntermediateDirectory="..\..\build\source\$(ProjectName)\$(ConfigurationName)"
-			ConfigurationType="2"
+			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			CharacterSet="1"
 			>
@@ -274,7 +230,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				AdditionalIncludeDirectories="..\..\include"
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;OEUI_EXPORTS"
+				PreprocessorDefinitions="WIN32;NDEBUG;_LIB"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
@@ -290,23 +246,11 @@
 				Name="VCPreLinkEventTool"
 			/>
 			<Tool
-				Name="VCLinkerTool"
-				OutputFile="$(OutDir)/OEUIU.dll"
-				LinkIncremental="1"
-				GenerateDebugInformation="true"
-				SubSystem="2"
-				OptimizeReferences="2"
-				EnableCOMDATFolding="2"
-				RandomizedBaseAddress="1"
-				DataExecutionPrevention="0"
-				ImportLibrary="$(OutDir)/OEUI.lib"
-				TargetMachine="1"
+				Name="VCLibrarianTool"
+				OutputFile="$(OutDir)/libOEBaseU.lib"
 			/>
 			<Tool
 				Name="VCALinkTool"
-			/>
-			<Tool
-				Name="VCManifestTool"
 			/>
 			<Tool
 				Name="VCXDCMakeTool"
@@ -318,11 +262,7 @@
 				Name="VCFxCopTool"
 			/>
 			<Tool
-				Name="VCAppVerifierTool"
-			/>
-			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="echo copy &quot;$(TargetPath)&quot; &quot;..\..\bin\&quot;&#x0D;&#x0A;copy &quot;$(TargetPath)&quot; &quot;..\..\bin\&quot;&#x0D;&#x0A;"
 			/>
 		</Configuration>
 	</Configurations>
@@ -335,35 +275,31 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\OEUIBitmapFont_Impl.cpp"
+				RelativePath=".\IOEApp.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\OEUIFont_Impl.cpp"
+				RelativePath=".\OEBaseType.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\OEUIFontMgr_Impl.cpp"
+				RelativePath=".\OEDataBufferRead.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\OEUIModule.cpp"
+				RelativePath=".\OEDataBufferWrite.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\OEUIRenderSystem_Impl.cpp"
+				RelativePath=".\OEHolder.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\OEUIString_Impl.cpp"
+				RelativePath=".\OEMsg.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\OEUIStringMgr_Impl.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\OEUIVertexCache.cpp"
+				RelativePath=".\OEOS.cpp"
 				>
 			</File>
 		</Filter>
@@ -373,35 +309,31 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath=".\OEUIBitmapFont_Impl.h"
+				RelativePath="..\..\include\IOEApp.h"
 				>
 			</File>
 			<File
-				RelativePath=".\OEUIFont_Impl.h"
+				RelativePath="..\..\include\OEBaseType.h"
 				>
 			</File>
 			<File
-				RelativePath=".\OEUIFontMgr_Impl.h"
+				RelativePath="..\..\include\OEDataBufferRead.h"
 				>
 			</File>
 			<File
-				RelativePath=".\OEUIModule.h"
+				RelativePath="..\..\include\OEDataBufferWrite.h"
 				>
 			</File>
 			<File
-				RelativePath=".\OEUIRenderSystem_Impl.h"
+				RelativePath="..\..\include\OEHolder.h"
 				>
 			</File>
 			<File
-				RelativePath=".\OEUIString_Impl.h"
+				RelativePath="..\..\include\OEMsg.h"
 				>
 			</File>
 			<File
-				RelativePath=".\OEUIStringMgr_Impl.h"
-				>
-			</File>
-			<File
-				RelativePath=".\OEUIVertexCache.h"
+				RelativePath="..\..\include\OEOS.h"
 				>
 			</File>
 		</Filter>
@@ -409,23 +341,7 @@
 			Name="SDK Header Files"
 			>
 			<File
-				RelativePath="..\..\include\Oeui\IOEUIFont.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\include\Oeui\IOEUIFontMgr.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\include\OEUI\IOEUIRenderSystem.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\include\Oeui\IOEUIString.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\include\Oeui\IOEUIStringMgr.h"
+				RelativePath="..\..\include\OEMsgID.h"
 				>
 			</File>
 		</Filter>

@@ -15,6 +15,7 @@ COED3DDevice_Impl* g_pOED3DDevice_Impl = NULL;
 COED3DRenderSystem_Impl* g_pOED3DRenderSystem_Impl = NULL;
 COED3DTextureMgr_Impl* g_pOED3DTextureMgr_Impl = NULL;
 COED3DShaderMgr_Impl* g_pOED3DShaderMgr_Impl = NULL;
+static COEHolder g_OEHolder;
 
 bool CreateSingleton()
 {
@@ -59,9 +60,7 @@ void DestroySingleton()
 
 bool OEModuleInit(COEHolder& Holder)
 {
-	g_OEHolder.SetupInterfaces();
-
-	g_OEHolder.MergeInterface(Holder);
+	g_OEHolder.MergeFrom(Holder);
 
 	if (!CreateSingleton())
 	{
@@ -69,7 +68,7 @@ bool OEModuleInit(COEHolder& Holder)
 		return false;
 	}
 
-	Holder.MergeInterface(g_OEHolder);
+	Holder.MergeFrom(g_OEHolder);
 
 	return true;
 }
@@ -77,11 +76,10 @@ bool OEModuleInit(COEHolder& Holder)
 void OEModuleTerm(COEHolder& Holder)
 {
 	DestroySingleton();
-
-	Holder.MergeInterface(g_OEHolder);
+	Holder.MergeFrom(g_OEHolder);
 }
 
 void OEModuleSyncInterfaces(COEHolder& Holder)
 {
-	g_OEHolder.MergeInterface(Holder);
+	g_OEHolder.MergeFrom(Holder);
 }
