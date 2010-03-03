@@ -8,17 +8,15 @@
 #ifndef __IOECONTROLMGR_H__
 #define __IOECONTROLMGR_H__
 
-#include "IOEObject.h"
+#include "IOEMgr.h"
 #include "IOEControl.h"
 
-class IOEControlMgr : public IOEObject
+class IOEControlMgr : public IOEMgr
 {
 public:
 	IOEControlMgr() {};
 	virtual ~IOEControlMgr() {};
 
-	virtual bool Initialize() = 0;
-	virtual void Terminate() = 0;
 	virtual bool AddControlHandle(IOEControl* pControl) = 0;
 	virtual IOEControl* GetControl(uint nID) = 0;
 

@@ -9,6 +9,7 @@
 #define __TERRAINMGR_H__
 
 #include "MapTile.h"
+#include <IOEFileMgr.h>
 #include <vector>
 
 class CTerrainMgr
@@ -25,8 +26,8 @@ public:
 		MAP_SIZE_Z = TILE_COUNT_Z*(CMapTile::TILE_SIZE-1)+1,
 	};
 
-	typedef std::vector<CMapTile*> VMAP_TILE;
-	typedef std::vector<int> VTILE_INDEX;
+	typedef std::vector<CMapTile*> TV_MAP_TILE;
+	typedef std::vector<int> TV_TILE_INDEX;
 
 public:
 	CTerrainMgr();
@@ -50,8 +51,8 @@ private:
 private:
 	CMapTile* m_pMapTileBuff[MAX_CACHE_COUNT];
 
-	VMAP_TILE m_vActivedTile;
-	VMAP_TILE m_vSleepedTile;
+	TV_MAP_TILE m_vActivedTile;
+	TV_MAP_TILE m_vSleepedTile;
 
 	bool m_bFirstUpdate;
 	int m_nLastTileX;

@@ -9,19 +9,16 @@
 #define __IOERENDERSYSTEM_H__
 
 #include "OEBaseTypeEx.h"
-#include "IOEObject.h"
+#include "IOEMgr.h"
 #include "IOEVertDecl.h"
 #include "IOETexture.h"
 #include "IOEShader.h"
 
-class IOERenderSystem : public IOEObject
+class IOERenderSystem : public IOEMgr
 {
 public:
 	IOERenderSystem() {};
 	virtual ~IOERenderSystem() {};
-
-	virtual bool Initialize() = 0;
-	virtual void Terminate() = 0;
 
 	virtual void SetShader(IOEShader* pShader) = 0;
 	virtual IOEShader* GetShader() const = 0;

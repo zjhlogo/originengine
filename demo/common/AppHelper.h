@@ -14,14 +14,9 @@
 #define IMPLEMENT_OEAPP(appclass)																\
 int __stdcall WinMain(HINSTANCE hInst, HINSTANCE hPrevInst, LPSTR lpCmdLine, int nShowCmd)		\
 {																								\
-	if (COEOS::Initialize())																	\
-	{																							\
-		appclass* pApp = new appclass();														\
-		pApp->Run();																			\
-		SAFE_DELETE(pApp);																		\
-	}																							\
-																								\
-	COEOS::Terminate();																			\
+	appclass* pApp = new appclass();															\
+	pApp->Run();																				\
+	SAFE_DELETE(pApp);																			\
 	return 0;																					\
 }																								\
 

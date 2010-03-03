@@ -8,10 +8,10 @@
 #ifndef __IOEFILEMGR_H__
 #define __IOEFILEMGR_H__
 
-#include "IOEObject.h"
+#include "IOEMgr.h"
 #include "IOEFile.h"
 
-class IOEFileMgr : public IOEObject
+class IOEFileMgr : public IOEMgr
 {
 public:
 	IOEFileMgr() {};

@@ -8,6 +8,8 @@
 #include "BumpMapApp.h"
 #include "../common/AppHelper.h"
 #include <OERenderSystemUtil.h>
+#include <IOECore.h>
+#include <IOEMsgMgr.h>
 #include <OEMsgID.h>
 #include <assert.h>
 

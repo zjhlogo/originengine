@@ -9,6 +9,7 @@
 #define __OEOS_H__
 
 #include "OEBaseType.h"
+#include <OEHolder.h>
 
 class COEOS
 {
@@ -30,8 +31,8 @@ public:
 		IS_FILE				= 0x00000001,
 		IS_LOG				= 0x00000002,
 		IS_XML				= 0x00000004,
-		IS_MESSAGE			= 0x00000008,
-		IS_ALL				= IS_FILE|IS_LOG|IS_XML|IS_MESSAGE,
+		IS_MSG				= 0x00000008,
+		IS_ALL				= IS_FILE|IS_LOG|IS_XML|IS_MSG,
 	};
 
 	typedef void* OEMODULE;
@@ -39,11 +40,9 @@ public:
 
 public:
 	// module relate
-	static bool Initialize(uint nInitMask = IS_ALL);
-	static void Terminate();
-	static OEMODULE LoadOEModule(const tchar* pstrModuleName);
-	static void FreeOEModule(OEMODULE hModule);
-	static void SyncModuleInterfaces(OEMODULE hModule);
+	static OEMODULE LoadOEModule(const tchar* pstrModuleName, COEHolder& Holder);
+	static void FreeOEModule(OEMODULE hModule, COEHolder& Holder);
+	static void SyncModuleInterfaces(OEMODULE hModule, COEHolder& Holder);
 
 	// string relate
 	static bool str2bool(bool& bValue, const tchar* pstrIn);

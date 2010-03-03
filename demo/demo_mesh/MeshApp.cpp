@@ -8,6 +8,8 @@
 #include "MeshApp.h"
 #include "../common/AppHelper.h"
 
+#include <IOECore.h>
+#include <IOEMsgMgr.h>
 #include <OEMsgID.h>
 #include <OERenderSystemUtil.h>
 #include <assert.h>

@@ -8,17 +8,14 @@
 #ifndef __IOEDEVICE_H__
 #define __IOEDEVICE_H__
 
-#include "IOEObject.h"
+#include "IOEMgr.h"
 #include "IOEVertDecl.h"
 
-class IOEDevice : public IOEObject
+class IOEDevice : public IOEMgr
 {
 public:
 	IOEDevice() {};
 	virtual ~IOEDevice() {};
-
-	virtual bool CreateDevice() = 0;
-	virtual void DestroyDevice() = 0;
 
 	virtual void StartPerform() = 0;
 	virtual void EndPerform() = 0;

@@ -9,7 +9,8 @@
 #define __UIAPP_H__
 
 #include <IOEApp.h>
-#include <OEUI/OEUI.h>
+#include <OEUI/IOEUIFontMgr.h>
+#include <OEUI/IOEUIStringMgr.h>
 
 class CUIApp : public IOEApp
 {

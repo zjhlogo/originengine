@@ -9,8 +9,6 @@
 #define __TERRAINAPP_H__
 
 #include <IOEApp.h>
-#include <OEInterfaces.h>
-
 #include "../common/Camera.h"
 #include "TerrainMgr.h"
 

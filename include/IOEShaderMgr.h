@@ -9,11 +9,11 @@
 #define __IOESHADERMGR_H__
 
 #include "OEBaseTypeEx.h"
-#include "IOEObject.h"
+#include "IOEMgr.h"
 #include "IOEShader.h"
 #include "IOEVertDecl.h"
 
-class IOEShaderMgr : public IOEObject
+class IOEShaderMgr : public IOEMgr
 {
 public:
 	IOEShaderMgr() {};

@@ -8,16 +8,13 @@
 #ifndef __IOECORE_H__
 #define __IOECORE_H__
 
-#include "IOEObject.h"
+#include "IOEMgr.h"
 
-class IOECore : public IOEObject
+class IOECore : public IOEMgr
 {
 public:
 	IOECore() {};
 	virtual ~IOECore() {};
-
-	virtual bool Initialize() = 0;
-	virtual void Terminate() = 0;
 
 	virtual void Run() = 0;
 	virtual void End() = 0;

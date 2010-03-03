@@ -10,8 +10,8 @@
 
 #include <IOEApp.h>
 #include <IOEVertDecl.h>
-#include <OEInterfaces.h>
-#include <IOEShader.h>
+#include <IOEShaderMgr.h>
+#include <IOETextureMgr.h>
 
 #include "../common/Camera.h"
 #include "../common/SimpleShape.h"

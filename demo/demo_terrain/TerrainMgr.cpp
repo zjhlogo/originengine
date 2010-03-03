@@ -74,7 +74,7 @@ void CTerrainMgr::UpdateTerrain(const CVector3& vEyePos)
 	// start update terrain tile
 	ResetTile();
 
-	VTILE_INDEX vTileNotFound;
+	TV_TILE_INDEX vTileNotFound;
 	vTileNotFound.clear();
 
 	for (int z = -1; z <= 1; ++z)
@@ -100,7 +100,7 @@ void CTerrainMgr::UpdateTerrain(const CVector3& vEyePos)
 		}
 	}
 
-	for (VTILE_INDEX::iterator it = vTileNotFound.begin(); it != vTileNotFound.end(); ++it)
+	for (TV_TILE_INDEX::iterator it = vTileNotFound.begin(); it != vTileNotFound.end(); ++it)
 	{
 		int nIndex = (*it);
 		if (m_vSleepedTile.empty())
@@ -122,7 +122,7 @@ void CTerrainMgr::UpdateTerrain(const CVector3& vEyePos)
 
 void CTerrainMgr::Render(float fDetailTime)
 {
-	for (VMAP_TILE::iterator it = m_vActivedTile.begin(); it != m_vActivedTile.end(); ++it)
+	for (TV_MAP_TILE::iterator it = m_vActivedTile.begin(); it != m_vActivedTile.end(); ++it)
 	{
 		CMapTile* pTile = (*it);
 		pTile->Render(fDetailTime);
@@ -142,7 +142,7 @@ void CTerrainMgr::ResetTile()
 
 CMapTile* CTerrainMgr::ActiveSleepedTile(int nID)
 {
-	for (VMAP_TILE::iterator it = m_vSleepedTile.begin(); it != m_vSleepedTile.end(); ++it)
+	for (TV_MAP_TILE::iterator it = m_vSleepedTile.begin(); it != m_vSleepedTile.end(); ++it)
 	{
 		CMapTile* pTile = (*it);
 		if (pTile->GetID() == nID)

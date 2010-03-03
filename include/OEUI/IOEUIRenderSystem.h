@@ -8,18 +8,15 @@
 #ifndef __IOEUIRENDERSYSTEM_H__
 #define __IOEUIRENDERSYSTEM_H__
 
-#include "IOEObject.h"
+#include "IOEMgr.h"
 #include "OEUIType.h"
 #include "../IOETexture.h"
 
-class IOEUIRenderSystem : public IOEObject
+class IOEUIRenderSystem : public IOEMgr
 {
 public:
 	IOEUIRenderSystem() {};
 	virtual ~IOEUIRenderSystem() {};
-
-	virtual bool Initialize() = 0;
-	virtual void Terminate() = 0;
 
 	virtual void SetTexture(IOETexture* pTexture) = 0;
 	virtual IOETexture* GetTexture() const = 0;

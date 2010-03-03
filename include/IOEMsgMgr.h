@@ -8,11 +8,10 @@
 #ifndef __IOEMSGMGR_H__
 #define __IOEMSGMGR_H__
 
-#include "OEBaseType.h"
-#include "IOEObject.h"
+#include "IOEMgr.h"
 #include "OEMsg.h"
 
-class IOEMsgMgr : public IOEObject
+class IOEMsgMgr : public IOEMgr
 {
 public:
 	IOEMsgMgr(){};

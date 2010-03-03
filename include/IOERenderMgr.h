@@ -8,17 +8,14 @@
 #ifndef __IOERENDERMGR_H__
 #define __IOERENDERMGR_H__
 
-#include "IOEObject.h"
+#include "IOEMgr.h"
 #include "IOERender.h"
 
-class IOERenderMgr : public IOEObject
+class IOERenderMgr : public IOEMgr
 {
 public:
 	IOERenderMgr() {};
 	virtual ~IOERenderMgr() {};
-
-	virtual bool Initialize() = 0;
-	virtual void Terminate() = 0;
 
 	virtual bool AddRenderHandle(IOERender* pRender) = 0;
 	virtual IOERender* GetRender(uint nID) = 0;

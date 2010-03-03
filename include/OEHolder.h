@@ -20,25 +20,22 @@ public:
 		void** ppInterface;
 	} INTERFACE_INFO;
 
-	typedef std::map<tstring, INTERFACE_INFO> INTERFACE_INFO_MAP;
+	typedef std::map<tstring, INTERFACE_INFO> TM_INTERFACE_INFO;
 
 public:
 	COEHolder();
 	~COEHolder();
 
-	void SetupInterfaces();
-
-	bool Initialize();
-	void Terminate();
-
 	void AddInterface(const tstring& strClassName, void** ppInterface);
-	void MergeInterface(const COEHolder& Holder);
+	void MergeFrom(const COEHolder& Holder);
 
 private:
-	INTERFACE_INFO_MAP m_InfoMap;
+	void Init();
+	void Destroy();
+
+private:
+	TM_INTERFACE_INFO m_InterfaceInfoMap;
 
 };
-
-extern COEHolder g_OEHolder;
 
 #endif // __OEHOLDER_H__

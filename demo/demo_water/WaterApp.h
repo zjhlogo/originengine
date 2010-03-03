@@ -8,10 +8,11 @@
 #ifndef __WATERAPP_H__
 #define __WATERAPP_H__
 
-#include <OEInterfaces.h>
-#include "../common/Camera.h"
+#include <IOEApp.h>
+#include <IOEShaderMgr.h>
 
-class CDlgWaveSetting;
+#include "../common/Camera.h"
+#include "DlgWaveSetting.h"
 
 class CWaterApp : public IOEApp
 {
