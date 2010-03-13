@@ -75,14 +75,9 @@ void CModelApp::Update(float fDetailTime)
 	m_pModel->Update(fDetailTime);
 }
 
-void CModelApp::Render3D(float fDetailTime)
+void CModelApp::Render(float fDetailTime)
 {
 	m_pModel->Render();
-}
-
-void CModelApp::Render2D(float fDetailTime)
-{
-	// TODO: 
 }
 
 bool CModelApp::OnLButtonDown(uint nMsgID, COEDataBufferRead* pDBRead)

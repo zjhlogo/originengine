@@ -40,8 +40,8 @@ void COED3DRenderSystem_Impl::Destroy()
 
 bool COED3DRenderSystem_Impl::Initialize()
 {
-	g_pOEMsgMgr->RegisterMessage(OMI_PRE_RENDER_3D, this, (MSG_FUNC)&COED3DRenderSystem_Impl::OnPreRender3D);
-	g_pOEMsgMgr->RegisterMessage(OMI_POST_RENDER_3D, this, (MSG_FUNC)&COED3DRenderSystem_Impl::OnPostRender3D);
+	g_pOEMsgMgr->RegisterMessage(OMI_PRE_RENDER, this, (MSG_FUNC)&COED3DRenderSystem_Impl::OnPreRender3D);
+	g_pOEMsgMgr->RegisterMessage(OMI_POST_RENDER, this, (MSG_FUNC)&COED3DRenderSystem_Impl::OnPostRender3D);
 
 	return true;
 }

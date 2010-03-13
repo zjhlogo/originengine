@@ -142,7 +142,7 @@ void CWaterApp::Update(float fDetailTime)
 	if (bRot || bMov) g_pOERenderSystem->SetTransform(TT_VIEW, m_pCamera->GetViewMatrix());
 }
 
-void CWaterApp::Render3D(float fDetailTime)
+void CWaterApp::Render(float fDetailTime)
 {
 	static float s_fTime = 0.0f;
 
@@ -164,11 +164,6 @@ void CWaterApp::Render3D(float fDetailTime)
 	m_pShader->SetVector(TS("g_vEyePos"), m_pCamera->GetEyePos());
 	g_pOERenderSystem->SetShader(m_pShader);
 	g_pOERenderSystem->DrawTriList(m_pVerts, m_nVerts, m_pIndis, m_nIndis);
-}
-
-void CWaterApp::Render2D(float fDetailTime)
-{
-	// TODO: 
 }
 
 bool CWaterApp::OnLButtonDown(uint nMsgID, COEDataBufferRead* pDBRead)

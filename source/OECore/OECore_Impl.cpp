@@ -206,12 +206,9 @@ void COECore_Impl::RegisterMessage()
 	g_pOEMsgMgr->RegisterMessage(OMI_PRE_UPDATE, this, (MSG_FUNC)&COECore_Impl::OnPreUpdate);
 	g_pOEMsgMgr->RegisterMessage(OMI_UPDATE, this, (MSG_FUNC)&COECore_Impl::OnUpdate);
 	g_pOEMsgMgr->RegisterMessage(OMI_POST_UPDATE, this, (MSG_FUNC)&COECore_Impl::OnPostUpdate);
-	g_pOEMsgMgr->RegisterMessage(OMI_PRE_RENDER_3D, this, (MSG_FUNC)&COECore_Impl::OnPreRender3D);
-	g_pOEMsgMgr->RegisterMessage(OMI_RENDER_3D, this, (MSG_FUNC)&COECore_Impl::OnRender3D);
-	g_pOEMsgMgr->RegisterMessage(OMI_POST_RENDER_3D, this, (MSG_FUNC)&COECore_Impl::OnPostRender3D);
-	g_pOEMsgMgr->RegisterMessage(OMI_PRE_RENDER_2D, this, (MSG_FUNC)&COECore_Impl::OnPreRender2D);
-	g_pOEMsgMgr->RegisterMessage(OMI_RENDER_2D, this, (MSG_FUNC)&COECore_Impl::OnRender2D);
-	g_pOEMsgMgr->RegisterMessage(OMI_POST_RENDER_2D, this, (MSG_FUNC)&COECore_Impl::OnPostRender2D);
+	g_pOEMsgMgr->RegisterMessage(OMI_PRE_RENDER, this, (MSG_FUNC)&COECore_Impl::OnPreRender);
+	g_pOEMsgMgr->RegisterMessage(OMI_RENDER, this, (MSG_FUNC)&COECore_Impl::OnRender);
+	g_pOEMsgMgr->RegisterMessage(OMI_POST_RENDER, this, (MSG_FUNC)&COECore_Impl::OnPostRender);
 }
 
 void COECore_Impl::UnregisterMessage()
@@ -220,12 +217,9 @@ void COECore_Impl::UnregisterMessage()
 	g_pOEMsgMgr->UnregisterMessage(OMI_PRE_UPDATE, this);
 	g_pOEMsgMgr->UnregisterMessage(OMI_UPDATE, this);
 	g_pOEMsgMgr->UnregisterMessage(OMI_POST_UPDATE, this);
-	g_pOEMsgMgr->UnregisterMessage(OMI_PRE_RENDER_3D, this);
-	g_pOEMsgMgr->UnregisterMessage(OMI_RENDER_3D, this);
-	g_pOEMsgMgr->UnregisterMessage(OMI_POST_RENDER_3D, this);
-	g_pOEMsgMgr->UnregisterMessage(OMI_PRE_RENDER_2D, this);
-	g_pOEMsgMgr->UnregisterMessage(OMI_RENDER_2D, this);
-	g_pOEMsgMgr->UnregisterMessage(OMI_POST_RENDER_2D, this);
+	g_pOEMsgMgr->UnregisterMessage(OMI_PRE_RENDER, this);
+	g_pOEMsgMgr->UnregisterMessage(OMI_RENDER, this);
+	g_pOEMsgMgr->UnregisterMessage(OMI_POST_RENDER, this);
 }
 
 void COECore_Impl::CalculateFPS()
@@ -275,39 +269,21 @@ bool COECore_Impl::OnPostUpdate(uint nMsgID, COEDataBufferRead* pDBRead)
 	return true;
 }
 
-bool COECore_Impl::OnPreRender3D(uint nMsgID, COEDataBufferRead* pDBRead)
+bool COECore_Impl::OnPreRender(uint nMsgID, COEDataBufferRead* pDBRead)
 {
 	// TODO: 
 	return true;
 }
 
-bool COECore_Impl::OnRender3D(uint nMsgID, COEDataBufferRead* pDBRead)
+bool COECore_Impl::OnRender(uint nMsgID, COEDataBufferRead* pDBRead)
 {
-	g_pOEApp->Render3D(g_pOEDevice->GetDetailTime());
-	return true;
-}
-
-bool COECore_Impl::OnPostRender3D(uint nMsgID, COEDataBufferRead* pDBRead)
-{
-	// TODO: 
-	return true;
-}
-
-bool COECore_Impl::OnPreRender2D(uint nMsgID, COEDataBufferRead* pDBRead)
-{
-	// TODO: 
-	return true;
-}
-
-bool COECore_Impl::OnRender2D(uint nMsgID, COEDataBufferRead* pDBRead)
-{
-	g_pOEApp->Render2D(g_pOEDevice->GetDetailTime());
+	g_pOEApp->Render(g_pOEDevice->GetDetailTime());
 	// render fps
-	m_pStringFPS->Render(CPoint(0.0f, 0.0f));
+	m_pStringFPS->Render(OEUI_ZERO_POINT);
 	return true;
 }
 
-bool COECore_Impl::OnPostRender2D(uint nMsgID, COEDataBufferRead* pDBRead)
+bool COECore_Impl::OnPostRender(uint nMsgID, COEDataBufferRead* pDBRead)
 {
 	// TODO: 
 	return true;

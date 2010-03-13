@@ -74,14 +74,9 @@ void CTerrainApp::Update(float fDetailTime)
 	m_pTerrainMgr->UpdateTerrain(m_pCamera->GetEyePos());
 }
 
-void CTerrainApp::Render3D(float fDetailTime)
+void CTerrainApp::Render(float fDetailTime)
 {
 	m_pTerrainMgr->Render(fDetailTime);
-}
-
-void CTerrainApp::Render2D(float fDetailTime)
-{
-	// TODO: 
 }
 
 bool CTerrainApp::OnLButtonDown(uint nMsgID, COEDataBufferRead* pDBRead)

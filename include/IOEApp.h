@@ -17,8 +17,7 @@ public:
 	virtual ~IOEApp();
 
 	virtual void Update(float fDetailTime) = 0;
-	virtual void Render3D(float fDetailTime) = 0;
-	virtual void Render2D(float fDetailTime) = 0;
+	virtual void Render(float fDetailTime) = 0;
 
 	void Run();
 

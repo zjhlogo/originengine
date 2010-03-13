@@ -39,15 +39,13 @@ private:
 
 	void FlushAll();
 
-	bool OnPreRender2D(uint nMsgID, COEDataBufferRead* pDBRead);
-	bool OnPostRender2D(uint nMsgID, COEDataBufferRead* pDBRead);
+	bool OnPostRender(uint nMsgID, COEDataBufferRead* pDBRead);
 
 private:
 	IOETexture* m_pTexture;
 	IOEShader* m_pShader;
 
 	COEUIVertexCache* m_pVertsCache[VERTEX_CACHE_COUNT];
-	bool m_bInRenderBlock;
 
 };
 #endif // __OEUIRENDERSYSTEM_IMPL_H__

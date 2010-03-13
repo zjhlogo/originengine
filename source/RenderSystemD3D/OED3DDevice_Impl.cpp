@@ -375,30 +375,16 @@ void COED3DDevice_Impl::PerformOnce(float fDetailTime)
 	if (SUCCEEDED(g_pd3dDevice->BeginScene()))
 	{
 		// notify pre render 3d
-		COEMsg msgPreRender3D(OMI_PRE_RENDER_3D);
+		COEMsg msgPreRender3D(OMI_PRE_RENDER);
 		g_pOEMsgMgr->InvokeMessage(&msgPreRender3D);
 
 		// notify render 3d
-		COEMsg msgRender3D(OMI_RENDER_3D);
+		COEMsg msgRender3D(OMI_RENDER);
 		g_pOEMsgMgr->InvokeMessage(&msgRender3D);
 
 		// notify post render 3d
-		COEMsg msgPostRender3D(OMI_POST_RENDER_3D);
+		COEMsg msgPostRender3D(OMI_POST_RENDER);
 		g_pOEMsgMgr->InvokeMessage(&msgPostRender3D);
-
-		g_pd3dDevice->Clear(0, NULL, D3DCLEAR_ZBUFFER, D3DCOLOR_XRGB(0, 0, 0), 1.0f, 0);
-
-		// notify pre render 2d
-		COEMsg msgPreRender2D(OMI_PRE_RENDER_2D);
-		g_pOEMsgMgr->InvokeMessage(&msgPreRender2D);
-
-		// notify render 2d
-		COEMsg msgRender2D(OMI_RENDER_2D);
-		g_pOEMsgMgr->InvokeMessage(&msgRender2D);
-
-		// notify post render 2d
-		COEMsg msgPostRender2D(OMI_POST_RENDER_2D);
-		g_pOEMsgMgr->InvokeMessage(&msgPostRender2D);
 
 		g_pd3dDevice->EndScene();
 		g_pd3dDevice->Present(NULL, NULL, NULL, NULL);
