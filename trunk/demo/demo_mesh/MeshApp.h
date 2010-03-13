@@ -32,8 +32,7 @@ public:
 	virtual void Terminate();
 
 	virtual void Update(float fDetailTime);
-	virtual void Render3D(float fDetailTime);
-	virtual void Render2D(float fDetailTime);
+	virtual void Render(float fDetailTime);
 
 private:
 	void Init();

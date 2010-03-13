@@ -92,7 +92,7 @@ void CMeshApp::Update(float fDetailTime)
 	if (bRot || bMov) g_pOERenderSystem->SetTransform(TT_VIEW, m_pCamera->GetViewMatrix());
 }
 
-void CMeshApp::Render3D(float fDetailTime)
+void CMeshApp::Render(float fDetailTime)
 {
 	int nNumPiece = m_pMesh->GetNumPieces();
 
@@ -112,11 +112,6 @@ void CMeshApp::Render3D(float fDetailTime)
 		g_pOERenderSystem->SetShader(m_pShader);
 		g_pOERenderSystem->DrawTriList(pPiece->GetVerts(), pPiece->GetNumVerts(), pPiece->GetIndis(), pPiece->GetNumIndis());
 	}
-}
-
-void CMeshApp::Render2D(float fDetailTime)
-{
-	// TODO: 
 }
 
 bool CMeshApp::OnLButtonDown(uint nMsgID, COEDataBufferRead* pDBRead)

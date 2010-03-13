@@ -30,7 +30,6 @@ bool COEUIRenderSystem_Impl::Init()
 	m_pShader = NULL;
 
 	memset(m_pVertsCache, 0, sizeof(m_pVertsCache));
-	m_bInRenderBlock = false;
 
 	return true;
 }
@@ -51,9 +50,7 @@ bool COEUIRenderSystem_Impl::Initialize()
 		if (!m_pVertsCache[i] || !m_pVertsCache[i]->IsOK()) return false;
 	}
 
-	// registe message
-	g_pOEMsgMgr->RegisterMessage(OMI_PRE_RENDER_2D, this, (MSG_FUNC)&COEUIRenderSystem_Impl::OnPreRender2D);
-	g_pOEMsgMgr->RegisterMessage(OMI_POST_RENDER_2D, this, (MSG_FUNC)&COEUIRenderSystem_Impl::OnPostRender2D);
+	g_pOEMsgMgr->RegisterMessage(OMI_POST_RENDER, this, (MSG_FUNC)&COEUIRenderSystem_Impl::OnPostRender);
 
 	return true;
 }
@@ -79,8 +76,6 @@ IOETexture* COEUIRenderSystem_Impl::GetTexture() const
 
 void COEUIRenderSystem_Impl::DrawTriList(const void* pVerts, uint nVerts, const ushort* pIndis, uint nIndis)
 {
-	if (!m_bInRenderBlock) return;
-
 	COEUIVertexCache* pEmptyCache = NULL;
 	COEUIVertexCache* pMatchCache = NULL;
 
@@ -130,17 +125,8 @@ void COEUIRenderSystem_Impl::FlushAll()
 	}
 }
 
-bool COEUIRenderSystem_Impl::OnPreRender2D(uint nMsgID, COEDataBufferRead* pDBRead)
+bool COEUIRenderSystem_Impl::OnPostRender(uint nMsgID, COEDataBufferRead* pDBRead)
 {
-	assert(!m_bInRenderBlock);
-	m_bInRenderBlock = true;
-	return true;
-}
-
-bool COEUIRenderSystem_Impl::OnPostRender2D(uint nMsgID, COEDataBufferRead* pDBRead)
-{
-	assert(m_bInRenderBlock);
-	m_bInRenderBlock = false;
 	FlushAll();
 	return true;
 }

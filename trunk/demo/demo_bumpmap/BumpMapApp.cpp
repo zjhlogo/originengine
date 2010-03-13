@@ -101,7 +101,7 @@ void CBumpMapApp::Update(float fDetailTime)
 	if (bRot || bMov) g_pOERenderSystem->SetTransform(TT_VIEW, m_pCamera->GetViewMatrix());
 }
 
-void CBumpMapApp::Render3D(float fDetailTime)
+void CBumpMapApp::Render(float fDetailTime)
 {
 	static float s_fTotalTime = 0.0f;
 
@@ -135,11 +135,6 @@ void CBumpMapApp::Render3D(float fDetailTime)
 	g_pOERenderSystem->DrawTriList(s_Verts, 4, s_Indis, 6);
 
 	m_pSimpleShape->DrawCube(m_vLightPos);
-}
-
-void CBumpMapApp::Render2D(float fDetailTime)
-{
-	// TODO: 
 }
 
 bool CBumpMapApp::OnLButtonDown(uint nMsgID, COEDataBufferRead* pDBRead)
