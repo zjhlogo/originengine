@@ -201,7 +201,7 @@ void xmlfree (void *  );
 #define yytext_ptr yytext
 #define YY_INTERACTIVE
 
-#include <FlexLexer.h>
+#include "FlexLexer.h"
 
 #ifdef YY_HEADER_EXPORT_START_CONDITIONS
 #define INITIAL 0

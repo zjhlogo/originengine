@@ -322,7 +322,7 @@ typedef unsigned char YY_CHAR;
 #define yytext_ptr yytext
 #define YY_INTERACTIVE
 
-#include <OEBase/FlexLexer.h>
+#include "FlexLexer.h"
 
 /* Done after the current pattern has been matched and before the
  * corresponding action - sets up yytext.
