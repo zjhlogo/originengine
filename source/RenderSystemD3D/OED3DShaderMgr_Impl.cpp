@@ -8,8 +8,8 @@
 #include "OED3DShaderMgr_Impl.h"
 #include "OED3DShader_Impl.h"
 
-#include <IOELogFileMgr.h>
-#include <IOEConfigFileMgr.h>
+#include <OEBase/IOELogFileMgr.h>
+#include <OECore/IOEConfigFileMgr.h>
 #include <algorithm>
 #include <assert.h>
 

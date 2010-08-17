@@ -5,8 +5,8 @@
  * 
  * \author zjhlogo (zjhlogo@163.com)
  */
-#include <OEMath/Vector3.h>
-#include <OEMath/OEMath.h>
+#include <libOEMath/Vector3.h>
+#include <libOEMath/OEMath.h>
 #include <assert.h>
 
 void CVector3::Normalize()

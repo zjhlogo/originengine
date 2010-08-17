@@ -8,10 +8,10 @@
 #include "MeshApp.h"
 #include "../common/AppHelper.h"
 
-#include <IOECore.h>
-#include <IOEMsgMgr.h>
-#include <OEMsgID.h>
-#include <OERenderSystemUtil.h>
+#include <OECore/IOECore.h>
+#include <OEBase/IOEMsgMgr.h>
+#include <libOEBase/OEMsgID.h>
+#include <OECore/OERenderSystemUtil.h>
 #include <assert.h>
 
 IMPLEMENT_OEAPP(CMeshApp);

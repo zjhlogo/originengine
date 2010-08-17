@@ -8,7 +8,7 @@
 #ifndef __OERENDERMGR_IMPL_H__
 #define __OERENDERMGR_IMPL_H__
 
-#include "IOERenderMgr.h"
+#include <OECore/IOERenderMgr.h>
 #include <map>
 
 class COERenderMgr_Impl : public IOERenderMgr

@@ -7,9 +7,9 @@
  */
 #include "OEMsgMgr_Impl.h"
 
-#include <OEMsgID.h>
-#include <OEDataBufferRead.h>
-#include <OEDataBufferWrite.h>
+#include <libOEBase/OEMsgID.h>
+#include <libOEBase/OEDataBufferRead.h>
+#include <libOEBase/OEDataBufferWrite.h>
 
 COEMsgMgr_Impl::COEMsgMgr_Impl()
 {

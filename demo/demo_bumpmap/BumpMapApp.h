@@ -8,10 +8,10 @@
 #ifndef __BUMPMAPAPP_H__
 #define __BUMPMAPAPP_H__
 
-#include <IOEApp.h>
-#include <IOEVertDecl.h>
-#include <IOEShaderMgr.h>
-#include <IOETextureMgr.h>
+#include <libOEBase/IOEApp.h>
+#include <OECore/IOEVertDecl.h>
+#include <OECore/IOEShaderMgr.h>
+#include <OECore/IOETextureMgr.h>
 
 #include "../common/Camera.h"
 #include "../common/SimpleShape.h"

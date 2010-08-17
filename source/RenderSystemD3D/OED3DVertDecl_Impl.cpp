@@ -8,7 +8,7 @@
 #include "OED3DVertDecl_Impl.h"
 #include "OED3DUtil.h"
 
-#include <IOELogFileMgr.h>
+#include <OEBase/IOELogFileMgr.h>
 #include <assert.h>
 
 extern IDirect3DDevice9* g_pd3dDevice;

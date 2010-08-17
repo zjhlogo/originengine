@@ -9,8 +9,8 @@
 #ifndef __OEFILE_IMPL_H__
 #define __OEFILE_IMPL_H__
 
-#include <IOEFile.h>
-#include <OEOS.h>
+#include <OEBase/IOEFile.h>
+#include <libOEBase/OEOS.h>
 
 class COEFile_Impl : public IOEFile
 {

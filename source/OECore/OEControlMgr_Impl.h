@@ -8,7 +8,7 @@
 #ifndef __OECONTROLMGR_IMPL_H__
 #define __OECONTROLMGR_IMPL_H__
 
-#include <IOEControlMgr.h>
+#include <OECore/IOEControlMgr.h>
 #include <map>
 
 class COEControlMgr_Impl : public IOEControlMgr

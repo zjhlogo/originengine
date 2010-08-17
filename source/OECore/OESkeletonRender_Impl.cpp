@@ -7,10 +7,10 @@
  */
 #include "OESkeletonRender_Impl.h"
 
-#include <IOEShaderMgr.h>
-#include <IOERenderSystem.h>
-#include <OERenderSystemUtil.h>
-#include <OEFmtSkeleton.h>
+#include <OECore/IOEShaderMgr.h>
+#include <OECore/IOERenderSystem.h>
+#include <OECore/OERenderSystemUtil.h>
+#include <OECore/OEFmtSkeleton.h>
 #include <assert.h>
 
 COESkeletonRender_Impl::COESkeletonRender_Impl()

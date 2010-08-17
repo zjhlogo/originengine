@@ -8,7 +8,7 @@
 #include "OEUIStringMgr_Impl.h"
 #include "OEUIString_Impl.h"
 
-#include <IOELogFileMgr.h>
+#include <OEBase/IOELogFileMgr.h>
 #include <assert.h>
 
 COEUIStringMgr_Impl::COEUIStringMgr_Impl()

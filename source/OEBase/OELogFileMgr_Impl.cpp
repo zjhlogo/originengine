@@ -7,8 +7,8 @@
  */
 #include "OELogFileMgr_Impl.h"
 
-#include <IOEFileMgr.h>
-#include <OEOS.h>
+#include <OEBase/IOEFileMgr.h>
+#include <libOEBase/OEOS.h>
 #include <assert.h>
 
 COELogFileMgr_Impl::COELogFileMgr_Impl()

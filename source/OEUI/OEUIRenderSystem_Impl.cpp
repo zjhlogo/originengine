@@ -6,9 +6,9 @@
  * \author zjhlogo (zjhlogo@163.com)
  */
 #include "OEUIRenderSystem_Impl.h"
-#include <IOEShaderMgr.h>
-#include <IOEMsgMgr.h>
-#include <OEMsgID.h>
+#include <OECore/IOEShaderMgr.h>
+#include <OEBase/IOEMsgMgr.h>
+#include <libOEBase/OEMsgID.h>
 #include <assert.h>
 
 COEUIRenderSystem_Impl::COEUIRenderSystem_Impl()

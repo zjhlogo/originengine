@@ -5,8 +5,8 @@
  * 
  * \author zjhlogo (zjhlogo@163.com)
  */
-#include <OEMath/Quaternion.h>
-#include <OEMath/OEMath.h>
+#include <libOEMath/Quaternion.h>
+#include <libOEMath/OEMath.h>
 #include <assert.h>
 
 void CQuaternion::Normalize()

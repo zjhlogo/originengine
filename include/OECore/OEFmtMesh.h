@@ -8,8 +8,8 @@
 #ifndef __OEFMTMESH_H__
 #define __OEFMTMESH_H__
 
-#include "OEBaseType.h"
-#include "OEMath/OEMath.h"
+#include "../libOEBase/OEBaseType.h"
+#include "../libOEMath/OEMath.h"
 
 class COEFmtMesh
 {

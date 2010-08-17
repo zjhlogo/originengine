@@ -8,8 +8,8 @@
 #ifndef __IOEUISTRING_H__
 #define __IOEUISTRING_H__
 
-#include "OEUIType.h"
-#include "../IOEObject.h"
+#include "../libOEUI/OEUIType.h"
+#include "../OECore/IOEObject.h"
 #include "IOEUIFont.h"
 
 class IOEUIString : public IOEObject

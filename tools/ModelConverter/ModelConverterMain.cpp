@@ -9,7 +9,7 @@
 #include "ConverterMgr.h"
 #include "../common/OEModuleLoader.h"
 
-#include <OEOS.h>
+#include <libOEBase/OEOS.h>
 #include <iostream>
 
 bool CheckParameter(int argc, char** argv)

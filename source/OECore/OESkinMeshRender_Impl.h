@@ -8,8 +8,8 @@
 #ifndef __OESKINMESHRENDER_IMPL_H__
 #define __OESKINMESHRENDER_IMPL_H__
 
-#include <OEBaseTypeEx.h>
-#include <IOERender.h>
+#include <OECore/OEBaseTypeEx.h>
+#include <OECore/IOERender.h>
 
 #include "OESkinMeshRenderData_Impl.h"
 

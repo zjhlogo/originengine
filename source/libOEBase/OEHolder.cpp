@@ -5,27 +5,27 @@
  * 
  * \author zjhlogo (zjhlogo@163.com)
  */
-#include <OEHolder.h>
-#include <OEOS.h>
+#include <libOEBase/OEHolder.h>
+#include <libOEBase/OEOS.h>
 
 // 基础模块
-#include <IOEFileMgr.h>
-#include <IOELogFileMgr.h>
-#include <IOEXmlMgr.h>
-#include <IOEMsgMgr.h>
+#include <OEBase/IOEFileMgr.h>
+#include <OEBase/IOELogFileMgr.h>
+#include <OEBase/IOEXmlMgr.h>
+#include <OEBase/IOEMsgMgr.h>
 
 // 核心模块
-#include <IOECore.h>
-#include <IOEConfigFileMgr.h>
-#include <IOEResMgr.h>
-#include <IOEControlMgr.h>
-#include <IOERenderMgr.h>
+#include <OECore/IOECore.h>
+#include <OECore/IOEConfigFileMgr.h>
+#include <OECore/IOEResMgr.h>
+#include <OECore/IOEControlMgr.h>
+#include <OECore/IOERenderMgr.h>
 
 // 渲染模块
-#include <IOEDevice.h>
-#include <IOERenderSystem.h>
-#include <IOETextureMgr.h>
-#include <IOEShaderMgr.h>
+#include <OECore/IOEDevice.h>
+#include <OECore/IOERenderSystem.h>
+#include <OECore/IOETextureMgr.h>
+#include <OECore/IOEShaderMgr.h>
 
 // UI模块
 #include <OEUI/IOEUIRenderSystem.h>
@@ -33,7 +33,7 @@
 #include <OEUI/IOEUIStringMgr.h>
 
 // 用户层
-#include <IOEApp.h>
+#include <libOEBase/IOEApp.h>
 
 // 基础模块
 IOEFileMgr* g_pOEFileMgr = NULL;

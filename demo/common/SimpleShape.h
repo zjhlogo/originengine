@@ -8,7 +8,7 @@
 #ifndef __SIMPLESHAPE_H__
 #define __SIMPLESHAPE_H__
 
-#include <IOEShader.h>
+#include <OECore/IOEShader.h>
 
 class CSimpleShape
 {

@@ -8,7 +8,7 @@
 #ifndef __OEXMLATTRIBUTE_IMPL_H__
 #define __OEXMLATTRIBUTE_IMPL_H__
 
-#include <IOEXmlAttribute.h>
+#include <OEBase/IOEXmlAttribute.h>
 
 class COEXmlAttribute_Impl : public IOEXmlAttribute
 {

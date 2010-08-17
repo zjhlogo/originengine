@@ -5,10 +5,10 @@
  * 
  * \author zjhlogo (zjhlogo@163.com)
  */
-#include <IOEApp.h>
-#include <IOECore.h>
-#include <OEHolder.h>
-#include <OEOS.h>
+#include <libOEBase/IOEApp.h>
+#include <OECore/IOECore.h>
+#include <libOEBase/OEHolder.h>
+#include <libOEBase/OEOS.h>
 #include <assert.h>
 
 static COEOS::OEMODULE g_hModuleBase = NULL;

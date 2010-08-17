@@ -6,9 +6,9 @@
  * \author zjhlogo (zjhlogo@163.com)
  */
 #include "OEXmlNode_Impl.h"
-#include <OEOS.h>
+#include <libOEBase/OEOS.h>
 
-#include <IOEXmlMgr.h>
+#include <OEBase/IOEXmlMgr.h>
 
 COEXmlNode_Impl::COEXmlNode_Impl(const tstring& strName)
 {

@@ -9,7 +9,7 @@
 #define __OEOS_H__
 
 #include "OEBaseType.h"
-#include <OEHolder.h>
+#include <libOEBase/OEHolder.h>
 
 class COEOS
 {

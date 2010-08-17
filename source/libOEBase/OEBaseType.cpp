@@ -5,6 +5,6 @@
  * 
  * \author zjhlogo (zjhlogo@163.com)
  */
-#include <OEBaseType.h>
+#include <libOEBase/OEBaseType.h>
 
 const tstring EMPTY_STRING;

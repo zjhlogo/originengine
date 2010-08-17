@@ -8,8 +8,8 @@
 #include "OESkeleton_Impl.h"
 #include "OEBone_Impl.h"
 
-#include <IOEFileMgr.h>
-#include <OEFmtSkeleton.h>
+#include <OEBase/IOEFileMgr.h>
+#include <OECore/OEFmtSkeleton.h>
 
 COESkeleton_Impl::COESkeleton_Impl(const tstring& strFile)
 {

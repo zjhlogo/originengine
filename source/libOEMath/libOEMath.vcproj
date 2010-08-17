@@ -301,23 +301,23 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath="..\..\include\OEMath\Matrix4x4.h"
+				RelativePath="..\..\include\libOEMath\Matrix4x4.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\include\OEMath\OEMath.h"
+				RelativePath="..\..\include\libOEMath\OEMath.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\include\OEMath\Quaternion.h"
+				RelativePath="..\..\include\libOEMath\Quaternion.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\include\OEMath\Vector3.h"
+				RelativePath="..\..\include\libOEMath\Vector3.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\include\OEMath\Vector4.h"
+				RelativePath="..\..\include\libOEMath\Vector4.h"
 				>
 			</File>
 		</Filter>
@@ -325,23 +325,23 @@
 			Name="Inline Files"
 			>
 			<File
-				RelativePath="..\..\include\OEMath\Matrix4x4.inl"
+				RelativePath="..\..\include\libOEMath\Matrix4x4.inl"
 				>
 			</File>
 			<File
-				RelativePath="..\..\include\OEMath\OEMath.inl"
+				RelativePath="..\..\include\libOEMath\OEMath.inl"
 				>
 			</File>
 			<File
-				RelativePath="..\..\include\OEMath\Quaternion.inl"
+				RelativePath="..\..\include\libOEMath\Quaternion.inl"
 				>
 			</File>
 			<File
-				RelativePath="..\..\include\OEMath\Vector3.inl"
+				RelativePath="..\..\include\libOEMath\Vector3.inl"
 				>
 			</File>
 			<File
-				RelativePath="..\..\include\OEMath\Vector4.inl"
+				RelativePath="..\..\include\libOEMath\Vector4.inl"
 				>
 			</File>
 		</Filter>

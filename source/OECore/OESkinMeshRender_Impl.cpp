@@ -6,10 +6,10 @@
  * \author zjhlogo (zjhlogo@163.com)
  */
 #include "OESkinMeshRender_Impl.h"
-#include <IOERenderSystem.h>
-#include <OERenderSystemUtil.h>
-#include <IOEMsgMgr.h>
-#include <OEMsgID.h>
+#include <OECore/IOERenderSystem.h>
+#include <OECore/OERenderSystemUtil.h>
+#include <OEBase/IOEMsgMgr.h>
+#include <libOEBase/OEMsgID.h>
 
 COESkinMeshRender_Impl::COESkinMeshRender_Impl()
 :IOERender(OERT_SKINMESH)

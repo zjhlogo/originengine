@@ -477,123 +477,111 @@
 			Name="SDK Header Files"
 			>
 			<File
-				RelativePath="..\..\include\IOEApp.h"
+				RelativePath="..\..\include\OECore\IOEBone.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\include\IOEBone.h"
+				RelativePath="..\..\include\OECore\IOEConfigFileMgr.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\include\IOEConfigFileMgr.h"
+				RelativePath="..\..\include\OECore\IOEControl.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\include\IOEControl.h"
+				RelativePath="..\..\include\OECore\IOEControlMgr.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\include\IOEControlMgr.h"
+				RelativePath="..\..\include\OECore\IOECore.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\include\IOECore.h"
+				RelativePath="..\..\include\OECore\IOEDevice.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\include\IOEDevice.h"
+				RelativePath="..\..\include\OECore\IOEMaterial.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\include\IOEMaterial.h"
+				RelativePath="..\..\include\OECore\IOEMesh.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\include\IOEMesh.h"
+				RelativePath="..\..\include\OECore\IOEMgr.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\include\IOEMgr.h"
+				RelativePath="..\..\include\OECore\IOEModel.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\include\IOEModel.h"
+				RelativePath="..\..\include\OECore\IOEObject.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\include\IOEObject.h"
+				RelativePath="..\..\include\OECore\IOEPiece.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\include\IOEPiece.h"
+				RelativePath="..\..\include\OECore\IOERender.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\include\IOERender.h"
+				RelativePath="..\..\include\OECore\IOERenderData.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\include\IOERenderData.h"
+				RelativePath="..\..\include\OECore\IOERenderMgr.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\include\IOERenderMgr.h"
+				RelativePath="..\..\include\OECore\IOERenderSystem.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\include\IOERenderSystem.h"
+				RelativePath="..\..\include\OECore\IOEResMgr.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\include\IOEResMgr.h"
+				RelativePath="..\..\include\OECore\IOEShader.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\include\IOEShader.h"
+				RelativePath="..\..\include\OECore\IOEShaderMgr.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\include\IOEShaderMgr.h"
+				RelativePath="..\..\include\OECore\IOESkeleton.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\include\IOESkeleton.h"
+				RelativePath="..\..\include\OECore\IOETexture.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\include\IOETexture.h"
+				RelativePath="..\..\include\OECore\IOETextureMgr.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\include\IOETextureMgr.h"
+				RelativePath="..\..\include\OECore\IOEVertDecl.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\include\IOEVertDecl.h"
+				RelativePath="..\..\include\OECore\OEBaseTypeEx.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\include\OEBaseTypeEx.h"
+				RelativePath="..\..\include\OECore\OEFmtMesh.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\include\OEConfig.h"
+				RelativePath="..\..\include\OECore\OEFmtSkeleton.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\include\OEFmtMesh.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\include\OEFmtSkeleton.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\include\OEInterfaces.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\include\OERenderSystemUtil.h"
+				RelativePath="..\..\include\OECore\OERenderSystemUtil.h"
 				>
 			</File>
 		</Filter>

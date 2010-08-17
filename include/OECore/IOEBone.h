@@ -9,7 +9,7 @@
 #define __IOEBONE_H__
 
 #include "IOEObject.h"
-#include "OEMath/OEMath.h"
+#include "../libOEMath/OEMath.h"
 #include <vector>
 
 class IOEBone : public IOEObject

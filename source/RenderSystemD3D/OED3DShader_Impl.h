@@ -8,7 +8,7 @@
 #ifndef __OED3DSHADER_IMPL_H__
 #define __OED3DSHADER_IMPL_H__
 
-#include <IOEShader.h>
+#include <OECore/IOEShader.h>
 #include "OED3DVertDecl_Impl.h"
 
 #include <d3dx9.h>

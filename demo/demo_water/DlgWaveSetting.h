@@ -8,7 +8,7 @@
 #ifndef __DLGWAVESETTING_H__
 #define __DLGWAVESETTING_H__
 
-#include <OEMath/OEMath.h>
+#include <libOEMath/OEMath.h>
 
 #include <wx/dialog.h>
 #include <wx/slider.h>

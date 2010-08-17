@@ -11,8 +11,8 @@
 #include "OESkeleton_Impl.h"
 #include "OEMaterial_Impl.h"
 
-#include <IOELogFileMgr.h>
-#include <IOEConfigFileMgr.h>
+#include <OEBase/IOELogFileMgr.h>
+#include <OECore/IOEConfigFileMgr.h>
 #include <assert.h>
 
 COEResMgr_Impl::COEResMgr_Impl()

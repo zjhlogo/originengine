@@ -8,7 +8,7 @@
 #ifndef __OED3DVERTDECL_IMPL_H__
 #define __OED3DVERTDECL_IMPL_H__
 
-#include <IOEVertDecl.h>
+#include <OECore/IOEVertDecl.h>
 #include <d3d9.h>
 
 class COED3DVertDecl_Impl : public IOEVertDecl

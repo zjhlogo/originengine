@@ -7,8 +7,8 @@
  */
 #include "OEMesh_Impl.h"
 #include "OEPiece_Impl.h"
-#include <IOEFileMgr.h>
-#include <OEFmtMesh.h>
+#include <OEBase/IOEFileMgr.h>
+#include <OECore/OEFmtMesh.h>
 
 COEMesh_Impl::COEMesh_Impl(const tstring& strFile)
 {

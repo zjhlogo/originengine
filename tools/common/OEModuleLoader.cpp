@@ -6,7 +6,7 @@
  * \author zjhlogo (zjhlogo@163.com)
  */
 #include "OEModuleLoader.h"
-#include <OEOS.h>
+#include <libOEBase/OEOS.h>
 
 static COEOS::OEMODULE g_hModuleBase = NULL;
 static COEHolder g_OEHolder;

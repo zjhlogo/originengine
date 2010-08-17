@@ -8,7 +8,7 @@
 #ifndef __OESKELETON_IMPL_H__
 #define __OESKELETON_IMPL_H__
 
-#include <IOESkeleton.h>
+#include <OECore/IOESkeleton.h>
 
 class COESkeleton_Impl : public IOESkeleton
 {

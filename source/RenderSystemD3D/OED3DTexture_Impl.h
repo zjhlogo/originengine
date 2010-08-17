@@ -8,7 +8,7 @@
 #ifndef __OED3DTEXTURE_IMPL_H__
 #define __OED3DTEXTURE_IMPL_H__
 
-#include <IOETexture.h>
+#include <OECore/IOETexture.h>
 #include <d3d9.h>
 
 class COED3DTexture_Impl : public IOETexture

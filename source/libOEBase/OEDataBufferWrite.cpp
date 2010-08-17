@@ -5,7 +5,7 @@
  * 
  * \author zjhlogo (zjhlogo@163.com)
  */
-#include <OEDataBufferWrite.h>
+#include <libOEBase/OEDataBufferWrite.h>
 #include <assert.h>
 
 COEDataBufferWrite::COEDataBufferWrite()

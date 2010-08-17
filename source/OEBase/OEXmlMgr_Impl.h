@@ -8,7 +8,7 @@
 #ifndef __OEXMLMGR_IMPL_H__
 #define __OEXMLMGR_IMPL_H__
 
-#include <IOEXmlMgr.h>
+#include <OEBase/IOEXmlMgr.h>
 
 class COEXmlMgr_Impl : public IOEXmlMgr
 {

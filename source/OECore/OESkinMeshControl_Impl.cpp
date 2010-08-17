@@ -6,7 +6,7 @@
  * \author zjhlogo (zjhlogo@163.com)
  */
 #include "OESkinMeshControl_Impl.h"
-#include <OEFmtSkeleton.h>
+#include <OECore/OEFmtSkeleton.h>
 
 COESkinMeshControl_Impl::COESkinMeshControl_Impl()
 :IOEControl(OECT_SKINMESH)

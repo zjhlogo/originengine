@@ -13,7 +13,7 @@
 #include "IOEMesh.h"
 #include "IOESkeleton.h"
 #include "IOEMaterial.h"
-#include "IOEXmlNode.h"
+#include "../OEBase/IOEXmlNode.h"
 
 class IOEResMgr : public IOEMgr
 {

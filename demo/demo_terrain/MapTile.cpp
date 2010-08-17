@@ -7,7 +7,7 @@
  */
 #include "MapTile.h"
 #include "TerrainMgr.h"
-#include <OERenderSystemUtil.h>
+#include <OECore/OERenderSystemUtil.h>
 
 CMapTile::CMapTile()
 {

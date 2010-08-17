@@ -8,7 +8,7 @@
 #ifndef __OEBASETYPEEX_H__
 #define __OEBASETYPEEX_H__
 
-#include "OEBaseType.h"
+#include "libOEBase/OEBaseType.h"
 #include <vector>
 
 enum TRANSFORM_TYPE

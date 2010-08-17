@@ -8,9 +8,8 @@
 #ifndef __OELOGFILEMGR_IMPL_H__
 #define __OELOGFILEMGR_IMPL_H__
 
-#include <IOELogFileMgr.h>
-
-#include <IOEFile.h>
+#include <OEBase/IOELogFileMgr.h>
+#include <OEBase/IOEFile.h>
 
 class COELogFileMgr_Impl : public IOELogFileMgr
 {

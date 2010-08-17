@@ -5,7 +5,7 @@
  * 
  * \author zjhlogo (zjhlogo@163.com)
  */
-#include <OEDataBufferRead.h>
+#include <libOEBase/OEDataBufferRead.h>
 #include <assert.h>
 
 COEDataBufferRead::COEDataBufferRead(const void* pBuffer, uint nSize)

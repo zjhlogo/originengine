@@ -8,7 +8,7 @@
 #ifndef __IOEFILE_H__
 #define __IOEFILE_H__
 
-#include "IOEObject.h"
+#include "../OECore/IOEObject.h"
 
 class IOEFile : public IOEObject
 {

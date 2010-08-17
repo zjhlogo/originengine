@@ -8,7 +8,7 @@
 #ifndef __CAMERA_H__
 #define __CAMERA_H__
 
-#include <OEMath/OEMath.h>
+#include <libOEMath/OEMath.h>
 
 class CCamera
 {

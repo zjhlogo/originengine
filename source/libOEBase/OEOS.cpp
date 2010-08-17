@@ -5,7 +5,7 @@
  * 
  * \author zjhlogo (zjhlogo@163.com)
  */
-#include <OEOS.h>
+#include <libOEBase/OEOS.h>
 #include <Windows.h>
 #include <tchar.h>
 #include <time.h>

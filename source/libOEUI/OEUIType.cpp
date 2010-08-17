@@ -5,7 +5,7 @@
  * 
  * \author zjhlogo (zjhlogo@163.com)
  */
-#include <OEUI/OEUIType.h>
+#include <libOEUI/OEUIType.h>
 
 const CPoint OEUI_ZERO_POINT(0.0f, 0.0f);
 const CSize OEUI_ZERO_SIZE(0.0f, 0.0f);

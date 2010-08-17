@@ -8,7 +8,7 @@
 #ifndef __ICONVERTER_H__
 #define __ICONVERTER_H__
 
-#include <OEBaseType.h>
+#include <libOEBase/OEBaseType.h>
 
 class IConverter
 {

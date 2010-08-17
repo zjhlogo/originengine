@@ -8,7 +8,7 @@
 #ifndef __IOEUISTRINGMGR_H__
 #define __IOEUISTRINGMGR_H__
 
-#include "IOEMgr.h"
+#include "../OECore/IOEMgr.h"
 #include "IOEUIString.h"
 
 class IOEUIStringMgr : public IOEMgr

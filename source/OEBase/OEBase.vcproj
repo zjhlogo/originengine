@@ -448,35 +448,35 @@
 			Name="SDK Header Files"
 			>
 			<File
-				RelativePath="..\..\include\IOEFile.h"
+				RelativePath="..\..\include\OEBase\IOEFile.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\include\IOEFileMgr.h"
+				RelativePath="..\..\include\OEBase\IOEFileMgr.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\include\IOELogFileMgr.h"
+				RelativePath="..\..\include\OEBase\IOELogFileMgr.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\include\IOEMsgMgr.h"
+				RelativePath="..\..\include\OEBase\IOEMsgMgr.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\include\IOEXmlAttribute.h"
+				RelativePath="..\..\include\OEBase\IOEXmlAttribute.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\include\IOEXmlDocument.h"
+				RelativePath="..\..\include\OEBase\IOEXmlDocument.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\include\IOEXmlMgr.h"
+				RelativePath="..\..\include\OEBase\IOEXmlMgr.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\include\IOEXmlNode.h"
+				RelativePath="..\..\include\OEBase\IOEXmlNode.h"
 				>
 			</File>
 		</Filter>

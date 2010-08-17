@@ -9,7 +9,7 @@
 #define __APPHELPER_H__
 
 #include <windows.h>
-#include <OEOS.h>
+#include <libOEBase/OEOS.h>
 
 #define IMPLEMENT_OEAPP(appclass)																\
 int __stdcall WinMain(HINSTANCE hInst, HINSTANCE hPrevInst, LPSTR lpCmdLine, int nShowCmd)		\

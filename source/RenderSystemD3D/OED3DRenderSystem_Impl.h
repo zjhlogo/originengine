@@ -8,7 +8,7 @@
 #ifndef __OED3DRENDERSYSTEM_IMPL_H__
 #define __OED3DRENDERSYSTEM_IMPL_H__
 
-#include <IOERenderSystem.h>
+#include <OECore/IOERenderSystem.h>
 #include "OED3DVertDecl_Impl.h"
 #include "OED3DTexture_Impl.h"
 #include "OED3DShader_Impl.h"

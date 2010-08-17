@@ -6,9 +6,9 @@
  * \author zjhlogo (zjhlogo@163.com)
  */
 #include "OEMaterial_Impl.h"
-#include <IOETextureMgr.h>
-#include <IOEShaderMgr.h>
-#include <OEFmtMesh.h>
+#include <OECore/IOETextureMgr.h>
+#include <OECore/IOEShaderMgr.h>
+#include <OECore/OEFmtMesh.h>
 #include <assert.h>
 
 COEMaterial_Impl::COEMaterial_Impl(IOEXmlNode* pXmlMaterial)

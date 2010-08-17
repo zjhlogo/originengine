@@ -7,8 +7,8 @@
  */
 #include "OEPiece_Impl.h"
 
-#include <IOEDevice.h>
-#include <OEOS.h>
+#include <OECore/IOEDevice.h>
+#include <libOEBase/OEOS.h>
 
 #include <vector>
 
