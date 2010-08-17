@@ -13,7 +13,7 @@
 
 #undef yyFlexLexer
 #define yyFlexLexer xmlFlexLexer
-#include <OEBase/FlexLexer.h>
+#include "FlexLexer.h"
 
 
 static xmlFlexLexer g_xmlFlexLexer;
