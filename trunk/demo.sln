@@ -16,6 +16,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "demo_ui", "demo\demo_ui\dem
 	ProjectSection(ProjectDependencies) = postProject
 		{BF852F28-01B5-4492-9273-6E69EE1E4929} = {BF852F28-01B5-4492-9273-6E69EE1E4929}
 		{FC86443B-245B-4F29-BEF2-2D39A8F8B063} = {FC86443B-245B-4F29-BEF2-2D39A8F8B063}
+		{1811B7AB-DF7A-48BE-B26E-8E8543F9ED99} = {1811B7AB-DF7A-48BE-B26E-8E8543F9ED99}
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "demo_mesh", "demo\demo_mesh\demo_mesh.vcproj", "{B69C8802-3861-4770-8358-8303F7697B00}"
@@ -39,6 +40,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "demo_terrain", "demo\demo_t
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libOEBase", "source\libOEBase\libOEBase.vcproj", "{FC86443B-245B-4F29-BEF2-2D39A8F8B063}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libOEUI", "source\libOEUI\libOEUI.vcproj", "{1811B7AB-DF7A-48BE-B26E-8E8543F9ED99}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -112,6 +115,14 @@ Global
 		{FC86443B-245B-4F29-BEF2-2D39A8F8B063}.Unicode Debug|Win32.Build.0 = Unicode Debug|Win32
 		{FC86443B-245B-4F29-BEF2-2D39A8F8B063}.Unicode Release|Win32.ActiveCfg = Unicode Release|Win32
 		{FC86443B-245B-4F29-BEF2-2D39A8F8B063}.Unicode Release|Win32.Build.0 = Unicode Release|Win32
+		{1811B7AB-DF7A-48BE-B26E-8E8543F9ED99}.Debug|Win32.ActiveCfg = Debug|Win32
+		{1811B7AB-DF7A-48BE-B26E-8E8543F9ED99}.Debug|Win32.Build.0 = Debug|Win32
+		{1811B7AB-DF7A-48BE-B26E-8E8543F9ED99}.Release|Win32.ActiveCfg = Release|Win32
+		{1811B7AB-DF7A-48BE-B26E-8E8543F9ED99}.Release|Win32.Build.0 = Release|Win32
+		{1811B7AB-DF7A-48BE-B26E-8E8543F9ED99}.Unicode Debug|Win32.ActiveCfg = Unicode Debug|Win32
+		{1811B7AB-DF7A-48BE-B26E-8E8543F9ED99}.Unicode Debug|Win32.Build.0 = Unicode Debug|Win32
+		{1811B7AB-DF7A-48BE-B26E-8E8543F9ED99}.Unicode Release|Win32.ActiveCfg = Unicode Release|Win32
+		{1811B7AB-DF7A-48BE-B26E-8E8543F9ED99}.Unicode Release|Win32.Build.0 = Unicode Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

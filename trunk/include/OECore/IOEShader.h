@@ -9,7 +9,7 @@
 #define __IOESHADER_H__
 
 #include "IOEObject.h"
-#include "OEMath/OEMath.h"
+#include "../libOEMath/OEMath.h"
 
 #include "IOETexture.h"
 #include "IOEVertDecl.h"

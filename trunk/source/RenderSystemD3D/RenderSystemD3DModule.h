@@ -8,7 +8,7 @@
 #ifndef __RENDERSYSTEMD3DMODULE_H__
 #define __RENDERSYSTEMD3DMODULE_H__
 
-#include <OEHolder.h>
+#include <libOEBase/OEHolder.h>
 
 extern "C" __declspec(dllexport) bool OEModuleInit(COEHolder& Holder);
 extern "C" __declspec(dllexport) void OEModuleTerm(COEHolder& Holder);

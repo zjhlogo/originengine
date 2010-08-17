@@ -8,9 +8,9 @@
 #ifndef __IOEUIFONT_H__
 #define __IOEUIFONT_H__
 
-#include "OEUIType.h"
-#include "../IOEObject.h"
-#include "../IOETexture.h"
+#include "../libOEUI/OEUIType.h"
+#include "../OECore/IOEObject.h"
+#include "../OECore/IOETexture.h"
 
 class IOEUIFont : public IOEObject
 {

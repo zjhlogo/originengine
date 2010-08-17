@@ -8,9 +8,9 @@
 #ifndef __OEUIVERTEXCACHE_H__
 #define __OEUIVERTEXCACHE_H__
 
-#include <IOEVertDecl.h>
-#include <IOETexture.h>
-#include <IOEShader.h>
+#include <OECore/IOEVertDecl.h>
+#include <OECore/IOETexture.h>
+#include <OECore/IOEShader.h>
 
 class COEUIVertexCache
 {

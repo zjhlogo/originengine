@@ -12,7 +12,7 @@
 #include "OEControlMgr_Impl.h"
 #include "OERenderMgr_Impl.h"
 
-#include <OEOS.h>
+#include <libOEBase/OEOS.h>
 
 COECore_Impl* g_pOECore_Impl = NULL;
 COEConfigFileMgr_Impl* g_pOEConfigFileMgr_Impl = NULL;

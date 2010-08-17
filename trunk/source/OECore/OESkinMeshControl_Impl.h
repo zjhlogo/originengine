@@ -8,7 +8,7 @@
 #ifndef __OESKINMESHCONTROL_IMPL_H__
 #define __OESKINMESHCONTROL_IMPL_H__
 
-#include <IOEControl.h>
+#include <OECore/IOEControl.h>
 #include "OESkinMeshRenderData_Impl.h"
 
 class COESkinMeshControl_Impl : public IOEControl

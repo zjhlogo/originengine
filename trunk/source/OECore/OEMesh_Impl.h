@@ -8,8 +8,8 @@
 #ifndef __OEMESH_IMPL_H__
 #define __OEMESH_IMPL_H__
 
-#include <IOEMesh.h>
-#include <IOEResMgr.h>
+#include <OECore/IOEMesh.h>
+#include <OECore/IOEResMgr.h>
 
 class COEMesh_Impl : public IOEMesh
 {

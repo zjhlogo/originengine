@@ -7,11 +7,11 @@
  */
 #include "ModelApp.h"
 #include "../common/AppHelper.h"
-#include <IOERenderSystem.h>
-#include <IOECore.h>
-#include <IOEResMgr.h>
-#include <IOEMsgMgr.h>
-#include <OEMsgID.h>
+#include <OECore/IOERenderSystem.h>
+#include <OECore/IOECore.h>
+#include <OECore/IOEResMgr.h>
+#include <OEBase/IOEMsgMgr.h>
+#include <libOEBase/OEMsgID.h>
 #include <assert.h>
 
 IMPLEMENT_OEAPP(CModelApp);

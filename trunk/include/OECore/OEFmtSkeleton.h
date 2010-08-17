@@ -8,8 +8,8 @@
 #ifndef __OEFMTSKELETON_H__
 #define __OEFMTSKELETON_H__
 
-#include "OEBaseType.h"
-#include "OEMath/OEMath.h"
+#include "../libOEBase/OEBaseType.h"
+#include "../libOEMath/OEMath.h"
 
 class COEFmtSkeleton
 {

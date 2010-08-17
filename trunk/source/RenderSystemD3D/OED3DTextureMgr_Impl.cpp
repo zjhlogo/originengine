@@ -8,9 +8,9 @@
 #include "OED3DTextureMgr_Impl.h"
 #include "OED3DTexture_Impl.h"
 
-#include <IOELogFileMgr.h>
-#include <IOEConfigFileMgr.h>
-#include <OEOS.h>
+#include <OEBase/IOELogFileMgr.h>
+#include <OECore/IOEConfigFileMgr.h>
+#include <libOEBase/OEOS.h>
 #include <assert.h>
 
 COED3DTextureMgr_Impl::COED3DTextureMgr_Impl()

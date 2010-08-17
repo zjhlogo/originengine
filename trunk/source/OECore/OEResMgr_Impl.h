@@ -8,7 +8,7 @@
 #ifndef __OERESMGR_IMPL_H__
 #define __OERESMGR_IMPL_H__
 
-#include <IOEResMgr.h>
+#include <OECore/IOEResMgr.h>
 #include <map>
 
 class COEResMgr_Impl : public IOEResMgr

@@ -8,7 +8,7 @@
 #ifndef __IOEXMLDOCUMENT_H__
 #define __IOEXMLDOCUMENT_H__
 
-#include "IOEObject.h"
+#include "../OECore/IOEObject.h"
 #include "IOEXmlNode.h"
 
 class IOEXmlDocument: public IOEObject

@@ -8,10 +8,10 @@
 #ifndef __MESHAPP_H__
 #define __MESHAPP_H__
 
-#include <IOEApp.h>
-#include <IOEResMgr.h>
-#include <IOETextureMgr.h>
-#include <IOEShaderMgr.h>
+#include <libOEBase/IOEApp.h>
+#include <OECore/IOEResMgr.h>
+#include <OECore/IOETextureMgr.h>
+#include <OECore/IOEShaderMgr.h>
 #include <vector>
 
 #include "../common/Camera.h"

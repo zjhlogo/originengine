@@ -8,8 +8,8 @@
 #ifndef __OEMSGMGR_IMPL_H__
 #define __OEMSGMGR_IMPL_H__
 
-#include <IOEMsgMgr.h>
-#include <IOEObject.h>
+#include <OEBase/IOEMsgMgr.h>
+#include <OECore/IOEObject.h>
 
 #include <map>
 #include <queue>

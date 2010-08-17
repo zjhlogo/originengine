@@ -5,8 +5,8 @@
  * 
  * \author zjhlogo (zjhlogo@163.com)
  */
-#include <OEMath/Vector4.h>
-#include <OEMath/OEMath.h>
+#include <libOEMath/Vector4.h>
+#include <libOEMath/OEMath.h>
 #include <assert.h>
 
 void CVector4::Normalize()

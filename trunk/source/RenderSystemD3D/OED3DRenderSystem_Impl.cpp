@@ -8,8 +8,8 @@
 #include "OED3DRenderSystem_Impl.h"
 #include "OED3DUtil.h"
 
-#include <IOEMsgMgr.h>
-#include <OEMsgID.h>
+#include <OEBase/IOEMsgMgr.h>
+#include <libOEBase/OEMsgID.h>
 #include <assert.h>
 
 extern IDirect3DDevice9* g_pd3dDevice;

@@ -11,8 +11,8 @@
 #include "IConverter.h"
 #include "FmtMs3d.h"
 
-#include <OEFmtMesh.h>
-#include <OEFmtSkeleton.h>
+#include <OECore/OEFmtMesh.h>
+#include <OECore/OEFmtSkeleton.h>
 
 #include <vector>
 

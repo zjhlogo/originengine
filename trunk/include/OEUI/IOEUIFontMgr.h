@@ -8,7 +8,7 @@
 #ifndef __IOEUIFONTMGR_H__
 #define __IOEUIFONTMGR_H__
 
-#include "IOEMgr.h"
+#include "../OECore/IOEMgr.h"
 #include "IOEUIFont.h"
 
 class IOEUIFontMgr : public IOEMgr

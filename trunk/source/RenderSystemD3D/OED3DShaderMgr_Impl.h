@@ -8,7 +8,7 @@
 #ifndef __OED3DSHADERMGR_IMPL_H__
 #define __OED3DSHADERMGR_IMPL_H__
 
-#include <IOEShaderMgr.h>
+#include <OECore/IOEShaderMgr.h>
 #include <map>
 
 class COED3DShaderMgr_Impl : public IOEShaderMgr

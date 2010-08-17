@@ -8,10 +8,10 @@
 #ifndef __OED3DUTIL_H__
 #define __OED3DUTIL_H__
 
-#include <IOEVertDecl.h>
-#include <IOERenderSystem.h>
-#include <IOETexture.h>
-#include <OEMath/OEMath.h>
+#include <OECore/IOEVertDecl.h>
+#include <OECore/IOERenderSystem.h>
+#include <OECore/IOETexture.h>
+#include <libOEMath/OEMath.h>
 #include <d3dx9.h>
 
 class COED3DUtil

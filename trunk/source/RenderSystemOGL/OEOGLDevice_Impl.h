@@ -8,7 +8,7 @@
 #ifndef __OEOGLDEVICE_IMPL_H__
 #define __OEOGLDEVICE_IMPL_H__
 
-#include <IOEDevice.h>
+#include <OECore/IOEDevice.h>
 
 class COEOGLevice_Impl : public IOEDevice
 {

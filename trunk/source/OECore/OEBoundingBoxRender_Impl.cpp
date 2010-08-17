@@ -6,9 +6,9 @@
  * \author zjhlogo (zjhlogo@163.com)
  */
 #include "OEBoundingBoxRender_Impl.h"
-#include <IOEShaderMgr.h>
-#include <IOERenderSystem.h>
-#include <OERenderSystemUtil.h>
+#include <OECore/IOEShaderMgr.h>
+#include <OECore/IOERenderSystem.h>
+#include <OECore/OERenderSystemUtil.h>
 
 COEBoundingBoxRender_Impl::COEBoundingBoxRender_Impl()
 :IOERender(OERT_BOUNDINGBOX)

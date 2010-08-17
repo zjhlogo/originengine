@@ -8,9 +8,9 @@
 #ifndef __OESKELETONRENDER_IMPL_H__
 #define __OESKELETONRENDER_IMPL_H__
 
-#include <OEBaseTypeEx.h>
-#include <IOERender.h>
-#include <IOEShader.h>
+#include <OECore/OEBaseTypeEx.h>
+#include <OECore/IOERender.h>
+#include <OECore/IOEShader.h>
 
 #include "OESkinMeshRenderData_Impl.h"
 

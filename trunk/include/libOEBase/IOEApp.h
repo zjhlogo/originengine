@@ -8,7 +8,7 @@
 #ifndef __IOEAPP_H__
 #define __IOEAPP_H__
 
-#include "IOEMgr.h"
+#include "../OECore/IOEMgr.h"
 
 class IOEApp : public IOEMgr
 {

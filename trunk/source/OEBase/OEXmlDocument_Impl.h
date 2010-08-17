@@ -8,7 +8,7 @@
 #ifndef __OEXMLDOCUMENT_IMPL_H__
 #define __OEXMLDOCUMENT_IMPL_H__
 
-#include <IOEXmlDocument.h>
+#include <OEBase/IOEXmlDocument.h>
 #include "OEXmlNode_Impl.h"
 
 class COEXmlDocument_Impl : public IOEXmlDocument

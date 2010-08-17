@@ -8,7 +8,7 @@
 #ifndef __WXCOMMONHELPER_H__
 #define __WXCOMMONHELPER_H__
 
-#include <OEBaseType.h>
+#include <libOEBase/OEBaseType.h>
 #include <windows.h>
 
 class wxCommonHelper

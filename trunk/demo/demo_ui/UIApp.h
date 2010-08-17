@@ -8,7 +8,7 @@
 #ifndef __UIAPP_H__
 #define __UIAPP_H__
 
-#include <IOEApp.h>
+#include <libOEBase/IOEApp.h>
 #include <OEUI/IOEUIFontMgr.h>
 #include <OEUI/IOEUIStringMgr.h>
 

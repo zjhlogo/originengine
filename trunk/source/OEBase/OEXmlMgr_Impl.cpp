@@ -10,7 +10,7 @@
 #include "OEXmlNode_Impl.h"
 #include "OEXmlDocument_Impl.h"
 
-#include <IOELogFileMgr.h>
+#include <OEBase/IOELogFileMgr.h>
 #include <assert.h>
 
 COEXmlMgr_Impl::COEXmlMgr_Impl()

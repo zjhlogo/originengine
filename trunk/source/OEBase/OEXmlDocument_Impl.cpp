@@ -8,9 +8,9 @@
 #include "OEXmlDocument_Impl.h"
 #include "XmlGenerator.h"
 
-#include <IOEFileMgr.h>
-#include <IOEXmlMgr.h>
-#include <OEOS.h>
+#include <OEBase/IOEFileMgr.h>
+#include <OEBase/IOEXmlMgr.h>
+#include <libOEBase/OEOS.h>
 
 COEXmlDocument_Impl::COEXmlDocument_Impl()
 {

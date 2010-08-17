@@ -8,7 +8,7 @@
 #ifndef __IOEXMLMGR_H__
 #define __IOEXMLMGR_H__
 
-#include "IOEMgr.h"
+#include "../OECore/IOEMgr.h"
 #include "IOEXmlDocument.h"
 #include "IOEXmlNode.h"
 #include "IOEXmlAttribute.h"

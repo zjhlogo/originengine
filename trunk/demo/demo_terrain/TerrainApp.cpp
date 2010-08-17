@@ -7,10 +7,10 @@
  */
 #include "TerrainApp.h"
 #include "../common/AppHelper.h"
-#include <IOERenderSystem.h>
-#include <IOECore.h>
-#include <IOEMsgMgr.h>
-#include <OEMsgID.h>
+#include <OECore/IOERenderSystem.h>
+#include <OECore/IOECore.h>
+#include <OEBase/IOEMsgMgr.h>
+#include <libOEBase/OEMsgID.h>
 #include <assert.h>
 
 IMPLEMENT_OEAPP(CTerrainApp);

@@ -8,12 +8,12 @@
 #include "XmlGenerator.h"
 #include "OEXmlNode_Impl.h"
 
-#include <IOEXmlMgr.h>
-#include <OEOS.h>
+#include <OEBase/IOEXmlMgr.h>
+#include <libOEBase/OEOS.h>
 
 #undef yyFlexLexer
 #define yyFlexLexer xmlFlexLexer
-#include <FlexLexer.h>
+#include <OEBase/FlexLexer.h>
 
 
 static xmlFlexLexer g_xmlFlexLexer;

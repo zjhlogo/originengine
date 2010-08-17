@@ -8,7 +8,7 @@
 #ifndef __OECORE_IMPL_H__
 #define __OECORE_IMPL_H__
 
-#include <IOECore.h>
+#include <OECore/IOECore.h>
 #include <OEUI/IOEUIFontMgr.h>
 #include <OEUI/IOEUIStringMgr.h>
 

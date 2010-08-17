@@ -11,7 +11,7 @@
 #include "OEXmlAttribute_Impl.h"
 #include "OEXmlNode_Impl.h"
 
-#include <IOEFile.h>
+#include <OEBase/IOEFile.h>
 
 #include <vector>
 #include <string>

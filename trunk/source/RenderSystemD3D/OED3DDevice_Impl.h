@@ -8,7 +8,7 @@
 #ifndef __OED3DDEVICE_IMPL_H__
 #define __OED3DDEVICE_IMPL_H__
 
-#include <IOEDevice.h>
+#include <OECore/IOEDevice.h>
 #include <d3d9.h>
 #include <d3dx9.h>
 

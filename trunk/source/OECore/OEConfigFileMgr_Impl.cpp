@@ -7,8 +7,8 @@
  */
 #include "OEConfigFileMgr_Impl.h"
 
-#include <IOEXmlMgr.h>
-#include <OEOS.h>
+#include <OEBase/IOEXmlMgr.h>
+#include <libOEBase/OEOS.h>
 #include <assert.h>
 
 COEConfigFileMgr_Impl::COEConfigFileMgr_Impl()

@@ -8,9 +8,9 @@
 #ifndef __IOEUIRENDERSYSTEM_H__
 #define __IOEUIRENDERSYSTEM_H__
 
-#include "IOEMgr.h"
-#include "OEUIType.h"
-#include "../IOETexture.h"
+#include "../OECore/IOEMgr.h"
+#include "../libOEUI/OEUIType.h"
+#include "../OECore/IOETexture.h"
 
 class IOEUIRenderSystem : public IOEMgr
 {

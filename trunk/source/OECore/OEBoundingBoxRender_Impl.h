@@ -8,8 +8,8 @@
 #ifndef __OEBOUNDINGBOXRENDER_IMPL_H__
 #define __OEBOUNDINGBOXRENDER_IMPL_H__
 
-#include <IOERender.h>
-#include <IOEShader.h>
+#include <OECore/IOERender.h>
+#include <OECore/IOEShader.h>
 
 class COEBoundingBoxRender_Impl : public IOERender
 {

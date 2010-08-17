@@ -8,8 +8,8 @@
 #ifndef __OECONFIGFILEMGR_IMPL_H__
 #define __OECONFIGFILEMGR_IMPL_H__
 
-#include <IOEConfigFileMgr.h>
-#include <IOEXmlDocument.h>
+#include <OECore/IOEConfigFileMgr.h>
+#include <OEBase/IOEXmlDocument.h>
 
 class COEConfigFileMgr_Impl : public IOEConfigFileMgr
 {

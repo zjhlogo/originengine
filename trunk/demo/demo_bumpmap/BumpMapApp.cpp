@@ -7,10 +7,10 @@
  */
 #include "BumpMapApp.h"
 #include "../common/AppHelper.h"
-#include <OERenderSystemUtil.h>
-#include <IOECore.h>
-#include <IOEMsgMgr.h>
-#include <OEMsgID.h>
+#include <OECore/OERenderSystemUtil.h>
+#include <OECore/IOECore.h>
+#include <OEBase/IOEMsgMgr.h>
+#include <libOEBase/OEMsgID.h>
 #include <assert.h>
 
 IMPLEMENT_OEAPP(CBumpMapApp);

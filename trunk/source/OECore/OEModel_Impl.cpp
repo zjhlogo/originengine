@@ -7,9 +7,9 @@
  */
 #include "OEModel_Impl.h"
 #include "OESkinMeshRenderData_Impl.h"
-#include <IOEXmlMgr.h>
-#include <IOEControlMgr.h>
-#include <IOERenderMgr.h>
+#include <OEBase/IOEXmlMgr.h>
+#include <OECore/IOEControlMgr.h>
+#include <OECore/IOERenderMgr.h>
 
 COEModel_Impl::COEModel_Impl(const tstring& strFile)
 {

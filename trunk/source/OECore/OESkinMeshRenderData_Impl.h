@@ -8,9 +8,9 @@
 #ifndef __OESKINMESHRENDERDATA_IMPL_H__
 #define __OESKINMESHRENDERDATA_IMPL_H__
 
-#include <IOERenderData.h>
-#include <IOEResMgr.h>
-#include <IOEXmlMgr.h>
+#include <OECore/IOERenderData.h>
+#include <OECore/IOEResMgr.h>
+#include <OEBase/IOEXmlMgr.h>
 #include <map>
 
 class COESkinMeshRenderData_Impl : public IOERenderData

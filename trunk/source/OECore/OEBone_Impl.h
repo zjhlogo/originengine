@@ -8,9 +8,9 @@
 #ifndef __OEBONE_IMPL_H__
 #define __OEBONE_IMPL_H__
 
-#include <IOEBone.h>
-#include <IOEFile.h>
-#include <OEFmtSkeleton.h>
+#include <OECore/IOEBone.h>
+#include <OEBase/IOEFile.h>
+#include <OECore/OEFmtSkeleton.h>
 
 #include <vector>
 

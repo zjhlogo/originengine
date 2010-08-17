@@ -8,8 +8,8 @@
 #ifndef __WATERAPP_H__
 #define __WATERAPP_H__
 
-#include <IOEApp.h>
-#include <IOEShaderMgr.h>
+#include <libOEBase/IOEApp.h>
+#include <OECore/IOEShaderMgr.h>
 
 #include "../common/Camera.h"
 #include "DlgWaveSetting.h"

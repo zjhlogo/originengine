@@ -7,14 +7,14 @@
  */
 #include "OED3DDevice_Impl.h"
 
-#include <OEMath/OEMath.h>
-#include <IOEConfigFileMgr.h>
-#include <IOELogFileMgr.h>
-#include <IOERenderSystem.h>
-#include <OEMsgID.h>
-#include <IOEMsgMgr.h>
+#include <libOEMath/OEMath.h>
+#include <OECore/IOEConfigFileMgr.h>
+#include <OEBase/IOELogFileMgr.h>
+#include <OECore/IOERenderSystem.h>
+#include <libOEBase/OEMsgID.h>
+#include <OEBase/IOEMsgMgr.h>
 
-#include <OEOS.h>
+#include <libOEBase/OEOS.h>
 
 // TODO: wrapped it
 IDirect3D9* g_pD3D = NULL;

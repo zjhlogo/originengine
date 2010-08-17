@@ -8,7 +8,7 @@
 #ifndef __OEXMLNODE_IMPL_H__
 #define __OEXMLNODE_IMPL_H__
 
-#include <IOEXmlNode.h>
+#include <OEBase/IOEXmlNode.h>
 #include "OEXmlAttribute_Impl.h"
 
 class COEXmlNode_Impl : public IOEXmlNode

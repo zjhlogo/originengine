@@ -6,11 +6,11 @@
  * \author zjhlogo (zjhlogo@163.com)
  */
 #include "OEUIBitmapFont_Impl.h"
-#include <IOEXmlMgr.h>
-#include <IOETextureMgr.h>
+#include <OEBase/IOEXmlMgr.h>
+#include <OECore/IOETextureMgr.h>
 
-#include <IOEXmlMgr.h>
-#include <IOETextureMgr.h>
+#include <OEBase/IOEXmlMgr.h>
+#include <OECore/IOETextureMgr.h>
 
 COEUIBitmapFont_Impl::COEUIBitmapFont_Impl(const tstring& strFile)
 {

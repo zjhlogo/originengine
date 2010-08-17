@@ -8,7 +8,7 @@
 #ifndef __TERRAINAPP_H__
 #define __TERRAINAPP_H__
 
-#include <IOEApp.h>
+#include <libOEBase/IOEApp.h>
 #include "../common/Camera.h"
 #include "TerrainMgr.h"
 

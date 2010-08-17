@@ -9,7 +9,7 @@
 #define __TERRAINMGR_H__
 
 #include "MapTile.h"
-#include <IOEFileMgr.h>
+#include <OEBase/IOEFileMgr.h>
 #include <vector>
 
 class CTerrainMgr

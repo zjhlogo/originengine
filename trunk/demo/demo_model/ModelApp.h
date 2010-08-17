@@ -8,8 +8,8 @@
 #ifndef __MODELAPP_H__
 #define __MODELAPP_H__
 
-#include <IOEApp.h>
-#include <IOEModel.h>
+#include <libOEBase/IOEApp.h>
+#include <OECore/IOEModel.h>
 #include <vector>
 
 #include "../common/Camera.h"

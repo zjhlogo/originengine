@@ -5,8 +5,8 @@
  * 
  * \author zjhlogo (zjhlogo@163.com)
  */
-#include <OEMath/Matrix4x4.h>
-#include <OEMath/OEMath.h>
+#include <libOEMath/Matrix4x4.h>
+#include <libOEMath/OEMath.h>
 #include <math.h>
 
 CMatrix4x4 CMatrix4x4::Inverse() const

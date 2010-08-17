@@ -10,10 +10,10 @@
 #include "../common/AppHelper.h"
 #include "../common/wxInitHelper.h"
 
-#include <OERenderSystemUtil.h>
-#include <IOECore.h>
-#include <IOEMsgMgr.h>
-#include <OEMsgID.h>
+#include <OECore/OERenderSystemUtil.h>
+#include <OECore/IOECore.h>
+#include <OEBase/IOEMsgMgr.h>
+#include <libOEBase/OEMsgID.h>
 #include <assert.h>
 
 #include <wx/fs_mem.h>

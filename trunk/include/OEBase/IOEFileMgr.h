@@ -8,7 +8,7 @@
 #ifndef __IOEFILEMGR_H__
 #define __IOEFILEMGR_H__
 
-#include "IOEMgr.h"
+#include "../OECore/IOEMgr.h"
 #include "IOEFile.h"
 
 class IOEFileMgr : public IOEMgr

@@ -8,9 +8,9 @@
 #ifndef __OEPIECE_IMPL_H__
 #define __OEPIECE_IMPL_H__
 
-#include <IOEPiece.h>
-#include <IOEFile.h>
-#include <OEFmtMesh.h>
+#include <OECore/IOEPiece.h>
+#include <OEBase/IOEFile.h>
+#include <OECore/OEFmtMesh.h>
 
 #include <vector>
 

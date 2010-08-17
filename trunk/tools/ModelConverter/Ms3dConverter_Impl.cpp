@@ -7,9 +7,9 @@
  */
 #include "Ms3dConverter_Impl.h"
 
-#include <IOEFileMgr.h>
-#include <OEMath/OEMath.h>
-#include <OEOS.h>
+#include <OEBase/IOEFileMgr.h>
+#include <libOEMath/OEMath.h>
+#include <libOEBase/OEOS.h>
 
 #include <map>
 #include <math.h>

@@ -8,7 +8,7 @@
 #ifndef __OEFILEMGR_IMPL_H__
 #define __OEFILEMGR_IMPL_H__
 
-#include <IOEFileMgr.h>
+#include <OEBase/IOEFileMgr.h>
 
 class COEFileMgr_Impl : public IOEFileMgr
 {

@@ -10,8 +10,8 @@
 
 #include <OEUI/IOEUIFont.h>
 
-#include <IOEXmlDocument.h>
-#include <IOEXmlNode.h>
+#include <OEBase/IOEXmlDocument.h>
+#include <OEBase/IOEXmlNode.h>
 
 #include <vector>
 #include <map>

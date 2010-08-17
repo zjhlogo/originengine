@@ -8,7 +8,7 @@
 #include "OEFileMgr_Impl.h"
 #include "OEFile_Impl.h"
 
-#include <IOELogFileMgr.h>
+#include <OEBase/IOELogFileMgr.h>
 #include <assert.h>
 
 COEFileMgr_Impl::COEFileMgr_Impl()

@@ -6,9 +6,9 @@
  * \author zjhlogo (zjhlogo@163.com)
  */
 #include "SimpleShape.h"
-#include <IOERenderSystem.h>
-#include <IOEShaderMgr.h>
-#include <OERenderSystemUtil.h>
+#include <OECore/IOERenderSystem.h>
+#include <OECore/IOEShaderMgr.h>
+#include <OECore/OERenderSystemUtil.h>
 
 CSimpleShape::CSimpleShape()
 {

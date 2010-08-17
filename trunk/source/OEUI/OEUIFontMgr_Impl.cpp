@@ -9,8 +9,8 @@
 #include "OEUIFont_Impl.h"
 #include "OEUIBitmapFont_Impl.h"
 
-#include <IOELogFileMgr.h>
-#include <IOEConfigFileMgr.h>
+#include <OEBase/IOELogFileMgr.h>
+#include <OECore/IOEConfigFileMgr.h>
 #include <algorithm>
 #include <assert.h>
 

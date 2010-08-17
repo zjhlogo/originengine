@@ -7,21 +7,21 @@
  */
 #include "OECore_Impl.h"
 
-#include <IOEFileMgr.h>
-#include <IOELogFileMgr.h>
-#include <IOEConfigFileMgr.h>
-#include <IOEXmlMgr.h>
-#include <IOEResMgr.h>
-#include <IOEControlMgr.h>
-#include <IOERenderMgr.h>
-#include <IOEDevice.h>
-#include <IOETextureMgr.h>
-#include <IOEShaderMgr.h>
-#include <IOERenderSystem.h>
+#include <OEBase/IOEFileMgr.h>
+#include <OEBase/IOELogFileMgr.h>
+#include <OECore/IOEConfigFileMgr.h>
+#include <OEBase/IOEXmlMgr.h>
+#include <OECore/IOEResMgr.h>
+#include <OECore/IOEControlMgr.h>
+#include <OECore/IOERenderMgr.h>
+#include <OECore/IOEDevice.h>
+#include <OECore/IOETextureMgr.h>
+#include <OECore/IOEShaderMgr.h>
+#include <OECore/IOERenderSystem.h>
 #include <OEUI/IOEUIRenderSystem.h>
-#include <IOEApp.h>
-#include <OEMsgID.h>
-#include <IOEMsgMgr.h>
+#include <libOEBase/IOEApp.h>
+#include <libOEBase/OEMsgID.h>
+#include <OEBase/IOEMsgMgr.h>
 
 COECore_Impl::COECore_Impl()
 {

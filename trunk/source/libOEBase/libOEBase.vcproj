@@ -309,31 +309,31 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath="..\..\include\IOEApp.h"
+				RelativePath="..\..\include\libOEBase\IOEApp.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\include\OEBaseType.h"
+				RelativePath="..\..\include\libOEBase\OEBaseType.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\include\OEDataBufferRead.h"
+				RelativePath="..\..\include\libOEBase\OEDataBufferRead.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\include\OEDataBufferWrite.h"
+				RelativePath="..\..\include\libOEBase\OEDataBufferWrite.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\include\OEHolder.h"
+				RelativePath="..\..\include\libOEBase\OEHolder.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\include\OEMsg.h"
+				RelativePath="..\..\include\libOEBase\OEMsg.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\include\OEOS.h"
+				RelativePath="..\..\include\libOEBase\OEOS.h"
 				>
 			</File>
 		</Filter>
@@ -341,11 +341,11 @@
 			Name="SDK Header Files"
 			>
 			<File
-				RelativePath="..\..\include\OEConfig.h"
+				RelativePath="..\..\include\libOEBase\OEConfig.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\include\OEMsgID.h"
+				RelativePath="..\..\include\libOEBase\OEMsgID.h"
 				>
 			</File>
 		</Filter>

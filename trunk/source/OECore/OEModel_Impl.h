@@ -8,10 +8,10 @@
 #ifndef __OEMODEL_IMPL_H__
 #define __OEMODEL_IMPL_H__
 
-#include <IOEModel.h>
-#include <IOEControl.h>
-#include <IOERender.h>
-#include <IOEXmlNode.h>
+#include <OECore/IOEModel.h>
+#include <OECore/IOEControl.h>
+#include <OECore/IOERender.h>
+#include <OEBase/IOEXmlNode.h>
 #include <vector>
 
 #include "OESkinMeshRenderData_Impl.h"

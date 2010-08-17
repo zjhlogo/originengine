@@ -12,7 +12,7 @@
 #include <wx/checkbox.h>
 #include <wx/checklst.h>
 
-#include <IOEXmlMgr.h>
+#include <OEBase/IOEXmlMgr.h>
 
 class CDlgModelExporterOption : public wxDialog
 {

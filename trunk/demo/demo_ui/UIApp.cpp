@@ -7,7 +7,7 @@
  */
 #include "UIApp.h"
 #include "../common/AppHelper.h"
-#include <OEMsgID.h>
+#include <libOEBase/OEMsgID.h>
 #include <assert.h>
 
 IMPLEMENT_OEAPP(CUIApp);

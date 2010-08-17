@@ -8,8 +8,8 @@
 #ifndef __IOELOGFILEMGR_H__
 #define __IOELOGFILEMGR_H__
 
-#include "IOEMgr.h"
-#include <OEOS.h>
+#include "../OECore/IOEMgr.h"
+#include <libOEBase/OEOS.h>
 
 class IOELogFileMgr : public IOEMgr
 {

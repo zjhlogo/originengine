@@ -8,9 +8,9 @@
 #ifndef __OEMATERIAL_IMPL_H__
 #define __OEMATERIAL_IMPL_H__
 
-#include <OEBaseTypeEx.h>
-#include <IOEMaterial.h>
-#include <IOEXmlNode.h>
+#include <OECore/OEBaseTypeEx.h>
+#include <OECore/IOEMaterial.h>
+#include <OEBase/IOEXmlNode.h>
 
 class COEMaterial_Impl : public IOEMaterial
 {

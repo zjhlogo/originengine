@@ -5,7 +5,7 @@
  * 
  * \author zjhlogo (zjhlogo@163.com)
  */
-#include <OEMath/OEMath.h>
+#include <libOEMath/OEMath.h>
 
 const float OEMATH_PI = 3.14159265f;
 const float OEMATH_2PI = 2.0f*OEMATH_PI;

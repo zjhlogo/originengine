@@ -5,8 +5,8 @@
  * 
  * \author zjhlogo (zjhlogo@163.com)
  */
-#include <OEMsg.h>
-#include <OEMsgID.h>
+#include <libOEBase/OEMsg.h>
+#include <libOEBase/OEMsgID.h>
 
 COEMsg::COEMsg(uint nMsgID)
 {

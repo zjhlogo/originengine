@@ -9,7 +9,7 @@
 #define __IOESKELETON_H__
 
 #include "IOEObject.h"
-#include <IOEBone.h>
+#include "IOEBone.h"
 
 class IOESkeleton : public IOEObject
 {

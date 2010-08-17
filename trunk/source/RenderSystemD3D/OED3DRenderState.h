@@ -8,7 +8,7 @@
 #ifndef __OED3DRENDERSTATE_H__
 #define __OED3DRENDERSTATE_H__
 
-#include <OEBaseTypeEx.h>
+#include <OECore/OEBaseTypeEx.h>
 
 class COED3DRenderState
 {
