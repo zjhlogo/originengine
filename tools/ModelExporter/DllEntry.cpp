@@ -12,7 +12,7 @@
 #include "../common/OEModuleLoader.h"
 
 #include <wx/app.h>
-#include <OEOS.h>
+#include <libOEBase/OEOS.h>
 
 IMPLEMENT_APP_NO_MAIN(wxApp);
 

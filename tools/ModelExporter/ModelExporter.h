@@ -12,13 +12,13 @@
 #include <IGame/IGame.h>
 #include <IGame/IGameModifier.h>
 
+#include <OEBase/IOEFileMgr.h>
+#include <OECore/OEFmtMesh.h>
+#include <OECore/OEFmtSkeleton.h>
+
 #include <vector>
 #include <set>
 #include <map>
-
-#include <IOEFileMgr.h>
-#include <OEFmtMesh.h>
-#include <OEFmtSkeleton.h>
 
 class CDlgModelExporterOption;
 class wxWindow;
