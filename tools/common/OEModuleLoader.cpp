@@ -6,6 +6,10 @@
  * \author zjhlogo (zjhlogo@163.com)
  */
 #include "OEModuleLoader.h"
+#include <OEBase/IOEFileMgr.h>
+#include <OEBase/IOELogFileMgr.h>
+#include <OEBase/IOEXmlMgr.h>
+#include <OEBase/IOEMsgMgr.h>
 #include <libOEBase/OEOS.h>
 
 static COEOS::OEMODULE g_hModuleBase = NULL;
@@ -27,11 +31,36 @@ bool COEModuleLoader::Initialize(HINSTANCE hInst /* = NULL */)
 	if (!g_hModuleBase) return false;
 
 	COEOS::SyncModuleInterfaces(g_hModuleBase, g_OEHolder);
+
+	// 文件管理类
+	if (!g_pOEFileMgr->Initialize()) return false;
+
+	// 日志管理类
+	if (!g_pOELogFileMgr->Initialize()) return false;
+
+	// Xml 管理类
+	if (!g_pOEXmlMgr->Initialize()) return false;
+
+	// 消息管理类
+	if (!g_pOEMsgMgr->Initialize()) return false;
+
 	return true;
 }
 
 void COEModuleLoader::Terminate()
 {
+	// 消息管理类
+	g_pOEMsgMgr->Terminate();
+
+	// Xml 管理类
+	g_pOEXmlMgr->Terminate();
+
+	// 日志管理类
+	g_pOELogFileMgr->Terminate();
+
+	// 文件管理类
+	g_pOEFileMgr->Terminate();
+
 	// free base module
 	COEOS::FreeOEModule(g_hModuleBase, g_OEHolder);
 	g_hModuleBase = NULL;
