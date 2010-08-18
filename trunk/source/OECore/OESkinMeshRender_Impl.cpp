@@ -9,7 +9,7 @@
 #include <OECore/IOERenderSystem.h>
 #include <OECore/OERenderSystemUtil.h>
 #include <OEBase/IOEMsgMgr.h>
-#include <libOEBase/OEMsgShaderParam.h>
+#include <libOEMsg/OEMsgShaderParam.h>
 
 COESkinMeshRender_Impl::COESkinMeshRender_Impl()
 :IOERender(OERT_SKINMESH)

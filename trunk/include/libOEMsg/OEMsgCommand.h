@@ -8,7 +8,7 @@
 #ifndef __OEMSGCOMMAND_H__
 #define __OEMSGCOMMAND_H__
 
-#include "IOEMsg.h"
+#include "../libOEBase/IOEMsg.h"
 
 class COEMsgCommand : public IOEMsg
 {

@@ -11,6 +11,12 @@
 #include "libOEBase/OEBaseType.h"
 #include <vector>
 
+enum OE_MSG_ID
+{
+	OMI_UNKNOWN = 0,
+	OMI_USER = 10000,
+};
+
 enum TRANSFORM_TYPE
 {
 	TT_UNKNOWN			= 0x00000000,

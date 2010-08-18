@@ -14,8 +14,19 @@
 class IOEMsgMgr : public IOEMgr
 {
 public:
+	typedef IOEMsg* (*MSG_GENERATE_FUNC)(COEDataBufferRead* pDBRead);
+
+	typedef struct MSG_GENERATE_MAP_tag
+	{
+		uint nMsgID;
+		MSG_GENERATE_FUNC pFunc;
+	} MSG_GENERATE_MAP;
+
+public:
 	IOEMsgMgr(){};
 	virtual ~IOEMsgMgr(){};
+
+	virtual bool AddMsgDB(const MSG_GENERATE_MAP* pMsgDB) = 0;
 
 	virtual bool SendMessage(IOEMsg* pMsg) = 0;
 	virtual bool ReceiveMessage() = 0;

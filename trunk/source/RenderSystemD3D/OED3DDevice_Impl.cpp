@@ -11,10 +11,10 @@
 #include <OECore/IOEConfigFileMgr.h>
 #include <OEBase/IOELogFileMgr.h>
 #include <OECore/IOERenderSystem.h>
-#include <libOEBase/OEMsgID.h>
-#include <libOEBase/OEMsgMouse.h>
-#include <libOEBase/OEMsgKeyboard.h>
-#include <libOEBase/OEMsgCommand.h>
+#include <libOEMsg/OEMsgList.h>
+#include <libOEMsg/OEMsgMouse.h>
+#include <libOEMsg/OEMsgKeyboard.h>
+#include <libOEMsg/OEMsgCommand.h>
 #include <OEBase/IOEMsgMgr.h>
 #include <assert.h>
 

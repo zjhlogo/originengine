@@ -9,7 +9,7 @@
 #define __OEUIRENDERSYSTEM_IMPL_H__
 
 #include <OEUI/IOEUIRenderSystem.h>
-#include <libOEBase/OEMsgCommand.h>
+#include <libOEMsg/OEMsgCommand.h>
 #include "OEUIVertexCache.h"
 
 class COEUIRenderSystem_Impl : public IOEUIRenderSystem

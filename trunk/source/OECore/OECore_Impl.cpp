@@ -24,7 +24,7 @@
 #include <OEUI/IOEUIRenderSystem.h>
 
 #include <libOEBase/IOEApp.h>
-#include <libOEBase/OEMsgID.h>
+#include <libOEMsg/OEMsgList.h>
 
 COECore_Impl::COECore_Impl()
 {
@@ -112,6 +112,7 @@ bool COECore_Impl::InitializeInterfaces()
 
 	// 消息管理类
 	if (!g_pOEMsgMgr->Initialize()) return false;
+	if (!g_pOEMsgMgr->AddMsgDB(g_OEMsgListDB)) return false;
 
 	// 配置文件管理类
 	if (!g_pOEConfigFileMgr->Initialize()) return false;

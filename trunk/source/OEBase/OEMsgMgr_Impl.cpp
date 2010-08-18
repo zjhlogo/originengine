@@ -7,7 +7,7 @@
  */
 #include "OEMsgMgr_Impl.h"
 
-#include <libOEBase/OEMsgID.h>
+#include <OECore/OEBaseTypeEx.h>
 #include <libOEBase/OEDataBufferRead.h>
 #include <libOEBase/OEDataBufferWrite.h>
 #include <assert.h>
@@ -45,6 +45,17 @@ bool COEMsgMgr_Impl::Initialize()
 void COEMsgMgr_Impl::Terminate()
 {
 	// TODO: 
+}
+
+bool COEMsgMgr_Impl::AddMsgDB(const MSG_GENERATE_MAP* pMsgDB)
+{
+	int nIndex = 0;
+	while (pMsgDB[nIndex].nMsgID > 0)
+	{
+		m_MsgGenFuncMap.insert(std::make_pair(pMsgDB[nIndex].nMsgID, pMsgDB[nIndex].pFunc));
+	}
+
+	return true;
 }
 
 bool COEMsgMgr_Impl::SendMessage(IOEMsg* pMsg)
@@ -138,27 +149,41 @@ bool COEMsgMgr_Impl::UnregisterMessage(IOEObject* pHandler)
 	return false;
 }
 
-void COEMsgMgr_Impl::ProcessMessage(uint nMsgID, COEDataBufferRead* pDBRead)
+bool COEMsgMgr_Impl::ProcessMessage(uint nMsgID, COEDataBufferRead* pDBRead)
 {
-	//TP_MSG_HANDLER_INFO Range = m_MsgHandlerInfoMap.equal_range(nMsgID);
-	//for (TM_MSG_HANDLER_INFO::iterator it = Range.first; it != Range.second; ++it)
-	//{
-	//	MSG_HANDLER_INFO& msgHandlerInfo = it->second;
+	TM_MSG_GENERATE_FUNC::iterator itGenFunc = m_MsgGenFuncMap.find(nMsgID);
+	if (itGenFunc == m_MsgGenFuncMap.end())
+	{
+		// TODO: logout
+		return false;
+	}
+	IOEMsgMgr::MSG_GENERATE_FUNC pGenFunc = itGenFunc->second;
 
-	//	// check the loop depth, it must always 0 or 1
-	//	if (msgHandlerInfo.nLoopDepth > 0)
-	//	{
-	//		assert(false);
-	//		continue;
-	//	}
-	//	++msgHandlerInfo.nLoopDepth;
+	TP_MSG_HANDLER_INFO Range = m_MsgHandlerInfoMap.equal_range(nMsgID);
+	for (TM_MSG_HANDLER_INFO::iterator it = Range.first; it != Range.second; ++it)
+	{
+		MSG_HANDLER_INFO& msgHandlerInfo = it->second;
 
-	//	pDBRead->Reset();
-	//	if (!(msgHandlerInfo.pHandler->*msgHandlerInfo.pFunc)(nMsgID, pDBRead))
-	//	{
-	//		assert(false);
-	//	}
+		// check the loop depth, it must always 0 or 1
+		if (msgHandlerInfo.nLoopDepth > 0)
+		{
+			assert(false);
+			continue;
+		}
+		++msgHandlerInfo.nLoopDepth;
 
-	//	--msgHandlerInfo.nLoopDepth;
-	//}
+		pDBRead->Reset();
+		IOEMsg* pMsg = pGenFunc(pDBRead);
+
+		if (!(msgHandlerInfo.pHandler->*msgHandlerInfo.pFunc)(*pMsg))
+		{
+			assert(false);
+		}
+
+		SAFE_DELETE(pMsg);
+
+		--msgHandlerInfo.nLoopDepth;
+	}
+
+	return true;
 }

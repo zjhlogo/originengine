@@ -11,7 +11,7 @@
 #include <OECore/IOECore.h>
 #include <OEUI/IOEUIFontMgr.h>
 #include <OEUI/IOEUIStringMgr.h>
-#include <libOEBase/OEMsgCommand.h>
+#include <libOEMsg/OEMsgCommand.h>
 
 class COECore_Impl : public IOECore
 {

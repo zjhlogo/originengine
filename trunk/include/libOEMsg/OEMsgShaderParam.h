@@ -8,7 +8,7 @@
 #ifndef __OEMSGSHADERPARAM_H__
 #define __OEMSGSHADERPARAM_H__
 
-#include "IOEMsg.h"
+#include "../libOEBase/IOEMsg.h"
 #include "../OECore/IOEShader.h"
 
 class COEMsgShaderParam : public IOEMsg

@@ -5,8 +5,8 @@
  * 
  * \author zjhlogo (zjhlogo@gmail.com)
  */
-#include <libOEBase/OEMsgShaderParam.h>
-#include <libOEBase/OEMsgID.h>
+#include <libOEMsg/OEMsgShaderParam.h>
+#include <libOEMsg/OEMsgList.h>
 
 COEMsgShaderParam::COEMsgShaderParam()
 :IOEMsg(OMI_SETUP_SHADER_PARAM)

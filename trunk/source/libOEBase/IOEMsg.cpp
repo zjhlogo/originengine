@@ -6,7 +6,6 @@
  * \author zjhlogo (zjhlogo@gmail.com)
  */
 #include <libOEBase/IOEMsg.h>
-#include <libOEBase/OEMsgID.h>
 
 IOEMsg::IOEMsg(uint nMsgID)
 {

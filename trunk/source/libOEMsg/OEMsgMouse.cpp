@@ -5,7 +5,7 @@
  * 
  * \author zjhlogo (zjhlogo@gmail.com)
  */
-#include <libOEBase/OEMsgMouse.h>
+#include <libOEMsg/OEMsgMouse.h>
 
 COEMsgMouse::COEMsgMouse(uint nMsgID)
 :IOEMsg(nMsgID)

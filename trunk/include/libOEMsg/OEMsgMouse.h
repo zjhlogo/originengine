@@ -8,7 +8,7 @@
 #ifndef __OEMSGMOUSE_H__
 #define __OEMSGMOUSE_H__
 
-#include "IOEMsg.h"
+#include "../libOEBase/IOEMsg.h"
 
 class COEMsgMouse : public IOEMsg
 {
