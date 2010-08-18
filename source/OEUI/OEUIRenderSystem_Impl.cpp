@@ -8,7 +8,7 @@
 #include "OEUIRenderSystem_Impl.h"
 #include <OECore/IOEShaderMgr.h>
 #include <OEBase/IOEMsgMgr.h>
-#include <libOEBase/OEMsgID.h>
+#include <libOEMsg/OEMsgList.h>
 #include <assert.h>
 
 COEUIRenderSystem_Impl::COEUIRenderSystem_Impl()

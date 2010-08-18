@@ -26,8 +26,8 @@ public:
 
 	typedef std::multimap<uint, MSG_HANDLER_INFO> TM_MSG_HANDLER_INFO;
 	typedef std::pair<TM_MSG_HANDLER_INFO::iterator, TM_MSG_HANDLER_INFO::iterator> TP_MSG_HANDLER_INFO;
-
 	typedef std::queue<COEDataBufferWrite*> TQ_DATA_BUFFER;
+	typedef std::map<uint, MSG_GENERATE_FUNC> TM_MSG_GENERATE_FUNC;
 
 public:
 	COEMsgMgr_Impl();
@@ -35,6 +35,8 @@ public:
 
 	virtual bool Initialize();
 	virtual void Terminate();
+
+	virtual bool AddMsgDB(const MSG_GENERATE_MAP* pMsgDB);
 
 	virtual bool SendMessage(IOEMsg* pMsg);
 	virtual bool ReceiveMessage();
@@ -48,11 +50,12 @@ private:
 	bool Init();
 	void Destroy();
 
-	void ProcessMessage(uint nMsgID, COEDataBufferRead* pDBRead);
+	bool ProcessMessage(uint nMsgID, COEDataBufferRead* pDBRead);
 
 private:
 	TM_MSG_HANDLER_INFO m_MsgHandlerInfoMap;
 	TQ_DATA_BUFFER m_SendMsgList;
+	TM_MSG_GENERATE_FUNC m_MsgGenFuncMap;
 
 };
 #endif // __OEMSGMGR_IMPL_H__

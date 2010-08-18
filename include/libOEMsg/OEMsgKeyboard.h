@@ -8,7 +8,7 @@
 #ifndef __OEMSGKEYBOARD_H__
 #define __OEMSGKEYBOARD_H__
 
-#include "IOEMsg.h"
+#include "../libOEBase/IOEMsg.h"
 
 class COEMsgKeyboard : public IOEMsg
 {

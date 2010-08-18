@@ -2,10 +2,11 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9.00"
-	Name="libOEBase"
-	ProjectGUID="{FC86443B-245B-4F29-BEF2-2D39A8F8B063}"
+	Name="libOEMsg"
+	ProjectGUID="{D5CB127E-5595-40FE-B847-93E32CB99D23}"
+	RootNamespace="libOEMsg"
 	Keyword="Win32Proj"
-	TargetFrameworkVersion="131072"
+	TargetFrameworkVersion="196613"
 	>
 	<Platforms>
 		<Platform
@@ -20,7 +21,6 @@
 			OutputDirectory="..\..\build\source\$(ProjectName)\$(ConfigurationName)"
 			IntermediateDirectory="..\..\build\source\$(ProjectName)\$(ConfigurationName)"
 			ConfigurationType="4"
-			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			CharacterSet="2"
 			>
 			<Tool
@@ -61,7 +61,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="$(OutDir)/libOEBase_D.lib"
+				OutputFile="$(OutDir)/libOEMsg_D.lib"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -84,8 +84,8 @@
 			OutputDirectory="..\..\build\source\$(ProjectName)\$(ConfigurationName)"
 			IntermediateDirectory="..\..\build\source\$(ProjectName)\$(ConfigurationName)"
 			ConfigurationType="4"
-			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			CharacterSet="2"
+			WholeProgramOptimization="1"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -104,9 +104,12 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				Optimization="2"
+				EnableIntrinsicFunctions="true"
 				AdditionalIncludeDirectories="..\..\include"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB"
 				RuntimeLibrary="2"
+				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
 				DebugInformationFormat="3"
@@ -122,7 +125,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="$(OutDir)/libOEBase.lib"
+				OutputFile="$(OutDir)/libOEMsg.lib"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -145,7 +148,6 @@
 			OutputDirectory="..\..\build\source\$(ProjectName)\$(ConfigurationName)"
 			IntermediateDirectory="..\..\build\source\$(ProjectName)\$(ConfigurationName)"
 			ConfigurationType="4"
-			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			CharacterSet="1"
 			>
 			<Tool
@@ -186,7 +188,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="$(OutDir)/libOEBase_UD.lib"
+				OutputFile="$(OutDir)/libOEMsg_UD.lib"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -209,8 +211,8 @@
 			OutputDirectory="..\..\build\source\$(ProjectName)\$(ConfigurationName)"
 			IntermediateDirectory="..\..\build\source\$(ProjectName)\$(ConfigurationName)"
 			ConfigurationType="4"
-			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			CharacterSet="1"
+			WholeProgramOptimization="1"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -229,9 +231,12 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				Optimization="2"
+				EnableIntrinsicFunctions="true"
 				AdditionalIncludeDirectories="..\..\include"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB"
 				RuntimeLibrary="2"
+				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
 				DebugInformationFormat="3"
@@ -247,7 +252,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="$(OutDir)/libOEBaseU.lib"
+				OutputFile="$(OutDir)/libOEMsgU.lib"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -271,39 +276,27 @@
 	<Files>
 		<Filter
 			Name="Source Files"
-			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx"
+			Filter="cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx"
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\IOEApp.cpp"
+				RelativePath=".\OEMsgCommand.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\IOEMsg.cpp"
+				RelativePath=".\OEMsgKeyboard.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\IOEObject.cpp"
+				RelativePath="..\..\include\libOEMsg\OEMsgList.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\OEBaseType.cpp"
+				RelativePath=".\OEMsgMouse.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\OEDataBufferRead.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\OEDataBufferWrite.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\OEHolder.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\OEOS.cpp"
+				RelativePath=".\OEMsgShaderParam.cpp"
 				>
 			</File>
 		</Filter>
@@ -313,47 +306,23 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath="..\..\include\libOEBase\IOEApp.h"
+				RelativePath="..\..\include\libOEMsg\OEMsgCommand.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\include\libOEBase\IOEMsg.h"
+				RelativePath="..\..\include\libOEMsg\OEMsgKeyboard.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\include\libOEBase\IOEObject.h"
+				RelativePath="..\..\include\libOEMsg\OEMsgList.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\include\libOEBase\OEBaseType.h"
+				RelativePath="..\..\include\libOEMsg\OEMsgMouse.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\include\libOEBase\OEDataBufferRead.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\include\libOEBase\OEDataBufferWrite.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\include\libOEBase\OEHolder.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\include\libOEBase\OEOS.h"
-				>
-			</File>
-		</Filter>
-		<Filter
-			Name="SDK Header Files"
-			>
-			<File
-				RelativePath="..\..\include\libOEBase\OEConfig.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\include\libOEBase\OEMsgID.h"
+				RelativePath="..\..\include\libOEMsg\OEMsgShaderParam.h"
 				>
 			</File>
 		</Filter>

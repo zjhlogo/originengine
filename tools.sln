@@ -22,6 +22,14 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ModelConverter", "tools\Mod
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libOEBase", "source\libOEBase\libOEBase.vcproj", "{FC86443B-245B-4F29-BEF2-2D39A8F8B063}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MessageGenerator", "tools\MessageGenerator\MessageGenerator.vcproj", "{57C0A571-828A-42C2-9FC2-AE07BCFA3C93}"
+	ProjectSection(ProjectDependencies) = postProject
+		{FC86443B-245B-4F29-BEF2-2D39A8F8B063} = {FC86443B-245B-4F29-BEF2-2D39A8F8B063}
+		{8354A989-14F3-4A53-A458-C86BD5D3520A} = {8354A989-14F3-4A53-A458-C86BD5D3520A}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OEBase", "source\OEBase\OEBase.vcproj", "{8354A989-14F3-4A53-A458-C86BD5D3520A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -70,6 +78,22 @@ Global
 		{FC86443B-245B-4F29-BEF2-2D39A8F8B063}.Unicode Debug|Win32.Build.0 = Unicode Debug|Win32
 		{FC86443B-245B-4F29-BEF2-2D39A8F8B063}.Unicode Release|Win32.ActiveCfg = Unicode Release|Win32
 		{FC86443B-245B-4F29-BEF2-2D39A8F8B063}.Unicode Release|Win32.Build.0 = Unicode Release|Win32
+		{57C0A571-828A-42C2-9FC2-AE07BCFA3C93}.Debug|Win32.ActiveCfg = Debug|Win32
+		{57C0A571-828A-42C2-9FC2-AE07BCFA3C93}.Debug|Win32.Build.0 = Debug|Win32
+		{57C0A571-828A-42C2-9FC2-AE07BCFA3C93}.Release|Win32.ActiveCfg = Release|Win32
+		{57C0A571-828A-42C2-9FC2-AE07BCFA3C93}.Release|Win32.Build.0 = Release|Win32
+		{57C0A571-828A-42C2-9FC2-AE07BCFA3C93}.Unicode Debug|Win32.ActiveCfg = Unicode Debug|Win32
+		{57C0A571-828A-42C2-9FC2-AE07BCFA3C93}.Unicode Debug|Win32.Build.0 = Unicode Debug|Win32
+		{57C0A571-828A-42C2-9FC2-AE07BCFA3C93}.Unicode Release|Win32.ActiveCfg = Unicode Release|Win32
+		{57C0A571-828A-42C2-9FC2-AE07BCFA3C93}.Unicode Release|Win32.Build.0 = Unicode Release|Win32
+		{8354A989-14F3-4A53-A458-C86BD5D3520A}.Debug|Win32.ActiveCfg = Debug|Win32
+		{8354A989-14F3-4A53-A458-C86BD5D3520A}.Debug|Win32.Build.0 = Debug|Win32
+		{8354A989-14F3-4A53-A458-C86BD5D3520A}.Release|Win32.ActiveCfg = Release|Win32
+		{8354A989-14F3-4A53-A458-C86BD5D3520A}.Release|Win32.Build.0 = Release|Win32
+		{8354A989-14F3-4A53-A458-C86BD5D3520A}.Unicode Debug|Win32.ActiveCfg = Unicode Debug|Win32
+		{8354A989-14F3-4A53-A458-C86BD5D3520A}.Unicode Debug|Win32.Build.0 = Unicode Debug|Win32
+		{8354A989-14F3-4A53-A458-C86BD5D3520A}.Unicode Release|Win32.ActiveCfg = Unicode Release|Win32
+		{8354A989-14F3-4A53-A458-C86BD5D3520A}.Unicode Release|Win32.Build.0 = Unicode Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

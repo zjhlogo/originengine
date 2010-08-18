@@ -5,7 +5,7 @@
  * 
  * \author zjhlogo (zjhlogo@gmail.com)
  */
-#include <libOEBase/OEMsgKeyboard.h>
+#include <libOEMsg/OEMsgKeyboard.h>
 
 COEMsgKeyboard::COEMsgKeyboard(uint nMsgID)
 :IOEMsg(nMsgID)

@@ -5,7 +5,7 @@
  * 
  * \author zjhlogo (zjhlogo@gmail.com)
  */
-#include <libOEBase/OEMsgCommand.h>
+#include <libOEMsg/OEMsgCommand.h>
 
 COEMsgCommand::COEMsgCommand(uint nMsgID)
 :IOEMsg(nMsgID)
