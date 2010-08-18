@@ -8,7 +8,7 @@
 #include "ModelExporter.h"
 #include "DlgModelExporterOption.h"
 
-#include <OEOS.h>
+#include <libOEBase/OEOS.h>
 #include <IPathConfigMgr.h>
 
 DWORD WINAPI DummyFunc(LPVOID arg)
