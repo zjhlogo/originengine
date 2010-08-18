@@ -8,7 +8,7 @@
 #ifndef __IOESKELETON_H__
 #define __IOESKELETON_H__
 
-#include "IOEObject.h"
+#include "../libOEBase/IOEObject.h"
 #include "IOEBone.h"
 
 class IOESkeleton : public IOEObject

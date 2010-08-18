@@ -9,7 +9,7 @@
 #define __IOEMATERIAL_H__
 
 #include "OEBaseTypeEx.h"
-#include "IOEObject.h"
+#include "../libOEBase/IOEObject.h"
 #include "IOETexture.h"
 #include "IOEShader.h"
 

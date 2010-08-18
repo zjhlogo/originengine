@@ -8,7 +8,7 @@
 #ifndef __IOEMESH_H__
 #define __IOEMESH_H__
 
-#include "IOEObject.h"
+#include "../libOEBase/IOEObject.h"
 #include "IOEPiece.h"
 #include "IOEBone.h"
 

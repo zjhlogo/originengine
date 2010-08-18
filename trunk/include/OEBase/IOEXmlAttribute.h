@@ -8,7 +8,7 @@
 #ifndef __IOEXMLATTRIBUTE_H__
 #define __IOEXMLATTRIBUTE_H__
 
-#include "../OECore/IOEObject.h"
+#include "../libOEBase/IOEObject.h"
 
 class IOEXmlAttribute : public IOEObject
 {

@@ -8,7 +8,7 @@
 #ifndef __IOEXMLNODE_H__
 #define __IOEXMLNODE_H__
 
-#include "../OECore/IOEObject.h"
+#include "../libOEBase/IOEObject.h"
 #include "IOEXmlAttribute.h"
 
 class IOEXmlNode : public IOEObject

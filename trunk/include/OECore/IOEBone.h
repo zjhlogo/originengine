@@ -8,7 +8,7 @@
 #ifndef __IOEBONE_H__
 #define __IOEBONE_H__
 
-#include "IOEObject.h"
+#include "../libOEBase/IOEObject.h"
 #include "../libOEMath/OEMath.h"
 #include <vector>
 

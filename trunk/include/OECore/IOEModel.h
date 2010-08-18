@@ -8,7 +8,7 @@
 #ifndef __IOEMODEL_H__
 #define __IOEMODEL_H__
 
-#include "IOEObject.h"
+#include "../libOEBase/IOEObject.h"
 
 class IOEModel : public IOEObject
 {

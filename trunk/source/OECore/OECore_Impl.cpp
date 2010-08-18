@@ -9,8 +9,10 @@
 
 #include <OEBase/IOEFileMgr.h>
 #include <OEBase/IOELogFileMgr.h>
-#include <OECore/IOEConfigFileMgr.h>
 #include <OEBase/IOEXmlMgr.h>
+#include <OEBase/IOEMsgMgr.h>
+
+#include <OECore/IOEConfigFileMgr.h>
 #include <OECore/IOEResMgr.h>
 #include <OECore/IOEControlMgr.h>
 #include <OECore/IOERenderMgr.h>
@@ -18,10 +20,11 @@
 #include <OECore/IOETextureMgr.h>
 #include <OECore/IOEShaderMgr.h>
 #include <OECore/IOERenderSystem.h>
+
 #include <OEUI/IOEUIRenderSystem.h>
+
 #include <libOEBase/IOEApp.h>
 #include <libOEBase/OEMsgID.h>
-#include <OEBase/IOEMsgMgr.h>
 
 COECore_Impl::COECore_Impl()
 {
@@ -152,52 +155,52 @@ bool COECore_Impl::InitializeInterfaces()
 void COECore_Impl::TerminateInterfaces()
 {
 	// 应用程序接口类
-	g_pOEApp->Initialize();
+	g_pOEApp->Terminate();
 
 	// UI 字符串管理类
-	g_pOEUIStringMgr->Initialize();
+	g_pOEUIStringMgr->Terminate();
 
 	// UI 字体管理类
-	g_pOEUIFontMgr->Initialize();
+	g_pOEUIFontMgr->Terminate();
 
 	// UI 渲染管理类
-	g_pOEUIRenderSystem->Initialize();
+	g_pOEUIRenderSystem->Terminate();
 
 	// 模型渲染器管理类
-	g_pOERenderMgr->Initialize();
+	g_pOERenderMgr->Terminate();
 
 	// 模型控制器管理类
-	g_pOEControlMgr->Initialize();
+	g_pOEControlMgr->Terminate();
 
 	// 核心资源理类
-	g_pOEResMgr->Initialize();
+	g_pOEResMgr->Terminate();
 
 	// Shader 管理类
-	g_pOEShaderMgr->Initialize();
+	g_pOEShaderMgr->Terminate();
 
 	// 纹理管理类
-	g_pOETextureMgr->Initialize();
+	g_pOETextureMgr->Terminate();
 
 	// 渲染接口管理类
-	g_pOERenderSystem->Initialize();
+	g_pOERenderSystem->Terminate();
 
 	// 渲染设备管理类
-	g_pOEDevice->Initialize();
+	g_pOEDevice->Terminate();
 
 	// 消息管理类
-	g_pOEMsgMgr->Initialize();
+	g_pOEMsgMgr->Terminate();
 
 	// Xml 管理类
-	g_pOEXmlMgr->Initialize();
+	g_pOEXmlMgr->Terminate();
 
 	// 配置文件管理类
-	g_pOEConfigFileMgr->Initialize();
+	g_pOEConfigFileMgr->Terminate();
 
 	// 日志管理类
-	g_pOELogFileMgr->Initialize();
+	g_pOELogFileMgr->Terminate();
 
 	// 文件管理类
-	g_pOEFileMgr->Initialize();
+	g_pOEFileMgr->Terminate();
 }
 
 void COECore_Impl::RegisterMessage()
@@ -209,17 +212,6 @@ void COECore_Impl::RegisterMessage()
 	g_pOEMsgMgr->RegisterMessage(OMI_PRE_RENDER, this, (MSG_FUNC)&COECore_Impl::OnPreRender);
 	g_pOEMsgMgr->RegisterMessage(OMI_RENDER, this, (MSG_FUNC)&COECore_Impl::OnRender);
 	g_pOEMsgMgr->RegisterMessage(OMI_POST_RENDER, this, (MSG_FUNC)&COECore_Impl::OnPostRender);
-}
-
-void COECore_Impl::UnregisterMessage()
-{
-	g_pOEMsgMgr->UnregisterMessage(OMI_START_PERFORM, this);
-	g_pOEMsgMgr->UnregisterMessage(OMI_PRE_UPDATE, this);
-	g_pOEMsgMgr->UnregisterMessage(OMI_UPDATE, this);
-	g_pOEMsgMgr->UnregisterMessage(OMI_POST_UPDATE, this);
-	g_pOEMsgMgr->UnregisterMessage(OMI_PRE_RENDER, this);
-	g_pOEMsgMgr->UnregisterMessage(OMI_RENDER, this);
-	g_pOEMsgMgr->UnregisterMessage(OMI_POST_RENDER, this);
 }
 
 void COECore_Impl::CalculateFPS()
