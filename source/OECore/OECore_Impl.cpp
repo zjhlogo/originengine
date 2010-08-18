@@ -241,21 +241,21 @@ void COECore_Impl::CalculateFPS()
 	}
 }
 
-bool COECore_Impl::OnStartPerform(uint nMsgID, COEDataBufferRead* pDBRead)
+bool COECore_Impl::OnStartPerform(COEMsgCommand& msg)
 {
 	m_fLastFPSTime = g_pOEDevice->GetCurrTime();
 	m_nFPSCount = 0;
 	return true;
 }
 
-bool COECore_Impl::OnPreUpdate(uint nMsgID, COEDataBufferRead* pDBRead)
+bool COECore_Impl::OnPreUpdate(COEMsgCommand& msg)
 {
 	// dispatch message
-	g_pOEMsgMgr->DispatchMessage();
+	g_pOEMsgMgr->ReceiveMessage();
 	return true;
 }
 
-bool COECore_Impl::OnUpdate(uint nMsgID, COEDataBufferRead* pDBRead)
+bool COECore_Impl::OnUpdate(COEMsgCommand& msg)
 {
 	g_pOEApp->Update(g_pOEDevice->GetDetailTime());
 	// calculate fps
@@ -263,19 +263,19 @@ bool COECore_Impl::OnUpdate(uint nMsgID, COEDataBufferRead* pDBRead)
 	return true;
 }
 
-bool COECore_Impl::OnPostUpdate(uint nMsgID, COEDataBufferRead* pDBRead)
+bool COECore_Impl::OnPostUpdate(COEMsgCommand& msg)
 {
 	// TODO: 
 	return true;
 }
 
-bool COECore_Impl::OnPreRender(uint nMsgID, COEDataBufferRead* pDBRead)
+bool COECore_Impl::OnPreRender(COEMsgCommand& msg)
 {
 	// TODO: 
 	return true;
 }
 
-bool COECore_Impl::OnRender(uint nMsgID, COEDataBufferRead* pDBRead)
+bool COECore_Impl::OnRender(COEMsgCommand& msg)
 {
 	g_pOEApp->Render(g_pOEDevice->GetDetailTime());
 	// render fps
@@ -283,7 +283,7 @@ bool COECore_Impl::OnRender(uint nMsgID, COEDataBufferRead* pDBRead)
 	return true;
 }
 
-bool COECore_Impl::OnPostRender(uint nMsgID, COEDataBufferRead* pDBRead)
+bool COECore_Impl::OnPostRender(COEMsgCommand& msg)
 {
 	// TODO: 
 	return true;

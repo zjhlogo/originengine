@@ -279,6 +279,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\IOEMsg.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\OEBaseType.cpp"
 				>
 			</File>
@@ -295,7 +299,19 @@
 				>
 			</File>
 			<File
-				RelativePath=".\OEMsg.cpp"
+				RelativePath=".\OEMsgCommand.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\OEMsgKeyboard.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\OEMsgMouse.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\OEMsgShaderParam.cpp"
 				>
 			</File>
 			<File
@@ -310,6 +326,10 @@
 			>
 			<File
 				RelativePath="..\..\include\libOEBase\IOEApp.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\include\libOEBase\IOEMsg.h"
 				>
 			</File>
 			<File
@@ -329,7 +349,19 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\include\libOEBase\OEMsg.h"
+				RelativePath="..\..\include\libOEBase\OEMsgCommand.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\include\libOEBase\OEMsgKeyboard.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\include\libOEBase\OEMsgMouse.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\include\libOEBase\OEMsgShaderParam.h"
 				>
 			</File>
 			<File

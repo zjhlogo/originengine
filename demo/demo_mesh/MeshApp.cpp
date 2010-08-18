@@ -114,60 +114,49 @@ void CMeshApp::Render(float fDetailTime)
 	}
 }
 
-bool CMeshApp::OnLButtonDown(uint nMsgID, COEDataBufferRead* pDBRead)
+bool CMeshApp::OnLButtonDown(COEMsgMouse& msg)
 {
 	m_bLButtonDown = true;
 	return true;
 }
 
-bool CMeshApp::OnLButtonUp(uint nMsgID, COEDataBufferRead* pDBRead)
+bool CMeshApp::OnLButtonUp(COEMsgMouse& msg)
 {
 	m_bLButtonDown = false;
 	return true;
 }
 
-bool CMeshApp::OnMouseMove(uint nMsgID, COEDataBufferRead* pDBRead)
+bool CMeshApp::OnMouseMove(COEMsgMouse& msg)
 {
 	if (!m_bLButtonDown) return true;
-	COEMsg msg(pDBRead);
-	msg.Read(m_nMouseDetailX);
-	msg.Read(m_nMouseDetailY);
+	m_nMouseDetailX = msg.GetPosX();
+	m_nMouseDetailY = msg.GetPosY();
 	return true;
 }
 
-bool CMeshApp::OnKeyUp(uint nMsgID, COEDataBufferRead* pDBRead)
+bool CMeshApp::OnKeyUp(COEMsgKeyboard& msg)
 {
-	COEMsg msg(pDBRead);
-
-	int nKeyCode = 0;
-	msg.Read(nKeyCode);
-
+	uint nKeyCode = msg.GetKeyCode();
 	assert(nKeyCode > 0 && nKeyCode < KEY_COUNT);
+
 	m_KeyDown[nKeyCode] = false;
-
 	return true;
 }
 
-bool CMeshApp::OnKeyDown(uint nMsgID, COEDataBufferRead* pDBRead)
+bool CMeshApp::OnKeyDown(COEMsgKeyboard& msg)
 {
-	COEMsg msg(pDBRead);
-
-	int nKeyCode = 0;
-	msg.Read(nKeyCode);
-
+	uint nKeyCode = msg.GetKeyCode();
 	assert(nKeyCode > 0 && nKeyCode < KEY_COUNT);
+
 	m_KeyDown[nKeyCode] = true;
 	if (m_KeyDown[0x1B]) g_pOECore->End();		// TODO: 0x1B == VK_ESCAPE
 
 	return true;
 }
 
-bool CMeshApp::OnSetupShaderParam(uint nMsgID, COEDataBufferRead* pDBRead)
+bool CMeshApp::OnSetupShaderParam(COEMsgShaderParam& msg)
 {
-	COEMsg msg(pDBRead);
-
-	IOEShader* pShader = NULL;
-	msg.Read(pShader);
+	IOEShader* pShader = msg.GetShader();
 
 	pShader->SetVector(TS("g_vLightPos"), CVector3(0.0f, 0.0f, -300.0f));
 	pShader->SetVector(TS("g_vEyePos"), m_pCamera->GetEyePos());

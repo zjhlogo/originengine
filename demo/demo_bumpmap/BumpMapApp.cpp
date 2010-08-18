@@ -137,51 +137,42 @@ void CBumpMapApp::Render(float fDetailTime)
 	m_pSimpleShape->DrawCube(m_vLightPos);
 }
 
-bool CBumpMapApp::OnLButtonDown(uint nMsgID, COEDataBufferRead* pDBRead)
+bool CBumpMapApp::OnLButtonDown(COEMsgMouse& msg)
 {
 	m_bLButtonDown = true;
 	return true;
 }
 
-bool CBumpMapApp::OnLButtonUp(uint nMsgID, COEDataBufferRead* pDBRead)
+bool CBumpMapApp::OnLButtonUp(COEMsgMouse& msg)
 {
 	m_bLButtonDown = false;
 	return true;
 }
 
-bool CBumpMapApp::OnMouseMove(uint nMsgID, COEDataBufferRead* pDBRead)
+bool CBumpMapApp::OnMouseMove(COEMsgMouse& msg)
 {
 	if (!m_bLButtonDown) return true;
-	COEMsg msg(pDBRead);
-	msg.Read(m_nMouseDetailX);
-	msg.Read(m_nMouseDetailY);
+	m_nMouseDetailX = msg.GetPosX();
+	m_nMouseDetailY = msg.GetPosY();
 	return true;
 }
 
-bool CBumpMapApp::OnKeyUp(uint nMsgID, COEDataBufferRead* pDBRead)
+bool CBumpMapApp::OnKeyUp(COEMsgKeyboard& msg)
 {
-	COEMsg msg(pDBRead);
-
-	int nKeyCode = 0;
-	msg.Read(nKeyCode);
-
+	uint nKeyCode = msg.GetKeyCode();
 	assert(nKeyCode > 0 && nKeyCode < KEY_COUNT);
+
 	m_KeyDown[nKeyCode] = false;
-
 	return true;
 }
 
-bool CBumpMapApp::OnKeyDown(uint nMsgID, COEDataBufferRead* pDBRead)
+bool CBumpMapApp::OnKeyDown(COEMsgKeyboard& msg)
 {
-	COEMsg msg(pDBRead);
-
-	int nKeyCode = 0;
-	msg.Read(nKeyCode);
-
+	uint nKeyCode = msg.GetKeyCode();
 	assert(nKeyCode > 0 && nKeyCode < KEY_COUNT);
+
 	m_KeyDown[nKeyCode] = true;
 	if (m_KeyDown[0x1B]) g_pOECore->End();		// TODO: 0x1B == VK_ESCAPE
-
 	if (m_KeyDown['1']) m_pShader->SetTechnique(TS("NormalMap"));
 	if (m_KeyDown['2']) m_pShader->SetTechnique(TS("ParallaxMap"));
 	if (m_KeyDown['3']) m_pShader->SetTechnique(TS("DiffuseTexture"));

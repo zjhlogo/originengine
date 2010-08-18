@@ -166,51 +166,43 @@ void CWaterApp::Render(float fDetailTime)
 	g_pOERenderSystem->DrawTriList(m_pVerts, m_nVerts, m_pIndis, m_nIndis);
 }
 
-bool CWaterApp::OnLButtonDown(uint nMsgID, COEDataBufferRead* pDBRead)
+bool CWaterApp::OnLButtonDown(COEMsgMouse& msg)
 {
 	m_bLButtonDown = true;
 	return true;
 }
 
-bool CWaterApp::OnLButtonUp(uint nMsgID, COEDataBufferRead* pDBRead)
+bool CWaterApp::OnLButtonUp(COEMsgMouse& msg)
 {
 	m_bLButtonDown = false;
 	return true;
 }
 
-bool CWaterApp::OnMouseMove(uint nMsgID, COEDataBufferRead* pDBRead)
+bool CWaterApp::OnMouseMove(COEMsgMouse& msg)
 {
 	if (!m_bLButtonDown) return true;
-	COEMsg msg(pDBRead);
-	msg.Read(m_nMouseDetailX);
-	msg.Read(m_nMouseDetailY);
+	m_nMouseDetailX = msg.GetPosX();
+	m_nMouseDetailY = msg.GetPosY();
 	return true;
 }
 
-bool CWaterApp::OnKeyUp(uint nMsgID, COEDataBufferRead* pDBRead)
+bool CWaterApp::OnKeyUp(COEMsgKeyboard& msg)
 {
-	COEMsg msg(pDBRead);
-
-	int nKeyCode = 0;
-	msg.Read(nKeyCode);
-
+	uint nKeyCode = msg.GetKeyCode();
 	assert(nKeyCode > 0 && nKeyCode < KEY_COUNT);
+
 	m_KeyDown[nKeyCode] = false;
-
 	return true;
 }
 
-bool CWaterApp::OnKeyDown(uint nMsgID, COEDataBufferRead* pDBRead)
+bool CWaterApp::OnKeyDown(COEMsgKeyboard& msg)
 {
-	COEMsg msg(pDBRead);
-
-	int nKeyCode = 0;
-	msg.Read(nKeyCode);
-
+	uint nKeyCode = msg.GetKeyCode();
 	assert(nKeyCode > 0 && nKeyCode < KEY_COUNT);
+
 	m_KeyDown[nKeyCode] = true;
 	if (m_KeyDown[0x1B]) g_pOECore->End();		// TODO: 0x1B == VK_ESCAPE
-	else if (m_KeyDown[0x70]) m_pDlgWaveSetting->Show(!m_pDlgWaveSetting->IsVisible());		// TODO: 0x70 == VK_F1
+	if (m_KeyDown[0x70]) m_pDlgWaveSetting->Show(!m_pDlgWaveSetting->IsVisible());		// TODO: 0x70 == VK_F1
 
 	return true;
 }

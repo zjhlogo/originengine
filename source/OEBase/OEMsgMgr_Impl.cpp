@@ -10,6 +10,7 @@
 #include <libOEBase/OEMsgID.h>
 #include <libOEBase/OEDataBufferRead.h>
 #include <libOEBase/OEDataBufferWrite.h>
+#include <assert.h>
 
 COEMsgMgr_Impl::COEMsgMgr_Impl()
 {
@@ -46,13 +47,13 @@ void COEMsgMgr_Impl::Terminate()
 	// TODO: 
 }
 
-bool COEMsgMgr_Impl::SendMessage(COEMsg* pMsg)
+bool COEMsgMgr_Impl::SendMessage(IOEMsg* pMsg)
 {
 	// TODO: thread lock
 
 	// alloc a new buffer and write message buffer
 	COEDataBufferWrite* pDBWrite = new COEDataBufferWrite();
-	if (!pMsg->ToBuffer(pDBWrite))
+	if (!pMsg->ConvertToBuffer(pDBWrite))
 	{
 		delete pDBWrite;
 		return false;
@@ -65,11 +66,11 @@ bool COEMsgMgr_Impl::SendMessage(COEMsg* pMsg)
 	return true;
 }
 
-void COEMsgMgr_Impl::DispatchMessage()
+bool COEMsgMgr_Impl::ReceiveMessage()
 {
 	// TODO: thread lock
 
-	while (m_SendMsgList.size() > 0)
+	while (m_SendMsgList.size() > 0)		// TODO: receive data from net
 	{
 		COEDataBufferWrite* pDBWrite = m_SendMsgList.front();
 		m_SendMsgList.pop();
@@ -78,28 +79,39 @@ void COEMsgMgr_Impl::DispatchMessage()
 
 		uint nMsgID = OMI_UNKNOWN;
 		dbRead.Read(&nMsgID, sizeof(nMsgID));
+		dbRead.Reset();
 
-		ProcessReceive(nMsgID, &dbRead);
+		ProcessMessage(nMsgID, &dbRead);
 
 		delete pDBWrite;
 	}
 
 	// TODO: thread unlock
+	return true;
 }
 
-bool COEMsgMgr_Impl::InvokeMessage(COEMsg* pMsg)
+bool COEMsgMgr_Impl::InvokeMessage(IOEMsg* pMsg)
 {
-	static COEDataBufferWrite s_DBWrite;
+	TP_MSG_HANDLER_INFO Range = m_MsgHandlerInfoMap.equal_range(pMsg->GetMsgID());
+	for (TM_MSG_HANDLER_INFO::iterator it = Range.first; it != Range.second; ++it)
+	{
+		MSG_HANDLER_INFO& msgHandlerInfo = it->second;
 
-	s_DBWrite.Reset();
-	if (!pMsg->ToBuffer(&s_DBWrite)) return false;
+		// check the loop depth, it must always 0 or 1
+		if (msgHandlerInfo.nLoopDepth > 0)
+		{
+			assert(false);
+			continue;
+		}
+		++msgHandlerInfo.nLoopDepth;
 
-	COEDataBufferRead dbRead(s_DBWrite.GetBuffer(), s_DBWrite.GetSize());
+		if (!(msgHandlerInfo.pHandler->*msgHandlerInfo.pFunc)(*pMsg))
+		{
+			assert(false);
+		}
 
-	uint nMsgID = OMI_UNKNOWN;
-	dbRead.Read(&nMsgID, sizeof(nMsgID));
-
-	ProcessReceive(nMsgID, &dbRead);
+		--msgHandlerInfo.nLoopDepth;
+	}
 
 	return true;
 }
@@ -120,27 +132,27 @@ bool COEMsgMgr_Impl::UnregisterMessage(uint nMsgID, IOEObject* pHandler)
 	return false;
 }
 
-void COEMsgMgr_Impl::ProcessReceive(uint nMsgID, COEDataBufferRead* pDBRead)
+void COEMsgMgr_Impl::ProcessMessage(uint nMsgID, COEDataBufferRead* pDBRead)
 {
-	TP_MSG_HANDLER_INFO Range = m_MsgHandlerInfoMap.equal_range(nMsgID);
-	for (TM_MSG_HANDLER_INFO::iterator it = Range.first; it != Range.second; ++it)
-	{
-		MSG_HANDLER_INFO& msgHandlerInfo = it->second;
+	//TP_MSG_HANDLER_INFO Range = m_MsgHandlerInfoMap.equal_range(nMsgID);
+	//for (TM_MSG_HANDLER_INFO::iterator it = Range.first; it != Range.second; ++it)
+	//{
+	//	MSG_HANDLER_INFO& msgHandlerInfo = it->second;
 
-		// check the loop depth, it must always 0 or 1
-		if (msgHandlerInfo.nLoopDepth > 0)
-		{
-			assert(false);
-			continue;
-		}
-		++msgHandlerInfo.nLoopDepth;
+	//	// check the loop depth, it must always 0 or 1
+	//	if (msgHandlerInfo.nLoopDepth > 0)
+	//	{
+	//		assert(false);
+	//		continue;
+	//	}
+	//	++msgHandlerInfo.nLoopDepth;
 
-		pDBRead->Reset();
-		if (!(msgHandlerInfo.pHandler->*msgHandlerInfo.pFunc)(nMsgID, pDBRead))
-		{
-			assert(false);
-		}
+	//	pDBRead->Reset();
+	//	if (!(msgHandlerInfo.pHandler->*msgHandlerInfo.pFunc)(nMsgID, pDBRead))
+	//	{
+	//		assert(false);
+	//	}
 
-		--msgHandlerInfo.nLoopDepth;
-	}
+	//	--msgHandlerInfo.nLoopDepth;
+	//}
 }

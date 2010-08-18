@@ -125,7 +125,7 @@ void COEUIRenderSystem_Impl::FlushAll()
 	}
 }
 
-bool COEUIRenderSystem_Impl::OnPostRender(uint nMsgID, COEDataBufferRead* pDBRead)
+bool COEUIRenderSystem_Impl::OnPostRender(COEMsgCommand& msg)
 {
 	FlushAll();
 	return true;

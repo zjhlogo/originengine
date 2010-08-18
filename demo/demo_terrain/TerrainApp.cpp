@@ -79,48 +79,40 @@ void CTerrainApp::Render(float fDetailTime)
 	m_pTerrainMgr->Render(fDetailTime);
 }
 
-bool CTerrainApp::OnLButtonDown(uint nMsgID, COEDataBufferRead* pDBRead)
+bool CTerrainApp::OnLButtonDown(COEMsgMouse& msg)
 {
 	m_bLButtonDown = true;
 	return true;
 }
 
-bool CTerrainApp::OnLButtonUp(uint nMsgID, COEDataBufferRead* pDBRead)
+bool CTerrainApp::OnLButtonUp(COEMsgMouse& msg)
 {
 	m_bLButtonDown = false;
 	return true;
 }
 
-bool CTerrainApp::OnMouseMove(uint nMsgID, COEDataBufferRead* pDBRead)
+bool CTerrainApp::OnMouseMove(COEMsgMouse& msg)
 {
 	if (!m_bLButtonDown) return true;
-	COEMsg msg(pDBRead);
-	msg.Read(m_nMouseDetailX);
-	msg.Read(m_nMouseDetailY);
+	m_nMouseDetailX = msg.GetPosX();
+	m_nMouseDetailY = msg.GetPosY();
 	return true;
 }
 
-bool CTerrainApp::OnKeyUp(uint nMsgID, COEDataBufferRead* pDBRead)
+bool CTerrainApp::OnKeyUp(COEMsgKeyboard& msg)
 {
-	COEMsg msg(pDBRead);
-
-	int nKeyCode = 0;
-	msg.Read(nKeyCode);
-
+	uint nKeyCode = msg.GetKeyCode();
 	assert(nKeyCode > 0 && nKeyCode < KEY_COUNT);
+
 	m_KeyDown[nKeyCode] = false;
-
 	return true;
 }
 
-bool CTerrainApp::OnKeyDown(uint nMsgID, COEDataBufferRead* pDBRead)
+bool CTerrainApp::OnKeyDown(COEMsgKeyboard& msg)
 {
-	COEMsg msg(pDBRead);
-
-	int nKeyCode = 0;
-	msg.Read(nKeyCode);
-
+	uint nKeyCode = msg.GetKeyCode();
 	assert(nKeyCode > 0 && nKeyCode < KEY_COUNT);
+
 	m_KeyDown[nKeyCode] = true;
 	if (m_KeyDown[0x1B]) g_pOECore->End();		// TODO: 0x1B == VK_ESCAPE
 

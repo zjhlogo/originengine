@@ -36,10 +36,10 @@ public:
 	virtual bool Initialize();
 	virtual void Terminate();
 
-	virtual bool SendMessage(COEMsg* pMsg);
-	virtual void DispatchMessage();
+	virtual bool SendMessage(IOEMsg* pMsg);
+	virtual bool ReceiveMessage();
 
-	virtual bool InvokeMessage(COEMsg* pMsg);
+	virtual bool InvokeMessage(IOEMsg* pMsg);
 
 	virtual bool RegisterMessage(uint nMsgID, IOEObject* pHandler, MSG_FUNC pFunc);
 	virtual bool UnregisterMessage(uint nMsgID, IOEObject* pHandler);
@@ -48,7 +48,7 @@ private:
 	bool Init();
 	void Destroy();
 
-	void ProcessReceive(uint nMsgID, COEDataBufferRead* pDBRead);
+	void ProcessMessage(uint nMsgID, COEDataBufferRead* pDBRead);
 
 private:
 	TM_MSG_HANDLER_INFO m_MsgHandlerInfoMap;

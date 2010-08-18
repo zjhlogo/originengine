@@ -12,7 +12,11 @@
 #include <OEBase/IOELogFileMgr.h>
 #include <OECore/IOERenderSystem.h>
 #include <libOEBase/OEMsgID.h>
+#include <libOEBase/OEMsgMouse.h>
+#include <libOEBase/OEMsgKeyboard.h>
+#include <libOEBase/OEMsgCommand.h>
 #include <OEBase/IOEMsgMgr.h>
+#include <assert.h>
 
 #include <libOEBase/OEOS.h>
 
@@ -132,7 +136,7 @@ void COED3DDevice_Impl::StartPerform()
 	m_fDetailTime = 0.0f;
 
 	// notify start perform
-	COEMsg msgStartPerform(OMI_START_PERFORM);
+	COEMsgCommand msgStartPerform(OMI_START_PERFORM);
 	g_pOEMsgMgr->InvokeMessage(&msgStartPerform);
 
 	MSG msg;
@@ -360,30 +364,30 @@ void COED3DDevice_Impl::InternalDestroyD3D()
 void COED3DDevice_Impl::PerformOnce(float fDetailTime)
 {
 	// notify pre update
-	COEMsg msgPreUpdate(OMI_PRE_UPDATE);
+	COEMsgCommand msgPreUpdate(OMI_PRE_UPDATE);
 	g_pOEMsgMgr->InvokeMessage(&msgPreUpdate);
 
 	// notify update
-	COEMsg msgUpdate(OMI_UPDATE);
+	COEMsgCommand msgUpdate(OMI_UPDATE);
 	g_pOEMsgMgr->InvokeMessage(&msgUpdate);
 
 	// notify post update
-	COEMsg msgPostUpdate(OMI_POST_UPDATE);
+	COEMsgCommand msgPostUpdate(OMI_POST_UPDATE);
 	g_pOEMsgMgr->InvokeMessage(&msgPostUpdate);
 
 	g_pd3dDevice->Clear(0, NULL, D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER, D3DCOLOR_XRGB(0, 0, 0), 1.0f, 0);
 	if (SUCCEEDED(g_pd3dDevice->BeginScene()))
 	{
 		// notify pre render 3d
-		COEMsg msgPreRender3D(OMI_PRE_RENDER);
+		COEMsgCommand msgPreRender3D(OMI_PRE_RENDER);
 		g_pOEMsgMgr->InvokeMessage(&msgPreRender3D);
 
 		// notify render 3d
-		COEMsg msgRender3D(OMI_RENDER);
+		COEMsgCommand msgRender3D(OMI_RENDER);
 		g_pOEMsgMgr->InvokeMessage(&msgRender3D);
 
 		// notify post render 3d
-		COEMsg msgPostRender3D(OMI_POST_RENDER);
+		COEMsgCommand msgPostRender3D(OMI_POST_RENDER);
 		g_pOEMsgMgr->InvokeMessage(&msgPostRender3D);
 
 		g_pd3dDevice->EndScene();
@@ -422,9 +426,8 @@ LRESULT CALLBACK COED3DDevice_Impl::MainWndProc(HWND hWnd, UINT uMsg, WPARAM wPa
 			short y = HIWORD(lParam);
 
 			// send message
-			COEMsg msg(OMI_LBUTTON_DOWN);
-			msg.Write((int)x);
-			msg.Write((int)y);
+			COEMsgMouse msg(OMI_LBUTTON_DOWN);
+			msg.SetPos(x, y);
 			g_pOEMsgMgr->InvokeMessage(&msg);
 		}
 		break;
@@ -434,9 +437,8 @@ LRESULT CALLBACK COED3DDevice_Impl::MainWndProc(HWND hWnd, UINT uMsg, WPARAM wPa
 			short y = HIWORD(lParam);
 
 			// send message
-			COEMsg msg(OMI_LBUTTON_UP);
-			msg.Write((int)x);
-			msg.Write((int)y);
+			COEMsgMouse msg(OMI_LBUTTON_UP);
+			msg.SetPos(x, y);
 			g_pOEMsgMgr->InvokeMessage(&msg);
 
 			ReleaseCapture();
@@ -448,9 +450,8 @@ LRESULT CALLBACK COED3DDevice_Impl::MainWndProc(HWND hWnd, UINT uMsg, WPARAM wPa
 			short y = HIWORD(lParam);
 
 			// send message
-			COEMsg msg(OMI_MOUSE_MOVE);
-			msg.Write((int)x-s_nLastMousePosX);
-			msg.Write((int)y-s_nLastMousePosY);
+			COEMsgMouse msg(OMI_MOUSE_MOVE);
+			msg.SetPos((int)x-s_nLastMousePosX, (int)y-s_nLastMousePosY);
 			g_pOEMsgMgr->InvokeMessage(&msg);
 
 			s_nLastMousePosX = x;
@@ -460,16 +461,16 @@ LRESULT CALLBACK COED3DDevice_Impl::MainWndProc(HWND hWnd, UINT uMsg, WPARAM wPa
 	case WM_KEYDOWN:
 		{
 			// send message
-			COEMsg msg(OMI_KEY_DOWN);
-			msg.Write((int)wParam);
+			COEMsgKeyboard msg(OMI_KEY_DOWN);
+			msg.SetKeyCode(wParam);
 			g_pOEMsgMgr->InvokeMessage(&msg);
 		}
 		break;
 	case WM_KEYUP:
 		{
 			// send message
-			COEMsg msg(OMI_KEY_UP);
-			msg.Write((int)wParam);
+			COEMsgKeyboard msg(OMI_KEY_UP);
+			msg.SetKeyCode(wParam);
 			g_pOEMsgMgr->InvokeMessage(&msg);
 		}
 		break;
