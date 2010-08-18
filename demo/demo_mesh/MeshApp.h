@@ -8,25 +8,14 @@
 #ifndef __MESHAPP_H__
 #define __MESHAPP_H__
 
-#include <libOEBase/IOEApp.h>
-#include <libOEBase/OEMsgMouse.h>
-#include <libOEBase/OEMsgKeyboard.h>
-#include <libOEBase/OEMsgShaderParam.h>
-#include <OECore/IOEResMgr.h>
-#include <OECore/IOETextureMgr.h>
-#include <OECore/IOEShaderMgr.h>
-#include <vector>
+#include "../common/BaseApp.h"
+#include <OECore/IOEPiece.h>
+#include <OECore/IOEMesh.h>
+#include <OECore/IOETexture.h>
+#include <OECore/IOEShader.h>
 
-#include "../common/Camera.h"
-
-class CMeshApp : public IOEApp
+class CMeshApp : public CBaseApp
 {
-public:
-	enum CONST_DEFINE
-	{
-		KEY_COUNT = 256,
-	};
-
 public:
 	CMeshApp();
 	virtual ~CMeshApp();
@@ -34,35 +23,19 @@ public:
 	virtual bool Initialize();
 	virtual void Terminate();
 
-	virtual void Update(float fDetailTime);
 	virtual void Render(float fDetailTime);
 
 private:
 	void Init();
 	void Destroy();
 
-	bool OnLButtonDown(COEMsgMouse& msg);
-	bool OnLButtonUp(COEMsgMouse& msg);
-	bool OnMouseMove(COEMsgMouse& msg);
-	bool OnKeyUp(COEMsgKeyboard& msg);
-	bool OnKeyDown(COEMsgKeyboard& msg);
 	bool OnSetupShaderParam(COEMsgShaderParam& msg);
-
-	bool UpdateMovement(float fDetailTime);
-	bool UpdateRotation(float fDetailTime);
-
 	void RenderPieceNormal(IOEPiece* pPiece);
 
 private:
-	CCamera* m_pCamera;
 	IOEMesh* m_pMesh;
 	IOETexture* m_pTexture;
 	IOEShader* m_pShader;
-
-	bool m_bLButtonDown;
-	int m_nMouseDetailX;
-	int m_nMouseDetailY;
-	bool m_KeyDown[KEY_COUNT];
 
 };
 

@@ -10,11 +10,8 @@
 #include "../common/AppHelper.h"
 #include "../common/wxInitHelper.h"
 
+#include <OECore/IOEShaderMgr.h>
 #include <OECore/OERenderSystemUtil.h>
-#include <OECore/IOECore.h>
-#include <OEBase/IOEMsgMgr.h>
-#include <libOEBase/OEMsgID.h>
-#include <assert.h>
 
 #include <wx/fs_mem.h>
 #include <wx/xrc/xmlres.h>
@@ -38,13 +35,7 @@ void CWaterApp::Init()
 	m_nVerts = 0;
 	m_nIndis = 0;
 	m_pShader = NULL;
-	m_pCamera = NULL;
 	m_pDlgWaveSetting = NULL;
-
-	m_bLButtonDown = false;
-	m_nMouseDetailX = 0;
-	m_nMouseDetailY = 0;
-	memset(m_KeyDown, 0, sizeof(m_KeyDown));
 }
 
 void CWaterApp::Destroy()
@@ -63,6 +54,8 @@ bool CWaterApp::Initialize()
 		//VDT_FLOAT3, VDU_TEXCOORD, 1,
 		VDT_UNKNOWN, VDU_UNKNOWN, 0,
 	};
+
+	if (!CBaseApp::Initialize()) return false;
 
 	m_nVerts = (NUM_X+1)*(NUM_Z+1);
 	m_pVerts = new VERTEX[m_nVerts];
@@ -114,13 +107,6 @@ bool CWaterApp::Initialize()
 	m_pDlgWaveSetting = new CDlgWaveSetting();
 	if (!m_pDlgWaveSetting || !m_pDlgWaveSetting->Initialize()) return false;
 
-	// registe message
-	g_pOEMsgMgr->RegisterMessage(OMI_LBUTTON_DOWN, this, (MSG_FUNC)&CWaterApp::OnLButtonDown);
-	g_pOEMsgMgr->RegisterMessage(OMI_LBUTTON_UP, this, (MSG_FUNC)&CWaterApp::OnLButtonUp);
-	g_pOEMsgMgr->RegisterMessage(OMI_MOUSE_MOVE, this, (MSG_FUNC)&CWaterApp::OnMouseMove);
-	g_pOEMsgMgr->RegisterMessage(OMI_KEY_DOWN, this, (MSG_FUNC)&CWaterApp::OnKeyDown);
-	g_pOEMsgMgr->RegisterMessage(OMI_KEY_UP, this, (MSG_FUNC)&CWaterApp::OnKeyUp);
-
 	return true;
 }
 
@@ -130,16 +116,10 @@ void CWaterApp::Terminate()
 	wxInitHelper::Uninitialize();
 
 	SAFE_RELEASE(m_pShader);
-	SAFE_DELETE(m_pCamera);
 	SAFE_DELETE_ARRAY(m_pVerts);
 	SAFE_DELETE_ARRAY(m_pIndis);
-}
 
-void CWaterApp::Update(float fDetailTime)
-{
-	bool bRot = UpdateRotation(fDetailTime);
-	bool bMov = UpdateMovement(fDetailTime);
-	if (bRot || bMov) g_pOERenderSystem->SetTransform(TT_VIEW, m_pCamera->GetViewMatrix());
+	CBaseApp::Terminate();
 }
 
 void CWaterApp::Render(float fDetailTime)
@@ -166,74 +146,11 @@ void CWaterApp::Render(float fDetailTime)
 	g_pOERenderSystem->DrawTriList(m_pVerts, m_nVerts, m_pIndis, m_nIndis);
 }
 
-bool CWaterApp::OnLButtonDown(COEMsgMouse& msg)
-{
-	m_bLButtonDown = true;
-	return true;
-}
-
-bool CWaterApp::OnLButtonUp(COEMsgMouse& msg)
-{
-	m_bLButtonDown = false;
-	return true;
-}
-
-bool CWaterApp::OnMouseMove(COEMsgMouse& msg)
-{
-	if (!m_bLButtonDown) return true;
-	m_nMouseDetailX = msg.GetPosX();
-	m_nMouseDetailY = msg.GetPosY();
-	return true;
-}
-
-bool CWaterApp::OnKeyUp(COEMsgKeyboard& msg)
-{
-	uint nKeyCode = msg.GetKeyCode();
-	assert(nKeyCode > 0 && nKeyCode < KEY_COUNT);
-
-	m_KeyDown[nKeyCode] = false;
-	return true;
-}
-
 bool CWaterApp::OnKeyDown(COEMsgKeyboard& msg)
 {
-	uint nKeyCode = msg.GetKeyCode();
-	assert(nKeyCode > 0 && nKeyCode < KEY_COUNT);
+	CBaseApp::OnKeyDown(msg);
 
-	m_KeyDown[nKeyCode] = true;
-	if (m_KeyDown[0x1B]) g_pOECore->End();		// TODO: 0x1B == VK_ESCAPE
 	if (m_KeyDown[0x70]) m_pDlgWaveSetting->Show(!m_pDlgWaveSetting->IsVisible());		// TODO: 0x70 == VK_F1
-
-	return true;
-}
-
-bool CWaterApp::UpdateMovement(float fDetailTime)
-{
-	static const float MOVE_DIST = 100.0f;
-
-	bool bUpdateMovement = m_KeyDown['W'] || m_KeyDown['S'] || m_KeyDown['A'] || m_KeyDown['D'];
-	if (!bUpdateMovement) return false;
-
-	if (m_KeyDown['W']) m_pCamera->Move(m_pCamera->GetVectorForword(), MOVE_DIST*fDetailTime);
-	if (m_KeyDown['S']) m_pCamera->Move(m_pCamera->GetVectorForword(), -MOVE_DIST*fDetailTime);
-	if (m_KeyDown['D']) m_pCamera->Move(m_pCamera->GetVectorRight(), MOVE_DIST*fDetailTime);
-	if (m_KeyDown['A']) m_pCamera->Move(m_pCamera->GetVectorRight(), -MOVE_DIST*fDetailTime);
-
-	return true;
-}
-
-bool CWaterApp::UpdateRotation(float fDetailTime)
-{
-	static const float ROTATE_ADJUST = 0.3f;
-
-	if (!m_bLButtonDown) return false;
-	if (m_nMouseDetailX == 0 && m_nMouseDetailY == 0) return false;
-
-	if (m_nMouseDetailX) m_pCamera->Rotate(m_pCamera->GetVectorUp(), m_nMouseDetailX*fDetailTime*ROTATE_ADJUST);
-	if (m_nMouseDetailY) m_pCamera->Rotate(m_pCamera->GetVectorRight(), m_nMouseDetailY*fDetailTime*ROTATE_ADJUST);
-
-	m_nMouseDetailY = 0;
-	m_nMouseDetailX = 0;
 
 	return true;
 }

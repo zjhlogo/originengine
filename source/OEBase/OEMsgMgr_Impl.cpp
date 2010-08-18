@@ -50,9 +50,10 @@ void COEMsgMgr_Impl::Terminate()
 bool COEMsgMgr_Impl::AddMsgDB(const MSG_GENERATE_MAP* pMsgDB)
 {
 	int nIndex = 0;
-	while (pMsgDB[nIndex].nMsgID > 0)
+	while (pMsgDB[nIndex].nMsgID != OMI_UNKNOWN)
 	{
 		m_MsgGenFuncMap.insert(std::make_pair(pMsgDB[nIndex].nMsgID, pMsgDB[nIndex].pFunc));
+		++nIndex;
 	}
 
 	return true;

@@ -8,11 +8,12 @@
 #ifndef __UIAPP_H__
 #define __UIAPP_H__
 
-#include <libOEBase/IOEApp.h>
-#include <OEUI/IOEUIFontMgr.h>
-#include <OEUI/IOEUIStringMgr.h>
+#include "../common/BaseApp.h"
 
-class CUIApp : public IOEApp
+#include <OEUI/IOEUIFont.h>
+#include <OEUI/IOEUIString.h>
+
+class CUIApp : public CBaseApp
 {
 public:
 	CUIApp();
@@ -21,7 +22,6 @@ public:
 	virtual bool Initialize();
 	virtual void Terminate();
 
-	virtual void Update(float fDetailTime);
 	virtual void Render(float fDetailTime);
 
 private:

@@ -7,8 +7,9 @@
  */
 #include "UIApp.h"
 #include "../common/AppHelper.h"
-#include <libOEBase/OEMsgID.h>
-#include <assert.h>
+
+#include <OEUI/IOEUIFontMgr.h>
+#include <OEUI/IOEUIStringMgr.h>
 
 IMPLEMENT_OEAPP(CUIApp);
 
@@ -36,6 +37,8 @@ void CUIApp::Destroy()
 
 bool CUIApp::Initialize()
 {
+	if (!CBaseApp::Initialize()) return false;
+
 	m_pFont = g_pOEUIFontMgr->CreateBitmapFont(TS("12px_Tahoma.fnt"));
 	if (!m_pFont) return false;
 
@@ -51,11 +54,7 @@ void CUIApp::Terminate()
 {
 	SAFE_RELEASE(m_pString);
 	SAFE_RELEASE(m_pFont);
-}
-
-void CUIApp::Update(float fDetailTime)
-{
-	// TODO: 
+	CBaseApp::Terminate();
 }
 
 void CUIApp::Render(float fDetailTime)
