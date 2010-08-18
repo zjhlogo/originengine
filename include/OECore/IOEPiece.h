@@ -8,7 +8,7 @@
 #ifndef __IOEPIECE_H__
 #define __IOEPIECE_H__
 
-#include "IOEObject.h"
+#include "../libOEBase/IOEObject.h"
 #include <vector>
 
 class IOEPiece : public IOEObject

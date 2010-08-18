@@ -9,7 +9,7 @@
 #define __IOEUISTRING_H__
 
 #include "../libOEUI/OEUIType.h"
-#include "../OECore/IOEObject.h"
+#include "../libOEBase/IOEObject.h"
 #include "IOEUIFont.h"
 
 class IOEUIString : public IOEObject

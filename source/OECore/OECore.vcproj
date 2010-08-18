@@ -517,10 +517,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\include\OECore\IOEObject.h"
-				>
-			</File>
-			<File
 				RelativePath="..\..\include\OECore\IOEPiece.h"
 				>
 			</File>

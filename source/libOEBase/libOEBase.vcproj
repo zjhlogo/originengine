@@ -283,6 +283,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\IOEObject.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\OEBaseType.cpp"
 				>
 			</File>
@@ -330,6 +334,10 @@
 			</File>
 			<File
 				RelativePath="..\..\include\libOEBase\IOEMsg.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\include\libOEBase\IOEObject.h"
 				>
 			</File>
 			<File

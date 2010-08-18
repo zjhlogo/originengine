@@ -11,7 +11,7 @@
 #include "OEBaseType.h"
 #include "OEDataBufferRead.h"
 #include "OEDataBufferWrite.h"
-#include "../OECore/IOEObject.h"
+#include "IOEObject.h"
 
 class IOEMsg
 {

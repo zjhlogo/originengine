@@ -8,7 +8,7 @@
 #ifndef __IOECONTROL_H__
 #define __IOECONTROL_H__
 
-#include "IOEObject.h"
+#include "../libOEBase/IOEObject.h"
 #include "IOERenderData.h"
 
 class IOEControl : public IOEObject

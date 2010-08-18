@@ -24,6 +24,7 @@ public:
 
 	virtual bool RegisterMessage(uint nMsgID, IOEObject* pHandler, MSG_FUNC pFunc) = 0;
 	virtual bool UnregisterMessage(uint nMsgID, IOEObject* pHandler) = 0;
+	virtual bool UnregisterMessage(IOEObject* pHandler) = 0;
 };
 
 extern IOEMsgMgr* g_pOEMsgMgr;

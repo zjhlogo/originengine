@@ -9,7 +9,7 @@
 #define __IOEUIFONT_H__
 
 #include "../libOEUI/OEUIType.h"
-#include "../OECore/IOEObject.h"
+#include "../libOEBase/IOEObject.h"
 #include "../OECore/IOETexture.h"
 
 class IOEUIFont : public IOEObject

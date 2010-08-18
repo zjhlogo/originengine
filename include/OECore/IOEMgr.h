@@ -8,7 +8,7 @@
 #ifndef __IOEMGR_H__
 #define __IOEMGR_H__
 
-#include "IOEObject.h"
+#include "../libOEBase/IOEObject.h"
 
 class IOEMgr : public IOEObject
 {

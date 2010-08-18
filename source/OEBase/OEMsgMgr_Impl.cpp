@@ -132,6 +132,12 @@ bool COEMsgMgr_Impl::UnregisterMessage(uint nMsgID, IOEObject* pHandler)
 	return false;
 }
 
+bool COEMsgMgr_Impl::UnregisterMessage(IOEObject* pHandler)
+{
+	// TODO: 
+	return false;
+}
+
 void COEMsgMgr_Impl::ProcessMessage(uint nMsgID, COEDataBufferRead* pDBRead)
 {
 	//TP_MSG_HANDLER_INFO Range = m_MsgHandlerInfoMap.equal_range(nMsgID);

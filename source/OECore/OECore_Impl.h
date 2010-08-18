@@ -33,7 +33,6 @@ private:
 	void TerminateInterfaces();
 
 	void RegisterMessage();
-	void UnregisterMessage();
 
 	void CalculateFPS();
 

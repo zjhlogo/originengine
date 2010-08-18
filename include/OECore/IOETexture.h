@@ -9,7 +9,7 @@
 #define __IOETEXTURE_H__
 
 #include "OEBaseTypeEx.h"
-#include "IOEObject.h"
+#include "../libOEBase/IOEObject.h"
 
 class IOETexture : public IOEObject
 {

@@ -374,10 +374,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\resource.h"
-				>
-			</File>
-			<File
 				RelativePath=".\WaterApp.h"
 				>
 			</File>
@@ -395,6 +391,10 @@
 			</File>
 			<File
 				RelativePath=".\DlgWaveSetting.xrc"
+				>
+			</File>
+			<File
+				RelativePath=".\resource.h"
 				>
 			</File>
 		</Filter>

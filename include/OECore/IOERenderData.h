@@ -8,7 +8,7 @@
 #ifndef __IOERENDERDATA_H__
 #define __IOERENDERDATA_H__
 
-#include "IOEObject.h"
+#include "../libOEBase/IOEObject.h"
 #include "IOEMesh.h"
 
 class IOERenderData : public IOEObject

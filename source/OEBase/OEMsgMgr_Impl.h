@@ -9,7 +9,7 @@
 #define __OEMSGMGR_IMPL_H__
 
 #include <OEBase/IOEMsgMgr.h>
-#include <OECore/IOEObject.h>
+#include <libOEBase/IOEObject.h>
 
 #include <map>
 #include <queue>
@@ -40,9 +40,9 @@ public:
 	virtual bool ReceiveMessage();
 
 	virtual bool InvokeMessage(IOEMsg* pMsg);
-
 	virtual bool RegisterMessage(uint nMsgID, IOEObject* pHandler, MSG_FUNC pFunc);
 	virtual bool UnregisterMessage(uint nMsgID, IOEObject* pHandler);
+	virtual bool UnregisterMessage(IOEObject* pHandler);
 
 private:
 	bool Init();

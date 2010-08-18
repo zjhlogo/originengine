@@ -9,7 +9,7 @@
 #define __IOEVERTDECL_H__
 
 #include "OEBaseTypeEx.h"
-#include "IOEObject.h"
+#include "../libOEBase/IOEObject.h"
 
 class IOEVertDecl : public IOEObject
 {

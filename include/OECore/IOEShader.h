@@ -8,7 +8,7 @@
 #ifndef __IOESHADER_H__
 #define __IOESHADER_H__
 
-#include "IOEObject.h"
+#include "../libOEBase/IOEObject.h"
 #include "../libOEMath/OEMath.h"
 
 #include "IOETexture.h"
