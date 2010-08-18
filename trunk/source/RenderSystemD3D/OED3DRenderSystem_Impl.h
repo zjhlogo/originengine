@@ -9,6 +9,7 @@
 #define __OED3DRENDERSYSTEM_IMPL_H__
 
 #include <OECore/IOERenderSystem.h>
+#include <libOEBase/OEMsgCommand.h>
 #include "OED3DVertDecl_Impl.h"
 #include "OED3DTexture_Impl.h"
 #include "OED3DShader_Impl.h"
@@ -61,8 +62,8 @@ private:
 	bool ApplyRenderState();
 	bool DrawPrimitive(D3DPRIMITIVETYPE eType, const void* pVerts, uint nVerts, const ushort* pIndis, uint nPrimCount);
 
-	bool OnPreRender3D(uint nMsgID, COEDataBufferRead* pDBRead);
-	bool OnPostRender3D(uint nMsgID, COEDataBufferRead* pDBRead);
+	bool OnPreRender3D(COEMsgCommand& msg);
+	bool OnPostRender3D(COEMsgCommand& msg);
 
 private:
 	COED3DShader_Impl* m_pShader;

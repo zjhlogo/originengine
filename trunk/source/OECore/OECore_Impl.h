@@ -11,6 +11,7 @@
 #include <OECore/IOECore.h>
 #include <OEUI/IOEUIFontMgr.h>
 #include <OEUI/IOEUIStringMgr.h>
+#include <libOEBase/OEMsgCommand.h>
 
 class COECore_Impl : public IOECore
 {
@@ -36,13 +37,13 @@ private:
 
 	void CalculateFPS();
 
-	bool OnStartPerform(uint nMsgID, COEDataBufferRead* pDBRead);
-	bool OnPreUpdate(uint nMsgID, COEDataBufferRead* pDBRead);
-	bool OnUpdate(uint nMsgID, COEDataBufferRead* pDBRead);
-	bool OnPostUpdate(uint nMsgID, COEDataBufferRead* pDBRead);
-	bool OnPreRender(uint nMsgID, COEDataBufferRead* pDBRead);
-	bool OnRender(uint nMsgID, COEDataBufferRead* pDBRead);
-	bool OnPostRender(uint nMsgID, COEDataBufferRead* pDBRead);
+	bool OnStartPerform(COEMsgCommand& msg);
+	bool OnPreUpdate(COEMsgCommand& msg);
+	bool OnUpdate(COEMsgCommand& msg);
+	bool OnPostUpdate(COEMsgCommand& msg);
+	bool OnPreRender(COEMsgCommand& msg);
+	bool OnRender(COEMsgCommand& msg);
+	bool OnPostRender(COEMsgCommand& msg);
 
 private:
 	bool m_bRunning;

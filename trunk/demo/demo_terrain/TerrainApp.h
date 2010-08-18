@@ -9,6 +9,8 @@
 #define __TERRAINAPP_H__
 
 #include <libOEBase/IOEApp.h>
+#include <libOEBase/OEMsgMouse.h>
+#include <libOEBase/OEMsgKeyboard.h>
 #include "../common/Camera.h"
 #include "TerrainMgr.h"
 
@@ -34,11 +36,11 @@ private:
 	void Init();
 	void Destroy();
 
-	bool OnLButtonDown(uint nMsgID, COEDataBufferRead* pDBRead);
-	bool OnLButtonUp(uint nMsgID, COEDataBufferRead* pDBRead);
-	bool OnMouseMove(uint nMsgID, COEDataBufferRead* pDBRead);
-	bool OnKeyUp(uint nMsgID, COEDataBufferRead* pDBRead);
-	bool OnKeyDown(uint nMsgID, COEDataBufferRead* pDBRead);
+	bool OnLButtonDown(COEMsgMouse& msg);
+	bool OnLButtonUp(COEMsgMouse& msg);
+	bool OnMouseMove(COEMsgMouse& msg);
+	bool OnKeyUp(COEMsgKeyboard& msg);
+	bool OnKeyDown(COEMsgKeyboard& msg);
 
 	bool UpdateMovement(float fDetailTime);
 	bool UpdateRotation(float fDetailTime);

@@ -56,6 +56,4 @@ protected:
 
 };
 
-typedef bool (IOEObject::*MSG_FUNC)(uint nMsgID, COEDataBufferRead* pDBRead);
-
 #endif // __IOEOBJECT_H__

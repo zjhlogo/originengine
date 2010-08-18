@@ -9,6 +9,7 @@
 #define __OEUIRENDERSYSTEM_IMPL_H__
 
 #include <OEUI/IOEUIRenderSystem.h>
+#include <libOEBase/OEMsgCommand.h>
 #include "OEUIVertexCache.h"
 
 class COEUIRenderSystem_Impl : public IOEUIRenderSystem
@@ -39,7 +40,7 @@ private:
 
 	void FlushAll();
 
-	bool OnPostRender(uint nMsgID, COEDataBufferRead* pDBRead);
+	bool OnPostRender(COEMsgCommand& msg);
 
 private:
 	IOETexture* m_pTexture;

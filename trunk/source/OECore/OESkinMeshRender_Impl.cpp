@@ -9,7 +9,7 @@
 #include <OECore/IOERenderSystem.h>
 #include <OECore/OERenderSystemUtil.h>
 #include <OEBase/IOEMsgMgr.h>
-#include <libOEBase/OEMsgID.h>
+#include <libOEBase/OEMsgShaderParam.h>
 
 COESkinMeshRender_Impl::COESkinMeshRender_Impl()
 :IOERender(OERT_SKINMESH)
@@ -50,8 +50,8 @@ bool COESkinMeshRender_Impl::Render(IOERenderData* pRenderData)
 		if (pPiece->GetVertDeclMask() != pMaterial->GetVertDeclMask()) continue;
 
 		// give user chance to setup shader parameter
-		COEMsg msg(OMI_SETUP_SHADER_PARAM);
-		msg.Write(pShader);
+		COEMsgShaderParam msg;
+		msg.SetShader(pShader);
 		g_pOEMsgMgr->InvokeMessage(&msg);
 
 		pShader->SetMatrix(TS("g_matWorldViewProj"), matWorldViewProj);

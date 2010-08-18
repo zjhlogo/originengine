@@ -301,13 +301,13 @@ bool COED3DRenderSystem_Impl::DrawPrimitive(D3DPRIMITIVETYPE eType, const void* 
 	return true;
 }
 
-bool COED3DRenderSystem_Impl::OnPreRender3D(uint nMsgID, COEDataBufferRead* pDBRead)
+bool COED3DRenderSystem_Impl::OnPreRender3D(COEMsgCommand& msg)
 {
 	this->SetShader(NULL);
 	return true;
 }
 
-bool COED3DRenderSystem_Impl::OnPostRender3D(uint nMsgID, COEDataBufferRead* pDBRead)
+bool COED3DRenderSystem_Impl::OnPostRender3D(COEMsgCommand& msg)
 {
 	// TODO: 
 	return true;
