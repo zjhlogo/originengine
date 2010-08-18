@@ -10,6 +10,8 @@
 #include <wx/fs_mem.h>
 #include <wx/xrc/xmlres.h>
 
+IMPLEMENT_APP_NO_MAIN(wxApp);
+
 bool wxCommonHelper::Initialize()
 {
 	if (!wxInitialize()) return false;

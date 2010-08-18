@@ -188,14 +188,14 @@ void COECore_Impl::TerminateInterfaces()
 	// 渲染设备管理类
 	g_pOEDevice->Terminate();
 
+	// 配置文件管理类
+	g_pOEConfigFileMgr->Terminate();
+
 	// 消息管理类
 	g_pOEMsgMgr->Terminate();
 
 	// Xml 管理类
 	g_pOEXmlMgr->Terminate();
-
-	// 配置文件管理类
-	g_pOEConfigFileMgr->Terminate();
 
 	// 日志管理类
 	g_pOELogFileMgr->Terminate();
