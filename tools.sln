@@ -30,6 +30,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MessageGenerator", "tools\M
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OEBase", "source\OEBase\OEBase.vcproj", "{8354A989-14F3-4A53-A458-C86BD5D3520A}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ImageGenerator", "tools\ImageGenerator\ImageGenerator.vcproj", "{9D20BBD5-86DF-416C-925E-48183CE82C60}"
+	ProjectSection(ProjectDependencies) = postProject
+		{FC86443B-245B-4F29-BEF2-2D39A8F8B063} = {FC86443B-245B-4F29-BEF2-2D39A8F8B063}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -94,6 +99,14 @@ Global
 		{8354A989-14F3-4A53-A458-C86BD5D3520A}.Unicode Debug|Win32.Build.0 = Unicode Debug|Win32
 		{8354A989-14F3-4A53-A458-C86BD5D3520A}.Unicode Release|Win32.ActiveCfg = Unicode Release|Win32
 		{8354A989-14F3-4A53-A458-C86BD5D3520A}.Unicode Release|Win32.Build.0 = Unicode Release|Win32
+		{9D20BBD5-86DF-416C-925E-48183CE82C60}.Debug|Win32.ActiveCfg = Debug|Win32
+		{9D20BBD5-86DF-416C-925E-48183CE82C60}.Debug|Win32.Build.0 = Debug|Win32
+		{9D20BBD5-86DF-416C-925E-48183CE82C60}.Release|Win32.ActiveCfg = Release|Win32
+		{9D20BBD5-86DF-416C-925E-48183CE82C60}.Release|Win32.Build.0 = Release|Win32
+		{9D20BBD5-86DF-416C-925E-48183CE82C60}.Unicode Debug|Win32.ActiveCfg = Unicode Debug|Win32
+		{9D20BBD5-86DF-416C-925E-48183CE82C60}.Unicode Debug|Win32.Build.0 = Unicode Debug|Win32
+		{9D20BBD5-86DF-416C-925E-48183CE82C60}.Unicode Release|Win32.ActiveCfg = Unicode Release|Win32
+		{9D20BBD5-86DF-416C-925E-48183CE82C60}.Unicode Release|Win32.Build.0 = Unicode Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
