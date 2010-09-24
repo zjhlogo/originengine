@@ -141,8 +141,8 @@ IOEShader* COEMaterial_Impl::CreateShaderFromVertDecl(int nVertDeclMask, const t
 	{
 		VERT_DECL_ELEMENT Element;
 		Element.eType = VDT_FLOAT3;
-		Element.eUsage = VDU_TEXCOORD;
-		Element.nIndex = nTexCoordIndex++;
+		Element.eUsage = VDU_NORMAL;
+		Element.nIndex = 0;
 		vDecl.push_back(Element);
 	}
 

@@ -29,6 +29,9 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MessageGenerator", "tools\M
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OEBase", "source\OEBase\OEBase.vcproj", "{8354A989-14F3-4A53-A458-C86BD5D3520A}"
+	ProjectSection(ProjectDependencies) = postProject
+		{FC86443B-245B-4F29-BEF2-2D39A8F8B063} = {FC86443B-245B-4F29-BEF2-2D39A8F8B063}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ImageGenerator", "tools\ImageGenerator\ImageGenerator.vcproj", "{9D20BBD5-86DF-416C-925E-48183CE82C60}"
 	ProjectSection(ProjectDependencies) = postProject

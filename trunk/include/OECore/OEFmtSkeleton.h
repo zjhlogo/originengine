@@ -11,6 +11,9 @@
 #include "../libOEBase/OEBaseType.h"
 #include "../libOEMath/OEMath.h"
 
+#pragma pack(push)
+#pragma pack(1)
+
 class COEFmtSkeleton
 {
 public:
@@ -78,4 +81,7 @@ public:
 		float vScale[3];
 	} FRAME_SCALE;
 };
+
+#pragma pack(pop)
+
 #endif // __OEFMTSKELETON_H__

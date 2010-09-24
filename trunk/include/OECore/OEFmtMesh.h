@@ -11,6 +11,9 @@
 #include "../libOEBase/OEBaseType.h"
 #include "../libOEMath/OEMath.h"
 
+#pragma pack(push)
+#pragma pack(1)
+
 class COEFmtMesh
 {
 public:
@@ -65,5 +68,7 @@ public:
 		uint nOffIndis;					// sizeof(ushort)*nNumIndis*3;
 	} PIECE;
 };
+
+#pragma pack(pop)
 
 #endif // __OEFMTMESH_H__

@@ -37,7 +37,7 @@ bool CModelApp::Initialize()
 {
 	if (!CBaseApp::Initialize()) return false;
 
-	m_pModel = g_pOEResMgr->CreateModel(TS("Model.xml"));
+	m_pModel = g_pOEResMgr->CreateModel(TS("casual03.xml"));
 	if (!m_pModel) return false;
 
 	// registe message
