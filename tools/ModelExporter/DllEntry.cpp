@@ -14,6 +14,8 @@
 #include <wx/app.h>
 #include <libOEBase/OEOS.h>
 
+IMPLEMENT_APP_NO_MAIN(wxApp);
+
 static bool Initialize(HINSTANCE hInstDLL)
 {
 	InitCommonControls();

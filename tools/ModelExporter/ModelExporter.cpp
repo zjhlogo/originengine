@@ -113,7 +113,7 @@ int CModelExporter::DoExport(const TCHAR* name, ExpInterface* ei, Interface* i, 
 	m_pInterface = i;
 
 	// show the option dialog
-	if (!ShowOptionDialog()) return FALSE;
+	if (!ShowOptionDialog()) return TRUE;
 
 	// initialize
 	m_pInterface->ProgressStart(_T("Initialize IGame interfaces"), TRUE, DummyFunc, NULL);
@@ -1668,10 +1668,8 @@ bool CModelExporter::ShowOptionDialog()
 	m_pDlgModelExpOption->LoadConfig(strFile);
 
 	int nModalValue = m_pDlgModelExpOption->ShowModal();
-
 	m_pDlgModelExpOption->SaveConfig(strFile);
-
-	if (nModalValue == 0) return false;
+	if (nModalValue != wxID_OK) return false;
 
 	return true;
 }
