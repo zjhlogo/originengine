@@ -53,12 +53,17 @@ void COEModel_Impl::Render()
 	}
 }
 
+IOEMesh* COEModel_Impl::GetMesh()
+{
+	return m_pRenderData->GetMesh();
+}
+
 bool COEModel_Impl::Create(const tstring& strFile)
 {
 	IOEXmlDocument* pXmlDocument = g_pOEXmlMgr->CreateDocument(strFile);
 	if (!pXmlDocument) return false;
 
-	// create mesh
+	// create render data
 	IOEXmlNode* pXmlRoot = pXmlDocument->GetRootNode();
 	bool bOK = CreateRenderData(pXmlRoot);
 	SAFE_RELEASE(pXmlDocument);

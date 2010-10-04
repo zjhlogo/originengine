@@ -17,6 +17,8 @@ public:
 	~CCamera();
 
 	void Initialize(const CVector3& vEye, const CVector3& vLookAt);
+	void InitFromBBox(const CVector3& vMinBBox, const CVector3& vMaxBBox);
+
 	const CMatrix4x4& GetViewMatrix() const;
 
 	void Rotate(const CVector3& vDir, float fRadian);

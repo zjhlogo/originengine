@@ -28,6 +28,7 @@ void CBaseApp::Init()
 	m_nMouseDetailX = 0;
 	m_nMouseDetailY = 0;
 	memset(m_KeyDown, 0, sizeof(m_KeyDown));
+	m_bFirstTimeUpdate = true;
 }
 
 void CBaseApp::Destroy()
@@ -59,7 +60,8 @@ void CBaseApp::Update(float fDetailTime)
 {
 	bool bRot = UpdateRotation(fDetailTime);
 	bool bMov = UpdateMovement(fDetailTime);
-	if (bRot || bMov) g_pOERenderSystem->SetTransform(TT_VIEW, m_pCamera->GetViewMatrix());
+	if (bRot || bMov || m_bFirstTimeUpdate) g_pOERenderSystem->SetTransform(TT_VIEW, m_pCamera->GetViewMatrix());
+	m_bFirstTimeUpdate = false;
 }
 
 bool CBaseApp::OnLButtonDown(COEMsgMouse& msg)

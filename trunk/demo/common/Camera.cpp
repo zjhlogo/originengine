@@ -55,6 +55,21 @@ void CCamera::Initialize(const CVector3& vEye, const CVector3& vLookAt)
 	COEMath::BuildLookAtMatrixLH(m_matView, m_vEye, m_vLookAt, m_vUp);
 }
 
+void CCamera::InitFromBBox(const CVector3& vMinBBox, const CVector3& vMaxBBox)
+{
+	m_vLookAt = (vMinBBox + vMaxBBox)/2.0f;
+	m_vEye = m_vLookAt;
+	m_vEye.z -= (vMaxBBox.z - vMinBBox.z)*3.0f;
+
+	m_vForword = m_vLookAt-m_vEye;
+	m_vForword.Normalize();
+
+	m_vRight = m_vUp^m_vForword;
+	m_vRight.Normalize();
+
+	COEMath::BuildLookAtMatrixLH(m_matView, m_vEye, m_vLookAt, m_vUp);
+}
+
 const CMatrix4x4& CCamera::GetViewMatrix() const
 {
 	return m_matView;

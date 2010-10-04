@@ -9,6 +9,7 @@
 #define __IOEMODEL_H__
 
 #include "../libOEBase/IOEObject.h"
+#include "IOEMesh.h"
 
 class IOEModel : public IOEObject
 {
@@ -19,6 +20,7 @@ public:
 	virtual void Update(float fDetailTime) = 0;
 	virtual void Render() = 0;
 
+	virtual IOEMesh* GetMesh() = 0;
 };
 
 #endif // __IOEMODEL_H__
