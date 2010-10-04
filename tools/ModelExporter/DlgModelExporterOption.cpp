@@ -7,6 +7,7 @@
  */
 #include "DlgModelExporterOption.h"
 #include <wx/xrc/xmlres.h>
+#include <OECore/OEFmtMesh.h>
 
 CDlgModelExporterOption::CDlgModelExporterOption()
 {
@@ -17,7 +18,7 @@ CDlgModelExporterOption::CDlgModelExporterOption()
 
 	m_bExportMesh = true;
 	m_bExportSkelecton = true;
-	m_nVertexFlag = VF_POSITION|VF_TEXCOORD0|VF_NORMAL|VF_SKELECTON;
+	m_nVertexFlag = COEFmtMesh::VDM_POSITION|COEFmtMesh::VDM_TEXCOORD0|COEFmtMesh::VDM_NORMAL|COEFmtMesh::VDM_SKELECTON;
 }
 
 CDlgModelExporterOption::~CDlgModelExporterOption()
@@ -40,6 +41,11 @@ bool CDlgModelExporterOption::Initialize(wxWindow* pParent)
 	this->Connect(wxXmlResource::GetXRCID(wxT("IDC_CHKL_SKELECTONOPTION")), wxEVT_COMMAND_CHECKLISTBOX_TOGGLED, (wxObjectEventFunction)&CDlgModelExporterOption::OnChklSkelectonOptionClicked);
 
 	return true;
+}
+
+int CDlgModelExporterOption::GetVertexFlag() const
+{
+	return m_nVertexFlag;
 }
 
 void CDlgModelExporterOption::OnChkExportMeshClicked(wxCommandEvent& event)
@@ -126,20 +132,20 @@ bool CDlgModelExporterOption::SaveXml(IOEXmlDocument* pDocument)
 void CDlgModelExporterOption::UpdateVertexFlag()
 {
 	m_nVertexFlag = 0;
-	if (m_pChklMeshOption->IsChecked(VI_POSITION)) m_nVertexFlag |= VF_POSITION;
-	if (m_pChklMeshOption->IsChecked(VI_TEXCOORD0)) m_nVertexFlag |= VF_TEXCOORD0;
-	if (m_pChklMeshOption->IsChecked(VI_TEXCOORD1)) m_nVertexFlag |= VF_TEXCOORD1;
-	if (m_pChklMeshOption->IsChecked(VI_TEXCOORD2)) m_nVertexFlag |= VF_TEXCOORD2;
-	if (m_pChklMeshOption->IsChecked(VI_TEXCOORD3)) m_nVertexFlag |= VF_TEXCOORD3;
-	if (m_pChklMeshOption->IsChecked(VI_TEXCOORD4)) m_nVertexFlag |= VF_TEXCOORD4;
-	if (m_pChklMeshOption->IsChecked(VI_TEXCOORD5)) m_nVertexFlag |= VF_TEXCOORD5;
-	if (m_pChklMeshOption->IsChecked(VI_TEXCOORD6)) m_nVertexFlag |= VF_TEXCOORD6;
-	if (m_pChklMeshOption->IsChecked(VI_TEXCOORD7)) m_nVertexFlag |= VF_TEXCOORD7;
-	if (m_pChklMeshOption->IsChecked(VI_COLOR)) m_nVertexFlag |= VF_COLOR;
-	if (m_pChklMeshOption->IsChecked(VI_NORMAL)) m_nVertexFlag |= VF_NORMAL;
-	if (m_pChklMeshOption->IsChecked(VI_TANGENT)) m_nVertexFlag |= VF_TANGENT;
-	if (m_pChklMeshOption->IsChecked(VI_BINORMAL)) m_nVertexFlag |= VF_BINORMAL;
-	if (m_pChklMeshOption->IsChecked(VI_SKELECTON)) m_nVertexFlag |= VF_SKELECTON;
+	if (m_pChklMeshOption->IsChecked(VI_POSITION)) m_nVertexFlag |= COEFmtMesh::VDM_POSITION;
+	if (m_pChklMeshOption->IsChecked(VI_TEXCOORD0)) m_nVertexFlag |= COEFmtMesh::VDM_TEXCOORD0;
+	if (m_pChklMeshOption->IsChecked(VI_TEXCOORD1)) m_nVertexFlag |= COEFmtMesh::VDM_TEXCOORD1;
+	if (m_pChklMeshOption->IsChecked(VI_TEXCOORD2)) m_nVertexFlag |= COEFmtMesh::VDM_TEXCOORD2;
+	if (m_pChklMeshOption->IsChecked(VI_TEXCOORD3)) m_nVertexFlag |= COEFmtMesh::VDM_TEXCOORD3;
+	if (m_pChklMeshOption->IsChecked(VI_TEXCOORD4)) m_nVertexFlag |= COEFmtMesh::VDM_TEXCOORD4;
+	if (m_pChklMeshOption->IsChecked(VI_TEXCOORD5)) m_nVertexFlag |= COEFmtMesh::VDM_TEXCOORD5;
+	if (m_pChklMeshOption->IsChecked(VI_TEXCOORD6)) m_nVertexFlag |= COEFmtMesh::VDM_TEXCOORD6;
+	if (m_pChklMeshOption->IsChecked(VI_TEXCOORD7)) m_nVertexFlag |= COEFmtMesh::VDM_TEXCOORD7;
+	if (m_pChklMeshOption->IsChecked(VI_COLOR)) m_nVertexFlag |= COEFmtMesh::VDM_COLOR;
+	if (m_pChklMeshOption->IsChecked(VI_NORMAL)) m_nVertexFlag |= COEFmtMesh::VDM_NORMAL;
+	if (m_pChklMeshOption->IsChecked(VI_TANGENT)) m_nVertexFlag |= COEFmtMesh::VDM_TANGENT;
+	if (m_pChklMeshOption->IsChecked(VI_BINORMAL)) m_nVertexFlag |= COEFmtMesh::VDM_BINORMAL;
+	if (m_pChklMeshOption->IsChecked(VI_SKELECTON)) m_nVertexFlag |= COEFmtMesh::VDM_SKELECTON;
 }
 
 void CDlgModelExporterOption::ResetGUI()
@@ -150,18 +156,18 @@ void CDlgModelExporterOption::ResetGUI()
 	m_pChklMeshOption->Enable(m_bExportMesh);
 	m_pChklSkelectonOption->Enable(m_bExportSkelecton);
 
-	m_pChklMeshOption->Check(VI_POSITION, m_nVertexFlag & VF_POSITION ? true : false);
-	m_pChklMeshOption->Check(VI_TEXCOORD0, m_nVertexFlag & VF_TEXCOORD0 ? true : false);
-	m_pChklMeshOption->Check(VI_TEXCOORD1, m_nVertexFlag & VF_TEXCOORD1 ? true : false);
-	m_pChklMeshOption->Check(VI_TEXCOORD2, m_nVertexFlag & VF_TEXCOORD2 ? true : false);
-	m_pChklMeshOption->Check(VI_TEXCOORD3, m_nVertexFlag & VF_TEXCOORD3 ? true : false);
-	m_pChklMeshOption->Check(VI_TEXCOORD4, m_nVertexFlag & VF_TEXCOORD4 ? true : false);
-	m_pChklMeshOption->Check(VI_TEXCOORD5, m_nVertexFlag & VF_TEXCOORD5 ? true : false);
-	m_pChklMeshOption->Check(VI_TEXCOORD6, m_nVertexFlag & VF_TEXCOORD6 ? true : false);
-	m_pChklMeshOption->Check(VI_TEXCOORD7, m_nVertexFlag & VF_TEXCOORD7 ? true : false);
-	m_pChklMeshOption->Check(VI_COLOR, m_nVertexFlag & VF_COLOR ? true : false);
-	m_pChklMeshOption->Check(VI_NORMAL, m_nVertexFlag & VF_NORMAL ? true : false);
-	m_pChklMeshOption->Check(VI_TANGENT, m_nVertexFlag & VF_TANGENT ? true : false);
-	m_pChklMeshOption->Check(VI_BINORMAL, m_nVertexFlag & VF_BINORMAL ? true : false);
-	m_pChklMeshOption->Check(VI_SKELECTON, m_nVertexFlag & VF_SKELECTON ? true : false);
+	m_pChklMeshOption->Check(VI_POSITION, m_nVertexFlag & COEFmtMesh::VDM_POSITION ? true : false);
+	m_pChklMeshOption->Check(VI_TEXCOORD0, m_nVertexFlag & COEFmtMesh::VDM_TEXCOORD0 ? true : false);
+	m_pChklMeshOption->Check(VI_TEXCOORD1, m_nVertexFlag & COEFmtMesh::VDM_TEXCOORD1 ? true : false);
+	m_pChklMeshOption->Check(VI_TEXCOORD2, m_nVertexFlag & COEFmtMesh::VDM_TEXCOORD2 ? true : false);
+	m_pChklMeshOption->Check(VI_TEXCOORD3, m_nVertexFlag & COEFmtMesh::VDM_TEXCOORD3 ? true : false);
+	m_pChklMeshOption->Check(VI_TEXCOORD4, m_nVertexFlag & COEFmtMesh::VDM_TEXCOORD4 ? true : false);
+	m_pChklMeshOption->Check(VI_TEXCOORD5, m_nVertexFlag & COEFmtMesh::VDM_TEXCOORD5 ? true : false);
+	m_pChklMeshOption->Check(VI_TEXCOORD6, m_nVertexFlag & COEFmtMesh::VDM_TEXCOORD6 ? true : false);
+	m_pChklMeshOption->Check(VI_TEXCOORD7, m_nVertexFlag & COEFmtMesh::VDM_TEXCOORD7 ? true : false);
+	m_pChklMeshOption->Check(VI_COLOR, m_nVertexFlag & COEFmtMesh::VDM_COLOR ? true : false);
+	m_pChklMeshOption->Check(VI_NORMAL, m_nVertexFlag & COEFmtMesh::VDM_NORMAL ? true : false);
+	m_pChklMeshOption->Check(VI_TANGENT, m_nVertexFlag & COEFmtMesh::VDM_TANGENT ? true : false);
+	m_pChklMeshOption->Check(VI_BINORMAL, m_nVertexFlag & COEFmtMesh::VDM_BINORMAL ? true : false);
+	m_pChklMeshOption->Check(VI_SKELECTON, m_nVertexFlag & COEFmtMesh::VDM_SKELECTON ? true : false);
 }

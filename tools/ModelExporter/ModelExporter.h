@@ -103,16 +103,6 @@ public:
 
 	typedef std::vector<SKIN_MESH> TV_SKIN_MESH;
 
-	typedef struct FILE_VERTEX_tag
-	{
-		float x, y, z;
-		float u, v;
-		float nx, ny, nz;
-		float tx, ty, tz;
-		uchar nBoneIndex[4];
-		float fWeight[4];
-	} FILE_VERTEX;
-
 	// bone information
 	typedef struct KEYFRAME_ROT_tag
 	{

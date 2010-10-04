@@ -325,7 +325,7 @@ bool CModelExporter::SaveMeshFile(const tstring& strFileName)
 		strncpy_s(Piece.szName, COEFmtMesh::PIECE_NAME_SIZE, strName.c_str(), _TRUNCATE);
 
 		Piece.nPieceMask = COEFmtMesh::PM_VISIBLE;
-		Piece.nVertexDataMask = COEFmtMesh::VDM_XYZ | COEFmtMesh::VDM_UV | COEFmtMesh::VDM_NXNYNZ | COEFmtMesh::VDM_TXTYTZ | COEFmtMesh::VDM_BONE;
+		Piece.nVertexDataMask = m_pDlgModelExpOption->GetVertexFlag();
 		Piece.nMaterialID = 0;					// TODO: 
 
 		// write vertex data offset
@@ -338,38 +338,51 @@ bool CModelExporter::SaveMeshFile(const tstring& strFileName)
 		{
 			VERTEX_SLOT& VertSlot = SkinMesh.vVertSlots[j];
 
-			FILE_VERTEX FileVert;
-			memset(&FileVert, 0, sizeof(FileVert));
-
-			// position 左右手坐标转化
-			FileVert.x = VertSlot.pos.x;
-			FileVert.y = VertSlot.pos.z;
-			FileVert.z = VertSlot.pos.y;
-
-			// uv
-			FileVert.u = VertSlot.tex.x;
-			FileVert.v = 1.0f - VertSlot.tex.y;
-
-			// normal 左右手坐标转化
-			FileVert.nx = VertSlot.normal.x;
-			FileVert.ny = VertSlot.normal.z;
-			FileVert.nz = VertSlot.normal.y;
-
-			// tangent 左右手坐标转化
-			FileVert.tx = VertSlot.tangent.x;
-			FileVert.ty = VertSlot.tangent.z;
-			FileVert.tz = VertSlot.tangent.y;
-
-			// bone weight, index
-			int nSkinCount = (int)VertSlot.Skins.size();
-			if (nSkinCount > 4) nSkinCount = 4;
-			for (int k = 0; k < nSkinCount; ++k)
+			if (Piece.nVertexDataMask & COEFmtMesh::VDM_POSITION)
 			{
-				FileVert.nBoneIndex[k] = VertSlot.Skins[k].nBoneIndex;
-				FileVert.fWeight[k] = VertSlot.Skins[k].fWeight;
+				// position 左右手坐标转化
+				float pfPos[3] = {VertSlot.pos.x, VertSlot.pos.z, VertSlot.pos.y};
+				pFile->Write(pfPos, sizeof(pfPos));
 			}
 
-			pFile->Write(&FileVert, sizeof(FileVert));
+			if (Piece.nVertexDataMask & COEFmtMesh::VDM_TEXCOORD0)
+			{
+				// uv
+				float pfUV[2] = {VertSlot.tex.x, 1.0f - VertSlot.tex.y};
+				pFile->Write(pfUV, sizeof(pfUV));
+			}
+
+			if (Piece.nVertexDataMask & COEFmtMesh::VDM_NORMAL)
+			{
+				// normal 左右手坐标转化
+				float pfNormal[3] = {VertSlot.normal.x, VertSlot.normal.z, VertSlot.normal.y};
+				pFile->Write(pfNormal, sizeof(pfNormal));
+			}
+
+			if (Piece.nVertexDataMask & COEFmtMesh::VDM_TANGENT)
+			{
+				// tangent 左右手坐标转化
+				float pfTangent[3] = {VertSlot.tangent.x, VertSlot.tangent.z, VertSlot.tangent.y};
+				pFile->Write(pfTangent, sizeof(pfTangent));
+			}
+
+			if (Piece.nVertexDataMask & COEFmtMesh::VDM_TANGENT)
+			{
+				uchar uchIndex[4] = {0};
+				float pfWeight[4] = {0.0f};
+
+				// bone weight, index
+				int nSkinCount = (int)VertSlot.Skins.size();
+				if (nSkinCount > 4) nSkinCount = 4;
+				for (int k = 0; k < nSkinCount; ++k)
+				{
+					uchIndex[k] = VertSlot.Skins[k].nBoneIndex;
+					pfWeight[k] = VertSlot.Skins[k].fWeight;
+				}
+
+				pFile->Write(uchIndex, sizeof(uchIndex));
+				pFile->Write(pfWeight, sizeof(pfWeight));
+			}
 		}
 
 		// write index data offset

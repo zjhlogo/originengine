@@ -17,24 +17,6 @@
 class CDlgModelExporterOption : public wxDialog
 {
 public:
-	enum VERTEX_FLAG
-	{
-		VF_POSITION		= 0x00000001,
-		VF_TEXCOORD0	= 0x00000002,
-		VF_TEXCOORD1	= 0x00000004,
-		VF_TEXCOORD2	= 0x00000008,
-		VF_TEXCOORD3	= 0x00000010,
-		VF_TEXCOORD4	= 0x00000020,
-		VF_TEXCOORD5	= 0x00000040,
-		VF_TEXCOORD6	= 0x00000080,
-		VF_TEXCOORD7	= 0x00000100,
-		VF_COLOR		= 0x00000200,
-		VF_NORMAL		= 0x00000400,
-		VF_TANGENT		= 0x00000800,
-		VF_BINORMAL		= 0x00001000,
-		VF_SKELECTON	= 0x00002000,
-	};
-
 	enum VERTEX_INDEX
 	{
 		VI_POSITION = 0,
@@ -59,6 +41,7 @@ public:
 	virtual ~CDlgModelExporterOption();
 
 	bool Initialize(wxWindow* pParent);
+	int GetVertexFlag() const;
 
 	void LoadConfig(const wxString& strFile);
 	void SaveConfig(const wxString& strFile);
