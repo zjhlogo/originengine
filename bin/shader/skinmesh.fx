@@ -114,7 +114,7 @@ technique Normal
 {
 	pass p0
 	{
-		VertexShader = compile vs_2_0 VSMain();
-		PixelShader = compile ps_2_0 PSMain();
+		VertexShader = compile vs_3_0 VSMain();
+		PixelShader = compile ps_3_0 PSMain();
 	}
 }

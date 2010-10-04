@@ -45,6 +45,8 @@ bool CMeshApp::Initialize()
 	{
 		{VDT_FLOAT3, VDU_POSITION, 0},
 		{VDT_FLOAT2, VDU_TEXCOORD, 0},
+		{VDT_FLOAT3, VDU_NORMAL, 0},
+		{VDT_FLOAT3, VDU_TEXCOORD, 1},
 		{VDT_UBYTE4, VDU_BLENDINDICES, 0},
 		{VDT_FLOAT4, VDU_BLENDWEIGHT, 0},
 		{VDT_UNKNOWN, VDU_UNKNOWN, 0},
@@ -52,13 +54,13 @@ bool CMeshApp::Initialize()
 
 	if (!CBaseApp::Initialize()) return false;
 
-	m_pTexture = g_pOETextureMgr->CreateTextureFromFile(TS("felhound_diffuse.jpg"));
+	m_pTexture = g_pOETextureMgr->CreateTextureFromFile(TS("casual03_diff_spec.png"));
 	if (!m_pTexture) return false;
 
 	m_pShader = g_pOEShaderMgr->CreateShader(s_Decl, TS("demo_mesh.fx"));
 	if (!m_pShader) return false;
 
-	m_pMesh = g_pOEResMgr->CreateMesh(TS("felhound.mesh"));
+	m_pMesh = g_pOEResMgr->CreateMesh(TS("casual03_mesh.mesh"));
 	if (!m_pMesh) return false;
 
 	// registe message
