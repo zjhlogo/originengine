@@ -107,12 +107,22 @@ IOEShader* COEMaterial_Impl::CreateShaderFromVertDecl(int nVertDeclMask, const t
 	int nTexCoordIndex = 0;
 
 	// position
-	if (nVertDeclMask & COEFmtMesh::VDM_XYZ)
+	if (nVertDeclMask & COEFmtMesh::VDM_POSITION)
 	{
 		VERT_DECL_ELEMENT Element;
 		Element.eType = VDT_FLOAT3;
 		Element.eUsage = VDU_POSITION;
 		Element.nIndex = 0;
+		vDecl.push_back(Element);
+	}
+
+	// texcoord
+	if (nVertDeclMask & COEFmtMesh::VDM_TEXCOORD0)
+	{
+		VERT_DECL_ELEMENT Element;
+		Element.eType = VDT_FLOAT2;
+		Element.eUsage = VDU_TEXCOORD;
+		Element.nIndex = nTexCoordIndex++;
 		vDecl.push_back(Element);
 	}
 
@@ -126,18 +136,8 @@ IOEShader* COEMaterial_Impl::CreateShaderFromVertDecl(int nVertDeclMask, const t
 		vDecl.push_back(Element);
 	}
 
-	// texcoord
-	if (nVertDeclMask & COEFmtMesh::VDM_UV)
-	{
-		VERT_DECL_ELEMENT Element;
-		Element.eType = VDT_FLOAT2;
-		Element.eUsage = VDU_TEXCOORD;
-		Element.nIndex = nTexCoordIndex++;
-		vDecl.push_back(Element);
-	}
-
 	// normal
-	if (nVertDeclMask & COEFmtMesh::VDM_NXNYNZ)
+	if (nVertDeclMask & COEFmtMesh::VDM_NORMAL)
 	{
 		VERT_DECL_ELEMENT Element;
 		Element.eType = VDT_FLOAT3;
@@ -147,7 +147,7 @@ IOEShader* COEMaterial_Impl::CreateShaderFromVertDecl(int nVertDeclMask, const t
 	}
 
 	// tangent
-	if (nVertDeclMask & COEFmtMesh::VDM_TXTYTZ)
+	if (nVertDeclMask & COEFmtMesh::VDM_TANGENT)
 	{
 		VERT_DECL_ELEMENT Element;
 		Element.eType = VDT_FLOAT3;
@@ -157,7 +157,7 @@ IOEShader* COEMaterial_Impl::CreateShaderFromVertDecl(int nVertDeclMask, const t
 	}
 
 	// blendindex, blendweight
-	if (nVertDeclMask & COEFmtMesh::VDM_BONE)
+	if (nVertDeclMask & COEFmtMesh::VDM_SKELECTON)
 	{
 		VERT_DECL_ELEMENT Element;
 		Element.eType = VDT_UBYTE4;

@@ -106,6 +106,7 @@ float4 PSMain(VS_OUTPUT input) : COLOR
 	float specularFactor = pow(saturate(dot(normal, halfWayDir)), 32.0f);
 
 	float3 finalColor = diffuse.xyz*diffuseFactor + float3(diffuse.w, diffuse.w, diffuse.w)*specularFactor;
+	finalColor = finalColor*0.8f + diffuse*0.2f;
 	return float4(finalColor, 1.0f);
 }
 

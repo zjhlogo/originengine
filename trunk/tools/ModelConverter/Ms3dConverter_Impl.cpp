@@ -423,7 +423,7 @@ bool CMs3dConverter_Impl::SaveToMeshFile(const tstring& strFile)
 	{
 		strncpy_s(vPiece[i].szName, COEFmtMesh::PIECE_NAME_SIZE, "ms3d_mesh", _TRUNCATE);
 		vPiece[i].nPieceMask = COEFmtMesh::PM_VISIBLE;
-		vPiece[i].nVertexDataMask = COEFmtMesh::VDM_XYZ | COEFmtMesh::VDM_UV | COEFmtMesh::VDM_BONE;
+		vPiece[i].nVertexDataMask = COEFmtMesh::VDM_POSITION | COEFmtMesh::VDM_TEXCOORD0 | COEFmtMesh::VDM_SKELECTON;
 		vPiece[i].nMaterialID = 0;										// TODO: 
 
 		// calculate vertex data offset
