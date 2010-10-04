@@ -60,8 +60,10 @@ bool CMeshApp::Initialize()
 	m_pShader = g_pOEShaderMgr->CreateShader(s_Decl, TS("demo_mesh.fx"));
 	if (!m_pShader) return false;
 
-	m_pMesh = g_pOEResMgr->CreateMesh(TS("casual03_mesh.mesh"));
+	m_pMesh = g_pOEResMgr->CreateMesh(TS("casual03_medium.mesh"));
 	if (!m_pMesh) return false;
+
+	m_pCamera->InitFromBBox(m_pMesh->GetBoundingBoxMin(), m_pMesh->GetBoundingBoxMax());
 
 	// registe message
 	g_pOEMsgMgr->RegisterMessage(OMI_SETUP_SHADER_PARAM, this, (MSG_FUNC)&CMeshApp::OnSetupShaderParam);

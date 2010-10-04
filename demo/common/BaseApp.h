@@ -51,6 +51,7 @@ protected:
 	int m_nMouseDetailX;
 	int m_nMouseDetailY;
 	bool m_KeyDown[KEY_COUNT];
+	bool m_bFirstTimeUpdate;
 
 };
 

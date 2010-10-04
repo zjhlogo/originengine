@@ -29,6 +29,8 @@ public:
 	virtual void Update(float fDetailTime);
 	virtual void Render();
 
+	virtual IOEMesh* GetMesh();
+
 private:
 	void Init();
 	void Destroy();

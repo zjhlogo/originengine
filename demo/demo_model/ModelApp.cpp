@@ -40,6 +40,9 @@ bool CModelApp::Initialize()
 	m_pModel = g_pOEResMgr->CreateModel(TS("casual03.xml"));
 	if (!m_pModel) return false;
 
+	IOEMesh* pMesh = m_pModel->GetMesh();
+	m_pCamera->InitFromBBox(pMesh->GetBoundingBoxMin(), pMesh->GetBoundingBoxMax());
+
 	// registe message
 	g_pOEMsgMgr->RegisterMessage(OMI_SETUP_SHADER_PARAM, this, (MSG_FUNC)&CModelApp::OnSetupShaderParam);
 
