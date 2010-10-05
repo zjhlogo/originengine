@@ -82,12 +82,12 @@ void COECore_Impl::Terminate()
 {
 	End();
 
+	// 应用程序接口类
+	g_pOEApp->Terminate();
+
 	m_pRootNode->DettachObject(m_pFPSPrinter);
 	SAFE_RELEASE(m_pFPSPrinter);
 	SAFE_RELEASE(m_pRootNode);
-
-	// 应用程序接口类
-	g_pOEApp->Terminate();
 
 	TerminateInterfaces();
 }
