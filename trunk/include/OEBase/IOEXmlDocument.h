@@ -14,7 +14,7 @@
 class IOEXmlDocument: public IOEObject
 {
 public:
-	IOEXmlDocument() {};
+	IOEXmlDocument(const tstring& strClassName):IOEObject(strClassName) {};
 	virtual ~IOEXmlDocument() {};
 
 	virtual bool LoadFile(const tstring& strFile) = 0;

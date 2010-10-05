@@ -14,12 +14,14 @@
 extern IDirect3DDevice9* g_pd3dDevice;
 
 COED3DTexture_Impl::COED3DTexture_Impl(const tstring& strFileName)
+:IOETexture(TS("COED3DTexture_Impl"))
 {
 	Init();
 	m_bOK = Create(strFileName);
 }
 
 COED3DTexture_Impl::COED3DTexture_Impl(int nWidth, int nHeight, TEXTURE_FORMAT eFormat)
+:IOETexture(TS("COED3DTexture_Impl"))
 {
 	Init();
 	m_bOK = Create(nWidth, nHeight, eFormat);

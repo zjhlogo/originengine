@@ -9,15 +9,19 @@
 #define __IOECORE_H__
 
 #include "IOEMgr.h"
+#include "IOENode.h"
 
 class IOECore : public IOEMgr
 {
 public:
-	IOECore() {};
+	IOECore(const tstring& strClassName):IOEMgr(strClassName) {};
 	virtual ~IOECore() {};
 
 	virtual void Run() = 0;
 	virtual void End() = 0;
+
+	virtual IOENode* CreateNewNode() = 0;
+	virtual IOENode* GetRootNode() = 0;
 
 };
 

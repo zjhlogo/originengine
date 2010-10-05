@@ -14,7 +14,7 @@
 class IOEDevice : public IOEMgr
 {
 public:
-	IOEDevice() {};
+	IOEDevice(const tstring& strClassName):IOEMgr(strClassName) {};
 	virtual ~IOEDevice() {};
 
 	virtual void StartPerform() = 0;

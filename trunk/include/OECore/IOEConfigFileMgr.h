@@ -13,7 +13,7 @@
 class IOEConfigFileMgr : public IOEMgr
 {
 public:
-	IOEConfigFileMgr() {};
+	IOEConfigFileMgr(const tstring& strClassName):IOEMgr(strClassName) {};
 	virtual ~IOEConfigFileMgr() {};
 
 	virtual bool GetValue(int& nValue, const tstring& strParamName, int nDefaultValue = 0) = 0;

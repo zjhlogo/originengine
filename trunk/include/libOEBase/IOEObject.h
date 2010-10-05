@@ -14,11 +14,13 @@
 class IOEObject
 {
 public:
-	IOEObject();
+	IOEObject(const tstring& strClassName);
 	virtual ~IOEObject();
 
 	virtual bool IsOK();
 	virtual void Release();
+
+	const tstring& GetClassName();
 
 	int IncRef();
 	int DecRef();
@@ -26,7 +28,10 @@ public:
 
 protected:
 	bool m_bOK;
+
+private:
 	int m_nRef;
+	tstring m_strClassName;
 
 };
 

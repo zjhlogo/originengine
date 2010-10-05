@@ -8,6 +8,7 @@
 #include "ModelApp.h"
 #include "../common/AppHelper.h"
 #include <OECore/IOEResMgr.h>
+#include <OECore/IOECore.h>
 #include <OEBase/IOEMsgMgr.h>
 #include <libOEMsg/OEMsgList.h>
 
@@ -40,6 +41,9 @@ bool CModelApp::Initialize()
 	m_pModel = g_pOEResMgr->CreateModel(TS("casual03.xml"));
 	if (!m_pModel) return false;
 
+	IOENode* pNode = g_pOECore->GetRootNode();
+	pNode->AttachObject(m_pModel);
+
 	IOEMesh* pMesh = m_pModel->GetMesh();
 	m_pCamera->InitFromBBox(pMesh->GetBoundingBoxMin(), pMesh->GetBoundingBoxMax());
 
@@ -58,12 +62,12 @@ void CModelApp::Terminate()
 void CModelApp::Update(float fDetailTime)
 {
 	CBaseApp::Update(fDetailTime);
-	m_pModel->Update(fDetailTime);
+	//m_pModel->Update(fDetailTime);
 }
 
 void CModelApp::Render(float fDetailTime)
 {
-	m_pModel->Render();
+	//m_pModel->Render();
 }
 
 bool CModelApp::OnSetupShaderParam(COEMsgShaderParam& msg)

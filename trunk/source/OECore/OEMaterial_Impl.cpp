@@ -12,6 +12,7 @@
 #include <assert.h>
 
 COEMaterial_Impl::COEMaterial_Impl(IOEXmlNode* pXmlMaterial)
+:IOEMaterial(TS("COEMaterial_Impl"))
 {
 	Init();
 	m_bOK = Create(pXmlMaterial);

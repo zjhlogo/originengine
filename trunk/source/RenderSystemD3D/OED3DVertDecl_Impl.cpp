@@ -14,6 +14,7 @@
 extern IDirect3DDevice9* g_pd3dDevice;
 
 COED3DVertDecl_Impl::COED3DVertDecl_Impl(const VERT_DECL_ELEMENT* pElement)
+:IOEVertDecl(TS("COED3DVertDecl_Impl"))
 {
 	Init();
 	m_bOK = Create(pElement);

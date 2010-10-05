@@ -21,7 +21,7 @@ public:
 	};
 
 public:
-	IOEXmlNode() {};
+	IOEXmlNode(const tstring& strClassName):IOEObject(strClassName) {};
 	virtual ~IOEXmlNode() {};
 
 	virtual const tstring& GetName() = 0;

@@ -6,3 +6,4 @@ TODO: max 模型导出插件还有很多BUG, (效率低, 不支持IKChain, 除了 Mesh, Bone, 不支
 TODO: 支持多动画集, 而不是一个 mesh 只支持一个动画
 TODO: 导出材质
 TODO: skinmesh.fx shader 中并非所有顶点都用到4个骨骼权重值, 可以根据实际情况缩减
+TODO: 骨骼调色板必须分割为制定大小以适应不同级别的GPU

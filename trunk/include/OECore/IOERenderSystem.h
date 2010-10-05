@@ -17,7 +17,7 @@
 class IOERenderSystem : public IOEMgr
 {
 public:
-	IOERenderSystem() {};
+	IOERenderSystem(const tstring& strClassName):IOEMgr(strClassName) {};
 	virtual ~IOERenderSystem() {};
 
 	virtual void SetShader(IOEShader* pShader) = 0;

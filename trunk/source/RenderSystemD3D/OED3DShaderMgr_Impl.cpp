@@ -14,6 +14,7 @@
 #include <assert.h>
 
 COED3DShaderMgr_Impl::COED3DShaderMgr_Impl()
+:IOEShaderMgr(TS("COED3DShaderMgr_Impl"))
 {
 	assert(!g_pOEShaderMgr);
 	g_pOEShaderMgr = this;

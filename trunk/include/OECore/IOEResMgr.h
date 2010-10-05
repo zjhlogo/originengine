@@ -18,7 +18,7 @@
 class IOEResMgr : public IOEMgr
 {
 public:
-	IOEResMgr() {};
+	IOEResMgr(const tstring& strClassName):IOEMgr(strClassName) {};
 	virtual ~IOEResMgr() {};
 
 	virtual IOEModel* CreateModel(const tstring& strFile) = 0;

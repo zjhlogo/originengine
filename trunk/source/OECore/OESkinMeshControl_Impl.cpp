@@ -9,7 +9,7 @@
 #include <OECore/OEFmtSkeleton.h>
 
 COESkinMeshControl_Impl::COESkinMeshControl_Impl()
-:IOEControl(OECT_SKINMESH)
+:IOEControl(OECT_SKINMESH, TS("COESkinMeshControl_Impl"))
 {
 	// TODO: 
 }

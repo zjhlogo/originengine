@@ -10,11 +10,11 @@
 
 #include <OECore/IOEDevice.h>
 
-class COEOGLevice_Impl : public IOEDevice
+class COEOGLDevice_Impl : public IOEDevice
 {
 public:
-	COEOGLevice_Impl();
-	virtual ~COEOGLevice_Impl();
+	COEOGLDevice_Impl();
+	virtual ~COEOGLDevice_Impl();
 
 	virtual bool Initialize();
 	virtual void Terminate();

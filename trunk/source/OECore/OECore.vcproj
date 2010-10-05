@@ -355,6 +355,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\OEFPSPrinter.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\OEMaterial_Impl.cpp"
 				>
 			</File>
@@ -364,6 +368,10 @@
 			</File>
 			<File
 				RelativePath=".\OEModel_Impl.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\OENode_Impl.cpp"
 				>
 			</File>
 			<File
@@ -429,6 +437,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\OEFPSPrinter.h"
+				>
+			</File>
+			<File
 				RelativePath=".\OEMaterial_Impl.h"
 				>
 			</File>
@@ -438,6 +450,10 @@
 			</File>
 			<File
 				RelativePath=".\OEModel_Impl.h"
+				>
+			</File>
+			<File
+				RelativePath=".\OENode_Impl.h"
 				>
 			</File>
 			<File
@@ -517,11 +533,19 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\include\OECore\IOENode.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\include\OECore\IOEPiece.h"
 				>
 			</File>
 			<File
 				RelativePath="..\..\include\OECore\IOERender.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\include\OECore\IOERenderableObject.h"
 				>
 			</File>
 			<File

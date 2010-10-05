@@ -13,7 +13,7 @@
 class IOEMgr : public IOEObject
 {
 public:
-	IOEMgr() {};
+	IOEMgr(const tstring& strClassName):IOEObject(strClassName) {};
 	virtual ~IOEMgr() {};
 
 	virtual bool Initialize() = 0;

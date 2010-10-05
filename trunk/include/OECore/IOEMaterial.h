@@ -18,7 +18,7 @@
 class IOEMaterial : public IOEObject
 {
 public:
-	IOEMaterial() {};
+	IOEMaterial(const tstring& strClassName):IOEObject(strClassName) {};
 	virtual ~IOEMaterial() {};
 
 	virtual int GetID() = 0;

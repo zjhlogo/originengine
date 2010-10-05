@@ -10,6 +10,7 @@
 #include <OEUI/IOEUIRenderSystem.h>
 
 COEUIString_Impl::COEUIString_Impl(IOEUIFont* pFont)
+:IOEUIString(TS("COEUIString_Impl"))
 {
 	Init();
 	m_bOK = SetFont(pFont);

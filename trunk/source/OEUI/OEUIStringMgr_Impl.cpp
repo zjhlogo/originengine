@@ -12,6 +12,7 @@
 #include <assert.h>
 
 COEUIStringMgr_Impl::COEUIStringMgr_Impl()
+:IOEUIStringMgr(TS("COEUIStringMgr_Impl"))
 {
 	assert(!g_pOEUIStringMgr);
 	g_pOEUIStringMgr = this;

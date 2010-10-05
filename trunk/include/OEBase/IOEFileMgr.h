@@ -14,7 +14,7 @@
 class IOEFileMgr : public IOEMgr
 {
 public:
-	IOEFileMgr() {};
+	IOEFileMgr(const tstring& strClassName):IOEMgr(strClassName) {};
 	virtual ~IOEFileMgr() {};
 
 	/*!

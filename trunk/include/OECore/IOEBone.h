@@ -15,7 +15,7 @@
 class IOEBone : public IOEObject
 {
 public:
-	IOEBone() {};
+	IOEBone(const tstring& strClassName):IOEObject(strClassName) {};
 	virtual ~IOEBone() {};
 
 	virtual const tstring& GetName() const = 0;

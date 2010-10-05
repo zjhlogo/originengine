@@ -16,7 +16,7 @@
 class IOEXmlMgr : public IOEMgr
 {
 public:
-	IOEXmlMgr() {};
+	IOEXmlMgr(const tstring& strClassName):IOEMgr(strClassName) {};
 	virtual ~IOEXmlMgr() {};
 
 	virtual IOEXmlDocument* CreateDocument() = 0;

@@ -15,7 +15,7 @@
 class IOEUIRenderSystem : public IOEMgr
 {
 public:
-	IOEUIRenderSystem() {};
+	IOEUIRenderSystem(const tstring& strClassName):IOEMgr(strClassName) {};
 	virtual ~IOEUIRenderSystem() {};
 
 	virtual void SetTexture(IOETexture* pTexture) = 0;

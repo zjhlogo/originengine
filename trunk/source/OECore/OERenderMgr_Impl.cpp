@@ -13,6 +13,7 @@
 #include <assert.h>
 
 COERenderMgr_Impl::COERenderMgr_Impl()
+:IOERenderMgr(TS("COERenderMgr_Impl"))
 {
 	assert(!g_pOERenderMgr);
 	g_pOERenderMgr = this;

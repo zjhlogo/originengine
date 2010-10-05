@@ -9,9 +9,9 @@
 #define __OECORE_IMPL_H__
 
 #include <OECore/IOECore.h>
-#include <OEUI/IOEUIFontMgr.h>
-#include <OEUI/IOEUIStringMgr.h>
 #include <libOEMsg/OEMsgCommand.h>
+#include <vector>
+#include "OEFPSPrinter.h"
 
 class COECore_Impl : public IOECore
 {
@@ -25,6 +25,9 @@ public:
 	virtual void Run();
 	virtual void End();
 
+	virtual IOENode* CreateNewNode();
+	virtual IOENode* GetRootNode();
+
 private:
 	bool Init();
 	void Destroy();
@@ -34,7 +37,8 @@ private:
 
 	void RegisterMessage();
 
-	void CalculateFPS();
+	bool UpdateNodes(IOENode* pNode, float fDetailTime);
+	bool RenderNodes(IOENode* pNode, float fDetailTime);
 
 	bool OnStartPerform(COEMsgCommand& msg);
 	bool OnPreUpdate(COEMsgCommand& msg);
@@ -46,12 +50,8 @@ private:
 
 private:
 	bool m_bRunning;
-
-	float m_fCurrFPS;
-	float m_fLastFPSTime;
-	int m_nFPSCount;
-	IOEUIFont* m_pFontFPS;
-	IOEUIString* m_pStringFPS;
+	IOENode* m_pRootNode;
+	COEFPSPrinter* m_pFPSPrinter;
 
 };
 

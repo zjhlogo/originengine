@@ -14,7 +14,7 @@
 class IOEUIFontMgr : public IOEMgr
 {
 public:
-	IOEUIFontMgr() {};
+	IOEUIFontMgr(const tstring& strClassName):IOEMgr(strClassName) {};
 	virtual ~IOEUIFontMgr() {};
 
 	virtual IOEUIFont* CreateFont(const tstring& strFile) = 0;

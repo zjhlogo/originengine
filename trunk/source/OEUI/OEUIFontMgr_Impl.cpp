@@ -15,6 +15,7 @@
 #include <assert.h>
 
 COEUIFontMgr_Impl::COEUIFontMgr_Impl()
+:IOEUIFontMgr(TS("COEUIFontMgr"))
 {
 	assert(!g_pOEUIFontMgr);
 	g_pOEUIFontMgr = this;

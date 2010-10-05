@@ -9,6 +9,7 @@
 #include <libOEBase/OEOS.h>
 
 COEBone_Impl::COEBone_Impl(const COEFmtSkeleton::BONE& Bone, int nID, IOEFile* pFile)
+:IOEBone(TS("COEBone_Impl"))
 {
 	Init();
 	m_bOK = Create(Bone, nID, pFile);
