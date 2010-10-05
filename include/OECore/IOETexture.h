@@ -14,7 +14,7 @@
 class IOETexture : public IOEObject
 {
 public:
-	IOETexture() {};
+	IOETexture(const tstring& strClassName):IOEObject(strClassName) {};
 	virtual ~IOETexture() {};
 
 	virtual int GetWidth() const = 0;

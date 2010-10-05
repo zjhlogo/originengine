@@ -14,7 +14,7 @@
 class IOERender : public IOEObject
 {
 public:
-	IOERender(uint nType) {m_nType = nType;};
+	IOERender(uint nType, const tstring& strClassName):IOEObject(strClassName) {m_nType = nType;};
 	virtual ~IOERender() {};
 
 	uint GetType() const {return m_nType;};

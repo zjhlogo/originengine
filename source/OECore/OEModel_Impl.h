@@ -27,7 +27,7 @@ public:
 	virtual ~COEModel_Impl();
 
 	virtual void Update(float fDetailTime);
-	virtual void Render();
+	virtual void Render(float fDetailTime);
 
 	virtual IOEMesh* GetMesh();
 

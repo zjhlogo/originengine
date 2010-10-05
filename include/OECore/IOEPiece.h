@@ -14,7 +14,7 @@
 class IOEPiece : public IOEObject
 {
 public:
-	IOEPiece() {};
+	IOEPiece(const tstring& strClassName):IOEObject(strClassName) {};
 	virtual ~IOEPiece() {};
 
 	virtual const tstring& GetName() const = 0;

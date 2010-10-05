@@ -13,6 +13,7 @@
 #include <assert.h>
 
 COEMsgMgr_Impl::COEMsgMgr_Impl()
+:IOEMsgMgr(TS("COEMsgMgr_Impl"))
 {
 	assert(!g_pOEMsgMgr);
 	g_pOEMsgMgr = this;

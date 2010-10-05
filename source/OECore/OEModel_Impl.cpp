@@ -12,6 +12,7 @@
 #include <OECore/IOERenderMgr.h>
 
 COEModel_Impl::COEModel_Impl(const tstring& strFile)
+:IOEModel(TS("COEModel_Impl"))
 {
 	Init();
 	m_bOK = Create(strFile);
@@ -44,7 +45,7 @@ void COEModel_Impl::Update(float fDetailTime)
 	}
 }
 
-void COEModel_Impl::Render()
+void COEModel_Impl::Render(float fDetailTime)
 {
 	for (TV_RENDER::iterator it = m_vRenders.begin(); it != m_vRenders.end(); ++it)
 	{

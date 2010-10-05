@@ -7,68 +7,69 @@
  */
 #include "OEOGLDevice_Impl.h"
 
-COEOGLevice_Impl::COEOGLevice_Impl()
+COEOGLDevice_Impl::COEOGLDevice_Impl()
+:IOEDevice(TS("COEOGLDevice_Impl"))
 {
 	g_pOEDevice = this;
 	m_bOK = Init();
 }
 
-COEOGLevice_Impl::~COEOGLevice_Impl()
+COEOGLDevice_Impl::~COEOGLDevice_Impl()
 {
 	Destroy();
 	g_pOEDevice = NULL;
 }
 
-bool COEOGLevice_Impl::Init()
+bool COEOGLDevice_Impl::Init()
 {
 	return true;
 }
 
-void COEOGLevice_Impl::Destroy()
+void COEOGLDevice_Impl::Destroy()
 {
 	// TODO: 
 }
 
-bool COEOGLevice_Impl::Initialize()
+bool COEOGLDevice_Impl::Initialize()
 {
 	// TODO: 
 	return false;
 }
 
-void COEOGLevice_Impl::Terminate()
+void COEOGLDevice_Impl::Terminate()
 {
 	// TODO: 
 }
 
-void COEOGLevice_Impl::StartPerform()
+void COEOGLDevice_Impl::StartPerform()
 {
 	// TODO: 
 }
 
-void COEOGLevice_Impl::EndPerform()
+void COEOGLDevice_Impl::EndPerform()
 {
 	// TODO: 
 }
 
-float COEOGLevice_Impl::GetCurrTime() const
-{
-	// TODO: 
-	return 0.0f;
-}
-
-float COEOGLevice_Impl::GetDetailTime() const
+float COEOGLDevice_Impl::GetCurrTime() const
 {
 	// TODO: 
 	return 0.0f;
 }
 
-IOEVertDecl* COEOGLevice_Impl::CreateVertDecl(const VERT_DECL_ELEMENT* pElement)
+float COEOGLDevice_Impl::GetDetailTime() const
+{
+	// TODO: 
+	return 0.0f;
+}
+
+IOEVertDecl* COEOGLDevice_Impl::CreateVertDecl(const VERT_DECL_ELEMENT* pElement)
 {
 	// TODO: 
 	return NULL;
 }
 
-bool COEOGLevice_Impl::GetDeviceParam(void* pData, const tstring& strParamName)
+bool COEOGLDevice_Impl::GetDeviceParam(void* pData, const tstring& strParamName)
 {
 	return false;
 }

@@ -13,7 +13,7 @@
 class IOEXmlAttribute : public IOEObject
 {
 public:
-	IOEXmlAttribute(){};
+	IOEXmlAttribute(const tstring& strClassName):IOEObject(strClassName) {};
 	virtual ~IOEXmlAttribute(){};
 
 	virtual const tstring& GetName() = 0;

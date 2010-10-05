@@ -8,12 +8,12 @@
 #include "RenderSystemOGLModule.h"
 #include "OEOGLDevice_Impl.h"
 
-COEOGLevice_Impl* g_pOEOGLDevice_Impl = NULL;
+COEOGLDevice_Impl* g_pOEOGLDevice_Impl = NULL;
 static COEHolder g_OEHolder;
 
 bool CreateSingleton()
 {
-	g_pOEOGLDevice_Impl = new COEOGLevice_Impl();
+	g_pOEOGLDevice_Impl = new COEOGLDevice_Impl();
 	if (!g_pOEOGLDevice_Impl || !g_pOEOGLDevice_Impl->IsOK())
 	{
 		SAFE_DELETE(g_pOEOGLDevice_Impl);

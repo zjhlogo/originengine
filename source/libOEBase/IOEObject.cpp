@@ -7,10 +7,11 @@
  */
 #include <libOEBase/IOEObject.h>
 
-IOEObject::IOEObject()
+IOEObject::IOEObject(const tstring& strClassName)
 {
 	m_bOK = false;
 	m_nRef = 1;
+	m_strClassName = strClassName;
 }
 
 IOEObject::~IOEObject()
@@ -26,6 +27,11 @@ bool IOEObject::IsOK()
 void IOEObject::Release()
 {
 	if (DecRef() <= 0) delete this;
+}
+
+const tstring& IOEObject::GetClassName()
+{
+	return m_strClassName;
 }
 
 int IOEObject::IncRef()

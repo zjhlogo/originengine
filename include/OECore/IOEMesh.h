@@ -15,7 +15,7 @@
 class IOEMesh : public IOEObject
 {
 public:
-	IOEMesh() {};
+	IOEMesh(const tstring& strClassName):IOEObject(strClassName) {};
 	virtual ~IOEMesh() {};
 
 	virtual int GetNumPieces() const = 0;

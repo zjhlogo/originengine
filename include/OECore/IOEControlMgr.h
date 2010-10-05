@@ -14,7 +14,7 @@
 class IOEControlMgr : public IOEMgr
 {
 public:
-	IOEControlMgr() {};
+	IOEControlMgr(const tstring& strClassName):IOEMgr(strClassName) {};
 	virtual ~IOEControlMgr() {};
 
 	virtual bool AddControlHandle(IOEControl* pControl) = 0;

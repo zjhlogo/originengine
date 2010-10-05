@@ -13,6 +13,7 @@
 #include <vector>
 
 COEPiece_Impl::COEPiece_Impl(const COEFmtMesh::PIECE& Piece, IOEFile* pFile)
+:IOEPiece(TS("COEPiece_Impl"))
 {
 	Init();
 	m_bOK = Create(Piece, pFile);

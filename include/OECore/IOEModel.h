@@ -8,17 +8,14 @@
 #ifndef __IOEMODEL_H__
 #define __IOEMODEL_H__
 
-#include "../libOEBase/IOEObject.h"
+#include "IOERenderableObject.h"
 #include "IOEMesh.h"
 
-class IOEModel : public IOEObject
+class IOEModel : public IOERenderableObject
 {
 public:
-	IOEModel() {};
+	IOEModel(const tstring& strClassName):IOERenderableObject(strClassName) {};
 	virtual ~IOEModel() {};
-
-	virtual void Update(float fDetailTime) = 0;
-	virtual void Render() = 0;
 
 	virtual IOEMesh* GetMesh() = 0;
 };

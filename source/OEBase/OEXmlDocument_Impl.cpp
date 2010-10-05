@@ -13,6 +13,7 @@
 #include <libOEBase/OEOS.h>
 
 COEXmlDocument_Impl::COEXmlDocument_Impl()
+:IOEXmlDocument(TS("COEXmlDocument_Impl"))
 {
 	m_bOK = Init();
 }

@@ -15,6 +15,7 @@
 extern IDirect3DDevice9* g_pd3dDevice;
 
 COED3DRenderSystem_Impl::COED3DRenderSystem_Impl()
+:IOERenderSystem(TS("COED3DRenderSystem_Impl"))
 {
 	assert(!g_pOERenderSystem);
 	g_pOERenderSystem = this;

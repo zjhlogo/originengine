@@ -23,8 +23,8 @@ public:
 	} MSG_GENERATE_MAP;
 
 public:
-	IOEMsgMgr(){};
-	virtual ~IOEMsgMgr(){};
+	IOEMsgMgr(const tstring& strClassName):IOEMgr(strClassName) {};
+	virtual ~IOEMsgMgr() {};
 
 	virtual bool AddMsgDB(const MSG_GENERATE_MAP* pMsgDB) = 0;
 

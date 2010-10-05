@@ -61,6 +61,7 @@ static void FreeModules(COEHolder& Holder)
 }
 
 IOEApp::IOEApp()
+:IOEMgr(TS("IOEApp"))
 {
 	assert(!g_pOEApp);
 	g_pOEApp = this;

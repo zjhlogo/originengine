@@ -16,6 +16,7 @@
 extern IDirect3DDevice9* g_pd3dDevice;
 
 COED3DShader_Impl::COED3DShader_Impl(const VERT_DECL_ELEMENT* pElement, const tstring& strFileName)
+:IOEShader(TS("COED3DShader_Impl"))
 {
 	Init();
 	m_bOK = Create(pElement, strFileName);

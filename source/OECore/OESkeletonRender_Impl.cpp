@@ -14,7 +14,7 @@
 #include <assert.h>
 
 COESkeletonRender_Impl::COESkeletonRender_Impl()
-:IOERender(OERT_SKELETON)
+:IOERender(OERT_SKELETON, TS("COESkeletonRender_Impl"))
 {
 	m_bOK = Init();
 }

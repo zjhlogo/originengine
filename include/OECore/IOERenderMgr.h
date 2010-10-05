@@ -14,7 +14,7 @@
 class IOERenderMgr : public IOEMgr
 {
 public:
-	IOERenderMgr() {};
+	IOERenderMgr(const tstring& strClassName):IOEMgr(strClassName) {};
 	virtual ~IOERenderMgr() {};
 
 	virtual bool AddRenderHandle(IOERender* pRender) = 0;

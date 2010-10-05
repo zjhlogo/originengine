@@ -16,7 +16,7 @@
 class IOEShaderMgr : public IOEMgr
 {
 public:
-	IOEShaderMgr() {};
+	IOEShaderMgr(const tstring& strClassName):IOEMgr(strClassName) {};
 	virtual ~IOEShaderMgr() {};
 
 	virtual IOEShader* CreateShader(const VERT_DECL_ELEMENT* pElement, const tstring& strFile) = 0;

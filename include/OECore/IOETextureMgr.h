@@ -14,7 +14,7 @@
 class IOETextureMgr : public IOEMgr
 {
 public:
-	IOETextureMgr() {};
+	IOETextureMgr(const tstring& strClassName):IOEMgr(strClassName) {};
 	virtual ~IOETextureMgr() {};
 
 	virtual IOETexture* CreateTextureFromFile(const tstring& strFile) = 0;

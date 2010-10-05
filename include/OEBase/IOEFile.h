@@ -20,7 +20,7 @@ public:
 	};
 
 public:
-	IOEFile() {};
+	IOEFile(const tstring& strClassName):IOEObject(strClassName) {};
 	virtual ~IOEFile() {};
 
 	/*!
