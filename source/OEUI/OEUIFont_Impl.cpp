@@ -8,7 +8,6 @@
 #include "OEUIFont_Impl.h"
 
 COEUIFont_Impl::COEUIFont_Impl()
-:IOEUIFont(TS("COEUIFont_Impl"))
 {
 	m_bOK = Init();
 }

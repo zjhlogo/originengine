@@ -8,7 +8,6 @@
 #include "OEXmlAttribute_Impl.h"
 
 COEXmlAttribute_Impl::COEXmlAttribute_Impl(const tstring& strName)
-:IOEXmlAttribute(TS("COEXmlAttribute_Impl"))
 {
 	m_bOK = Init();
 	SetName(strName);

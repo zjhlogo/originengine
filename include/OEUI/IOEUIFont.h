@@ -34,7 +34,9 @@ public:
 	} CHAR_INFO;
 
 public:
-	IOEUIFont(const tstring& strClassName):IOEObject(strClassName) {};
+	RTTI_DEF(IOEUIFont, IOEObject);
+
+	IOEUIFont() {};
 	virtual ~IOEUIFont() {};
 
 	virtual float GetLineHeight() const = 0;

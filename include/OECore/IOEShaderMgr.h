@@ -16,7 +16,9 @@
 class IOEShaderMgr : public IOEMgr
 {
 public:
-	IOEShaderMgr(const tstring& strClassName):IOEMgr(strClassName) {};
+	RTTI_DEF(IOEShaderMgr, IOEMgr);
+
+	IOEShaderMgr() {};
 	virtual ~IOEShaderMgr() {};
 
 	virtual IOEShader* CreateShader(const VERT_DECL_ELEMENT* pElement, const tstring& strFile) = 0;

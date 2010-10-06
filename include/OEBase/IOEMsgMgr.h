@@ -23,7 +23,9 @@ public:
 	} MSG_GENERATE_MAP;
 
 public:
-	IOEMsgMgr(const tstring& strClassName):IOEMgr(strClassName) {};
+	RTTI_DEF(IOEMsgMgr, IOEMgr);
+
+	IOEMsgMgr() {};
 	virtual ~IOEMsgMgr() {};
 
 	virtual bool AddMsgDB(const MSG_GENERATE_MAP* pMsgDB) = 0;

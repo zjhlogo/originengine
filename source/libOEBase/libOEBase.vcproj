@@ -306,6 +306,10 @@
 				RelativePath=".\OEOS.cpp"
 				>
 			</File>
+			<File
+				RelativePath=".\OERtti.cpp"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -342,6 +346,10 @@
 			</File>
 			<File
 				RelativePath="..\..\include\libOEBase\OEOS.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\include\libOEBase\OERtti.h"
 				>
 			</File>
 		</Filter>

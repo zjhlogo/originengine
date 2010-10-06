@@ -13,16 +13,13 @@
 class IOERenderableObject : public IOEObject
 {
 public:
-	IOERenderableObject(const tstring& strRenderableClassName):IOEObject(TS("IOERenderableObject")) {m_strRenderableClassName = strRenderableClassName;};
-	virtual ~IOERenderableObject() {};
+	RTTI_DEF(IOERenderableObject, IOEObject);
 
-	const tstring& GetClassName() {return m_strRenderableClassName;};
+	IOERenderableObject() {};
+	virtual ~IOERenderableObject() {};
 
 	virtual void Update(float fDetailTime) = 0;
 	virtual void Render(float fDetailTime) = 0;
-
-private:
-	tstring m_strRenderableClassName;
 
 };
 #endif // __IOERENDERABLEOBJECT_H__

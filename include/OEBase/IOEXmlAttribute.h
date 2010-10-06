@@ -13,7 +13,9 @@
 class IOEXmlAttribute : public IOEObject
 {
 public:
-	IOEXmlAttribute(const tstring& strClassName):IOEObject(strClassName) {};
+	RTTI_DEF(IOEXmlAttribute, IOEObject);
+
+	IOEXmlAttribute() {};
 	virtual ~IOEXmlAttribute(){};
 
 	virtual const tstring& GetName() = 0;

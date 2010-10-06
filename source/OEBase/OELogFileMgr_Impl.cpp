@@ -12,7 +12,6 @@
 #include <assert.h>
 
 COELogFileMgr_Impl::COELogFileMgr_Impl()
-:IOELogFileMgr(TS("COELogFileMgr_Impl"))
 {
 	assert(!g_pOELogFileMgr);
 	g_pOELogFileMgr = this;

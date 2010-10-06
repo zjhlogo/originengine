@@ -8,7 +8,6 @@
 #include "OEFile_Impl.h"
 
 COEFile_Impl::COEFile_Impl(const tstring& strFileName, uint nFlag)
-:IOEFile(TS("COEFile_Impl"))
 {
 	Init();
 	m_bOK = Open(strFileName, nFlag);

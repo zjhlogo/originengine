@@ -13,7 +13,6 @@
 #include <OECore/IOETextureMgr.h>
 
 COEUIBitmapFont_Impl::COEUIBitmapFont_Impl(const tstring& strFile)
-:IOEUIFont(TS("COEUIBitmapFont_Impl"))
 {
 	Init();
 	m_bOK = Create(strFile);

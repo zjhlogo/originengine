@@ -14,7 +14,9 @@
 class IOEDevice : public IOEMgr
 {
 public:
-	IOEDevice(const tstring& strClassName):IOEMgr(strClassName) {};
+	RTTI_DEF(IOEDevice, IOEMgr);
+
+	IOEDevice() {};
 	virtual ~IOEDevice() {};
 
 	virtual void StartPerform() = 0;

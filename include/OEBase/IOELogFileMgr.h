@@ -14,7 +14,9 @@
 class IOELogFileMgr : public IOEMgr
 {
 public:
-	IOELogFileMgr(const tstring& strClassName):IOEMgr(strClassName) {};
+	RTTI_DEF(IOELogFileMgr, IOEMgr);
+
+	IOELogFileMgr() {};
 	virtual ~IOELogFileMgr() {};
 
 	virtual void SetLogFile(const tstring& strFile) = 0;

@@ -14,7 +14,9 @@
 class IOEUIStringMgr : public IOEMgr
 {
 public:
-	IOEUIStringMgr(const tstring& strClassName):IOEMgr(strClassName) {};
+	RTTI_DEF(IOEUIStringMgr, IOEMgr);
+
+	IOEUIStringMgr() {};
 	virtual ~IOEUIStringMgr() {};
 
 	virtual IOEUIString* CreateUIString(IOEUIFont* pFont) = 0;

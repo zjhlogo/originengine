@@ -15,7 +15,9 @@
 class IOEMesh : public IOEObject
 {
 public:
-	IOEMesh(const tstring& strClassName):IOEObject(strClassName) {};
+	RTTI_DEF(IOEMesh, IOEObject);
+
+	IOEMesh() {};
 	virtual ~IOEMesh() {};
 
 	virtual int GetNumPieces() const = 0;

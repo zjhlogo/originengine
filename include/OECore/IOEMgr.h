@@ -13,7 +13,9 @@
 class IOEMgr : public IOEObject
 {
 public:
-	IOEMgr(const tstring& strClassName):IOEObject(strClassName) {};
+	RTTI_DEF(IOEMgr, IOEObject);
+
+	IOEMgr() {};
 	virtual ~IOEMgr() {};
 
 	virtual bool Initialize() = 0;

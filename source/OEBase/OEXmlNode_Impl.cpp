@@ -11,7 +11,6 @@
 #include <OEBase/IOEXmlMgr.h>
 
 COEXmlNode_Impl::COEXmlNode_Impl(const tstring& strName)
-:IOEXmlNode(TS("COEXmlNode_Impl"))
 {
 	m_bOK = Init();
 	SetName(strName);

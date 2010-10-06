@@ -16,7 +16,6 @@
 #include <assert.h>
 
 COEResMgr_Impl::COEResMgr_Impl()
-:IOEResMgr(TS("COEResMgr_Impl"))
 {
 	assert(!g_pOEResMgr);
 	g_pOEResMgr = this;

@@ -18,7 +18,9 @@
 class IOEMaterial : public IOEObject
 {
 public:
-	IOEMaterial(const tstring& strClassName):IOEObject(strClassName) {};
+	RTTI_DEF(IOEMaterial, IOEObject);
+
+	IOEMaterial() {};
 	virtual ~IOEMaterial() {};
 
 	virtual int GetID() = 0;

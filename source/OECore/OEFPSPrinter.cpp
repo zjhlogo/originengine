@@ -10,7 +10,6 @@
 #include <libOEBase/OEOS.h>
 
 COEFPSPrinter::COEFPSPrinter()
-:IOERenderableObject(TS("COEFPSPrinter"))
 {
 	m_fCurrFPS = 0.0f;
 	m_fLastFPSTime = 0.0f;

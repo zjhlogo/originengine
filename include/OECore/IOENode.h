@@ -14,7 +14,9 @@
 class IOENode : public IOEObject
 {
 public:
-	IOENode(const tstring& strClassName):IOEObject(strClassName) {};
+	RTTI_DEF(IOENode, IOEObject);
+
+	IOENode() {};
 	virtual ~IOENode() {};
 
 	virtual bool AddNode(IOENode* pNode) = 0;

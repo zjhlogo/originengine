@@ -14,7 +14,9 @@
 class IOETexture : public IOEObject
 {
 public:
-	IOETexture(const tstring& strClassName):IOEObject(strClassName) {};
+	RTTI_DEF(IOETexture, IOEObject);
+
+	IOETexture() {};
 	virtual ~IOETexture() {};
 
 	virtual int GetWidth() const = 0;

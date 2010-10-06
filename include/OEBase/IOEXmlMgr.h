@@ -16,7 +16,9 @@
 class IOEXmlMgr : public IOEMgr
 {
 public:
-	IOEXmlMgr(const tstring& strClassName):IOEMgr(strClassName) {};
+	RTTI_DEF(IOEXmlMgr, IOEMgr);
+
+	IOEXmlMgr() {};
 	virtual ~IOEXmlMgr() {};
 
 	virtual IOEXmlDocument* CreateDocument() = 0;

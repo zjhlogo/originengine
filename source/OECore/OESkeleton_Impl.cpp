@@ -12,7 +12,6 @@
 #include <OECore/OEFmtSkeleton.h>
 
 COESkeleton_Impl::COESkeleton_Impl(const tstring& strFile)
-:IOESkeleton(TS("COESkeleton_Impl"))
 {
 	Init();
 	m_bOK = CreateBones(strFile);

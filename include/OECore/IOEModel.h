@@ -14,7 +14,9 @@
 class IOEModel : public IOERenderableObject
 {
 public:
-	IOEModel(const tstring& strClassName):IOERenderableObject(strClassName) {};
+	RTTI_DEF(IOEModel, IOERenderableObject);
+
+	IOEModel() {};
 	virtual ~IOEModel() {};
 
 	virtual IOEMesh* GetMesh() = 0;

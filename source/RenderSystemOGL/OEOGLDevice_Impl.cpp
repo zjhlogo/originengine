@@ -8,7 +8,6 @@
 #include "OEOGLDevice_Impl.h"
 
 COEOGLDevice_Impl::COEOGLDevice_Impl()
-:IOEDevice(TS("COEOGLDevice_Impl"))
 {
 	g_pOEDevice = this;
 	m_bOK = Init();

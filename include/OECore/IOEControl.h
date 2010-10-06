@@ -14,7 +14,9 @@
 class IOEControl : public IOEObject
 {
 public:
-	IOEControl(uint nType, const tstring& strClassName):IOEObject(strClassName) {m_nType = nType;};
+	RTTI_DEF(IOEControl, IOEObject);
+
+	IOEControl(uint nType) {m_nType = nType;};
 	virtual ~IOEControl() {};
 
 	uint GetType() const {return m_nType;};

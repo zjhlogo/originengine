@@ -21,7 +21,9 @@ public:
 	};
 
 public:
-	IOEXmlNode(const tstring& strClassName):IOEObject(strClassName) {};
+	RTTI_DEF(IOEXmlNode, IOEObject);
+
+	IOEXmlNode() {};
 	virtual ~IOEXmlNode() {};
 
 	virtual const tstring& GetName() = 0;

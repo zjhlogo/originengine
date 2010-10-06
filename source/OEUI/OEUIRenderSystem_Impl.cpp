@@ -12,7 +12,6 @@
 #include <assert.h>
 
 COEUIRenderSystem_Impl::COEUIRenderSystem_Impl()
-:IOEUIRenderSystem(TS("COEUIRenderSystem_Impl"))
 {
 	assert(!g_pOEUIRenderSystem);
 	g_pOEUIRenderSystem = this;

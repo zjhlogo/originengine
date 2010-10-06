@@ -11,7 +11,7 @@
 #include <OECore/OERenderSystemUtil.h>
 
 COEBoundingBoxRender_Impl::COEBoundingBoxRender_Impl()
-:IOERender(OERT_BOUNDINGBOX, TS("COEBoundingBoxRender_Impl"))
+:IOERender(OERT_BOUNDINGBOX)
 {
 	m_bOK = Init();
 }

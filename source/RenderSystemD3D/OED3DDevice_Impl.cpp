@@ -40,7 +40,6 @@ static const float MAX_FPS = 60.0f;
 static const tstring PARAM_HWIND = TS("HWIND");
 
 COED3DDevice_Impl::COED3DDevice_Impl()
-:IOEDevice(TS("COED3DDevice_Impl"))
 {
 	assert(!g_pOEDevice);
 	g_pOEDevice = this;

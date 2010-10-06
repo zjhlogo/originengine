@@ -17,7 +17,9 @@
 class IOEShader : public IOEObject
 {
 public:
-	IOEShader(const tstring& strClassName):IOEObject(strClassName) {};
+	RTTI_DEF(IOEShader, IOEObject);
+
+	IOEShader() {};
 	virtual ~IOEShader() {};
 
 	virtual bool SetInt(const tstring& strParamName, int nValue) = 0;
