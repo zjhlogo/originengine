@@ -23,6 +23,8 @@ public:
 	};
 
 public:
+	RTTI_DEF(COEUIRenderSystem_Impl, IOEUIRenderSystem);
+
 	COEUIRenderSystem_Impl();
 	virtual ~COEUIRenderSystem_Impl();
 

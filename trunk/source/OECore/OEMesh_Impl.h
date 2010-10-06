@@ -14,6 +14,8 @@
 class COEMesh_Impl : public IOEMesh
 {
 public:
+	RTTI_DEF(COEMesh_Impl, IOEMesh);
+
 	COEMesh_Impl(const tstring& strFile);
 	virtual ~COEMesh_Impl();
 

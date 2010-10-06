@@ -40,6 +40,8 @@ public:
 	typedef std::vector<KEYFRAME_SCALE> TV_KEYFRAME_SCALE;
 
 public:
+	RTTI_DEF(COEBone_Impl, IOEBone);
+
 	COEBone_Impl(const COEFmtSkeleton::BONE& Bone, int nID, IOEFile* pFile);
 	virtual ~COEBone_Impl();
 

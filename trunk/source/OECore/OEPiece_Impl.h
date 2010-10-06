@@ -17,6 +17,8 @@
 class COEPiece_Impl : public IOEPiece
 {
 public:
+	RTTI_DEF(COEPiece_Impl, IOEPiece);
+
 	COEPiece_Impl(const COEFmtMesh::PIECE& Piece, IOEFile* pFile);
 	virtual ~COEPiece_Impl();
 

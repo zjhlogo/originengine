@@ -21,6 +21,8 @@ public:
 	typedef std::vector<COED3DVertDecl_Impl*> TV_OED3D_VERTDECL;
 
 public:
+	RTTI_DEF(COED3DDevice_Impl, IOEDevice);
+
 	COED3DDevice_Impl();
 	virtual ~COED3DDevice_Impl();
 

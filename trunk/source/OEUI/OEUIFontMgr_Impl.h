@@ -17,6 +17,8 @@ public:
 	typedef std::map<tstring, IOEUIFont*> TM_FONT;
 
 public:
+	RTTI_DEF(COEUIFontMgr_Impl, IOEUIFontMgr);
+
 	COEUIFontMgr_Impl();
 	virtual ~COEUIFontMgr_Impl();
 

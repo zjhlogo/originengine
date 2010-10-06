@@ -18,6 +18,8 @@ public:
 	typedef std::vector<IOEObject*> TV_OBJECT;
 
 public:
+	RTTI_DEF(COENode_Impl, IOENode);
+
 	COENode_Impl();
 	virtual ~COENode_Impl();
 

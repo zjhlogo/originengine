@@ -14,6 +14,8 @@
 class COEXmlDocument_Impl : public IOEXmlDocument
 {
 public:
+	RTTI_DEF(COEXmlDocument_Impl, IOEXmlDocument);
+
 	COEXmlDocument_Impl();
 	virtual ~COEXmlDocument_Impl();
 

@@ -30,6 +30,8 @@ public:
 	typedef std::map<uint, MSG_GENERATE_FUNC> TM_MSG_GENERATE_FUNC;
 
 public:
+	RTTI_DEF(COEMsgMgr_Impl, IOEMsgMgr);
+
 	COEMsgMgr_Impl();
 	virtual ~COEMsgMgr_Impl();
 

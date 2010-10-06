@@ -13,6 +13,8 @@
 class COEFileMgr_Impl : public IOEFileMgr
 {
 public:
+	RTTI_DEF(COEFileMgr_Impl, IOEFileMgr);
+
 	COEFileMgr_Impl();
 	virtual ~COEFileMgr_Impl();
 

@@ -24,6 +24,8 @@ public:
 	typedef std::vector<IOETexture*> VOETEXTURE;
 
 public:
+	RTTI_DEF(COEUIBitmapFont_Impl, IOEUIFont);
+
 	COEUIBitmapFont_Impl(const tstring& strFile);
 	virtual ~COEUIBitmapFont_Impl();
 

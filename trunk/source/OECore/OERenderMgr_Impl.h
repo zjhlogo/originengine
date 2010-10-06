@@ -17,6 +17,8 @@ public:
 	typedef std::map<uint, IOERender*> TM_RENDER;
 
 public:
+	RTTI_DEF(COERenderMgr_Impl, IOERenderMgr);
+
 	COERenderMgr_Impl();
 	virtual ~COERenderMgr_Impl();
 

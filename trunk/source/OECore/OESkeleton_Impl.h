@@ -13,6 +13,8 @@
 class COESkeleton_Impl : public IOESkeleton
 {
 public:
+	RTTI_DEF(COESkeleton_Impl, IOESkeleton);
+
 	COESkeleton_Impl(const tstring& strFile);
 	virtual ~COESkeleton_Impl();
 

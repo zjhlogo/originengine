@@ -14,6 +14,8 @@
 class COED3DVertDecl_Impl : public IOEVertDecl
 {
 public:
+	RTTI_DEF(COED3DVertDecl_Impl, IOEVertDecl);
+
 	COED3DVertDecl_Impl(const VERT_DECL_ELEMENT* pElement);
 	virtual ~COED3DVertDecl_Impl();
 

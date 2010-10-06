@@ -14,6 +14,8 @@
 class COELogFileMgr_Impl : public IOELogFileMgr
 {
 public:
+	RTTI_DEF(COELogFileMgr_Impl, IOELogFileMgr);
+
 	COELogFileMgr_Impl();
 	virtual ~COELogFileMgr_Impl();
 

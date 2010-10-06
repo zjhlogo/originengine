@@ -13,6 +13,8 @@
 class COEOGLDevice_Impl : public IOEDevice
 {
 public:
+	RTTI_DEF(COEOGLDevice_Impl, IOEDevice);
+
 	COEOGLDevice_Impl();
 	virtual ~COEOGLDevice_Impl();
 
