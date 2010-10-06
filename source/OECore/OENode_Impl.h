@@ -34,8 +34,15 @@ public:
 	virtual int GetNumAttachedObjects();
 
 	virtual void SetPosition(const CVector3& vPos);
+	virtual const CVector3& GetPosition();
+
 	virtual void SetRotation(const CQuaternion& qRot);
-	virtual void GetTransform(CMatrix4x4& matTrans);
+	virtual const CQuaternion& GetRotation();
+
+	virtual void Update(const CMatrix4x4& matParent);
+
+	virtual void GetLocalMatrix(CMatrix4x4& matLocal);
+	virtual const CMatrix4x4& GetFinalMatrix();
 
 private:
 	TV_NODE m_vNodes;
@@ -43,6 +50,8 @@ private:
 
 	CVector3 m_vPos;
 	CQuaternion m_qRot;
+
+	CMatrix4x4 m_matFinal;
 
 };
 #endif // __OENODE_IMPL_H__

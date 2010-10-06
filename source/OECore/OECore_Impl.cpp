@@ -228,6 +228,26 @@ void COECore_Impl::RegisterMessage()
 	g_pOEMsgMgr->RegisterMessage(OMI_POST_RENDER, this, (MSG_FUNC)&COECore_Impl::OnPostRender);
 }
 
+void COECore_Impl::UpdateNodes(IOENode* pNode, bool bParentDirty, const CMatrix4x4& matParent)
+{
+	if (!pNode) return;
+
+	if (bParentDirty || pNode->IsDirty())
+	{
+		pNode->Update(matParent);
+		pNode->ClearDirty();
+		bParentDirty = true;
+	}
+
+	const CMatrix4x4& matFinal = pNode->GetFinalMatrix();
+
+	int nNumChildNodes = pNode->GetNumChildNodes();
+	for (int i = 0; i < nNumChildNodes; ++i)
+	{
+		UpdateNodes(pNode->GetChildNode(i), bParentDirty, matFinal);
+	}
+}
+
 void COECore_Impl::QueryObjects(IOENode* pNode)
 {
 	if (!pNode) return;
@@ -303,10 +323,13 @@ bool COECore_Impl::OnUpdate(COEMsgCommand& msg)
 
 bool COECore_Impl::OnPostUpdate(COEMsgCommand& msg)
 {
+	CMatrix4x4 matParent;
+	UpdateNodes(m_pRootNode, false, matParent);
+
 	m_sRenderableObjects.clear();
 	m_vRenderObjectInfo.clear();
-
 	QueryObjects(m_pRootNode);
+
 	UpdateObjects(g_pOEDevice->GetDetailTime());
 
 	return true;

@@ -16,7 +16,7 @@ class IOENode : public IOEObject
 public:
 	RTTI_DEF(IOENode, IOEObject);
 
-	IOENode() {};
+	IOENode() {m_bDirty = true;};
 	virtual ~IOENode() {};
 
 	virtual bool AddNode(IOENode* pNode) = 0;
@@ -30,8 +30,22 @@ public:
 	virtual int GetNumAttachedObjects() = 0;
 
 	virtual void SetPosition(const CVector3& vPos) = 0;
+	virtual const CVector3& GetPosition() = 0;
+
 	virtual void SetRotation(const CQuaternion& qRot) = 0;
-	virtual void GetTransform(CMatrix4x4& matTrans) = 0;
+	virtual const CQuaternion& GetRotation() = 0;
+
+	virtual void GetLocalMatrix(CMatrix4x4& matLocal) = 0;
+	virtual const CMatrix4x4& GetFinalMatrix() = 0;
+
+	virtual void Update(const CMatrix4x4& matParent) = 0;
+
+	virtual bool IsDirty() {return m_bDirty;};
+	virtual void SetDirty() {m_bDirty = true;};
+	virtual void ClearDirty() {m_bDirty = false;};
+
+private:
+	bool m_bDirty;
 
 };
 #endif // __IOENODE_H__

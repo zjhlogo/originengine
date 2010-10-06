@@ -51,6 +51,7 @@ private:
 
 	void RegisterMessage();
 
+	void UpdateNodes(IOENode* pNode, bool bParentDirty, const CMatrix4x4& matParent);
 	void QueryObjects(IOENode* pNode);
 	void UpdateObjects(float fDetailTime);
 	void RenderObjects(float fDetailTime);

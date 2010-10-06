@@ -30,9 +30,10 @@ bool COESkinMeshRender_Impl::Render(IOERenderData* pRenderData)
 	if (!pMesh) return false;
 	int nNumPiece = pMesh->GetNumPieces();
 
-	CMatrix4x4 matWorldViewProj;
-	pRenderData->GetNode()->GetTransform(matWorldViewProj);
-	g_pOERenderSystem->GetTransform(matWorldViewProj, TT_WORLD_VIEW_PROJ);
+	CMatrix4x4 matWorld = pRenderData->GetNode()->GetFinalMatrix();
+
+	CMatrix4x4 matWorldViewProj = matWorld;
+	g_pOERenderSystem->GetTransform(matWorldViewProj, TT_VIEW_PROJ);
 
 	CDefaultRenderState DefaultState;
 
@@ -54,6 +55,7 @@ bool COESkinMeshRender_Impl::Render(IOERenderData* pRenderData)
 		msg.SetShader(pShader);
 		g_pOEMsgMgr->InvokeMessage(&msg);
 
+		pShader->SetMatrix(TS("g_matInvWorld"), matWorld.Inverse());
 		pShader->SetMatrix(TS("g_matWorldViewProj"), matWorldViewProj);
 		pShader->SetTexture(TS("g_texDiffuse"), pMaterial->GetTexture(MTT_DIFFUSE));
 		pShader->SetTexture(TS("g_texNormal"), pMaterial->GetTexture(MTT_NORMAL));

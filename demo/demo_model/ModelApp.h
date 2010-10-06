@@ -32,6 +32,9 @@ private:
 
 private:
 	IOEModel* m_pModel;
+	IOENode* m_pNodeRoot;
+	IOENode* m_pNode1;
+	IOENode* m_pNode2;
 
 };
 #endif // __MODELAPP_H__
