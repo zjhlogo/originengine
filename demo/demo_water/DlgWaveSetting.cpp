@@ -195,10 +195,10 @@ void CDlgWaveSetting::InitCtrlInfo()
 	InitCtrlInfoItem(CIT_SPEED3, wxT("IDC_SLD_SPEED3"), wxT("IDC_LBL_SPEED3"), 0, 100, 0.0f, 1.0f, m_vVecSpeed.z);
 	InitCtrlInfoItem(CIT_SPEED4, wxT("IDC_SLD_SPEED4"), wxT("IDC_LBL_SPEED4"), 0, 100, 0.0f, 1.0f, m_vVecSpeed.w);
 
-	InitCtrlInfoItem(CIT_DIR1, wxT("IDC_SLD_DIRECTION1"), wxT("IDC_LBL_DIRECTION1"), 0, 100, 0.0f, OEMATH_2PI, m_vVecDir.x);
-	InitCtrlInfoItem(CIT_DIR2, wxT("IDC_SLD_DIRECTION2"), wxT("IDC_LBL_DIRECTION2"), 0, 100, 0.0f, OEMATH_2PI, m_vVecDir.y);
-	InitCtrlInfoItem(CIT_DIR3, wxT("IDC_SLD_DIRECTION3"), wxT("IDC_LBL_DIRECTION3"), 0, 100, 0.0f, OEMATH_2PI, m_vVecDir.z);
-	InitCtrlInfoItem(CIT_DIR4, wxT("IDC_SLD_DIRECTION4"), wxT("IDC_LBL_DIRECTION4"), 0, 100, 0.0f, OEMATH_2PI, m_vVecDir.w);
+	InitCtrlInfoItem(CIT_DIR1, wxT("IDC_SLD_DIRECTION1"), wxT("IDC_LBL_DIRECTION1"), 0, 100, 0.0f, COEMath::PIX2, m_vVecDir.x);
+	InitCtrlInfoItem(CIT_DIR2, wxT("IDC_SLD_DIRECTION2"), wxT("IDC_LBL_DIRECTION2"), 0, 100, 0.0f, COEMath::PIX2, m_vVecDir.y);
+	InitCtrlInfoItem(CIT_DIR3, wxT("IDC_SLD_DIRECTION3"), wxT("IDC_LBL_DIRECTION3"), 0, 100, 0.0f, COEMath::PIX2, m_vVecDir.z);
+	InitCtrlInfoItem(CIT_DIR4, wxT("IDC_SLD_DIRECTION4"), wxT("IDC_LBL_DIRECTION4"), 0, 100, 0.0f, COEMath::PIX2, m_vVecDir.w);
 
 	InitCtrlInfoItem(CIT_HEIGHT1, wxT("IDC_SLD_HEIGHT1"), wxT("IDC_LBL_HEIGHT1"), 0, 100, 0.0f, 100.0f, m_vVecHeight.x);
 	InitCtrlInfoItem(CIT_HEIGHT2, wxT("IDC_SLD_HEIGHT2"), wxT("IDC_LBL_HEIGHT2"), 0, 100, 0.0f, 100.0f, m_vVecHeight.y);

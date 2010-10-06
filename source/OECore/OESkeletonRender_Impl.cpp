@@ -14,7 +14,6 @@
 #include <assert.h>
 
 COESkeletonRender_Impl::COESkeletonRender_Impl()
-:IOERender(OERT_SKELETON)
 {
 	m_bOK = Init();
 }
@@ -58,7 +57,9 @@ bool COESkeletonRender_Impl::Render(IOERenderData* pRenderData)
 	CDefaultRenderState DefaultState;
 
 	CMatrix4x4 matWorldViewProj;
+	pRenderData->GetNode()->GetTransform(matWorldViewProj);
 	g_pOERenderSystem->GetTransform(matWorldViewProj, TT_WORLD_VIEW_PROJ);
+
 	m_pShader->SetMatrix(TS("g_matWorldViewProj"), matWorldViewProj);
 	g_pOERenderSystem->SetShader(m_pShader);
 	g_pOERenderSystem->DrawLineList(&m_vVerts[0], m_vVerts.size(), &m_vIndis[0], m_vIndis.size());
@@ -70,7 +71,7 @@ COESkinMeshRenderData_Impl* COESkeletonRender_Impl::ConvertData(IOERenderData* p
 {
 	if (!pRenderData) return NULL;
 
-	if (pRenderData->GetType() != OERDT_SKINMESH) return NULL;
+	if (!pRenderData->GetRtti()->IsType(TS("COESkinMeshRenderData_Impl"))) return NULL;
 
 	return (COESkinMeshRenderData_Impl*)pRenderData;
 }

@@ -41,15 +41,15 @@ void COEControlMgr_Impl::Terminate()
 
 bool COEControlMgr_Impl::AddControlHandle(IOEControl* pControl)
 {
-	if (GetControl(pControl->GetType())) return false;
+	if (GetControl(pControl->GetRtti()->GetClassName())) return false;
 
-	m_ControlMap.insert(std::make_pair(pControl->GetType(), pControl));
+	m_ControlMap.insert(std::make_pair(pControl->GetRtti()->GetClassName(), pControl));
 	return true;
 }
 
-IOEControl* COEControlMgr_Impl::GetControl(uint nID)
+IOEControl* COEControlMgr_Impl::GetControl(const tstring& strClassName)
 {
-	TM_CONTROL::iterator itfound = m_ControlMap.find(nID);
+	TM_CONTROL::iterator itfound = m_ControlMap.find(strClassName);
 	if (itfound == m_ControlMap.end()) return NULL;
 
 	return itfound->second;

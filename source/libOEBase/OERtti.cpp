@@ -18,7 +18,7 @@ COERtti::~COERtti()
 	// TODO: 
 }
 
-const tstring& COERtti::GetTypeName() const
+const tstring& COERtti::GetClassName() const
 {
 	return m_strTypeName;
 }
@@ -39,7 +39,7 @@ bool COERtti::IsDerived(const tstring& strTypeName) const
 
 	while (pRtti)
 	{
-		if (pRtti->GetTypeName() == strTypeName) return true;
+		if (pRtti->GetClassName() == strTypeName) return true;
 		pRtti = pRtti->GetBaseRtti();
 	}
 

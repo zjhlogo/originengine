@@ -8,14 +8,6 @@
 #ifndef __OEMATH_H__
 #define __OEMATH_H__
 
-extern const float OEMATH_PI;			// pi
-extern const float OEMATH_2PI;			// 2*pi
-extern const float OEMATH_G;			// acceleration due to gravity, ft/s^2
-extern const float OEMATH_RHO;			// desity of air at sea level, slugs/ft^3
-extern const float OEMATH_TOL;			// float type tolerance
-extern const float OEMATH_FLOAT_MIN;	// 1.175494351e-38F
-extern const float OEMATH_FLOAT_MAX;	// 3.402823466e+38F
-
 #include "Vector3.h"
 #include "Vector4.h"
 #include "Matrix4x4.h"
@@ -55,6 +47,21 @@ public:
 
 	static float Max(float a, float b);
 	static float Min(float a, float b);
+
+public:
+	static const float PI_2;		// pi/2
+	static const float PI;			// pi
+	static const float PIX2;		// pi*2
+	static const float G;			// acceleration due to gravity, ft/s^2
+	static const float RHO;			// desity of air at sea level, slugs/ft^3
+	static const float TOL;			// float type tolerance
+	static const float FLOAT_MIN;	// 1.175494351e-38F
+	static const float FLOAT_MAX;	// 3.402823466e+38F
+
+	static const CVector3 VECTOR_RIGHT;
+	static const CVector3 VECTOR_UP;
+	static const CVector3 VECTOR_FORWARD;
+
 };
 
 #include "OEMath.inl"

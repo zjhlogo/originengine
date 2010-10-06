@@ -16,7 +16,7 @@ public:
 	COERtti(const tstring& strTypeName, const COERtti* pBaseRtti);
 	~COERtti();
 
-	const tstring& GetTypeName() const;
+	const tstring& GetClassName() const;
 	const COERtti* GetBaseRtti() const;
 
 	bool IsType(const tstring& strTypeName) const;

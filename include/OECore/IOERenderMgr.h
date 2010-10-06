@@ -20,7 +20,7 @@ public:
 	virtual ~IOERenderMgr() {};
 
 	virtual bool AddRenderHandle(IOERender* pRender) = 0;
-	virtual IOERender* GetRender(uint nID) = 0;
+	virtual IOERender* GetRender(const tstring& strClassName) = 0;
 
 };
 

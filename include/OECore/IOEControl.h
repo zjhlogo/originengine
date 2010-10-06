@@ -16,15 +16,10 @@ class IOEControl : public IOEObject
 public:
 	RTTI_DEF(IOEControl, IOEObject);
 
-	IOEControl(uint nType) {m_nType = nType;};
+	IOEControl() {};
 	virtual ~IOEControl() {};
 
-	uint GetType() const {return m_nType;};
-
 	virtual bool Update(IOERenderData* pRenderData, float fDetailTime) = 0;
-
-private:
-	uint m_nType;
 
 };
 #endif // __IOECONTROL_H__

@@ -113,5 +113,6 @@ void COENode_Impl::SetRotation(const CQuaternion& qRot)
 
 void COENode_Impl::GetTransform(CMatrix4x4& matTrans)
 {
-	// TODO: calculate transform matrix
+	COEMath::BuildMatrixFromQuaternion(matTrans, m_qRot);
+	COEMath::SetMatrixTranslation(matTrans, m_vPos);
 }

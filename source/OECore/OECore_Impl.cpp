@@ -228,60 +228,57 @@ void COECore_Impl::RegisterMessage()
 	g_pOEMsgMgr->RegisterMessage(OMI_POST_RENDER, this, (MSG_FUNC)&COECore_Impl::OnPostRender);
 }
 
-bool COECore_Impl::UpdateNodes(IOENode* pNode, float fDetailTime)
+void COECore_Impl::QueryObjects(IOENode* pNode)
 {
-	if (!pNode) return false;
+	if (!pNode) return;
 
 	int nNumAttachedObjects = pNode->GetNumAttachedObjects();
 	for (int i = 0; i < nNumAttachedObjects; ++i)
 	{
 		IOEObject* pObject = pNode->GetAttachedObject(i);
 		if (!pObject) continue;
-		if (!pObject->GetRtti()->IsDerived(TS("IOERenderableObject"))) continue;
 
-		IOERenderableObject* pRenderableObject = (IOERenderableObject*)pObject;
-		pRenderableObject->Update(fDetailTime);
+		const COERtti* pRtti = pObject->GetRtti();
+		if (!pRtti) continue;
+
+		if (pRtti->IsDerived(TS("IOERenderableObject")))
+		{
+			IOERenderableObject* pRenderableObject = (IOERenderableObject*)pObject;
+			m_sRenderableObjects.insert(pRenderableObject);
+
+			RENDER_OBJECT_INFO ObjInfo = {pRenderableObject, pNode};
+			m_vRenderObjectInfo.push_back(ObjInfo);
+		}
+		//else if (...)
+		//{
+		//	// TODO: 
+		//}
 	}
 
 	int nNumChildNodes = pNode->GetNumChildNodes();
 	for (int i = 0; i < nNumChildNodes; ++i)
 	{
-		bool bOK = UpdateNodes(pNode->GetChildNode(i), fDetailTime);
-		if (!bOK)
-		{
-			// TODO: logout
-		}
+		QueryObjects(pNode->GetChildNode(i));
 	}
-
-	return true;
 }
 
-bool COECore_Impl::RenderNodes(IOENode* pNode, float fDetailTime)
+void COECore_Impl::UpdateObjects(float fDetailTime)
 {
-	if (!pNode) return false;
-
-	int nNumAttachedObjects = pNode->GetNumAttachedObjects();
-	for (int i = 0; i < nNumAttachedObjects; ++i)
+	for (TS_RENDERABLE_OBJECT::iterator it = m_sRenderableObjects.begin(); it != m_sRenderableObjects.end(); ++it)
 	{
-		IOEObject* pObject = pNode->GetAttachedObject(i);
-		if (!pObject) continue;
-		if (!pObject->GetRtti()->IsDerived(TS("IOERenderableObject"))) continue;
-
-		IOERenderableObject* pRenderableObject = (IOERenderableObject*)pObject;
-		pRenderableObject->Render(fDetailTime);
+		(*it)->Update(fDetailTime);
 	}
+}
 
-	int nNumChildNodes = pNode->GetNumChildNodes();
-	for (int i = 0; i < nNumChildNodes; ++i)
+void COECore_Impl::RenderObjects(float fDetailTime)
+{
+	for (TV_RENDER_OBJECT_INFO::iterator it = m_vRenderObjectInfo.begin(); it != m_vRenderObjectInfo.end(); ++it)
 	{
-		bool bOK = RenderNodes(pNode->GetChildNode(i), fDetailTime);
-		if (!bOK)
-		{
-			// TODO: logout
-		}
+		RENDER_OBJECT_INFO& ObjInfo = (*it);
+		IOERenderData* pRenderData = ObjInfo.pObject->GetRenderData();
+		if (pRenderData) pRenderData->SetNode(ObjInfo.pNode);
+		ObjInfo.pObject->Render(fDetailTime);
 	}
-
-	return true;
 }
 
 bool COECore_Impl::OnStartPerform(COEMsgCommand& msg)
@@ -299,7 +296,6 @@ bool COECore_Impl::OnPreUpdate(COEMsgCommand& msg)
 
 bool COECore_Impl::OnUpdate(COEMsgCommand& msg)
 {
-	UpdateNodes(m_pRootNode, g_pOEDevice->GetDetailTime());
 	g_pOEApp->Update(g_pOEDevice->GetDetailTime());
 
 	return true;
@@ -307,7 +303,12 @@ bool COECore_Impl::OnUpdate(COEMsgCommand& msg)
 
 bool COECore_Impl::OnPostUpdate(COEMsgCommand& msg)
 {
-	// TODO: 
+	m_sRenderableObjects.clear();
+	m_vRenderObjectInfo.clear();
+
+	QueryObjects(m_pRootNode);
+	UpdateObjects(g_pOEDevice->GetDetailTime());
+
 	return true;
 }
 
@@ -319,7 +320,7 @@ bool COECore_Impl::OnPreRender(COEMsgCommand& msg)
 
 bool COECore_Impl::OnRender(COEMsgCommand& msg)
 {
-	RenderNodes(m_pRootNode, g_pOEDevice->GetDetailTime());
+	RenderObjects(g_pOEDevice->GetDetailTime());
 	g_pOEApp->Render(g_pOEDevice->GetDetailTime());
 
 	return true;
