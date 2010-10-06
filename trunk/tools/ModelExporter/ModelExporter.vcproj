@@ -348,58 +348,10 @@
 	</References>
 	<Files>
 		<Filter
-			Name="Source Files"
-			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx"
-			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
+			Name="common"
 			>
-			<File
-				RelativePath=".\DlgModelExporterOption.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\DllEntry.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\ModelExporter.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\ModelExporterDesc.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\common\OEModuleLoader.cpp"
-				>
-			</File>
 			<File
 				RelativePath="..\common\wxCommonHelper.cpp"
-				>
-			</File>
-		</Filter>
-		<Filter
-			Name="Header Files"
-			Filter="h;hpp;hxx;hm;inl;inc;xsd"
-			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
-			>
-			<File
-				RelativePath=".\DlgModelExporterOption.h"
-				>
-			</File>
-			<File
-				RelativePath=".\DllEntry.h"
-				>
-			</File>
-			<File
-				RelativePath=".\ModelExporter.h"
-				>
-			</File>
-			<File
-				RelativePath=".\ModelExporterDesc.h"
-				>
-			</File>
-			<File
-				RelativePath="..\common\OEModuleLoader.h"
 				>
 			</File>
 			<File
@@ -443,6 +395,46 @@
 				>
 			</File>
 		</Filter>
+		<File
+			RelativePath=".\DlgModelExporterOption.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\DlgModelExporterOption.h"
+			>
+		</File>
+		<File
+			RelativePath=".\DllEntry.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\DllEntry.h"
+			>
+		</File>
+		<File
+			RelativePath=".\ModelExporter.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\ModelExporter.h"
+			>
+		</File>
+		<File
+			RelativePath=".\ModelExporterDesc.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\ModelExporterDesc.h"
+			>
+		</File>
+		<File
+			RelativePath="..\common\OEModuleLoader.cpp"
+			>
+		</File>
+		<File
+			RelativePath="..\common\OEModuleLoader.h"
+			>
+		</File>
 	</Files>
 	<Globals>
 	</Globals>

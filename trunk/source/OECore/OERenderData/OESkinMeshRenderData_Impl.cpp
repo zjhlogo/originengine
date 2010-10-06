@@ -6,7 +6,7 @@
  * \author zjhlogo (zjhlogo@163.com)
  */
 #include "OESkinMeshRenderData_Impl.h"
-#include "OEBone_Impl.h"
+#include "../OEBone_Impl.h"
 
 COESkinMeshRenderData_Impl::COESkinMeshRenderData_Impl()
 {

@@ -274,58 +274,46 @@
 	<References>
 	</References>
 	<Files>
-		<Filter
-			Name="Source Files"
-			Filter="cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx"
-			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
+		<File
+			RelativePath=".\OEMsgCommand.cpp"
 			>
-			<File
-				RelativePath=".\OEMsgCommand.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\OEMsgKeyboard.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\include\libOEMsg\OEMsgList.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\OEMsgMouse.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\OEMsgShaderParam.cpp"
-				>
-			</File>
-		</Filter>
-		<Filter
-			Name="Header Files"
-			Filter="h;hpp;hxx;hm;inl;inc;xsd"
-			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
+		</File>
+		<File
+			RelativePath="..\..\include\libOEMsg\OEMsgCommand.h"
 			>
-			<File
-				RelativePath="..\..\include\libOEMsg\OEMsgCommand.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\include\libOEMsg\OEMsgKeyboard.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\include\libOEMsg\OEMsgList.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\include\libOEMsg\OEMsgMouse.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\include\libOEMsg\OEMsgShaderParam.h"
-				>
-			</File>
-		</Filter>
+		</File>
+		<File
+			RelativePath=".\OEMsgKeyboard.cpp"
+			>
+		</File>
+		<File
+			RelativePath="..\..\include\libOEMsg\OEMsgKeyboard.h"
+			>
+		</File>
+		<File
+			RelativePath="..\..\include\libOEMsg\OEMsgList.cpp"
+			>
+		</File>
+		<File
+			RelativePath="..\..\include\libOEMsg\OEMsgList.h"
+			>
+		</File>
+		<File
+			RelativePath=".\OEMsgMouse.cpp"
+			>
+		</File>
+		<File
+			RelativePath="..\..\include\libOEMsg\OEMsgMouse.h"
+			>
+		</File>
+		<File
+			RelativePath=".\OEMsgShaderParam.cpp"
+			>
+		</File>
+		<File
+			RelativePath="..\..\include\libOEMsg\OEMsgShaderParam.h"
+			>
+		</File>
 	</Files>
 	<Globals>
 	</Globals>

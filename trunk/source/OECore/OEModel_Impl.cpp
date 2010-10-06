@@ -6,7 +6,7 @@
  * \author zjhlogo (zjhlogo@163.com)
  */
 #include "OEModel_Impl.h"
-#include "OESkinMeshRenderData_Impl.h"
+#include "OERenderData/OESkinMeshRenderData_Impl.h"
 #include <OEBase/IOEXmlMgr.h>
 #include <OECore/IOEControlMgr.h>
 #include <OECore/IOERenderMgr.h>
