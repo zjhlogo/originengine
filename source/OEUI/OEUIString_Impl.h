@@ -24,6 +24,8 @@ public:
 	typedef std::vector<CHAR_RENDER_INFO> VCHAR_RENDER_INFO;
 
 public:
+	RTTI_DEF(COEUIString_Impl, IOEUIString);
+
 	COEUIString_Impl(IOEUIFont* pFont);
 	virtual ~COEUIString_Impl();
 

@@ -17,6 +17,8 @@
 class COESkeletonRender_Impl : public IOERender
 {
 public:
+	RTTI_DEF(COESkeletonRender_Impl, IOERender);
+
 	COESkeletonRender_Impl();
 	virtual ~COESkeletonRender_Impl();
 

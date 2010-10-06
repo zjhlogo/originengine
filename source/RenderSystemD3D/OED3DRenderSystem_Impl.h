@@ -23,6 +23,8 @@ public:
 	typedef std::stack<COED3DRenderState> TK_RENDER_STATE;
 
 public:
+	RTTI_DEF(COED3DRenderSystem_Impl, IOERenderSystem);
+
 	COED3DRenderSystem_Impl();
 	virtual ~COED3DRenderSystem_Impl();
 

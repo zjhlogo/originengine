@@ -14,6 +14,8 @@
 class COEXmlNode_Impl : public IOEXmlNode
 {
 public:
+	RTTI_DEF(COEXmlNode_Impl, IOEXmlNode);
+
 	COEXmlNode_Impl(const tstring& strFileName);
 	virtual ~COEXmlNode_Impl();
 

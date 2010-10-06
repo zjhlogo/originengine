@@ -14,6 +14,8 @@
 class COEConfigFileMgr_Impl : public IOEConfigFileMgr
 {
 public:
+	RTTI_DEF(COEConfigFileMgr_Impl, IOEConfigFileMgr);
+
 	COEConfigFileMgr_Impl();
 	virtual ~COEConfigFileMgr_Impl();
 

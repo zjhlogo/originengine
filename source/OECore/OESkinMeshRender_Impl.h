@@ -16,6 +16,8 @@
 class COESkinMeshRender_Impl : public IOERender
 {
 public:
+	RTTI_DEF(COESkinMeshRender_Impl, IOERender);
+
 	COESkinMeshRender_Impl();
 	virtual ~COESkinMeshRender_Impl();
 

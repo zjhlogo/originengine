@@ -13,6 +13,8 @@
 class COEXmlAttribute_Impl : public IOEXmlAttribute
 {
 public:
+	RTTI_DEF(COEXmlAttribute_Impl, IOEXmlAttribute);
+
 	COEXmlAttribute_Impl(const tstring& strName);
 	virtual ~COEXmlAttribute_Impl();
 

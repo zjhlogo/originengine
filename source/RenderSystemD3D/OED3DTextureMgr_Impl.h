@@ -18,6 +18,8 @@ public:
 	typedef std::vector<IOETexture*> TV_TEXTURE;
 
 public:
+	RTTI_DEF(COED3DTextureMgr_Impl, IOETextureMgr);
+
 	COED3DTextureMgr_Impl();
 	virtual ~COED3DTextureMgr_Impl();
 

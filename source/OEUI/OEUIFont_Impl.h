@@ -13,6 +13,8 @@
 class COEUIFont_Impl : public IOEUIFont
 {
 public:
+	RTTI_DEF(COEUIFont_Impl, IOEUIFont);
+
 	COEUIFont_Impl();
 	virtual ~COEUIFont_Impl();
 

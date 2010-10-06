@@ -14,6 +14,8 @@
 class COESkinMeshControl_Impl : public IOEControl
 {
 public:
+	RTTI_DEF(COESkinMeshControl_Impl, IOEControl);
+
 	COESkinMeshControl_Impl();
 	virtual ~COESkinMeshControl_Impl();
 

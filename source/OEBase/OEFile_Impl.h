@@ -15,6 +15,8 @@
 class COEFile_Impl : public IOEFile
 {
 public:
+	RTTI_DEF(COEFile_Impl, IOEFile);
+
 	COEFile_Impl(const tstring& strFileName, uint nFlag);
 	virtual ~COEFile_Impl();
 

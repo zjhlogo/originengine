@@ -16,6 +16,8 @@
 class COECore_Impl : public IOECore
 {
 public:
+	RTTI_DEF(COECore_Impl, IOECore);
+
 	COECore_Impl();
 	virtual ~COECore_Impl();
 

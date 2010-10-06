@@ -16,6 +16,8 @@
 class COED3DShader_Impl : public IOEShader
 {
 public:
+	RTTI_DEF(COED3DShader_Impl, IOEShader);
+
 	COED3DShader_Impl(const VERT_DECL_ELEMENT* pElement, const tstring& strFileName);
 	virtual ~COED3DShader_Impl();
 

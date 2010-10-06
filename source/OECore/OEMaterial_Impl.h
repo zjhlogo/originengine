@@ -15,6 +15,8 @@
 class COEMaterial_Impl : public IOEMaterial
 {
 public:
+	RTTI_DEF(COEMaterial_Impl, IOEMaterial);
+
 	COEMaterial_Impl(IOEXmlNode* pXmlMaterial);
 	virtual ~COEMaterial_Impl();
 

@@ -14,6 +14,8 @@
 class COEBoundingBoxRender_Impl : public IOERender
 {
 public:
+	RTTI_DEF(COEBoundingBoxRender_Impl, IOERender);
+
 	COEBoundingBoxRender_Impl();
 	virtual ~COEBoundingBoxRender_Impl();
 

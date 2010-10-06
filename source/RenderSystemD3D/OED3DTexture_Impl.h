@@ -14,6 +14,8 @@
 class COED3DTexture_Impl : public IOETexture
 {
 public:
+	RTTI_DEF(COED3DTexture_Impl, IOETexture);
+
 	COED3DTexture_Impl(const tstring& strFileName);
 	COED3DTexture_Impl(int nWidth, int nHeight, TEXTURE_FORMAT eFormat);
 	virtual ~COED3DTexture_Impl();

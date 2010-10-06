@@ -13,6 +13,8 @@
 class COEXmlMgr_Impl : public IOEXmlMgr
 {
 public:
+	RTTI_DEF(COEXmlMgr_Impl, IOEXmlMgr);
+
 	COEXmlMgr_Impl();
 	virtual ~COEXmlMgr_Impl();
 

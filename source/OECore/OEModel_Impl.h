@@ -23,6 +23,8 @@ public:
 	typedef std::vector<IOERender*> TV_RENDER;
 
 public:
+	RTTI_DEF(COEModel_Impl, IOEModel);
+
 	COEModel_Impl(const tstring& strFile);
 	virtual ~COEModel_Impl();
 

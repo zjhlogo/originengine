@@ -18,6 +18,8 @@ public:
 	typedef std::map<tstring, IOESkeleton*> TM_BONES;
 
 public:
+	RTTI_DEF(COEResMgr_Impl, IOEResMgr);
+
 	COEResMgr_Impl();
 	virtual ~COEResMgr_Impl();
 

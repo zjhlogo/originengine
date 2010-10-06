@@ -17,6 +17,8 @@ public:
 	typedef std::map<tstring, IOEShader*> SHADER_MAP;
 
 public:
+	RTTI_DEF(COED3DShaderMgr_Impl, IOEShaderMgr);
+
 	COED3DShaderMgr_Impl();
 	virtual ~COED3DShaderMgr_Impl();
 

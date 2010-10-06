@@ -19,6 +19,8 @@ public:
 	typedef std::map<int, IOEMaterial*> TM_MATERIAL;
 
 public:
+	RTTI_DEF(COESkinMeshRenderData_Impl, IOERenderData);
+
 	COESkinMeshRenderData_Impl();
 	virtual ~COESkinMeshRenderData_Impl();
 
