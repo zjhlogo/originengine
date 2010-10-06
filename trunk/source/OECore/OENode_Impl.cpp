@@ -104,15 +104,39 @@ int COENode_Impl::GetNumAttachedObjects()
 void COENode_Impl::SetPosition(const CVector3& vPos)
 {
 	m_vPos = vPos;
+	SetDirty();
+}
+
+const CVector3& COENode_Impl::GetPosition()
+{
+	return m_vPos;
 }
 
 void COENode_Impl::SetRotation(const CQuaternion& qRot)
 {
 	m_qRot = qRot;
+	SetDirty();
 }
 
-void COENode_Impl::GetTransform(CMatrix4x4& matTrans)
+const CQuaternion& COENode_Impl::GetRotation()
 {
-	COEMath::BuildMatrixFromQuaternion(matTrans, m_qRot);
-	COEMath::SetMatrixTranslation(matTrans, m_vPos);
+	return m_qRot;
+}
+
+void COENode_Impl::Update(const CMatrix4x4& matParent)
+{
+	CMatrix4x4 matLocal;
+	GetLocalMatrix(matLocal);
+	m_matFinal = matLocal*matParent;
+}
+
+void COENode_Impl::GetLocalMatrix(CMatrix4x4& matLocal)
+{
+	COEMath::BuildMatrixFromQuaternion(matLocal, m_qRot);
+	COEMath::SetMatrixTranslation(matLocal, m_vPos);
+}
+
+const CMatrix4x4& COENode_Impl::GetFinalMatrix()
+{
+	return m_matFinal;
 }

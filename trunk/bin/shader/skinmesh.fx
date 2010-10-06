@@ -1,3 +1,4 @@
+float4x4 g_matInvWorld;
 float4x4 g_matWorldViewProj;
 float4x3 g_matBoneMatrix[50] : WORLDMATRIXARRAY;
 
@@ -83,10 +84,12 @@ VS_OUTPUT VSMain(VS_INPUT input)
 	float3 binormal = cross(tangent, normal);
 	float3x3 rotation = float3x3(tangent, binormal, normal);
 
-	float3 vLightDir = g_vLightPos - skinnedPos;
+	float3 lightPos = mul(g_vLightPos, g_matInvWorld);
+	float3 vLightDir = lightPos - skinnedPos;
 	output.lightDir = mul(rotation, vLightDir);
 
-	float3 vEyeDir = g_vEyePos - skinnedPos;
+	float3 eyePos = mul(g_vEyePos, g_matInvWorld);
+	float3 vEyeDir = eyePos - skinnedPos;
 	output.eyeDir = mul(rotation, vEyeDir);
 
 	return output;
@@ -103,10 +106,10 @@ float4 PSMain(VS_OUTPUT input) : COLOR
 	normal = (normal - 0.5f) * 2.0f;
 
 	float diffuseFactor = saturate(dot(normal, lightDir));
-	float specularFactor = pow(saturate(dot(normal, halfWayDir)), 32.0f);
+	float specularFactor = pow(saturate(dot(normal, halfWayDir)), 4.0f);
 
 	float3 finalColor = diffuse.xyz*diffuseFactor + float3(diffuse.w, diffuse.w, diffuse.w)*specularFactor;
-	finalColor = finalColor*0.8f + diffuse*0.2f;
+	//finalColor = finalColor*0.8f + diffuse*0.2f;
 	return float4(finalColor, 1.0f);
 }
 
