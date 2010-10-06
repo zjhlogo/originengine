@@ -330,58 +330,6 @@
 	</References>
 	<Files>
 		<Filter
-			Name="Source Files"
-			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx"
-			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
-			>
-			<File
-				RelativePath=".\ConverterMgr.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\IConverter.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\ModelConverterMain.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Ms3dConverter_Impl.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\common\OEModuleLoader.cpp"
-				>
-			</File>
-		</Filter>
-		<Filter
-			Name="Header Files"
-			Filter="h;hpp;hxx;hm;inl;inc;xsd"
-			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
-			>
-			<File
-				RelativePath=".\ConverterMgr.h"
-				>
-			</File>
-			<File
-				RelativePath=".\IConverter.h"
-				>
-			</File>
-			<File
-				RelativePath=".\ModelConverterMain.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Ms3dConverter_Impl.h"
-				>
-			</File>
-			<File
-				RelativePath="..\common\OEModuleLoader.h"
-				>
-			</File>
-		</Filter>
-		<Filter
 			Name="Format Files"
 			>
 			<File
@@ -389,6 +337,46 @@
 				>
 			</File>
 		</Filter>
+		<File
+			RelativePath=".\ConverterMgr.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\ConverterMgr.h"
+			>
+		</File>
+		<File
+			RelativePath=".\IConverter.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\IConverter.h"
+			>
+		</File>
+		<File
+			RelativePath=".\ModelConverterMain.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\ModelConverterMain.h"
+			>
+		</File>
+		<File
+			RelativePath=".\Ms3dConverter_Impl.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\Ms3dConverter_Impl.h"
+			>
+		</File>
+		<File
+			RelativePath="..\common\OEModuleLoader.cpp"
+			>
+		</File>
+		<File
+			RelativePath="..\common\OEModuleLoader.h"
+			>
+		</File>
 	</Files>
 	<Globals>
 	</Globals>

@@ -326,166 +326,42 @@
 	</References>
 	<Files>
 		<Filter
-			Name="Source Files"
-			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx"
-			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
+			Name="OERender"
 			>
 			<File
-				RelativePath=".\OEBone_Impl.cpp"
+				RelativePath=".\OERender\OEBoundingBoxRender_Impl.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\OEBoundingBoxRender_Impl.cpp"
+				RelativePath=".\OERender\OEBoundingBoxRender_Impl.h"
 				>
 			</File>
 			<File
-				RelativePath=".\OEConfigFileMgr_Impl.cpp"
+				RelativePath=".\OERender\OESkeletonRender_Impl.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\OEControlMgr_Impl.cpp"
+				RelativePath=".\OERender\OESkeletonRender_Impl.h"
 				>
 			</File>
 			<File
-				RelativePath=".\OECore_Impl.cpp"
+				RelativePath=".\OERender\OESkinMeshRender_Impl.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\OECoreModule.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\OEFPSPrinter.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\OEMaterial_Impl.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\OEMesh_Impl.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\OEModel_Impl.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\OENode_Impl.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\OEPiece_Impl.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\OERenderMgr_Impl.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\OEResMgr_Impl.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\OESkeleton_Impl.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\OESkeletonRender_Impl.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\OESkinMeshControl_Impl.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\OESkinMeshRender_Impl.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\OESkinMeshRenderData_Impl.cpp"
+				RelativePath=".\OERender\OESkinMeshRender_Impl.h"
 				>
 			</File>
 		</Filter>
 		<Filter
-			Name="Header Files"
-			Filter="h;hpp;hxx;hm;inl;inc;xsd"
-			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
+			Name="OEControl"
 			>
 			<File
-				RelativePath=".\OEBone_Impl.h"
+				RelativePath=".\OEControl\OESkinMeshControl_Impl.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\OEBoundingBoxRender_Impl.h"
-				>
-			</File>
-			<File
-				RelativePath=".\OEConfigFileMgr_Impl.h"
-				>
-			</File>
-			<File
-				RelativePath=".\OEControlMgr_Impl.h"
-				>
-			</File>
-			<File
-				RelativePath=".\OECore_Impl.h"
-				>
-			</File>
-			<File
-				RelativePath=".\OECoreModule.h"
-				>
-			</File>
-			<File
-				RelativePath=".\OEFPSPrinter.h"
-				>
-			</File>
-			<File
-				RelativePath=".\OEMaterial_Impl.h"
-				>
-			</File>
-			<File
-				RelativePath=".\OEMesh_Impl.h"
-				>
-			</File>
-			<File
-				RelativePath=".\OEModel_Impl.h"
-				>
-			</File>
-			<File
-				RelativePath=".\OENode_Impl.h"
-				>
-			</File>
-			<File
-				RelativePath=".\OEPiece_Impl.h"
-				>
-			</File>
-			<File
-				RelativePath=".\OERenderMgr_Impl.h"
-				>
-			</File>
-			<File
-				RelativePath=".\OEResMgr_Impl.h"
-				>
-			</File>
-			<File
-				RelativePath=".\OESkeleton_Impl.h"
-				>
-			</File>
-			<File
-				RelativePath=".\OESkeletonRender_Impl.h"
-				>
-			</File>
-			<File
-				RelativePath=".\OESkinMeshControl_Impl.h"
-				>
-			</File>
-			<File
-				RelativePath=".\OESkinMeshRender_Impl.h"
-				>
-			</File>
-			<File
-				RelativePath=".\OESkinMeshRenderData_Impl.h"
+				RelativePath=".\OEControl\OESkinMeshControl_Impl.h"
 				>
 			</File>
 		</Filter>
@@ -605,6 +481,130 @@
 				>
 			</File>
 		</Filter>
+		<Filter
+			Name="OERenderData"
+			>
+			<File
+				RelativePath=".\OERenderData\OESkinMeshRenderData_Impl.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\OERenderData\OESkinMeshRenderData_Impl.h"
+				>
+			</File>
+		</Filter>
+		<File
+			RelativePath=".\OEBone_Impl.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\OEBone_Impl.h"
+			>
+		</File>
+		<File
+			RelativePath=".\OEConfigFileMgr_Impl.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\OEConfigFileMgr_Impl.h"
+			>
+		</File>
+		<File
+			RelativePath=".\OEControlMgr_Impl.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\OEControlMgr_Impl.h"
+			>
+		</File>
+		<File
+			RelativePath=".\OECore_Impl.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\OECore_Impl.h"
+			>
+		</File>
+		<File
+			RelativePath=".\OECoreModule.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\OECoreModule.h"
+			>
+		</File>
+		<File
+			RelativePath=".\OEFPSPrinter.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\OEFPSPrinter.h"
+			>
+		</File>
+		<File
+			RelativePath=".\OEMaterial_Impl.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\OEMaterial_Impl.h"
+			>
+		</File>
+		<File
+			RelativePath=".\OEMesh_Impl.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\OEMesh_Impl.h"
+			>
+		</File>
+		<File
+			RelativePath=".\OEModel_Impl.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\OEModel_Impl.h"
+			>
+		</File>
+		<File
+			RelativePath=".\OENode_Impl.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\OENode_Impl.h"
+			>
+		</File>
+		<File
+			RelativePath=".\OEPiece_Impl.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\OEPiece_Impl.h"
+			>
+		</File>
+		<File
+			RelativePath=".\OERenderMgr_Impl.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\OERenderMgr_Impl.h"
+			>
+		</File>
+		<File
+			RelativePath=".\OEResMgr_Impl.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\OEResMgr_Impl.h"
+			>
+		</File>
+		<File
+			RelativePath=".\OESkeleton_Impl.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\OESkeleton_Impl.h"
+			>
+		</File>
 	</Files>
 	<Globals>
 	</Globals>

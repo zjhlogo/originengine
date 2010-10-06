@@ -14,7 +14,7 @@
 #include <OEBase/IOEXmlNode.h>
 #include <vector>
 
-#include "OESkinMeshRenderData_Impl.h"
+#include "OERenderData/OESkinMeshRenderData_Impl.h"
 
 class COEModel_Impl : public IOEModel
 {

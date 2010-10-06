@@ -11,7 +11,7 @@
 #include <OECore/OEBaseTypeEx.h>
 #include <OECore/IOERender.h>
 
-#include "OESkinMeshRenderData_Impl.h"
+#include "../OERenderData/OESkinMeshRenderData_Impl.h"
 
 class COESkinMeshRender_Impl : public IOERender
 {

@@ -12,7 +12,7 @@
 #include <OECore/IOERender.h>
 #include <OECore/IOEShader.h>
 
-#include "OESkinMeshRenderData_Impl.h"
+#include "../OERenderData/OESkinMeshRenderData_Impl.h"
 
 class COESkeletonRender_Impl : public IOERender
 {

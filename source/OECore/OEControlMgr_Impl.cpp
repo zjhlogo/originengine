@@ -6,7 +6,7 @@
  * \author zjhlogo (zjhlogo@163.com)
  */
 #include "OEControlMgr_Impl.h"
-#include "OESkinMeshControl_Impl.h"
+#include "OEControl/OESkinMeshControl_Impl.h"
 
 #include <assert.h>
 

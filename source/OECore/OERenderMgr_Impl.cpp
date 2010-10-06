@@ -6,9 +6,9 @@
  * \author zjhlogo (zjhlogo@163.com)
  */
 #include "OERenderMgr_Impl.h"
-#include "OESkinMeshRender_Impl.h"
-#include "OESkeletonRender_Impl.h"
-#include "OEBoundingBoxRender_Impl.h"
+#include "OERender/OESkinMeshRender_Impl.h"
+#include "OERender/OESkeletonRender_Impl.h"
+#include "OERender/OEBoundingBoxRender_Impl.h"
 
 #include <assert.h>
 
