@@ -14,7 +14,6 @@
 #include <assert.h>
 
 COEXmlMgr_Impl::COEXmlMgr_Impl()
-:IOEXmlMgr(TS("COEXmlMgr_Impl"))
 {
 	assert(!g_pOEXmlMgr);
 	g_pOEXmlMgr = this;

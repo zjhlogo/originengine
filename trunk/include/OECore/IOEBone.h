@@ -15,7 +15,9 @@
 class IOEBone : public IOEObject
 {
 public:
-	IOEBone(const tstring& strClassName):IOEObject(strClassName) {};
+	RTTI_DEF(IOEBone, IOEObject);
+
+	IOEBone() {};
 	virtual ~IOEBone() {};
 
 	virtual const tstring& GetName() const = 0;

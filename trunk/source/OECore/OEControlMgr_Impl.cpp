@@ -11,7 +11,6 @@
 #include <assert.h>
 
 COEControlMgr_Impl::COEControlMgr_Impl()
-:IOEControlMgr(TS("COEControlMgr_Impl"))
 {
 	assert(!g_pOEControlMgr);
 	g_pOEControlMgr = this;

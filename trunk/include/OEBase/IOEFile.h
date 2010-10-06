@@ -20,7 +20,9 @@ public:
 	};
 
 public:
-	IOEFile(const tstring& strClassName):IOEObject(strClassName) {};
+	RTTI_DEF(IOEFile, IOEObject);
+
+	IOEFile() {};
 	virtual ~IOEFile() {};
 
 	/*!

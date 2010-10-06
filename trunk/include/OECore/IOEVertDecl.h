@@ -14,7 +14,9 @@
 class IOEVertDecl : public IOEObject
 {
 public:
-	IOEVertDecl(const tstring& strClassName):IOEObject(strClassName) {};
+	RTTI_DEF(IOEVertDecl, IOEObject);
+
+	IOEVertDecl() {};
 	virtual ~IOEVertDecl() {};
 
 	virtual int GetStrideSize() const = 0;

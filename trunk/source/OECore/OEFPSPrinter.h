@@ -15,6 +15,8 @@
 class COEFPSPrinter : public IOERenderableObject
 {
 public:
+	RTTI_DEF(COEFPSPrinter, IOERenderableObject);
+
 	COEFPSPrinter();
 	virtual ~COEFPSPrinter();
 

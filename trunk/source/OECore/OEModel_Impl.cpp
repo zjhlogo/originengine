@@ -12,7 +12,6 @@
 #include <OECore/IOERenderMgr.h>
 
 COEModel_Impl::COEModel_Impl(const tstring& strFile)
-:IOEModel(TS("COEModel_Impl"))
 {
 	Init();
 	m_bOK = Create(strFile);

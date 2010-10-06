@@ -10,17 +10,18 @@
 
 #include "OEBaseType.h"
 #include "OEDataBufferRead.h"
+#include "OERtti.h"
 
 class IOEObject
 {
 public:
-	IOEObject(const tstring& strClassName);
+	RTTI_DEF(IOEObject, CNoRtti);
+
+	IOEObject();
 	virtual ~IOEObject();
 
 	virtual bool IsOK();
 	virtual void Release();
-
-	const tstring& GetClassName();
 
 	int IncRef();
 	int DecRef();
@@ -31,7 +32,6 @@ protected:
 
 private:
 	int m_nRef;
-	tstring m_strClassName;
 
 };
 

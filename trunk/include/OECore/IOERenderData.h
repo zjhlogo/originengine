@@ -14,7 +14,9 @@
 class IOERenderData : public IOEObject
 {
 public:
-	IOERenderData(uint nType, const tstring& strClassName):IOEObject(strClassName) {m_nType = nType;};
+	RTTI_DEF(IOERenderData, IOEObject);
+
+	IOERenderData(uint nType) {m_nType = nType;};
 	virtual ~IOERenderData() {};
 
 	uint GetType() {return m_nType;};

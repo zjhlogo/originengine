@@ -30,7 +30,6 @@
 #include "OEFPSPrinter.h"
 
 COECore_Impl::COECore_Impl()
-:IOECore(TS("COECore_Impl"))
 {
 	g_pOECore = this;
 	m_bOK = Init();
@@ -237,8 +236,8 @@ bool COECore_Impl::UpdateNodes(IOENode* pNode, float fDetailTime)
 	for (int i = 0; i < nNumAttachedObjects; ++i)
 	{
 		IOEObject* pObject = pNode->GetAttachedObject(i);
-		if (!pObject) return false;
-		if (pObject->GetClassName() != TS("IOERenderableObject")) return false;
+		if (!pObject) continue;
+		if (!pObject->GetRtti()->IsDerived(TS("IOERenderableObject"))) continue;
 
 		IOERenderableObject* pRenderableObject = (IOERenderableObject*)pObject;
 		pRenderableObject->Update(fDetailTime);
@@ -265,8 +264,8 @@ bool COECore_Impl::RenderNodes(IOENode* pNode, float fDetailTime)
 	for (int i = 0; i < nNumAttachedObjects; ++i)
 	{
 		IOEObject* pObject = pNode->GetAttachedObject(i);
-		if (!pObject) return false;
-		if (pObject->GetClassName() != TS("IOERenderableObject")) return false;
+		if (!pObject) continue;
+		if (!pObject->GetRtti()->IsDerived(TS("IOERenderableObject"))) continue;
 
 		IOERenderableObject* pRenderableObject = (IOERenderableObject*)pObject;
 		pRenderableObject->Render(fDetailTime);

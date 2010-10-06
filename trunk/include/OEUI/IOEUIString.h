@@ -15,7 +15,9 @@
 class IOEUIString : public IOEObject
 {
 public:
-	IOEUIString(const tstring& strClassName):IOEObject(strClassName) {};
+	RTTI_DEF(IOEUIString, IOEObject);
+
+	IOEUIString() {};
 	virtual ~IOEUIString() {};
 
 	virtual void SetText(const tstring& strText) = 0;

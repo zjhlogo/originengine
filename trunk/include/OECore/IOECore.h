@@ -14,7 +14,9 @@
 class IOECore : public IOEMgr
 {
 public:
-	IOECore(const tstring& strClassName):IOEMgr(strClassName) {};
+	RTTI_DEF(IOECore, IOEMgr);
+
+	IOECore() {};
 	virtual ~IOECore() {};
 
 	virtual void Run() = 0;

@@ -18,7 +18,9 @@
 class IOEResMgr : public IOEMgr
 {
 public:
-	IOEResMgr(const tstring& strClassName):IOEMgr(strClassName) {};
+	RTTI_DEF(IOEResMgr, IOEMgr);
+
+	IOEResMgr() {};
 	virtual ~IOEResMgr() {};
 
 	virtual IOEModel* CreateModel(const tstring& strFile) = 0;

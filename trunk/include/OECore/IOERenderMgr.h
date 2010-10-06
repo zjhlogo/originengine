@@ -14,7 +14,9 @@
 class IOERenderMgr : public IOEMgr
 {
 public:
-	IOERenderMgr(const tstring& strClassName):IOEMgr(strClassName) {};
+	RTTI_DEF(IOERenderMgr, IOEMgr);
+
+	IOERenderMgr() {};
 	virtual ~IOERenderMgr() {};
 
 	virtual bool AddRenderHandle(IOERender* pRender) = 0;

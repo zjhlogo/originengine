@@ -9,7 +9,7 @@
 #include "OEBone_Impl.h"
 
 COESkinMeshRenderData_Impl::COESkinMeshRenderData_Impl()
-:IOERenderData(OERDT_SKINMESH, TS("COESkinMeshRenderData_Impl"))
+:IOERenderData(OERDT_SKINMESH)
 {
 	m_bOK = Init();
 }

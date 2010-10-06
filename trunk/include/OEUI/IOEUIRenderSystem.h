@@ -15,7 +15,9 @@
 class IOEUIRenderSystem : public IOEMgr
 {
 public:
-	IOEUIRenderSystem(const tstring& strClassName):IOEMgr(strClassName) {};
+	RTTI_DEF(IOEUIRenderSystem, IOEMgr);
+
+	IOEUIRenderSystem() {};
 	virtual ~IOEUIRenderSystem() {};
 
 	virtual void SetTexture(IOETexture* pTexture) = 0;

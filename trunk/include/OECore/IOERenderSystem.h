@@ -17,7 +17,9 @@
 class IOERenderSystem : public IOEMgr
 {
 public:
-	IOERenderSystem(const tstring& strClassName):IOEMgr(strClassName) {};
+	RTTI_DEF(IOERenderSystem, IOEMgr);
+
+	IOERenderSystem() {};
 	virtual ~IOERenderSystem() {};
 
 	virtual void SetShader(IOEShader* pShader) = 0;

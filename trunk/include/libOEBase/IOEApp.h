@@ -13,6 +13,8 @@
 class IOEApp : public IOEMgr
 {
 public:
+	RTTI_DEF(IOEApp, IOEMgr);
+
 	IOEApp();
 	virtual ~IOEApp();
 

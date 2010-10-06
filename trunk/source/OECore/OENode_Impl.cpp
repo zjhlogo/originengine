@@ -8,7 +8,6 @@
 #include "OENode_Impl.h"
 
 COENode_Impl::COENode_Impl()
-:IOENode(TS("COENode_Impl"))
 {
 	// TODO: 
 }

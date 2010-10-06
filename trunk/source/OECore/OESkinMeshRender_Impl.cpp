@@ -12,7 +12,7 @@
 #include <libOEMsg/OEMsgShaderParam.h>
 
 COESkinMeshRender_Impl::COESkinMeshRender_Impl()
-:IOERender(OERT_SKINMESH, TS("COESkinMeshRender_Impl"))
+:IOERender(OERT_SKINMESH)
 {
 	// TODO: 
 }

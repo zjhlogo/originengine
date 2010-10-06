@@ -14,7 +14,9 @@
 class IOEFileMgr : public IOEMgr
 {
 public:
-	IOEFileMgr(const tstring& strClassName):IOEMgr(strClassName) {};
+	RTTI_DEF(IOEFileMgr, IOEMgr);
+
+	IOEFileMgr() {};
 	virtual ~IOEFileMgr() {};
 
 	/*!

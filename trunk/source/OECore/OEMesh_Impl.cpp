@@ -11,7 +11,6 @@
 #include <OECore/OEFmtMesh.h>
 
 COEMesh_Impl::COEMesh_Impl(const tstring& strFile)
-:IOEMesh(TS("COEMesh_Impl"))
 {
 	Init();
 	m_bOK = CreatePieces(strFile);

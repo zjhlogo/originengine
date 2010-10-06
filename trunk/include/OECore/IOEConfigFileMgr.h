@@ -13,7 +13,9 @@
 class IOEConfigFileMgr : public IOEMgr
 {
 public:
-	IOEConfigFileMgr(const tstring& strClassName):IOEMgr(strClassName) {};
+	RTTI_DEF(IOEConfigFileMgr, IOEMgr);
+
+	IOEConfigFileMgr() {};
 	virtual ~IOEConfigFileMgr() {};
 
 	virtual bool GetValue(int& nValue, const tstring& strParamName, int nDefaultValue = 0) = 0;

@@ -14,7 +14,9 @@
 class IOESkeleton : public IOEObject
 {
 public:
-	IOESkeleton(const tstring& strClassName):IOEObject(strClassName) {};
+	RTTI_DEF(IOESkeleton, IOEObject);
+
+	IOESkeleton() {};
 	virtual ~IOESkeleton() {};
 
 	virtual int GetBonesCount() = 0;

@@ -12,7 +12,6 @@
 #include <assert.h>
 
 COEFileMgr_Impl::COEFileMgr_Impl()
-:IOEFileMgr(TS("COEFileMgr_Impl"))
 {
 	assert(!g_pOEFileMgr);
 	g_pOEFileMgr = this;

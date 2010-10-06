@@ -12,7 +12,6 @@
 #include <assert.h>
 
 COEConfigFileMgr_Impl::COEConfigFileMgr_Impl()
-:IOEConfigFileMgr(TS("COEConfigFileMgr_Impl"))
 {
 	assert(!g_pOEConfigFileMgr);
 	g_pOEConfigFileMgr = this;
