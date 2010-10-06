@@ -14,7 +14,7 @@
 class COERenderMgr_Impl : public IOERenderMgr
 {
 public:
-	typedef std::map<uint, IOERender*> TM_RENDER;
+	typedef std::map<tstring, IOERender*> TM_RENDER;
 
 public:
 	RTTI_DEF(COERenderMgr_Impl, IOERenderMgr);
@@ -26,7 +26,7 @@ public:
 	virtual void Terminate();
 
 	virtual bool AddRenderHandle(IOERender* pRender);
-	virtual IOERender* GetRender(uint nID);
+	virtual IOERender* GetRender(const tstring& strClassName);
 
 private:
 	TM_RENDER m_RenderMap;

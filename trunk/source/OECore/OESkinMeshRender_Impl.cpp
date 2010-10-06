@@ -12,7 +12,6 @@
 #include <libOEMsg/OEMsgShaderParam.h>
 
 COESkinMeshRender_Impl::COESkinMeshRender_Impl()
-:IOERender(OERT_SKINMESH)
 {
 	// TODO: 
 }
@@ -32,6 +31,7 @@ bool COESkinMeshRender_Impl::Render(IOERenderData* pRenderData)
 	int nNumPiece = pMesh->GetNumPieces();
 
 	CMatrix4x4 matWorldViewProj;
+	pRenderData->GetNode()->GetTransform(matWorldViewProj);
 	g_pOERenderSystem->GetTransform(matWorldViewProj, TT_WORLD_VIEW_PROJ);
 
 	CDefaultRenderState DefaultState;
@@ -72,7 +72,7 @@ COESkinMeshRenderData_Impl* COESkinMeshRender_Impl::ConvertData(IOERenderData* p
 {
 	if (!pRenderData) return NULL;
 
-	if (pRenderData->GetType() != OERDT_SKINMESH) return NULL;
+	if (!pRenderData->GetRtti()->IsType(TS("COESkinMeshRenderData_Impl"))) return NULL;
 
 	return (COESkinMeshRenderData_Impl*)pRenderData;
 }

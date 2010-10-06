@@ -9,7 +9,6 @@
 #include <OECore/OEFmtSkeleton.h>
 
 COESkinMeshControl_Impl::COESkinMeshControl_Impl()
-:IOEControl(OECT_SKINMESH)
 {
 	// TODO: 
 }
@@ -71,7 +70,7 @@ COESkinMeshRenderData_Impl* COESkinMeshControl_Impl::ConvertData(IOERenderData* 
 {
 	if (!pRenderData) return NULL;
 
-	if (pRenderData->GetType() != OERDT_SKINMESH) return NULL;
+	if (!pRenderData->GetRtti()->IsType(TS("COESkinMeshRenderData_Impl"))) return NULL;
 
 	return (COESkinMeshRenderData_Impl*)pRenderData;
 }

@@ -10,21 +10,23 @@
 
 #include "../libOEBase/IOEObject.h"
 #include "IOEMesh.h"
+#include "IOENode.h"
 
 class IOERenderData : public IOEObject
 {
 public:
 	RTTI_DEF(IOERenderData, IOEObject);
 
-	IOERenderData(uint nType) {m_nType = nType;};
+	IOERenderData() {m_pNode = NULL;};
 	virtual ~IOERenderData() {};
 
-	uint GetType() {return m_nType;};
+	virtual void SetNode(IOENode* pNode) {m_pNode = pNode;};
+	virtual IOENode* GetNode() {return m_pNode;};
 
 	virtual IOEMesh* GetMesh() = 0;
 
 private:
-	uint m_nType;
+	IOENode* m_pNode;
 
 };
 #endif // __IOERENDERDATA_H__

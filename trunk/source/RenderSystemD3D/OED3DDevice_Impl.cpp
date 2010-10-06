@@ -407,7 +407,7 @@ void COED3DDevice_Impl::InitializeD3D()
 	g_pOERenderSystem->SetTransform(TT_VIEW, matView);
 
 	CMatrix4x4 matProj;
-	COEMath::BuildProjectMatrixLH(matProj, OEMATH_PI/4.0f, (float)m_nWindowWidth/(float)m_nWindowHeight, 1.0f, 10000.0f);
+	COEMath::BuildProjectMatrixLH(matProj, COEMath::PI/4.0f, (float)m_nWindowWidth/(float)m_nWindowHeight, 1.0f, 10000.0f);
 	g_pOERenderSystem->SetTransform(TT_PROJECTION, matProj);
 }
 

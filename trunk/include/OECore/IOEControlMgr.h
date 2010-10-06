@@ -20,7 +20,7 @@ public:
 	virtual ~IOEControlMgr() {};
 
 	virtual bool AddControlHandle(IOEControl* pControl) = 0;
-	virtual IOEControl* GetControl(uint nID) = 0;
+	virtual IOEControl* GetControl(const tstring& strClassName) = 0;
 
 };
 

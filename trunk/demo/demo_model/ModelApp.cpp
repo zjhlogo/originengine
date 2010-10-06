@@ -42,7 +42,20 @@ bool CModelApp::Initialize()
 	if (!m_pModel) return false;
 
 	IOENode* pRootNode = g_pOECore->GetRootNode();
-	pRootNode->AttachObject(m_pModel);
+
+	IOENode* pNewNode1 = g_pOECore->CreateNewNode();
+	pNewNode1->SetPosition(CVector3(-100.0f, 0.0f, 0.0f));
+	pNewNode1->AttachObject(m_pModel);
+
+	IOENode* pNewNode2 = g_pOECore->CreateNewNode();
+	pNewNode2->SetPosition(CVector3(100.0f, 0.0f, 0.0f));
+	pNewNode2->AttachObject(m_pModel);
+
+	pRootNode->AddNode(pNewNode1);
+	pRootNode->AddNode(pNewNode2);
+
+	CQuaternion qRot(COEMath::VECTOR_UP, COEMath::PI_2);
+	//pRootNode->SetRotation(qRot);
 
 	IOEMesh* pMesh = m_pModel->GetMesh();
 	m_pCamera->InitFromBBox(pMesh->GetBoundingBoxMin(), pMesh->GetBoundingBoxMax());

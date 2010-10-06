@@ -23,6 +23,8 @@ public:
 	virtual void Update(float fDetailTime);
 	virtual void Render(float fDetailTime);
 
+	virtual IOERenderData* GetRenderData();
+
 private:
 	void CalculateFPS();
 

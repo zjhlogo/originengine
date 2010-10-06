@@ -16,15 +16,10 @@ class IOERender : public IOEObject
 public:
 	RTTI_DEF(IOERender, IOEObject);
 
-	IOERender(uint nType) {m_nType = nType;};
+	IOERender() {};
 	virtual ~IOERender() {};
 
-	uint GetType() const {return m_nType;};
-
 	virtual bool Render(IOERenderData* pRenderData) = 0;
-
-private:
-	uint m_nType;
 
 };
 #endif // __IOERENDER_H__

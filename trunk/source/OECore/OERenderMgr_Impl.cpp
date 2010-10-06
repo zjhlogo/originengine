@@ -45,15 +45,15 @@ void COERenderMgr_Impl::Terminate()
 
 bool COERenderMgr_Impl::AddRenderHandle(IOERender* pRender)
 {
-	if (GetRender(pRender->GetType())) return false;
+	if (GetRender(pRender->GetRtti()->GetClassName())) return false;
 
-	m_RenderMap.insert(std::make_pair(pRender->GetType(), pRender));
+	m_RenderMap.insert(std::make_pair(pRender->GetRtti()->GetClassName(), pRender));
 	return true;
 }
 
-IOERender* COERenderMgr_Impl::GetRender(uint nID)
+IOERender* COERenderMgr_Impl::GetRender(const tstring& strClassName)
 {
-	TM_RENDER::iterator itfound = m_RenderMap.find(nID);
+	TM_RENDER::iterator itfound = m_RenderMap.find(strClassName);
 	if (itfound == m_RenderMap.end()) return NULL;
 
 	return itfound->second;

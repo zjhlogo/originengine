@@ -11,7 +11,6 @@
 #include <OECore/OERenderSystemUtil.h>
 
 COEBoundingBoxRender_Impl::COEBoundingBoxRender_Impl()
-:IOERender(OERT_BOUNDINGBOX)
 {
 	m_bOK = Init();
 }
@@ -111,7 +110,9 @@ bool COEBoundingBoxRender_Impl::Render(IOERenderData* pRenderData)
 	CDefaultRenderState DefaultState;
 
 	CMatrix4x4 matWorldViewProj;
+	pRenderData->GetNode()->GetTransform(matWorldViewProj);
 	g_pOERenderSystem->GetTransform(matWorldViewProj, TT_WORLD_VIEW_PROJ);
+
 	m_pShader->SetMatrix(TS("g_matWorldViewProj"), matWorldViewProj);
 	g_pOERenderSystem->SetShader(m_pShader);
 	g_pOERenderSystem->DrawLineList(Verts, 8, s_Indis, 24);

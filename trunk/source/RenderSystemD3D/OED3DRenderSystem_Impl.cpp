@@ -90,8 +90,6 @@ bool COED3DRenderSystem_Impl::GetTransform(CMatrix4x4& matOut, TRANSFORM_TYPE eT
 {
 	bool bOK = false;
 
-	matOut.Identity();
-
 	if (eType & TT_WORLD)
 	{
 		matOut *= m_matWorld;

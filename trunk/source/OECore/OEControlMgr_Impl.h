@@ -14,7 +14,7 @@
 class COEControlMgr_Impl : public IOEControlMgr
 {
 public:
-	typedef std::map<uint, IOEControl*> TM_CONTROL;
+	typedef std::map<tstring, IOEControl*> TM_CONTROL;
 
 public:
 	COEControlMgr_Impl();
@@ -24,7 +24,7 @@ public:
 	virtual void Terminate();
 
 	virtual bool AddControlHandle(IOEControl* pControl);
-	virtual IOEControl* GetControl(uint nID);
+	virtual IOEControl* GetControl(const tstring& strClassName);
 
 private:
 	TM_CONTROL m_ControlMap;

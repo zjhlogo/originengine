@@ -53,6 +53,11 @@ void COEModel_Impl::Render(float fDetailTime)
 	}
 }
 
+IOERenderData* COEModel_Impl::GetRenderData()
+{
+	return m_pRenderData;
+}
+
 IOEMesh* COEModel_Impl::GetMesh()
 {
 	return m_pRenderData->GetMesh();
@@ -70,19 +75,19 @@ bool COEModel_Impl::Create(const tstring& strFile)
 	if (!bOK) return false;
 
 	// create control
-	IOEControl* pControl = g_pOEControlMgr->GetControl(OECT_SKINMESH);
+	IOEControl* pControl = g_pOEControlMgr->GetControl(TS("COESkinMeshControl_Impl"));
 	if (pControl) m_vControls.push_back(pControl);
 
 	// for draw skin
-	IOERender* pRender = g_pOERenderMgr->GetRender(OERT_SKINMESH);
+	IOERender* pRender = g_pOERenderMgr->GetRender(TS("COESkinMeshRender_Impl"));
 	if (pRender) m_vRenders.push_back(pRender);
 
 	// for draw skelecton
-	pRender = g_pOERenderMgr->GetRender(OERT_SKELETON);
+	pRender = g_pOERenderMgr->GetRender(TS("COESkeletonRender_Impl"));
 	if (pRender) m_vRenders.push_back(pRender);
 
 	// for draw bounding box
-	pRender = g_pOERenderMgr->GetRender(OERT_BOUNDINGBOX);
+	pRender = g_pOERenderMgr->GetRender(TS("COEBoundingBoxRender_Impl"));
 	if (pRender) m_vRenders.push_back(pRender);
 
 	return true;

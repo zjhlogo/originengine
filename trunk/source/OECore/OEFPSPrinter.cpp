@@ -43,6 +43,11 @@ void COEFPSPrinter::Render(float fDetailTime)
 	m_pStringFPS->Render(OEUI_ZERO_POINT);
 }
 
+IOERenderData* COEFPSPrinter::GetRenderData()
+{
+	return NULL;
+}
+
 void COEFPSPrinter::CalculateFPS()
 {
 	++m_nFPSCount;

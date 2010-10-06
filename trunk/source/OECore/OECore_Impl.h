@@ -10,11 +10,23 @@
 
 #include <OECore/IOECore.h>
 #include <libOEMsg/OEMsgCommand.h>
-#include <vector>
 #include "OEFPSPrinter.h"
+#include <set>
+#include <vector>
 
 class COECore_Impl : public IOECore
 {
+public:
+	typedef std::set<IOERenderableObject*> TS_RENDERABLE_OBJECT;
+
+	typedef struct RENDER_OBJECT_INFO_tag
+	{
+		IOERenderableObject* pObject;
+		IOENode* pNode;
+	} RENDER_OBJECT_INFO;
+
+	typedef std::vector<RENDER_OBJECT_INFO> TV_RENDER_OBJECT_INFO;
+
 public:
 	RTTI_DEF(COECore_Impl, IOECore);
 
@@ -39,8 +51,9 @@ private:
 
 	void RegisterMessage();
 
-	bool UpdateNodes(IOENode* pNode, float fDetailTime);
-	bool RenderNodes(IOENode* pNode, float fDetailTime);
+	void QueryObjects(IOENode* pNode);
+	void UpdateObjects(float fDetailTime);
+	void RenderObjects(float fDetailTime);
 
 	bool OnStartPerform(COEMsgCommand& msg);
 	bool OnPreUpdate(COEMsgCommand& msg);
@@ -54,6 +67,9 @@ private:
 	bool m_bRunning;
 	IOENode* m_pRootNode;
 	COEFPSPrinter* m_pFPSPrinter;
+
+	TS_RENDERABLE_OBJECT m_sRenderableObjects;
+	TV_RENDER_OBJECT_INFO m_vRenderObjectInfo;
 
 };
 

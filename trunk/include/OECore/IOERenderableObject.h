@@ -9,6 +9,7 @@
 #define __IOERENDERABLEOBJECT_H__
 
 #include "../libOEBase/IOEObject.h"
+#include "IOERenderData.h"
 
 class IOERenderableObject : public IOEObject
 {
@@ -20,6 +21,8 @@ public:
 
 	virtual void Update(float fDetailTime) = 0;
 	virtual void Render(float fDetailTime) = 0;
+
+	virtual IOERenderData* GetRenderData() = 0;
 
 };
 #endif // __IOERENDERABLEOBJECT_H__

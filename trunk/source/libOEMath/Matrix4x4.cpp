@@ -28,7 +28,7 @@ CMatrix4x4 CMatrix4x4::Inverse() const
 	float fDet = fA0*fB5-fA1*fB4+fA2*fB3+fA3*fB2-fA4*fB1+fA5*fB0;
 
 	CMatrix4x4 matInv;
-	if (fabs(fDet) <= OEMATH_TOL) return matInv;
+	if (fabs(fDet) <= COEMath::TOL) return matInv;
 
 	matInv.m[0] =  m[5]*fB5 - m[6]*fB4 + m[7]*fB3;
 	matInv.m[4] = -m[4]*fB5 + m[6]*fB2 - m[7]*fB1;
