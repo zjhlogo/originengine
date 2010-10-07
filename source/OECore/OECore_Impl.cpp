@@ -344,7 +344,6 @@ bool COECore_Impl::OnPreRender(COEMsgCommand& msg)
 bool COECore_Impl::OnRender(COEMsgCommand& msg)
 {
 	RenderObjects(g_pOEDevice->GetDetailTime());
-	g_pOEApp->Render(g_pOEDevice->GetDetailTime());
 
 	return true;
 }

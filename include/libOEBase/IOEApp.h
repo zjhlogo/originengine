@@ -19,7 +19,6 @@ public:
 	virtual ~IOEApp();
 
 	virtual void Update(float fDetailTime) = 0;
-	virtual void Render(float fDetailTime) = 0;
 
 	void Run();
 

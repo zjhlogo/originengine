@@ -12,6 +12,11 @@
 
 CSimpleShape::CSimpleShape()
 {
+	m_pShader = NULL;
+	m_eShape = S_CUBE;
+	m_fScale = 1.0f;
+	m_nColor = 0xFFFFFFFF;
+
 	m_bOK = Init();
 }
 
@@ -33,12 +38,74 @@ void CSimpleShape::Destroy()
 	SAFE_RELEASE(m_pShader);
 }
 
-bool CSimpleShape::IsOK()
+void CSimpleShape::Update(float fDetailTime)
 {
-	return m_bOK;
+	// TODO: 
 }
 
-void CSimpleShape::DrawCube(const CVector3& vPos, float fScale /* = 1.0f */, uint nColor /* = 0xFFFFFFFF */)
+void CSimpleShape::Render(float fDetailTime)
+{
+	switch (m_eShape)
+	{
+	case S_CUBE:
+		{
+			DrawCube();
+		}
+		break;
+	//case S_SPHERE:
+	//	{
+	//		// TODO: 
+	//	}
+	//	break;
+	}
+}
+
+IOERenderData* CSimpleShape::GetRenderData()
+{
+	return NULL;
+}
+
+void CSimpleShape::SetShape(SHAPE eShape)
+{
+	m_eShape = eShape;
+}
+
+CSimpleShape::SHAPE CSimpleShape::GetShape()
+{
+	return m_eShape;
+}
+
+void CSimpleShape::SetPosition(const CVector3& vPos)
+{
+	m_vPos = vPos;
+}
+
+const CVector3& CSimpleShape::GetPosition()
+{
+	return m_vPos;
+}
+
+void CSimpleShape::SetScale(float fScale)
+{
+	m_fScale = fScale;
+}
+
+float CSimpleShape::GetScale()
+{
+	return m_fScale;
+}
+
+void CSimpleShape::SetColor(uint nColor)
+{
+	m_nColor = nColor;
+}
+
+uint CSimpleShape::GetColor()
+{
+	return m_nColor;
+}
+
+void CSimpleShape::DrawCube()
 {
 	static const VERTEX_POLYC s_Verts[CUBE_VERTS_COUNT] = 
 	{
@@ -71,14 +138,14 @@ void CSimpleShape::DrawCube(const CVector3& vPos, float fScale /* = 1.0f */, uin
 	VERTEX_POLYC Verts[CUBE_VERTS_COUNT];
 	for (int i = 0; i < CUBE_VERTS_COUNT; ++i)
 	{
-		Verts[i].x = s_Verts[i].x*fScale+vPos.x;
-		Verts[i].y = s_Verts[i].y*fScale+vPos.y;
-		Verts[i].z = s_Verts[i].z*fScale+vPos.z;
-		Verts[i].nColor = nColor;
+		Verts[i].x = s_Verts[i].x*m_fScale+m_vPos.x;
+		Verts[i].y = s_Verts[i].y*m_fScale+m_vPos.y;
+		Verts[i].z = s_Verts[i].z*m_fScale+m_vPos.z;
+		Verts[i].nColor = m_nColor;
 	}
 
 	CDefaultRenderState DefaultState;
 
 	g_pOERenderSystem->SetShader(m_pShader);
-	g_pOERenderSystem->DrawTriList(&Verts, CUBE_VERTS_COUNT, s_Indis, CUBE_INDIS_COUNT);
+	g_pOERenderSystem->DrawTriList(Verts, CUBE_VERTS_COUNT, s_Indis, CUBE_INDIS_COUNT);
 }

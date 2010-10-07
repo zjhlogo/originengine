@@ -10,27 +10,10 @@
 
 #include "../common/BaseApp.h"
 #include "DlgWaveSetting.h"
-
-#include <OECore/IOEShader.h>
+#include "Water.h"
 
 class CWaterApp : public CBaseApp
 {
-public:
-	enum CONST_DEFINE
-	{
-		NUM_X = 80,
-		NUM_Z = 80,
-	};
-
-	typedef struct VERTEX_tag
-	{
-		float x, y, z;
-		//float nx, ny, nz;
-		//float hx, hy, hz;
-		float u, v;
-		//float tx, ty, tz;
-	} VERTEX;
-
 public:
 	CWaterApp();
 	virtual ~CWaterApp();
@@ -38,6 +21,7 @@ public:
 	virtual bool Initialize();
 	virtual void Terminate();
 
+	virtual void Update(float fDetailTime);
 	virtual void Render(float fDetailTime);
 
 private:
@@ -47,14 +31,8 @@ private:
 	virtual bool OnKeyDown(COEMsgKeyboard& msg);
 
 private:
-	VERTEX* m_pVerts;
-	ushort* m_pIndis;
-
-	uint m_nVerts;
-	uint m_nIndis;
-
-	IOEShader* m_pShader;
 	CDlgWaveSetting* m_pDlgWaveSetting;
+	CWater* m_pWater;
 
 };
 

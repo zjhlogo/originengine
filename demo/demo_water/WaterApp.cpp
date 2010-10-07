@@ -9,9 +9,7 @@
 #include "resource.h"
 #include "../common/AppHelper.h"
 #include "../common/wxInitHelper.h"
-
-#include <OECore/IOEShaderMgr.h>
-#include <OECore/OERenderSystemUtil.h>
+#include <OECore/IOECore.h>
 
 #include <wx/fs_mem.h>
 #include <wx/xrc/xmlres.h>
@@ -30,12 +28,8 @@ CWaterApp::~CWaterApp()
 
 void CWaterApp::Init()
 {
-	m_pVerts = NULL;
-	m_pIndis = NULL;
-	m_nVerts = 0;
-	m_nIndis = 0;
-	m_pShader = NULL;
 	m_pDlgWaveSetting = NULL;
+	m_pWater = NULL;
 }
 
 void CWaterApp::Destroy()
@@ -45,67 +39,20 @@ void CWaterApp::Destroy()
 
 bool CWaterApp::Initialize()
 {
-	static const VERT_DECL_ELEMENT s_Decl[] =
-	{
-		VDT_FLOAT3, VDU_POSITION, 0,
-		//VDT_FLOAT3, VDU_NORMAL, 0,
-		//VDT_FLOAT3, VDU_COLOR, 0,
-		VDT_FLOAT2, VDU_TEXCOORD, 0,
-		//VDT_FLOAT3, VDU_TEXCOORD, 1,
-		VDT_UNKNOWN, VDU_UNKNOWN, 0,
-	};
-
 	if (!CBaseApp::Initialize()) return false;
 
-	m_nVerts = (NUM_X+1)*(NUM_Z+1);
-	m_pVerts = new VERTEX[m_nVerts];
-	if (!m_pVerts) return false;
-
-	m_nIndis = NUM_X * NUM_Z * 2 * 3;
-	m_pIndis = new ushort[m_nIndis];
-	if (!m_pIndis) return false;
-
-	for (int z = 0; z <= NUM_Z; ++z)
-	{
-		for (int x = 0; x <= NUM_X; ++x)
-		{
-			int nIndex = z*(NUM_X+1)+x;
-			m_pVerts[nIndex].x = x*10.0f;
-			m_pVerts[nIndex].y = 0.0f;
-			m_pVerts[nIndex].z = z*10.0f;
-			m_pVerts[nIndex].u = x/(NUM_X*10.0f);
-			m_pVerts[nIndex].v = z/(NUM_Z*10.0f);
-		}
-	}
-
-	int nIndisIndex = 0;
-	for (int z = 0; z < NUM_Z; ++z)
-	{
-		for (int x = 0; x < NUM_X; ++x)
-		{
-			int nBaseIndex = z*(NUM_X+1)+x;
-			m_pIndis[nIndisIndex++] = nBaseIndex;
-			m_pIndis[nIndisIndex++] = nBaseIndex+(NUM_X+1);
-			m_pIndis[nIndisIndex++] = nBaseIndex+1;
-			m_pIndis[nIndisIndex++] = nBaseIndex+(NUM_X+1);
-			m_pIndis[nIndisIndex++] = nBaseIndex+(NUM_X+1)+1;
-			m_pIndis[nIndisIndex++] = nBaseIndex+1;
-		}
-	}
-
-	m_pShader = g_pOEShaderMgr->CreateShader(s_Decl, TS("demo_water.fx"));
-	if (!m_pShader) return false;
-
-	m_pCamera = new CCamera();
-	if (!m_pCamera) return false;
 	m_pCamera->Initialize(CVector3(399.75037f, 532.55792f, -279.13873f), CVector3(399.73721f, 531.89636f, -278.38895f));
-	g_pOERenderSystem->SetTransform(TT_VIEW, m_pCamera->GetViewMatrix());
 
 	// initialize gui
 	if (!wxInitHelper::Initialize()) return false;
 	if (!wxInitHelper::AddMemoryXrc(TS("XRC"), IDR_XRC_DLGWAVESETTING, TS("DlgWaveSetting.xrc"))) return false;
 	m_pDlgWaveSetting = new CDlgWaveSetting();
 	if (!m_pDlgWaveSetting || !m_pDlgWaveSetting->Initialize()) return false;
+
+	m_pWater = new CWater();
+	if (!m_pWater || !m_pWater->IsOK()) return false;
+
+	g_pOECore->GetRootNode()->AttachObject(m_pWater);
 
 	return true;
 }
@@ -115,35 +62,31 @@ void CWaterApp::Terminate()
 	SAFE_DELETE(m_pDlgWaveSetting);
 	wxInitHelper::Uninitialize();
 
-	SAFE_RELEASE(m_pShader);
-	SAFE_DELETE_ARRAY(m_pVerts);
-	SAFE_DELETE_ARRAY(m_pIndis);
+	g_pOECore->GetRootNode()->DettachObject(m_pWater);
+	SAFE_DELETE(m_pWater);
 
 	CBaseApp::Terminate();
 }
 
-void CWaterApp::Render(float fDetailTime)
+void CWaterApp::Update(float fDetailTime)
 {
 	static float s_fTime = 0.0f;
 
-	CDefaultRenderState DefaultState;
-	g_pOERenderSystem->SetFillMode(FM_WIREFRAME);
-
-	CMatrix4x4 matWorldViewProj;
-	g_pOERenderSystem->GetTransform(matWorldViewProj, TT_WORLD_VIEW_PROJ);
-	m_pShader->SetMatrix(TS("g_matWorldViewProj"), matWorldViewProj);
+	CBaseApp::Update(fDetailTime);
 
 	s_fTime += (fDetailTime*m_pDlgWaveSetting->GetTimeScale());
-	m_pShader->SetFloat(TS("fTime"), s_fTime);
+	m_pWater->SetTime(s_fTime);
+	m_pWater->SetVecFreq(m_pDlgWaveSetting->GetVecFreq()*m_pDlgWaveSetting->GetFreqScale());
+	m_pWater->SetVecSpeed(m_pDlgWaveSetting->GetVecSpeed()*m_pDlgWaveSetting->GetSpeedScale());
+	m_pWater->SetVecDirX(m_pDlgWaveSetting->GetVecDirX());
+	m_pWater->SetVecDirY(m_pDlgWaveSetting->GetVecDirY());
+	m_pWater->SetVecHeight(m_pDlgWaveSetting->GetVecHeight()*m_pDlgWaveSetting->GetHeightScale());
+	m_pWater->SetEyePos(m_pCamera->GetEyePos());
+}
 
-	m_pShader->SetVector(TS("vWaveFreq"), m_pDlgWaveSetting->GetVecFreq()*m_pDlgWaveSetting->GetFreqScale());
-	m_pShader->SetVector(TS("vWaveSpeed"), m_pDlgWaveSetting->GetVecSpeed()*m_pDlgWaveSetting->GetSpeedScale());
-	m_pShader->SetVector(TS("vWaveDirX"), m_pDlgWaveSetting->GetVecDirX());
-	m_pShader->SetVector(TS("vWaveDirY"), m_pDlgWaveSetting->GetVecDirY());
-	m_pShader->SetVector(TS("vWaveHeight"), m_pDlgWaveSetting->GetVecHeight()*m_pDlgWaveSetting->GetHeightScale());
-	m_pShader->SetVector(TS("g_vEyePos"), m_pCamera->GetEyePos());
-	g_pOERenderSystem->SetShader(m_pShader);
-	g_pOERenderSystem->DrawTriList(m_pVerts, m_nVerts, m_pIndis, m_nIndis);
+void CWaterApp::Render(float fDetailTime)
+{
+	// TODO: 
 }
 
 bool CWaterApp::OnKeyDown(COEMsgKeyboard& msg)

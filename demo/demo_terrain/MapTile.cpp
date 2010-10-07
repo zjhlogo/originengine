@@ -6,7 +6,7 @@
  * \author zjhlogo (zjhlogo@163.com)
  */
 #include "MapTile.h"
-#include "TerrainMgr.h"
+#include "Terrain.h"
 #include <OECore/OERenderSystemUtil.h>
 
 CMapTile::CMapTile()
@@ -128,8 +128,8 @@ void CMapTile::Reset()
 
 void CMapTile::CalcMatrix(CMatrix4x4& matOut, int nIndex)
 {
-	int nZ = nIndex/CTerrainMgr::TILE_COUNT_X;
-	int nX = nIndex%CTerrainMgr::TILE_COUNT_X;
+	int nZ = nIndex/CTerrain::TILE_COUNT_X;
+	int nX = nIndex%CTerrain::TILE_COUNT_X;
 
 	matOut.Identity();
 	matOut.m[12] = (float)(nX*TILE_WIDTH);

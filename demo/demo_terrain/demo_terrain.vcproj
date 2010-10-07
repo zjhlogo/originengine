@@ -358,19 +358,19 @@
 			>
 		</File>
 		<File
+			RelativePath=".\Terrain.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\Terrain.h"
+			>
+		</File>
+		<File
 			RelativePath=".\TerrainApp.cpp"
 			>
 		</File>
 		<File
 			RelativePath=".\TerrainApp.h"
-			>
-		</File>
-		<File
-			RelativePath=".\TerrainMgr.cpp"
-			>
-		</File>
-		<File
-			RelativePath=".\TerrainMgr.h"
 			>
 		</File>
 	</Files>

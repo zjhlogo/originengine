@@ -1,18 +1,19 @@
 /*!
- * \file TerrainMgr.h
- * \date 29-5-2009 9:08:08
+ * \file Terrain.h
+ * \date 10-6-2010 22:47:26
  * 
  * 
- * \author zjhlogo (zjhlogo@163.com)
+ * \author zjhlogo (zjhlogo@gmail.com)
  */
-#ifndef __TERRAINMGR_H__
-#define __TERRAINMGR_H__
+#ifndef __TERRAIN_H__
+#define __TERRAIN_H__
 
 #include "MapTile.h"
 #include <OEBase/IOEFileMgr.h>
+#include <OECore/IOERenderableObject.h>
 #include <vector>
 
-class CTerrainMgr
+class CTerrain : public IOERenderableObject
 {
 public:
 	enum CONST_DEFINE
@@ -30,16 +31,22 @@ public:
 	typedef std::vector<int> TV_TILE_INDEX;
 
 public:
-	CTerrainMgr();
-	~CTerrainMgr();
+	RTTI_DEF(CTerrain, IOERenderableObject);
+
+	CTerrain();
+	virtual ~CTerrain();
+
+	virtual void Update(float fDetailTime);
+	virtual void Render(float fDetailTime);
+	virtual IOERenderData* GetRenderData();
 
 	bool LoadTerrain();
-	void UpdateTerrain(const CVector3& vEyePos);
 
-	void Render(float fDetailTime);
+	void SetEyePos(const CVector3& vEyePos);
+	const CVector3& GetEyePos();
 
 private:
-	void Init();
+	bool Init();
 	void Destroy();
 
 	void ResetTile();
@@ -59,6 +66,8 @@ private:
 	int m_nLastTileZ;
 
 	IOEFile* m_pMapFile;
-};
 
-#endif // __TERRAINMGR_H__
+	CVector3 m_vEyePos;
+
+};
+#endif // __TERRAIN_H__

@@ -22,7 +22,7 @@ public:
 	virtual bool Initialize();
 	virtual void Terminate();
 
-	virtual void Render(float fDetailTime);
+	//virtual void Render(float fDetailTime);
 
 private:
 	void Init();

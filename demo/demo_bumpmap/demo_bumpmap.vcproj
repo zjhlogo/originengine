@@ -358,6 +358,14 @@
 			</File>
 		</Filter>
 		<File
+			RelativePath=".\BumpMap.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\BumpMap.h"
+			>
+		</File>
+		<File
 			RelativePath=".\BumpMapApp.cpp"
 			>
 		</File>

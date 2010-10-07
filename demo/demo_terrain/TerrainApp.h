@@ -9,7 +9,7 @@
 #define __TERRAINAPP_H__
 
 #include "../common/BaseApp.h"
-#include "TerrainMgr.h"
+#include "Terrain.h"
 
 class CTerrainApp : public CBaseApp
 {
@@ -21,14 +21,13 @@ public:
 	virtual void Terminate();
 
 	virtual void Update(float fDetailTime);
-	virtual void Render(float fDetailTime);
 
 private:
 	void Init();
 	void Destroy();
 
 private:
-	CTerrainMgr* m_pTerrainMgr;
+	CTerrain* m_pTerrain;
 
 };
 #endif // __TERRAINAPP_H__

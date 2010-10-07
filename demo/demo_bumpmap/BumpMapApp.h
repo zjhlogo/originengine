@@ -10,20 +10,10 @@
 
 #include "../common/BaseApp.h"
 #include "../common/SimpleShape.h"
-#include <OECore/IOEShader.h>
-#include <OECore/IOETexture.h>
+#include "BumpMap.h"
 
 class CBumpMapApp : public CBaseApp
 {
-public:
-	typedef struct VERTEX_tag
-	{
-		float x, y, z;
-		float u, v;
-		float nx, ny, nz;
-		float tx, ty, tz;
-	} VERTEX;
-
 public:
 	CBumpMapApp();
 	virtual ~CBumpMapApp();
@@ -31,7 +21,7 @@ public:
 	virtual bool Initialize();
 	virtual void Terminate();
 
-	virtual void Render(float fDetailTime);
+	virtual void Update(float fDetailTime);
 
 private:
 	void Init();
@@ -41,12 +31,7 @@ private:
 
 private:
 	CSimpleShape* m_pSimpleShape;
-
-	IOEShader* m_pShader;
-	IOETexture* m_pTexBase;
-	IOETexture* m_pTexNormal;
-	IOETexture* m_pTexHeight;
-	CVector3 m_vLightPos;
+	CBumpMap* m_pBumpMap;
 
 };
 

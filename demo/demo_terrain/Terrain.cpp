@@ -1,24 +1,24 @@
 /*!
- * \file TerrainMgr.cpp
- * \date 29-5-2009 9:08:22
+ * \file Terrain.cpp
+ * \date 10-6-2010 22:47:32
  * 
  * 
- * \author zjhlogo (zjhlogo@163.com)
+ * \author zjhlogo (zjhlogo@gmail.com)
  */
-#include "TerrainMgr.h"
+#include "Terrain.h"
 #include <assert.h>
 
-CTerrainMgr::CTerrainMgr()
+CTerrain::CTerrain()
 {
-	Init();
+	m_bOK = Init();
 }
 
-CTerrainMgr::~CTerrainMgr()
+CTerrain::~CTerrain()
 {
 	Destroy();
 }
 
-void CTerrainMgr::Init()
+bool CTerrain::Init()
 {
 	memset(m_pMapTileBuff, 0, sizeof(m_pMapTileBuff));
 	m_nLastTileX = 0;
@@ -26,9 +26,11 @@ void CTerrainMgr::Init()
 	m_bFirstUpdate = true;
 
 	m_pMapFile = NULL;
+
+	return true;
 }
 
-void CTerrainMgr::Destroy()
+void CTerrain::Destroy()
 {
 	SAFE_RELEASE(m_pMapFile);
 
@@ -38,25 +40,10 @@ void CTerrainMgr::Destroy()
 	}
 }
 
-bool CTerrainMgr::LoadTerrain()
+void CTerrain::Update(float fDetailTime)
 {
-	for (int i = 0; i < MAX_CACHE_COUNT; ++i)
-	{
-		SAFE_DELETE(m_pMapTileBuff[i]);
-		m_pMapTileBuff[i] = new CMapTile();
-		assert(m_pMapTileBuff[i]);
-	}
-
-	m_pMapFile = g_pOEFileMgr->OpenFile(TS("media\\terrain.raw"));
-	if (!m_pMapFile) return false;
-
-	return true;
-}
-
-void CTerrainMgr::UpdateTerrain(const CVector3& vEyePos)
-{
-	float fX = vEyePos.x;
-	float fZ = vEyePos.z;
+	float fX = m_vEyePos.x;
+	float fZ = m_vEyePos.z;
 
 	int nX = (int)(fX/CMapTile::TILE_WIDTH);
 	int nZ = (int)(fZ/CMapTile::TILE_HEIGHT);
@@ -120,7 +107,7 @@ void CTerrainMgr::UpdateTerrain(const CVector3& vEyePos)
 	}
 }
 
-void CTerrainMgr::Render(float fDetailTime)
+void CTerrain::Render(float fDetailTime)
 {
 	for (TV_MAP_TILE::iterator it = m_vActivedTile.begin(); it != m_vActivedTile.end(); ++it)
 	{
@@ -129,7 +116,27 @@ void CTerrainMgr::Render(float fDetailTime)
 	}
 }
 
-void CTerrainMgr::ResetTile()
+IOERenderData* CTerrain::GetRenderData()
+{
+	return NULL;
+}
+
+bool CTerrain::LoadTerrain()
+{
+	for (int i = 0; i < MAX_CACHE_COUNT; ++i)
+	{
+		SAFE_DELETE(m_pMapTileBuff[i]);
+		m_pMapTileBuff[i] = new CMapTile();
+		assert(m_pMapTileBuff[i]);
+	}
+
+	m_pMapFile = g_pOEFileMgr->OpenFile(TS("media\\terrain.raw"));
+	if (!m_pMapFile) return false;
+
+	return true;
+}
+
+void CTerrain::ResetTile()
 {
 	m_vActivedTile.clear();
 	m_vSleepedTile.clear();
@@ -140,7 +147,7 @@ void CTerrainMgr::ResetTile()
 	}
 }
 
-CMapTile* CTerrainMgr::ActiveSleepedTile(int nID)
+CMapTile* CTerrain::ActiveSleepedTile(int nID)
 {
 	for (TV_MAP_TILE::iterator it = m_vSleepedTile.begin(); it != m_vSleepedTile.end(); ++it)
 	{
@@ -155,7 +162,7 @@ CMapTile* CTerrainMgr::ActiveSleepedTile(int nID)
 	return NULL;
 }
 
-const ushort* CTerrainMgr::GetMapTileField(int nIndex)
+const ushort* CTerrain::GetMapTileField(int nIndex)
 {
 	static ushort s_HeightField[CMapTile::TILE_SIZE*CMapTile::TILE_SIZE];
 
@@ -173,4 +180,14 @@ const ushort* CTerrainMgr::GetMapTileField(int nIndex)
 	}
 
 	return s_HeightField;
+}
+
+void CTerrain::SetEyePos(const CVector3& vEyePos)
+{
+	m_vEyePos = vEyePos;
+}
+
+const CVector3& CTerrain::GetEyePos()
+{
+	return m_vEyePos;
 }
