@@ -71,8 +71,8 @@ bool CModelApp::Initialize()
 
 void CModelApp::Terminate()
 {
-	IOENode* pRootNode = g_pOECore->GetRootNode();
-	pRootNode->DettachObject(m_pModel);
+	m_pNode1->DettachObject(m_pModel);
+	m_pNode2->DettachObject(m_pModel);
 	SAFE_RELEASE(m_pModel);
 	CBaseApp::Terminate();
 }
@@ -92,11 +92,6 @@ void CModelApp::Update(float fDetailTime)
 	m_pNode1->SetRotation(qRotNode1);
 
 	m_pNode2->SetRotation(qRotRoot);
-}
-
-void CModelApp::Render(float fDetailTime)
-{
-	// TODO: 
 }
 
 bool CModelApp::OnSetupShaderParam(COEMsgShaderParam& msg)

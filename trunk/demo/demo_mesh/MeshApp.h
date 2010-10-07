@@ -9,10 +9,7 @@
 #define __MESHAPP_H__
 
 #include "../common/BaseApp.h"
-#include <OECore/IOEPiece.h>
-#include <OECore/IOEMesh.h>
-#include <OECore/IOETexture.h>
-#include <OECore/IOEShader.h>
+#include "Mesh.h"
 
 class CMeshApp : public CBaseApp
 {
@@ -23,19 +20,12 @@ public:
 	virtual bool Initialize();
 	virtual void Terminate();
 
-	virtual void Render(float fDetailTime);
-
 private:
 	void Init();
 	void Destroy();
 
-	bool OnSetupShaderParam(COEMsgShaderParam& msg);
-	void RenderPieceNormal(IOEPiece* pPiece);
-
 private:
-	IOEMesh* m_pMesh;
-	IOETexture* m_pTexture;
-	IOEShader* m_pShader;
+	CMesh* m_pMesh;
 
 };
 

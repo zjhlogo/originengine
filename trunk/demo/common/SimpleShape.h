@@ -9,8 +9,9 @@
 #define __SIMPLESHAPE_H__
 
 #include <OECore/IOEShader.h>
+#include <OECore/IOERenderableObject.h>
 
-class CSimpleShape
+class CSimpleShape : public IOERenderableObject
 {
 public:
 	enum CONST_DEFINE
@@ -19,20 +20,49 @@ public:
 		CUBE_INDIS_COUNT = 36,
 	};
 
-public:
-	CSimpleShape();
-	~CSimpleShape();
+	enum SHAPE
+	{
+		S_UNKNOWN = 0,
+		S_CUBE,
+		S_SPHERE,
+	};
 
-	bool IsOK();
-	void DrawCube(const CVector3& vPos, float fScale = 1.0f, uint nColor = 0xFFFFFFFF);
+public:
+	RTTI_DEF(CSimpleShape, IOERenderableObject);
+
+	CSimpleShape();
+	virtual ~CSimpleShape();
+
+	virtual void Update(float fDetailTime);
+	virtual void Render(float fDetailTime);
+
+	virtual IOERenderData* GetRenderData();
+
+	void SetShape(SHAPE eShape);
+	SHAPE GetShape();
+
+	void SetPosition(const CVector3& vPos);
+	const CVector3& GetPosition();
+
+	void SetScale(float fScale);
+	float GetScale();
+
+	void SetColor(uint nColor);
+	uint GetColor();
 
 private:
 	bool Init();
 	void Destroy();
 
+	void DrawCube();
+
 private:
-	bool m_bOK;
 	IOEShader* m_pShader;
+	SHAPE m_eShape;
+
+	CVector3 m_vPos;
+	float m_fScale;
+	uint m_nColor;
 
 };
 

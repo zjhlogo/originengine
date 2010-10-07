@@ -350,6 +350,14 @@
 			</File>
 		</Filter>
 		<File
+			RelativePath=".\Mesh.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\Mesh.h"
+			>
+		</File>
+		<File
 			RelativePath=".\MeshApp.cpp"
 			>
 		</File>

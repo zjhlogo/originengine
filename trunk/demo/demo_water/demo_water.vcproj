@@ -391,6 +391,14 @@
 			>
 		</File>
 		<File
+			RelativePath=".\Water.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\Water.h"
+			>
+		</File>
+		<File
 			RelativePath=".\WaterApp.cpp"
 			>
 		</File>

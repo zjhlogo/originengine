@@ -22,7 +22,6 @@ public:
 	virtual void Terminate();
 
 	virtual void Update(float fDetailTime);
-	virtual void Render(float fDetailTime);
 
 private:
 	void Init();

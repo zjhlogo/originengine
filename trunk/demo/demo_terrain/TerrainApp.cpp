@@ -7,6 +7,7 @@
  */
 #include "TerrainApp.h"
 #include "../common/AppHelper.h"
+#include <OECore/IOECore.h>
 
 IMPLEMENT_OEAPP(CTerrainApp);
 
@@ -22,10 +23,7 @@ CTerrainApp::~CTerrainApp()
 
 void CTerrainApp::Init()
 {
-	//m_pDecl = NULL;
-	m_pTerrainMgr = NULL;
-	//m_pShader = NULL;
-	//m_pTexture = NULL;
+	m_pTerrain = NULL;
 }
 
 void CTerrainApp::Destroy()
@@ -37,25 +35,23 @@ bool CTerrainApp::Initialize()
 {
 	if (!CBaseApp::Initialize()) return false;
 
-	m_pTerrainMgr = new CTerrainMgr();
-	if (!m_pTerrainMgr->LoadTerrain()) return false;
+	m_pTerrain = new CTerrain();
+	if (!m_pTerrain || !m_pTerrain->IsOK()) return false;
+	if (!m_pTerrain->LoadTerrain()) return false;
 
+	g_pOECore->GetRootNode()->AttachObject(m_pTerrain);
 	return true;
 }
 
 void CTerrainApp::Terminate()
 {
-	SAFE_DELETE(m_pTerrainMgr);
+	g_pOECore->GetRootNode()->DettachObject(m_pTerrain);
+	SAFE_DELETE(m_pTerrain);
 	CBaseApp::Terminate();
 }
 
 void CTerrainApp::Update(float fDetailTime)
 {
 	CBaseApp::Update(fDetailTime);
-	m_pTerrainMgr->UpdateTerrain(m_pCamera->GetEyePos());
-}
-
-void CTerrainApp::Render(float fDetailTime)
-{
-	m_pTerrainMgr->Render(fDetailTime);
+	m_pTerrain->SetEyePos(m_pCamera->GetEyePos());
 }

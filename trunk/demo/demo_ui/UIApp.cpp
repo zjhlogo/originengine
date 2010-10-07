@@ -57,7 +57,7 @@ void CUIApp::Terminate()
 	CBaseApp::Terminate();
 }
 
-void CUIApp::Render(float fDetailTime)
-{
-	m_pString->Render(CPoint(100.0f, 100.0f));
-}
+//void CUIApp::Render(float fDetailTime)
+//{
+//	m_pString->Render(CPoint(100.0f, 100.0f));
+//}
