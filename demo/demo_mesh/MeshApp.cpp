@@ -45,7 +45,6 @@ bool CMeshApp::Initialize()
 
 void CMeshApp::Terminate()
 {
-	g_pOECore->GetRootNode()->DettachObject(m_pMesh);
 	SAFE_DELETE(m_pMesh);
 	CBaseApp::Terminate();
 }

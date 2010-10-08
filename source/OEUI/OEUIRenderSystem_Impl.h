@@ -31,6 +31,8 @@ public:
 	virtual bool Initialize();
 	virtual void Terminate();
 
+	virtual COEUIScreen* GetScreen();
+
 	virtual void SetTexture(IOETexture* pTexture);
 	virtual IOETexture* GetTexture() const;
 
@@ -42,6 +44,8 @@ private:
 
 	void FlushAll();
 
+	bool OnUpdate(COEMsgCommand& msg);
+	bool OnRender(COEMsgCommand& msg);
 	bool OnPostRender(COEMsgCommand& msg);
 
 private:
@@ -49,6 +53,7 @@ private:
 	IOEShader* m_pShader;
 
 	COEUIVertexCache* m_pVertsCache[VERTEX_CACHE_COUNT];
+	COEUIScreen* m_pScreen;
 
 };
 #endif // __OEUIRENDERSYSTEM_IMPL_H__

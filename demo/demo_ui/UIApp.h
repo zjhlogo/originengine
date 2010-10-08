@@ -10,9 +10,6 @@
 
 #include "../common/BaseApp.h"
 
-#include <OEUI/IOEUIFont.h>
-#include <OEUI/IOEUIString.h>
-
 class CUIApp : public CBaseApp
 {
 public:
@@ -22,16 +19,9 @@ public:
 	virtual bool Initialize();
 	virtual void Terminate();
 
-	//virtual void Render(float fDetailTime);
-
 private:
 	void Init();
 	void Destroy();
-
-private:
-	IOEUIFont* m_pFont;
-	IOEUIString* m_pString;
-	uint m_nPerformCount;
 
 };
 

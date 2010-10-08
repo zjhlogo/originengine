@@ -10,6 +10,7 @@
 
 #include "../OECore/IOEMgr.h"
 #include "../libOEUI/OEUIType.h"
+#include "../libOEUI/OEUIScreen.h"
 #include "../OECore/IOETexture.h"
 
 class IOEUIRenderSystem : public IOEMgr
@@ -19,6 +20,8 @@ public:
 
 	IOEUIRenderSystem() {};
 	virtual ~IOEUIRenderSystem() {};
+
+	virtual COEUIScreen* GetScreen() = 0;
 
 	virtual void SetTexture(IOETexture* pTexture) = 0;
 	virtual IOETexture* GetTexture() const = 0;

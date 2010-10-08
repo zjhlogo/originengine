@@ -15,7 +15,12 @@ IOEObject::IOEObject()
 
 IOEObject::~IOEObject()
 {
-	// TODO: 
+	for (TS_OBJECT::iterator it = m_sNotifier.begin(); it != m_sNotifier.end(); ++it)
+	{
+		IOEObject* pObject = (*it);
+		pObject->NotifyDestroy(this);
+		pObject->RemoveDestroyReceiver(this);
+	}
 }
 
 bool IOEObject::IsOK()
@@ -41,4 +46,22 @@ int IOEObject::DecRef()
 int IOEObject::GetRef() const
 {
 	return m_nRef;
+}
+
+void IOEObject::AddDestroyReceiver(IOEObject* pObject)
+{
+	m_sNotifier.insert(pObject);
+}
+
+void IOEObject::RemoveDestroyReceiver(IOEObject* pObject)
+{
+	TS_OBJECT::iterator itfound = m_sNotifier.find(pObject);
+	if (itfound == m_sNotifier.end()) return;
+
+	m_sNotifier.erase(itfound);
+}
+
+void IOEObject::NotifyDestroy(IOEObject* pObject)
+{
+	// TODO: 
 }

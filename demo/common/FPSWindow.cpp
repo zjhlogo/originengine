@@ -1,15 +1,16 @@
 /*!
- * \file OEFPSPrinter.cpp
- * \date 10-4-2010 23:33:03
+ * \file FPSWindow.cpp
+ * \date 10-8-2010 9:40:34
  * 
  * 
  * \author zjhlogo (zjhlogo@gmail.com)
  */
-#include "OEFPSPrinter.h"
+#include "FPSWindow.h"
 #include <OECOre/IOEDevice.h>
 #include <libOEBase/OEOS.h>
 
-COEFPSPrinter::COEFPSPrinter()
+CFPSWindow::CFPSWindow(COEUIWindow* pParent)
+:COEUIWindow(pParent)
 {
 	m_fCurrFPS = 0.0f;
 	m_fLastFPSTime = 0.0f;
@@ -25,30 +26,25 @@ COEFPSPrinter::COEFPSPrinter()
 	m_nFPSCount = 0;
 }
 
-COEFPSPrinter::~COEFPSPrinter()
+CFPSWindow::~CFPSWindow()
 {
 	SAFE_RELEASE(m_pStringFPS);
 	SAFE_RELEASE(m_pFontFPS);
 }
 
-void COEFPSPrinter::Update(float fDetailTime)
+void CFPSWindow::UpdateSelf(float fDetailTime)
 {
 	// calculate fps
 	CalculateFPS();
 }
 
-void COEFPSPrinter::Render(float fDetailTime)
+void CFPSWindow::RenderSelf(float fDetailTime)
 {
 	// render fps
-	m_pStringFPS->Render(OEUI_ZERO_POINT);
+	m_pStringFPS->Render(fDetailTime);
 }
 
-IOERenderData* COEFPSPrinter::GetRenderData()
-{
-	return NULL;
-}
-
-void COEFPSPrinter::CalculateFPS()
+void CFPSWindow::CalculateFPS()
 {
 	++m_nFPSCount;
 
@@ -66,4 +62,3 @@ void COEFPSPrinter::CalculateFPS()
 		m_pStringFPS->SetText(strText);
 	}
 }
-

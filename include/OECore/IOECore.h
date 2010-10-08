@@ -22,7 +22,6 @@ public:
 	virtual void Run() = 0;
 	virtual void End() = 0;
 
-	virtual IOENode* CreateNewNode() = 0;
 	virtual IOENode* GetRootNode() = 0;
 
 };

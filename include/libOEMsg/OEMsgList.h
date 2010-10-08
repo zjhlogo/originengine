@@ -1,6 +1,6 @@
 /*!
  * \file OEMsgList.h
- * \date 8-18-2010 10:38:28
+ * \date 10-7-2010 22:4:57
  * 
  * 
  * \author MessageGenerator (zjhlogo@gmail.com)
@@ -31,9 +31,15 @@ enum OEMSGLIST_ID_DEFINE
 	OMI_PRE_RENDER,              // COEMsgCommand
 	OMI_RENDER,                  // COEMsgCommand
 	OMI_POST_RENDER,             // COEMsgCommand
+	OMI_UI_PRE_UPDATE,           // COEMsgCommand
+	OMI_UI_UPDATE,               // COEMsgCommand
+	OMI_UI_POST_UPDATE,          // COEMsgCommand
+	OMI_UI_PRE_RENDER,           // COEMsgCommand
+	OMI_UI_RENDER,               // COEMsgCommand
+	OMI_UI_POST_RENDER,          // COEMsgCommand
 	OMI_SETUP_SHADER_PARAM,      // COEMsgShaderParam
 };
 
-extern const IOEMsgMgr::MSG_GENERATE_MAP g_OEMsgListDB[20];
+extern const IOEMsgMgr::MSG_GENERATE_MAP g_OEMsgListDB[26];
 
 #endif // __OEMSGLIST_H__

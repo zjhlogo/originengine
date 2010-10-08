@@ -31,6 +31,60 @@ void COEUIString_Impl::Destroy()
 	DestroyRenderChars();
 }
 
+void COEUIString_Impl::Update(float fDetailTime)
+{
+	// TODO: 
+}
+
+void COEUIString_Impl::Render(float fDetailTime)
+{
+	static const int VERTS_COUNT = 4;
+	static const int INDIS_COUNT = 6;
+	static const ushort s_Indis[INDIS_COUNT] = {0, 1, 3, 1, 2, 3};
+
+	VERTEX_POLY_UI Verts[VERTS_COUNT];
+
+	for (VCHAR_RENDER_INFO::iterator it = m_vCharRenderInfo.begin(); it != m_vCharRenderInfo.end(); ++it)
+	{
+		const CHAR_RENDER_INFO& CharRenderInfo = (*it);
+
+		Verts[0].x = m_vPos.x+CharRenderInfo.x;
+		Verts[0].y = m_vPos.y+CharRenderInfo.y+CharRenderInfo.pCharInfo->height;
+		Verts[0].z = 0.0f;
+		Verts[0].w = 1.0f;
+		Verts[0].nColor = m_nColor;
+		Verts[0].u = CharRenderInfo.pCharInfo->u;
+		Verts[0].v = CharRenderInfo.pCharInfo->v+CharRenderInfo.pCharInfo->h;
+
+		Verts[1].x = m_vPos.x+CharRenderInfo.x;
+		Verts[1].y = m_vPos.y+CharRenderInfo.y;
+		Verts[1].z = 0.0f;
+		Verts[1].w = 1.0f;
+		Verts[1].nColor = m_nColor;
+		Verts[1].u = CharRenderInfo.pCharInfo->u;
+		Verts[1].v = CharRenderInfo.pCharInfo->v;
+
+		Verts[2].x = m_vPos.x+CharRenderInfo.x+CharRenderInfo.pCharInfo->width;
+		Verts[2].y = m_vPos.y+CharRenderInfo.y;
+		Verts[2].z = 0.0f;
+		Verts[2].w = 1.0f;
+		Verts[2].nColor = m_nColor;
+		Verts[2].u = CharRenderInfo.pCharInfo->u+CharRenderInfo.pCharInfo->w;
+		Verts[2].v = CharRenderInfo.pCharInfo->v;
+
+		Verts[3].x = m_vPos.x+CharRenderInfo.x+CharRenderInfo.pCharInfo->width;
+		Verts[3].y = m_vPos.y+CharRenderInfo.y+CharRenderInfo.pCharInfo->height;
+		Verts[3].z = 0.0f;
+		Verts[3].w = 1.0f;
+		Verts[3].nColor = m_nColor;
+		Verts[3].u = CharRenderInfo.pCharInfo->u+CharRenderInfo.pCharInfo->w;
+		Verts[3].v = CharRenderInfo.pCharInfo->v+CharRenderInfo.pCharInfo->h;
+
+		g_pOEUIRenderSystem->SetTexture(CharRenderInfo.pCharInfo->pTexture);
+		g_pOEUIRenderSystem->DrawTriList(Verts, VERTS_COUNT, s_Indis, INDIS_COUNT);
+	}
+}
+
 void COEUIString_Impl::SetText(const tstring& strText)
 {
 	m_strText = strText;
@@ -63,53 +117,14 @@ const IOEUIFont* COEUIString_Impl::GetFont() const
 	return m_pFont;
 }
 
-void COEUIString_Impl::Render(const CPoint& pos)
+void COEUIString_Impl::SetPosition(const CPoint& pos)
 {
-	static const int VERTS_COUNT = 4;
-	static const int INDIS_COUNT = 6;
-	static const ushort s_Indis[INDIS_COUNT] = {0, 1, 3, 1, 2, 3};
+	m_vPos = pos;
+}
 
-	VERTEX_POLY_UI Verts[VERTS_COUNT];
-
-	for (VCHAR_RENDER_INFO::iterator it = m_vCharRenderInfo.begin(); it != m_vCharRenderInfo.end(); ++it)
-	{
-		const CHAR_RENDER_INFO& CharRenderInfo = (*it);
-
-		Verts[0].x = pos.x+CharRenderInfo.x;
-		Verts[0].y = pos.y+CharRenderInfo.y+CharRenderInfo.pCharInfo->height;
-		Verts[0].z = 0.0f;
-		Verts[0].w = 1.0f;
-		Verts[0].nColor = m_nColor;
-		Verts[0].u = CharRenderInfo.pCharInfo->u;
-		Verts[0].v = CharRenderInfo.pCharInfo->v+CharRenderInfo.pCharInfo->h;
-
-		Verts[1].x = pos.x+CharRenderInfo.x;
-		Verts[1].y = pos.y+CharRenderInfo.y;
-		Verts[1].z = 0.0f;
-		Verts[1].w = 1.0f;
-		Verts[1].nColor = m_nColor;
-		Verts[1].u = CharRenderInfo.pCharInfo->u;
-		Verts[1].v = CharRenderInfo.pCharInfo->v;
-
-		Verts[2].x = pos.x+CharRenderInfo.x+CharRenderInfo.pCharInfo->width;
-		Verts[2].y = pos.y+CharRenderInfo.y;
-		Verts[2].z = 0.0f;
-		Verts[2].w = 1.0f;
-		Verts[2].nColor = m_nColor;
-		Verts[2].u = CharRenderInfo.pCharInfo->u+CharRenderInfo.pCharInfo->w;
-		Verts[2].v = CharRenderInfo.pCharInfo->v;
-
-		Verts[3].x = pos.x+CharRenderInfo.x+CharRenderInfo.pCharInfo->width;
-		Verts[3].y = pos.y+CharRenderInfo.y+CharRenderInfo.pCharInfo->height;
-		Verts[3].z = 0.0f;
-		Verts[3].w = 1.0f;
-		Verts[3].nColor = m_nColor;
-		Verts[3].u = CharRenderInfo.pCharInfo->u+CharRenderInfo.pCharInfo->w;
-		Verts[3].v = CharRenderInfo.pCharInfo->v+CharRenderInfo.pCharInfo->h;
-
-		g_pOEUIRenderSystem->SetTexture(CharRenderInfo.pCharInfo->pTexture);
-		g_pOEUIRenderSystem->DrawTriList(Verts, VERTS_COUNT, s_Indis, INDIS_COUNT);
-	}
+const CPoint& COEUIString_Impl::GetPosition()
+{
+	return m_vPos;
 }
 
 bool COEUIString_Impl::CreateRenderChars()

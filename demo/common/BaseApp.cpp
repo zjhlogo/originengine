@@ -9,6 +9,7 @@
 #include <libOEMsg/OEMsgList.h>
 #include <OECore/IOERenderSystem.h>
 #include <OECore/IOECore.h>
+#include <OEUI/IOEUIRenderSystem.h>
 #include <assert.h>
 
 CBaseApp::CBaseApp()
@@ -24,6 +25,7 @@ CBaseApp::~CBaseApp()
 void CBaseApp::Init()
 {
 	m_pCamera = NULL;
+	m_pFPS = NULL;
 	m_bLButtonDown = false;
 	m_nMouseDetailX = 0;
 	m_nMouseDetailY = 0;
@@ -40,6 +42,9 @@ bool CBaseApp::Initialize()
 {
 	m_pCamera = new CCamera();
 	if (!m_pCamera) return false;
+
+	m_pFPS = new CFPSWindow(g_pOEUIRenderSystem->GetScreen());
+	if (!m_pFPS) return false;
 
 	// registe message
 	g_pOEMsgMgr->RegisterMessage(OMI_LBUTTON_DOWN, this, (MSG_FUNC)&CBaseApp::OnLButtonDown);

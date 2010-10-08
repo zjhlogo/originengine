@@ -14,17 +14,18 @@
 class COENode_Impl : public IOENode
 {
 public:
-	typedef std::vector<IOENode*> TV_NODE;
+	typedef std::vector<COENode_Impl*> TV_NODE;
 	typedef std::vector<IOEObject*> TV_OBJECT;
 
 public:
 	RTTI_DEF(COENode_Impl, IOENode);
 
-	COENode_Impl();
+	COENode_Impl(const tstring& strName);
 	virtual ~COENode_Impl();
 
-	virtual bool AddNode(IOENode* pNode);
-	virtual bool RemoveNode(IOENode* pNode);
+	virtual const tstring& GetName();
+	virtual IOENode* NewChildNode(const tstring& strName);
+	virtual bool RemoveChildNode(IOENode* pNode);
 	virtual IOENode* GetChildNode(int nIndex);
 	virtual int GetNumChildNodes();
 
@@ -32,6 +33,7 @@ public:
 	virtual bool DettachObject(IOEObject* pObject);
 	virtual IOEObject* GetAttachedObject(int nIndex);
 	virtual int GetNumAttachedObjects();
+	virtual void NotifyDestroy(IOEObject* pObject);
 
 	virtual void SetPosition(const CVector3& vPos);
 	virtual const CVector3& GetPosition();
@@ -45,6 +47,9 @@ public:
 	virtual const CMatrix4x4& GetFinalMatrix();
 
 private:
+	void DestroyChildren();
+
+private:
 	TV_NODE m_vNodes;
 	TV_OBJECT m_vObjects;
 
@@ -53,5 +58,6 @@ private:
 
 	CMatrix4x4 m_matFinal;
 
+	tstring m_strName;
 };
 #endif // __OENODE_IMPL_H__

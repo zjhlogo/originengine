@@ -7,9 +7,8 @@
  */
 #include "UIApp.h"
 #include "../common/AppHelper.h"
-
-#include <OEUI/IOEUIFontMgr.h>
-#include <OEUI/IOEUIStringMgr.h>
+#include <OEUI/IOEUIRenderSystem.h>
+#include "StringWindow.h"
 
 IMPLEMENT_OEAPP(CUIApp);
 
@@ -25,9 +24,7 @@ CUIApp::~CUIApp()
 
 void CUIApp::Init()
 {
-	m_pFont = NULL;
-	m_pString = NULL;
-	m_nPerformCount = 0;
+	// TODO: 
 }
 
 void CUIApp::Destroy()
@@ -39,25 +36,12 @@ bool CUIApp::Initialize()
 {
 	if (!CBaseApp::Initialize()) return false;
 
-	m_pFont = g_pOEUIFontMgr->CreateBitmapFont(TS("12px_Tahoma.fnt"));
-	if (!m_pFont) return false;
-
-	m_pString = g_pOEUIStringMgr->CreateUIString(m_pFont);
-	if (!m_pString) return false;
-
-	m_pString->SetText(TS("HANDLE g_hTickEvent = ::CreateEvent(NULL, FALSE, FALSE, NULL);"));
+	CStringWindow* pStringWindow = new CStringWindow(g_pOEUIRenderSystem->GetScreen());
 
 	return true;
 }
 
 void CUIApp::Terminate()
 {
-	SAFE_RELEASE(m_pString);
-	SAFE_RELEASE(m_pFont);
 	CBaseApp::Terminate();
 }
-
-//void CUIApp::Render(float fDetailTime)
-//{
-//	m_pString->Render(CPoint(100.0f, 100.0f));
-//}

@@ -9,8 +9,8 @@
 #define __OECORE_IMPL_H__
 
 #include <OECore/IOECore.h>
+#include <OECore/IOERenderableObject.h>
 #include <libOEMsg/OEMsgCommand.h>
-#include "OEFPSPrinter.h"
 #include <set>
 #include <vector>
 
@@ -39,7 +39,6 @@ public:
 	virtual void Run();
 	virtual void End();
 
-	virtual IOENode* CreateNewNode();
 	virtual IOENode* GetRootNode();
 
 private:
@@ -67,7 +66,6 @@ private:
 private:
 	bool m_bRunning;
 	IOENode* m_pRootNode;
-	COEFPSPrinter* m_pFPSPrinter;
 
 	TS_RENDERABLE_OBJECT m_sRenderableObjects;
 	TV_RENDER_OBJECT_INFO m_vRenderObjectInfo;

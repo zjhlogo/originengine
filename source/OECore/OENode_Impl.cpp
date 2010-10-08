@@ -7,31 +7,37 @@
  */
 #include "OENode_Impl.h"
 
-COENode_Impl::COENode_Impl()
+COENode_Impl::COENode_Impl(const tstring& strName)
 {
-	// TODO: 
+	m_strName = strName;
 }
 
 COENode_Impl::~COENode_Impl()
 {
-	// TODO: 
+	DestroyChildren();
 }
 
-bool COENode_Impl::AddNode(IOENode* pNode)
+const tstring& COENode_Impl::GetName()
 {
-	if (!pNode) return false;
+	return m_strName;
+}
 
-	// check if exist
+IOENode* COENode_Impl::NewChildNode(const tstring& strName)
+{
+	// check if exist the name
 	for (TV_NODE::iterator it = m_vNodes.begin(); it != m_vNodes.end(); ++it)
 	{
-		if (*it == pNode) return false;
+		if ((*it)->GetName() == strName) return NULL;
 	}
 
+	COENode_Impl* pNode = new COENode_Impl(strName);
+	if (!pNode) return NULL;
+
 	m_vNodes.push_back(pNode);
-	return true;
+	return pNode;
 }
 
-bool COENode_Impl::RemoveNode(IOENode* pNode)
+bool COENode_Impl::RemoveChildNode(IOENode* pNode)
 {
 	if (!pNode) return false;
 
@@ -69,6 +75,7 @@ bool COENode_Impl::AttachObject(IOEObject* pObject)
 		if (*it == pObject) return false;
 	}
 
+	pObject->AddDestroyReceiver(this);
 	m_vObjects.push_back(pObject);
 	return true;
 }
@@ -99,6 +106,11 @@ IOEObject* COENode_Impl::GetAttachedObject(int nIndex)
 int COENode_Impl::GetNumAttachedObjects()
 {
 	return (int)m_vObjects.size();
+}
+
+void COENode_Impl::NotifyDestroy(IOEObject* pObject)
+{
+	DettachObject(pObject);
 }
 
 void COENode_Impl::SetPosition(const CVector3& vPos)
@@ -139,4 +151,16 @@ void COENode_Impl::GetLocalMatrix(CMatrix4x4& matLocal)
 const CMatrix4x4& COENode_Impl::GetFinalMatrix()
 {
 	return m_matFinal;
+}
+
+void COENode_Impl::DestroyChildren()
+{
+	for (TV_NODE::iterator it = m_vNodes.begin(); it != m_vNodes.end(); ++it)
+	{
+		COENode_Impl* pNode = (*it);
+		pNode->DestroyChildren();
+		SAFE_RELEASE(pNode);
+	}
+
+	m_vNodes.clear();
 }

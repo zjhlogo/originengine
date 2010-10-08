@@ -22,12 +22,13 @@
 #include <OECore/IOERenderSystem.h>
 
 #include <OEUI/IOEUIRenderSystem.h>
+#include <OEUI/IOEUIFontMgr.h>
+#include <OEUI/IOEUIStringMgr.h>
 
 #include <libOEBase/IOEApp.h>
 #include <libOEMsg/OEMsgList.h>
 
 #include "OENode_Impl.h"
-#include "OEFPSPrinter.h"
 
 COECore_Impl::COECore_Impl()
 {
@@ -45,7 +46,6 @@ bool COECore_Impl::Init()
 {
 	m_bRunning = false;
 	m_pRootNode = NULL;
-	m_pFPSPrinter = NULL;
 	return true;
 }
 
@@ -56,19 +56,17 @@ void COECore_Impl::Destroy()
 
 bool COECore_Impl::Initialize()
 {
+	// we registe message first to make sure the message comes to here first
+	RegisterMessage();
+
 	if (!InitializeInterfaces())
 	{
 		LOGOUT(TS("IOECore::Initialize Failed"));
 		return false;
 	}
 
-	m_pRootNode = CreateNewNode();
-
-	m_pFPSPrinter = new COEFPSPrinter();
-	m_pRootNode->AttachObject(m_pFPSPrinter);
-
-	// registe message
-	RegisterMessage();
+	m_pRootNode = new COENode_Impl(TS("RootNode"));
+	if (!m_pRootNode) return false;
 
 	// 应用程序接口类
 	if (!g_pOEApp->Initialize()) return false;
@@ -84,8 +82,6 @@ void COECore_Impl::Terminate()
 	// 应用程序接口类
 	g_pOEApp->Terminate();
 
-	m_pRootNode->DettachObject(m_pFPSPrinter);
-	SAFE_RELEASE(m_pFPSPrinter);
 	SAFE_RELEASE(m_pRootNode);
 
 	TerminateInterfaces();
@@ -105,12 +101,6 @@ void COECore_Impl::End()
 	m_bRunning = false;
 
 	g_pOEDevice->EndPerform();
-}
-
-IOENode* COECore_Impl::CreateNewNode()
-{
-	COENode_Impl* pNode = new COENode_Impl();
-	return pNode;
 }
 
 IOENode* COECore_Impl::GetRootNode()

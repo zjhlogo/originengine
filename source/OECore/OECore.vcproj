@@ -534,14 +534,6 @@
 			>
 		</File>
 		<File
-			RelativePath=".\OEFPSPrinter.cpp"
-			>
-		</File>
-		<File
-			RelativePath=".\OEFPSPrinter.h"
-			>
-		</File>
-		<File
 			RelativePath=".\OEMaterial_Impl.cpp"
 			>
 		</File>

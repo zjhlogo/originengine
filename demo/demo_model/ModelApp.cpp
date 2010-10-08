@@ -46,16 +46,13 @@ bool CModelApp::Initialize()
 
 	m_pNodeRoot = g_pOECore->GetRootNode();
 
-	m_pNode1 = g_pOECore->CreateNewNode();
+	m_pNode1 = m_pNodeRoot->NewChildNode(TS("Node1"));
 	m_pNode1->SetPosition(CVector3(-100.0f, 0.0f, 0.0f));
 	m_pNode1->AttachObject(m_pModel);
 
-	m_pNode2 = g_pOECore->CreateNewNode();
+	m_pNode2 = m_pNodeRoot->NewChildNode(TS("Node2"));
 	m_pNode2->SetPosition(CVector3(100.0f, 0.0f, 0.0f));
 	m_pNode2->AttachObject(m_pModel);
-
-	m_pNodeRoot->AddNode(m_pNode1);
-	m_pNodeRoot->AddNode(m_pNode2);
 
 	CQuaternion qRot(COEMath::VECTOR_UP, COEMath::PI_2);
 	//pRootNode->SetRotation(qRot);
@@ -71,8 +68,6 @@ bool CModelApp::Initialize()
 
 void CModelApp::Terminate()
 {
-	m_pNode1->DettachObject(m_pModel);
-	m_pNode2->DettachObject(m_pModel);
 	SAFE_RELEASE(m_pModel);
 	CBaseApp::Terminate();
 }

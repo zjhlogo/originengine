@@ -29,6 +29,9 @@ public:
 	COEUIString_Impl(IOEUIFont* pFont);
 	virtual ~COEUIString_Impl();
 
+	virtual void Update(float fDetailTime);
+	virtual void Render(float fDetailTime);
+
 	virtual void SetText(const tstring& strText);
 	virtual const tstring& GetText() const;
 
@@ -38,7 +41,8 @@ public:
 	virtual bool SetFont(IOEUIFont* pFont);
 	virtual const IOEUIFont* GetFont() const;
 
-	virtual void Render(const CPoint& pos);
+	virtual void SetPosition(const CPoint& pos);
+	virtual const CPoint& GetPosition();
 
 private:
 	void Init();
@@ -52,6 +56,7 @@ private:
 	tstring m_strText;
 	uint m_nColor;
 	VCHAR_RENDER_INFO m_vCharRenderInfo;
+	CPoint m_vPos;
 
 };
 #endif // __OEUISTRING_IMPL_H__

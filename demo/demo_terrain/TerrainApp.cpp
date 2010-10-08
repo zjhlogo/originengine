@@ -45,7 +45,6 @@ bool CTerrainApp::Initialize()
 
 void CTerrainApp::Terminate()
 {
-	g_pOECore->GetRootNode()->DettachObject(m_pTerrain);
 	SAFE_DELETE(m_pTerrain);
 	CBaseApp::Terminate();
 }
