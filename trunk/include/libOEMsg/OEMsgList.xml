@@ -21,5 +21,12 @@
 	<Message id="OMI_RENDER" class="COEMsgCommand" />
 	<Message id="OMI_POST_RENDER" class="COEMsgCommand" />
 
+	<Message id="OMI_UI_PRE_UPDATE" class="COEMsgCommand" />
+	<Message id="OMI_UI_UPDATE" class="COEMsgCommand" />
+	<Message id="OMI_UI_POST_UPDATE" class="COEMsgCommand" />
+	<Message id="OMI_UI_PRE_RENDER" class="COEMsgCommand" />
+	<Message id="OMI_UI_RENDER" class="COEMsgCommand" />
+	<Message id="OMI_UI_POST_RENDER" class="COEMsgCommand" />
+
 	<Message id="OMI_SETUP_SHADER_PARAM" class="COEMsgShaderParam" />
 </MessageList>

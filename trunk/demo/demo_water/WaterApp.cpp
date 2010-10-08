@@ -62,9 +62,7 @@ void CWaterApp::Terminate()
 	SAFE_DELETE(m_pDlgWaveSetting);
 	wxInitHelper::Uninitialize();
 
-	g_pOECore->GetRootNode()->DettachObject(m_pWater);
 	SAFE_DELETE(m_pWater);
-
 	CBaseApp::Terminate();
 }
 

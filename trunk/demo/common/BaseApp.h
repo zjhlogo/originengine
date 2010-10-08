@@ -13,6 +13,7 @@
 #include <libOEMsg/OEMsgKeyboard.h>
 #include <libOEMsg/OEMsgShaderParam.h>
 #include "Camera.h"
+#include "FPSWindow.h"
 
 class CBaseApp : public IOEApp
 {
@@ -47,6 +48,7 @@ private:
 
 protected:
 	CCamera* m_pCamera;
+	CFPSWindow* m_pFPS;
 	bool m_bLButtonDown;
 	int m_nMouseDetailX;
 	int m_nMouseDetailY;

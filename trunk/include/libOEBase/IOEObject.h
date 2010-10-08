@@ -11,9 +11,13 @@
 #include "OEBaseType.h"
 #include "OEDataBufferRead.h"
 #include "OERtti.h"
+#include <set>
 
 class IOEObject
 {
+public:
+	typedef std::set<IOEObject*> TS_OBJECT;
+
 public:
 	RTTI_DEF(IOEObject, CNoRtti);
 
@@ -22,6 +26,10 @@ public:
 
 	virtual bool IsOK();
 	virtual void Release();
+
+	void AddDestroyReceiver(IOEObject* pObject);
+	void RemoveDestroyReceiver(IOEObject* pObject);
+	virtual void NotifyDestroy(IOEObject* pObject);
 
 	int IncRef();
 	int DecRef();
@@ -32,6 +40,7 @@ protected:
 
 private:
 	int m_nRef;
+	TS_OBJECT m_sNotifier;
 
 };
 

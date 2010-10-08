@@ -19,8 +19,9 @@ public:
 	IOENode() {m_bDirty = true;};
 	virtual ~IOENode() {};
 
-	virtual bool AddNode(IOENode* pNode) = 0;
-	virtual bool RemoveNode(IOENode* pNode) = 0;
+	virtual const tstring& GetName() = 0;
+	virtual IOENode* NewChildNode(const tstring& strName) = 0;
+	virtual bool RemoveChildNode(IOENode* pNode) = 0;
 	virtual IOENode* GetChildNode(int nIndex) = 0;
 	virtual int GetNumChildNodes() = 0;
 

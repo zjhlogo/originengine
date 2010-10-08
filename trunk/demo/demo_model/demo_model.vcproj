@@ -341,6 +341,14 @@
 				RelativePath="..\common\Camera.h"
 				>
 			</File>
+			<File
+				RelativePath="..\common\FPSWindow.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\common\FPSWindow.h"
+				>
+			</File>
 		</Filter>
 		<File
 			RelativePath=".\ModelApp.cpp"

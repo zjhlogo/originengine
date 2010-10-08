@@ -275,11 +275,27 @@
 	</References>
 	<Files>
 		<File
+			RelativePath=".\OEUIScreen.cpp"
+			>
+		</File>
+		<File
+			RelativePath="..\..\include\libOEUI\OEUIScreen.h"
+			>
+		</File>
+		<File
 			RelativePath=".\OEUIType.cpp"
 			>
 		</File>
 		<File
 			RelativePath="..\..\include\libOEUI\OEUIType.h"
+			>
+		</File>
+		<File
+			RelativePath=".\OEUIWindow.cpp"
+			>
+		</File>
+		<File
+			RelativePath="..\..\include\libOEUI\OEUIWindow.h"
 			>
 		</File>
 	</Files>

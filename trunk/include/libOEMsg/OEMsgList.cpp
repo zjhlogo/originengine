@@ -1,6 +1,6 @@
 /*!
  * \file OEMsgList.cpp
- * \date 8-18-2010 10:38:28
+ * \date 10-7-2010 22:4:57
  * 
  * 
  * \author MessageGenerator (zjhlogo@gmail.com)
@@ -32,7 +32,7 @@ static COEMsgShaderParam* __AutoGen_COEMsgShaderParam(COEDataBufferRead* pDBRead
 	return new COEMsgShaderParam(pDBRead);
 }
 
-const IOEMsgMgr::MSG_GENERATE_MAP g_OEMsgListDB[20] = 
+const IOEMsgMgr::MSG_GENERATE_MAP g_OEMsgListDB[26] = 
 {
 	{OMI_LBUTTON_DOWN,            (IOEMsgMgr::MSG_GENERATE_FUNC)__AutoGen_COEMsgMouse},
 	{OMI_LBUTTON_UP,              (IOEMsgMgr::MSG_GENERATE_FUNC)__AutoGen_COEMsgMouse},
@@ -52,6 +52,12 @@ const IOEMsgMgr::MSG_GENERATE_MAP g_OEMsgListDB[20] =
 	{OMI_PRE_RENDER,              (IOEMsgMgr::MSG_GENERATE_FUNC)__AutoGen_COEMsgCommand},
 	{OMI_RENDER,                  (IOEMsgMgr::MSG_GENERATE_FUNC)__AutoGen_COEMsgCommand},
 	{OMI_POST_RENDER,             (IOEMsgMgr::MSG_GENERATE_FUNC)__AutoGen_COEMsgCommand},
+	{OMI_UI_PRE_UPDATE,           (IOEMsgMgr::MSG_GENERATE_FUNC)__AutoGen_COEMsgCommand},
+	{OMI_UI_UPDATE,               (IOEMsgMgr::MSG_GENERATE_FUNC)__AutoGen_COEMsgCommand},
+	{OMI_UI_POST_UPDATE,          (IOEMsgMgr::MSG_GENERATE_FUNC)__AutoGen_COEMsgCommand},
+	{OMI_UI_PRE_RENDER,           (IOEMsgMgr::MSG_GENERATE_FUNC)__AutoGen_COEMsgCommand},
+	{OMI_UI_RENDER,               (IOEMsgMgr::MSG_GENERATE_FUNC)__AutoGen_COEMsgCommand},
+	{OMI_UI_POST_RENDER,          (IOEMsgMgr::MSG_GENERATE_FUNC)__AutoGen_COEMsgCommand},
 	{OMI_SETUP_SHADER_PARAM,      (IOEMsgMgr::MSG_GENERATE_FUNC)__AutoGen_COEMsgShaderParam},
 	{0,                           (IOEMsgMgr::MSG_GENERATE_FUNC)NULL}
 };

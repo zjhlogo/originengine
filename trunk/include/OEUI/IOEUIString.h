@@ -9,13 +9,13 @@
 #define __IOEUISTRING_H__
 
 #include "../libOEUI/OEUIType.h"
-#include "../libOEBase/IOEObject.h"
+#include "IOEUIRenderableObject.h"
 #include "IOEUIFont.h"
 
-class IOEUIString : public IOEObject
+class IOEUIString : public IOEUIRenderableObject
 {
 public:
-	RTTI_DEF(IOEUIString, IOEObject);
+	RTTI_DEF(IOEUIString, IOEUIRenderableObject);
 
 	IOEUIString() {};
 	virtual ~IOEUIString() {};
@@ -29,6 +29,8 @@ public:
 	virtual bool SetFont(IOEUIFont* pFont) = 0;
 	virtual const IOEUIFont* GetFont() const = 0;
 
-	virtual void Render(const CPoint& pos) = 0;
+	virtual void SetPosition(const CPoint& pos) = 0;
+	virtual const CPoint& GetPosition() = 0;
+
 };
 #endif // __IOEUISTRING_H__

@@ -375,6 +375,18 @@ void COED3DDevice_Impl::PerformOnce(float fDetailTime)
 	COEMsgCommand msgPostUpdate(OMI_POST_UPDATE);
 	g_pOEMsgMgr->InvokeMessage(&msgPostUpdate);
 
+	// notify UI pre update
+	COEMsgCommand msgUIPreUpdate(OMI_UI_PRE_UPDATE);
+	g_pOEMsgMgr->InvokeMessage(&msgUIPreUpdate);
+
+	// notify UI update
+	COEMsgCommand msgUIUpdate(OMI_UI_UPDATE);
+	g_pOEMsgMgr->InvokeMessage(&msgUIUpdate);
+
+	// notify UI post update
+	COEMsgCommand msgUIPostUpdate(OMI_UI_POST_UPDATE);
+	g_pOEMsgMgr->InvokeMessage(&msgUIPostUpdate);
+
 	g_pd3dDevice->Clear(0, NULL, D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER, D3DCOLOR_XRGB(0, 0, 0), 1.0f, 0);
 	if (SUCCEEDED(g_pd3dDevice->BeginScene()))
 	{
@@ -389,6 +401,18 @@ void COED3DDevice_Impl::PerformOnce(float fDetailTime)
 		// notify post render 3d
 		COEMsgCommand msgPostRender3D(OMI_POST_RENDER);
 		g_pOEMsgMgr->InvokeMessage(&msgPostRender3D);
+
+		// notify pre render 3d
+		COEMsgCommand msgUIPreRender3D(OMI_UI_PRE_RENDER);
+		g_pOEMsgMgr->InvokeMessage(&msgUIPreRender3D);
+
+		// notify render 3d
+		COEMsgCommand msgUIRender3D(OMI_UI_RENDER);
+		g_pOEMsgMgr->InvokeMessage(&msgUIRender3D);
+
+		// notify post render 3d
+		COEMsgCommand msgUIPostRender3D(OMI_UI_POST_RENDER);
+		g_pOEMsgMgr->InvokeMessage(&msgUIPostRender3D);
 
 		g_pd3dDevice->EndScene();
 		g_pd3dDevice->Present(NULL, NULL, NULL, NULL);

@@ -7,6 +7,7 @@
  */
 #include "OEUIRenderSystem_Impl.h"
 #include <OECore/IOEShaderMgr.h>
+#include <OECore/IOEDevice.h>
 #include <OEBase/IOEMsgMgr.h>
 #include <libOEMsg/OEMsgList.h>
 #include <assert.h>
@@ -30,6 +31,7 @@ bool COEUIRenderSystem_Impl::Init()
 	m_pShader = NULL;
 
 	memset(m_pVertsCache, 0, sizeof(m_pVertsCache));
+	m_pScreen = NULL;
 
 	return true;
 }
@@ -50,18 +52,29 @@ bool COEUIRenderSystem_Impl::Initialize()
 		if (!m_pVertsCache[i] || !m_pVertsCache[i]->IsOK()) return false;
 	}
 
-	g_pOEMsgMgr->RegisterMessage(OMI_POST_RENDER, this, (MSG_FUNC)&COEUIRenderSystem_Impl::OnPostRender);
+	m_pScreen = new COEUIScreen();
+	if (!m_pScreen || !m_pScreen->IsOK()) return false;
+
+	g_pOEMsgMgr->RegisterMessage(OMI_UI_UPDATE, this, (MSG_FUNC)&COEUIRenderSystem_Impl::OnUpdate);
+	g_pOEMsgMgr->RegisterMessage(OMI_UI_RENDER, this, (MSG_FUNC)&COEUIRenderSystem_Impl::OnRender);
+	g_pOEMsgMgr->RegisterMessage(OMI_UI_POST_RENDER, this, (MSG_FUNC)&COEUIRenderSystem_Impl::OnPostRender);
 
 	return true;
 }
 
 void COEUIRenderSystem_Impl::Terminate()
 {
+	SAFE_RELEASE(m_pScreen);
 	SAFE_RELEASE(m_pShader);
 	for (int i = 0; i < VERTEX_CACHE_COUNT; ++i)
 	{
 		SAFE_DELETE(m_pVertsCache[i]);
 	}
+}
+
+COEUIScreen* COEUIRenderSystem_Impl::GetScreen()
+{
+	return m_pScreen;
 }
 
 void COEUIRenderSystem_Impl::SetTexture(IOETexture* pTexture)
@@ -123,6 +136,18 @@ void COEUIRenderSystem_Impl::FlushAll()
 		m_pVertsCache[i]->SetTexture(NULL);
 		m_pVertsCache[i]->SetShader(NULL);
 	}
+}
+
+bool COEUIRenderSystem_Impl::OnUpdate(COEMsgCommand& msg)
+{
+	m_pScreen->Update(g_pOEDevice->GetDetailTime());
+	return true;
+}
+
+bool COEUIRenderSystem_Impl::OnRender(COEMsgCommand& msg)
+{
+	m_pScreen->Render(g_pOEDevice->GetDetailTime());
+	return true;
 }
 
 bool COEUIRenderSystem_Impl::OnPostRender(COEMsgCommand& msg)

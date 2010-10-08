@@ -50,8 +50,6 @@ bool CBumpMapApp::Initialize()
 
 void CBumpMapApp::Terminate()
 {
-	g_pOECore->GetRootNode()->DettachObject(m_pBumpMap);
-	g_pOECore->GetRootNode()->DettachObject(m_pSimpleShape);
 	SAFE_DELETE(m_pBumpMap);
 	SAFE_DELETE(m_pSimpleShape);
 	CBaseApp::Terminate();

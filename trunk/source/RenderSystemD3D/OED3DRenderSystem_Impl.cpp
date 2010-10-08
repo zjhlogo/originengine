@@ -307,6 +307,6 @@ bool COED3DRenderSystem_Impl::OnPreRender3D(COEMsgCommand& msg)
 
 bool COED3DRenderSystem_Impl::OnPostRender3D(COEMsgCommand& msg)
 {
-	// TODO: 
+	this->SetShader(NULL);
 	return true;
 }
