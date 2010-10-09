@@ -68,8 +68,8 @@ bool CMs3dConverter_Impl::LoadFromFile(const tstring& strFile)
 	m_vVerts.clear();
 	m_vIndis.clear();
 	m_vBoneInfo.clear();
-	m_vBoundingBoxMin.Init(OEMATH_FLOAT_MAX, OEMATH_FLOAT_MAX, OEMATH_FLOAT_MAX);
-	m_vBoundingBoxMax.Init(OEMATH_FLOAT_MIN, OEMATH_FLOAT_MIN, OEMATH_FLOAT_MIN);
+	m_vBoundingBoxMin.Init(COEMath::FLOAT_MAX, COEMath::FLOAT_MAX, COEMath::FLOAT_MAX);
+	m_vBoundingBoxMax.Init(COEMath::FLOAT_MIN, COEMath::FLOAT_MIN, COEMath::FLOAT_MIN);
 
 	IOEFile* pFile = g_pOEFileMgr->OpenFile(strFile);
 	if (!pFile) return false;

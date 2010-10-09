@@ -8,10 +8,10 @@
 #include <libOEMsg/OEMsgShaderParam.h>
 #include <libOEMsg/OEMsgList.h>
 
-COEMsgShaderParam::COEMsgShaderParam()
+COEMsgShaderParam::COEMsgShaderParam(IOEShader* pShader)
 :IOEMsg(OMI_SETUP_SHADER_PARAM)
 {
-	m_pShader = NULL;
+	m_pShader = pShader;
 }
 
 COEMsgShaderParam::COEMsgShaderParam(COEDataBufferRead* pDBRead)
@@ -23,11 +23,6 @@ COEMsgShaderParam::COEMsgShaderParam(COEDataBufferRead* pDBRead)
 COEMsgShaderParam::~COEMsgShaderParam()
 {
 	// TODO: 
-}
-
-void COEMsgShaderParam::SetShader(IOEShader* pShader)
-{
-	m_pShader = pShader;
 }
 
 IOEShader* COEMsgShaderParam::GetShader() const

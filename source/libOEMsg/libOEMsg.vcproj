@@ -283,6 +283,14 @@
 			>
 		</File>
 		<File
+			RelativePath=".\OEMsgDestroy.cpp"
+			>
+		</File>
+		<File
+			RelativePath="..\..\include\libOEMsg\OEMsgDestroy.h"
+			>
+		</File>
+		<File
 			RelativePath=".\OEMsgKeyboard.cpp"
 			>
 		</File>

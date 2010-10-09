@@ -9,6 +9,7 @@
 #define __OENODE_IMPL_H__
 
 #include <OECore/IOENode.h>
+#include <libOEMsg/OEMsgDestroy.h>
 #include <vector>
 
 class COENode_Impl : public IOENode
@@ -33,7 +34,6 @@ public:
 	virtual bool DettachObject(IOEObject* pObject);
 	virtual IOEObject* GetAttachedObject(int nIndex);
 	virtual int GetNumAttachedObjects();
-	virtual void NotifyDestroy(IOEObject* pObject);
 
 	virtual void SetPosition(const CVector3& vPos);
 	virtual const CVector3& GetPosition();
@@ -48,6 +48,7 @@ public:
 
 private:
 	void DestroyChildren();
+	bool OnObjectDestroy(COEMsgDestroy& msg);
 
 private:
 	TV_NODE m_vNodes;

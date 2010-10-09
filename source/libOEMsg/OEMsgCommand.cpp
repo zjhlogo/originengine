@@ -16,7 +16,7 @@ COEMsgCommand::COEMsgCommand(uint nMsgID)
 COEMsgCommand::COEMsgCommand(COEDataBufferRead* pDBRead)
 :IOEMsg(pDBRead)
 {
-	// TODO: 
+	FromBuffer(pDBRead);
 }
 
 COEMsgCommand::~COEMsgCommand()

@@ -43,7 +43,6 @@ public:
 	virtual bool SendMessage(IOEMsg* pMsg);
 	virtual bool ReceiveMessage();
 
-	virtual bool InvokeMessage(IOEMsg* pMsg);
 	virtual bool RegisterMessage(uint nMsgID, IOEObject* pHandler, MSG_FUNC pFunc);
 	virtual bool UnregisterMessage(uint nMsgID, IOEObject* pHandler);
 	virtual bool UnregisterMessage(IOEObject* pHandler);

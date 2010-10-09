@@ -137,7 +137,7 @@ void COED3DDevice_Impl::StartPerform()
 
 	// notify start perform
 	COEMsgCommand msgStartPerform(OMI_START_PERFORM);
-	g_pOEMsgMgr->InvokeMessage(&msgStartPerform);
+	CallEvent(msgStartPerform);
 
 	MSG msg;
 	memset(&msg, 0, sizeof(msg));
@@ -365,54 +365,54 @@ void COED3DDevice_Impl::PerformOnce(float fDetailTime)
 {
 	// notify pre update
 	COEMsgCommand msgPreUpdate(OMI_PRE_UPDATE);
-	g_pOEMsgMgr->InvokeMessage(&msgPreUpdate);
+	CallEvent(msgPreUpdate);
 
 	// notify update
 	COEMsgCommand msgUpdate(OMI_UPDATE);
-	g_pOEMsgMgr->InvokeMessage(&msgUpdate);
+	CallEvent(msgUpdate);
 
 	// notify post update
 	COEMsgCommand msgPostUpdate(OMI_POST_UPDATE);
-	g_pOEMsgMgr->InvokeMessage(&msgPostUpdate);
+	CallEvent(msgPostUpdate);
 
 	// notify UI pre update
 	COEMsgCommand msgUIPreUpdate(OMI_UI_PRE_UPDATE);
-	g_pOEMsgMgr->InvokeMessage(&msgUIPreUpdate);
+	CallEvent(msgUIPreUpdate);
 
 	// notify UI update
 	COEMsgCommand msgUIUpdate(OMI_UI_UPDATE);
-	g_pOEMsgMgr->InvokeMessage(&msgUIUpdate);
+	CallEvent(msgUIUpdate);
 
 	// notify UI post update
 	COEMsgCommand msgUIPostUpdate(OMI_UI_POST_UPDATE);
-	g_pOEMsgMgr->InvokeMessage(&msgUIPostUpdate);
+	CallEvent(msgUIPostUpdate);
 
 	g_pd3dDevice->Clear(0, NULL, D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER, D3DCOLOR_XRGB(0, 0, 0), 1.0f, 0);
 	if (SUCCEEDED(g_pd3dDevice->BeginScene()))
 	{
 		// notify pre render 3d
 		COEMsgCommand msgPreRender3D(OMI_PRE_RENDER);
-		g_pOEMsgMgr->InvokeMessage(&msgPreRender3D);
+		CallEvent(msgPreRender3D);
 
 		// notify render 3d
 		COEMsgCommand msgRender3D(OMI_RENDER);
-		g_pOEMsgMgr->InvokeMessage(&msgRender3D);
+		CallEvent(msgRender3D);
 
 		// notify post render 3d
 		COEMsgCommand msgPostRender3D(OMI_POST_RENDER);
-		g_pOEMsgMgr->InvokeMessage(&msgPostRender3D);
+		CallEvent(msgPostRender3D);
 
 		// notify pre render 3d
 		COEMsgCommand msgUIPreRender3D(OMI_UI_PRE_RENDER);
-		g_pOEMsgMgr->InvokeMessage(&msgUIPreRender3D);
+		CallEvent(msgUIPreRender3D);
 
 		// notify render 3d
 		COEMsgCommand msgUIRender3D(OMI_UI_RENDER);
-		g_pOEMsgMgr->InvokeMessage(&msgUIRender3D);
+		CallEvent(msgUIRender3D);
 
 		// notify post render 3d
 		COEMsgCommand msgUIPostRender3D(OMI_UI_POST_RENDER);
-		g_pOEMsgMgr->InvokeMessage(&msgUIPostRender3D);
+		CallEvent(msgUIPostRender3D);
 
 		g_pd3dDevice->EndScene();
 		g_pd3dDevice->Present(NULL, NULL, NULL, NULL);
@@ -452,7 +452,7 @@ LRESULT CALLBACK COED3DDevice_Impl::MainWndProc(HWND hWnd, UINT uMsg, WPARAM wPa
 			// send message
 			COEMsgMouse msg(OMI_LBUTTON_DOWN);
 			msg.SetPos(x, y);
-			g_pOEMsgMgr->InvokeMessage(&msg);
+			g_pOEDevice->CallEvent(msg);
 		}
 		break;
 	case WM_LBUTTONUP:
@@ -463,7 +463,7 @@ LRESULT CALLBACK COED3DDevice_Impl::MainWndProc(HWND hWnd, UINT uMsg, WPARAM wPa
 			// send message
 			COEMsgMouse msg(OMI_LBUTTON_UP);
 			msg.SetPos(x, y);
-			g_pOEMsgMgr->InvokeMessage(&msg);
+			g_pOEDevice->CallEvent(msg);
 
 			ReleaseCapture();
 		}
@@ -476,7 +476,7 @@ LRESULT CALLBACK COED3DDevice_Impl::MainWndProc(HWND hWnd, UINT uMsg, WPARAM wPa
 			// send message
 			COEMsgMouse msg(OMI_MOUSE_MOVE);
 			msg.SetPos((int)x-s_nLastMousePosX, (int)y-s_nLastMousePosY);
-			g_pOEMsgMgr->InvokeMessage(&msg);
+			g_pOEDevice->CallEvent(msg);
 
 			s_nLastMousePosX = x;
 			s_nLastMousePosY = y;
@@ -487,7 +487,7 @@ LRESULT CALLBACK COED3DDevice_Impl::MainWndProc(HWND hWnd, UINT uMsg, WPARAM wPa
 			// send message
 			COEMsgKeyboard msg(OMI_KEY_DOWN);
 			msg.SetKeyCode(wParam);
-			g_pOEMsgMgr->InvokeMessage(&msg);
+			g_pOEDevice->CallEvent(msg);
 		}
 		break;
 	case WM_KEYUP:
@@ -495,7 +495,7 @@ LRESULT CALLBACK COED3DDevice_Impl::MainWndProc(HWND hWnd, UINT uMsg, WPARAM wPa
 			// send message
 			COEMsgKeyboard msg(OMI_KEY_UP);
 			msg.SetKeyCode(wParam);
-			g_pOEMsgMgr->InvokeMessage(&msg);
+			g_pOEDevice->CallEvent(msg);
 		}
 		break;
 	case WM_DESTROY:

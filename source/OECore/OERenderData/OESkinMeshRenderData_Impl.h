@@ -21,7 +21,7 @@ public:
 public:
 	RTTI_DEF(COESkinMeshRenderData_Impl, IOERenderData);
 
-	COESkinMeshRenderData_Impl();
+	COESkinMeshRenderData_Impl(IOEObject* pHolder);
 	virtual ~COESkinMeshRenderData_Impl();
 
 	virtual IOEMesh* GetMesh();

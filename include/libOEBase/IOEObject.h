@@ -9,14 +9,25 @@
 #define __IOEOBJECT_H__
 
 #include "OEBaseType.h"
-#include "OEDataBufferRead.h"
+#include "IOEMsg.h"
 #include "OERtti.h"
-#include <set>
+#include <map>
+
+class IOEObject;
+typedef bool (IOEObject::*MSG_FUNC)(IOEMsg& msg);
 
 class IOEObject
 {
 public:
-	typedef std::set<IOEObject*> TS_OBJECT;
+	typedef struct EVENT_HANDLER_tag
+	{
+		IOEObject* pHandler;
+		MSG_FUNC pFunc;
+		int nDepth;
+	} EVENT_HANDLER;
+
+	typedef std::multimap<uint, EVENT_HANDLER> TM_EVENT_HANDLER;
+	typedef std::pair<TM_EVENT_HANDLER::iterator, TM_EVENT_HANDLER::iterator> TP_EVENT_HANDLER;
 
 public:
 	RTTI_DEF(IOEObject, CNoRtti);
@@ -27,9 +38,9 @@ public:
 	virtual bool IsOK();
 	virtual void Release();
 
-	void AddDestroyReceiver(IOEObject* pObject);
-	void RemoveDestroyReceiver(IOEObject* pObject);
-	virtual void NotifyDestroy(IOEObject* pObject);
+	virtual void RegisterEvent(uint nMsgID, IOEObject* pHandler, MSG_FUNC pFunc);
+	virtual void UnregisterEvent(uint nMsgID, IOEObject* pHandler);
+	bool CallEvent(IOEMsg& msg);
 
 	int IncRef();
 	int DecRef();
@@ -40,7 +51,7 @@ protected:
 
 private:
 	int m_nRef;
-	TS_OBJECT m_sNotifier;
+	TM_EVENT_HANDLER m_EventsMap;
 
 };
 

@@ -1,6 +1,6 @@
 /*!
  * \file OEMsgList.h
- * \date 10-7-2010 22:4:57
+ * \date 10-8-2010 23:32:24
  * 
  * 
  * \author MessageGenerator (zjhlogo@gmail.com)
@@ -13,6 +13,7 @@
 enum OEMSGLIST_ID_DEFINE
 {
 	OEMSGLIST_ID_MIN = 1000, 
+	OMI_OBJECT_DESTROY,          // COEMsgDestroy
 	OMI_LBUTTON_DOWN,            // COEMsgMouse
 	OMI_LBUTTON_UP,              // COEMsgMouse
 	OMI_MBUTTON_DOWN,            // COEMsgMouse
@@ -40,6 +41,6 @@ enum OEMSGLIST_ID_DEFINE
 	OMI_SETUP_SHADER_PARAM,      // COEMsgShaderParam
 };
 
-extern const IOEMsgMgr::MSG_GENERATE_MAP g_OEMsgListDB[26];
+extern const IOEMsgMgr::MSG_GENERATE_MAP g_OEMsgListDB[27];
 
 #endif // __OEMSGLIST_H__
