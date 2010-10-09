@@ -209,13 +209,13 @@ void COECore_Impl::TerminateInterfaces()
 
 void COECore_Impl::RegisterMessage()
 {
-	g_pOEMsgMgr->RegisterMessage(OMI_START_PERFORM, this, (MSG_FUNC)&COECore_Impl::OnStartPerform);
-	g_pOEMsgMgr->RegisterMessage(OMI_PRE_UPDATE, this, (MSG_FUNC)&COECore_Impl::OnPreUpdate);
-	g_pOEMsgMgr->RegisterMessage(OMI_UPDATE, this, (MSG_FUNC)&COECore_Impl::OnUpdate);
-	g_pOEMsgMgr->RegisterMessage(OMI_POST_UPDATE, this, (MSG_FUNC)&COECore_Impl::OnPostUpdate);
-	g_pOEMsgMgr->RegisterMessage(OMI_PRE_RENDER, this, (MSG_FUNC)&COECore_Impl::OnPreRender);
-	g_pOEMsgMgr->RegisterMessage(OMI_RENDER, this, (MSG_FUNC)&COECore_Impl::OnRender);
-	g_pOEMsgMgr->RegisterMessage(OMI_POST_RENDER, this, (MSG_FUNC)&COECore_Impl::OnPostRender);
+	g_pOEDevice->RegisterEvent(OMI_START_PERFORM, this, (MSG_FUNC)&COECore_Impl::OnStartPerform);
+	g_pOEDevice->RegisterEvent(OMI_PRE_UPDATE, this, (MSG_FUNC)&COECore_Impl::OnPreUpdate);
+	g_pOEDevice->RegisterEvent(OMI_UPDATE, this, (MSG_FUNC)&COECore_Impl::OnUpdate);
+	g_pOEDevice->RegisterEvent(OMI_POST_UPDATE, this, (MSG_FUNC)&COECore_Impl::OnPostUpdate);
+	g_pOEDevice->RegisterEvent(OMI_PRE_RENDER, this, (MSG_FUNC)&COECore_Impl::OnPreRender);
+	g_pOEDevice->RegisterEvent(OMI_RENDER, this, (MSG_FUNC)&COECore_Impl::OnRender);
+	g_pOEDevice->RegisterEvent(OMI_POST_RENDER, this, (MSG_FUNC)&COECore_Impl::OnPostRender);
 }
 
 void COECore_Impl::UpdateNodes(IOENode* pNode, bool bParentDirty, const CMatrix4x4& matParent)

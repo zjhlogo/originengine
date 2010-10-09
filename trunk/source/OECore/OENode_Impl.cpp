@@ -6,6 +6,7 @@
  * \author zjhlogo (zjhlogo@gmail.com)
  */
 #include "OENode_Impl.h"
+#include <libOEMsg/OEMsgList.h>
 
 COENode_Impl::COENode_Impl(const tstring& strName)
 {
@@ -75,7 +76,7 @@ bool COENode_Impl::AttachObject(IOEObject* pObject)
 		if (*it == pObject) return false;
 	}
 
-	pObject->AddDestroyReceiver(this);
+	pObject->RegisterEvent(OMI_OBJECT_DESTROY, this, (MSG_FUNC)&COENode_Impl::OnObjectDestroy);
 	m_vObjects.push_back(pObject);
 	return true;
 }
@@ -106,11 +107,6 @@ IOEObject* COENode_Impl::GetAttachedObject(int nIndex)
 int COENode_Impl::GetNumAttachedObjects()
 {
 	return (int)m_vObjects.size();
-}
-
-void COENode_Impl::NotifyDestroy(IOEObject* pObject)
-{
-	DettachObject(pObject);
 }
 
 void COENode_Impl::SetPosition(const CVector3& vPos)
@@ -163,4 +159,10 @@ void COENode_Impl::DestroyChildren()
 	}
 
 	m_vNodes.clear();
+}
+
+bool COENode_Impl::OnObjectDestroy(COEMsgDestroy& msg)
+{
+	DettachObject(msg.GetObjectHandle());
+	return true;
 }

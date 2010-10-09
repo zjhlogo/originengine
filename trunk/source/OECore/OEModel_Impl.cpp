@@ -98,7 +98,7 @@ bool COEModel_Impl::CreateRenderData(IOEXmlNode* pXmlRoot)
 	if (!pXmlRoot) return false;
 
 	// create render data
-	m_pRenderData = new COESkinMeshRenderData_Impl();
+	m_pRenderData = new COESkinMeshRenderData_Impl(this);
 	if (!m_pRenderData) return false;
 
 	// create mesh

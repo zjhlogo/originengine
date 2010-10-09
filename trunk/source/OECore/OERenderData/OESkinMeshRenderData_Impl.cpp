@@ -8,7 +8,8 @@
 #include "OESkinMeshRenderData_Impl.h"
 #include "../OEBone_Impl.h"
 
-COESkinMeshRenderData_Impl::COESkinMeshRenderData_Impl()
+COESkinMeshRenderData_Impl::COESkinMeshRenderData_Impl(IOEObject* pHolder)
+:IOERenderData(pHolder)
 {
 	m_bOK = Init();
 }

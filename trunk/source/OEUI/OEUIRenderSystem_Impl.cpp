@@ -55,9 +55,9 @@ bool COEUIRenderSystem_Impl::Initialize()
 	m_pScreen = new COEUIScreen();
 	if (!m_pScreen || !m_pScreen->IsOK()) return false;
 
-	g_pOEMsgMgr->RegisterMessage(OMI_UI_UPDATE, this, (MSG_FUNC)&COEUIRenderSystem_Impl::OnUpdate);
-	g_pOEMsgMgr->RegisterMessage(OMI_UI_RENDER, this, (MSG_FUNC)&COEUIRenderSystem_Impl::OnRender);
-	g_pOEMsgMgr->RegisterMessage(OMI_UI_POST_RENDER, this, (MSG_FUNC)&COEUIRenderSystem_Impl::OnPostRender);
+	g_pOEDevice->RegisterEvent(OMI_UI_UPDATE, this, (MSG_FUNC)&COEUIRenderSystem_Impl::OnUpdate);
+	g_pOEDevice->RegisterEvent(OMI_UI_RENDER, this, (MSG_FUNC)&COEUIRenderSystem_Impl::OnRender);
+	g_pOEDevice->RegisterEvent(OMI_UI_POST_RENDER, this, (MSG_FUNC)&COEUIRenderSystem_Impl::OnPostRender);
 
 	return true;
 }

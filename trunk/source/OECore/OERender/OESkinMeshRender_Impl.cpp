@@ -51,9 +51,8 @@ bool COESkinMeshRender_Impl::Render(IOERenderData* pRenderData)
 		if (pPiece->GetVertDeclMask() != pMaterial->GetVertDeclMask()) continue;
 
 		// give user chance to setup shader parameter
-		COEMsgShaderParam msg;
-		msg.SetShader(pShader);
-		g_pOEMsgMgr->InvokeMessage(&msg);
+		COEMsgShaderParam msg(pShader);
+		pData->GetHolder()->CallEvent(msg);
 
 		pShader->SetMatrix(TS("g_matInvWorld"), matWorld.Inverse());
 		pShader->SetMatrix(TS("g_matWorldViewProj"), matWorldViewProj);

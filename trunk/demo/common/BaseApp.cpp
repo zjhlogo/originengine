@@ -9,6 +9,7 @@
 #include <libOEMsg/OEMsgList.h>
 #include <OECore/IOERenderSystem.h>
 #include <OECore/IOECore.h>
+#include <OECore/IOEDevice.h>
 #include <OEUI/IOEUIRenderSystem.h>
 #include <assert.h>
 
@@ -47,11 +48,11 @@ bool CBaseApp::Initialize()
 	if (!m_pFPS) return false;
 
 	// registe message
-	g_pOEMsgMgr->RegisterMessage(OMI_LBUTTON_DOWN, this, (MSG_FUNC)&CBaseApp::OnLButtonDown);
-	g_pOEMsgMgr->RegisterMessage(OMI_LBUTTON_UP, this, (MSG_FUNC)&CBaseApp::OnLButtonUp);
-	g_pOEMsgMgr->RegisterMessage(OMI_MOUSE_MOVE, this, (MSG_FUNC)&CBaseApp::OnMouseMove);
-	g_pOEMsgMgr->RegisterMessage(OMI_KEY_DOWN, this, (MSG_FUNC)&CBaseApp::OnKeyDown);
-	g_pOEMsgMgr->RegisterMessage(OMI_KEY_UP, this, (MSG_FUNC)&CBaseApp::OnKeyUp);
+	g_pOEDevice->RegisterEvent(OMI_LBUTTON_DOWN, this, (MSG_FUNC)&CBaseApp::OnLButtonDown);
+	g_pOEDevice->RegisterEvent(OMI_LBUTTON_UP, this, (MSG_FUNC)&CBaseApp::OnLButtonUp);
+	g_pOEDevice->RegisterEvent(OMI_MOUSE_MOVE, this, (MSG_FUNC)&CBaseApp::OnMouseMove);
+	g_pOEDevice->RegisterEvent(OMI_KEY_DOWN, this, (MSG_FUNC)&CBaseApp::OnKeyDown);
+	g_pOEDevice->RegisterEvent(OMI_KEY_UP, this, (MSG_FUNC)&CBaseApp::OnKeyUp);
 
 	return true;
 }

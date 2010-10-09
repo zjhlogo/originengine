@@ -102,32 +102,6 @@ bool COEMsgMgr_Impl::ReceiveMessage()
 	return true;
 }
 
-bool COEMsgMgr_Impl::InvokeMessage(IOEMsg* pMsg)
-{
-	TP_MSG_HANDLER_INFO Range = m_MsgHandlerInfoMap.equal_range(pMsg->GetMsgID());
-	for (TM_MSG_HANDLER_INFO::iterator it = Range.first; it != Range.second; ++it)
-	{
-		MSG_HANDLER_INFO& msgHandlerInfo = it->second;
-
-		// check the loop depth, it must always 0 or 1
-		if (msgHandlerInfo.nLoopDepth > 0)
-		{
-			assert(false);
-			continue;
-		}
-		++msgHandlerInfo.nLoopDepth;
-
-		if (!(msgHandlerInfo.pHandler->*msgHandlerInfo.pFunc)(*pMsg))
-		{
-			assert(false);
-		}
-
-		--msgHandlerInfo.nLoopDepth;
-	}
-
-	return true;
-}
-
 bool COEMsgMgr_Impl::RegisterMessage(uint nMsgID, IOEObject* pHandler, MSG_FUNC pFunc)
 {
 	MSG_HANDLER_INFO msgHandlerInfo;

@@ -8,13 +8,13 @@
 #ifndef __MODELEXPORTER_H__
 #define __MODELEXPORTER_H__
 
-#include <max.h>
-#include <IGame/IGame.h>
-#include <IGame/IGameModifier.h>
-
 #include <OEBase/IOEFileMgr.h>
 #include <OECore/OEFmtMesh.h>
 #include <OECore/OEFmtSkeleton.h>
+
+#include <max.h>
+#include <IGame/IGame.h>
+#include <IGame/IGameModifier.h>
 
 #include <vector>
 #include <set>

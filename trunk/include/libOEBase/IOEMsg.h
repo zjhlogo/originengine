@@ -11,7 +11,6 @@
 #include "OEBaseType.h"
 #include "OEDataBufferRead.h"
 #include "OEDataBufferWrite.h"
-#include "IOEObject.h"
 
 class IOEMsg
 {
@@ -31,7 +30,5 @@ private:
 	uint m_nMsgID;
 
 };
-
-typedef bool (IOEObject::*MSG_FUNC)(IOEMsg& msg);
 
 #endif // __IOEMSG_H__

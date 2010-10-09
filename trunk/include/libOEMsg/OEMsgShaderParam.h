@@ -14,11 +14,10 @@
 class COEMsgShaderParam : public IOEMsg
 {
 public:
-	COEMsgShaderParam();
+	COEMsgShaderParam(IOEShader* pShader);
 	COEMsgShaderParam(COEDataBufferRead* pDBRead);
 	virtual ~COEMsgShaderParam();
 
-	void SetShader(IOEShader* pShader);
 	IOEShader* GetShader() const;
 
 protected:
