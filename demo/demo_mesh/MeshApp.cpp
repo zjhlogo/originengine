@@ -8,6 +8,7 @@
 #include "MeshApp.h"
 #include "../common/AppHelper.h"
 #include <OECore/IOECore.h>
+#include <OECore/IOEResMgr.h>
 
 IMPLEMENT_OEAPP(CMeshApp);
 
@@ -23,7 +24,7 @@ CMeshApp::~CMeshApp()
 
 void CMeshApp::Init()
 {
-	m_pMesh = NULL;
+	m_pModel = NULL;
 }
 
 void CMeshApp::Destroy()
@@ -35,16 +36,18 @@ bool CMeshApp::Initialize()
 {
 	if (!CBaseApp::Initialize()) return false;
 
-	m_pMesh = new CMesh();
-	if (!m_pMesh || !m_pMesh->IsOK()) return false;
-	m_pCamera->InitFromBBox(m_pMesh->GetBoundingBoxMin(), m_pMesh->GetBoundingBoxMax());
+	m_pModel = g_pOEResMgr->CreateModel(TS("demo_mesh.xml"));
+	if (!m_pModel) return false;
 
-	g_pOECore->GetRootNode()->AttachObject(m_pMesh);
+	IOEMesh* pMesh = m_pModel->GetRenderData()->GetMesh();
+	m_pCamera->InitFromBBox(pMesh->GetBoundingBoxMin(), pMesh->GetBoundingBoxMax());
+
+	g_pOECore->GetRootNode()->AttachObject(m_pModel);
 	return true;
 }
 
 void CMeshApp::Terminate()
 {
-	SAFE_DELETE(m_pMesh);
+	SAFE_DELETE(m_pModel);
 	CBaseApp::Terminate();
 }

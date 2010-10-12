@@ -9,7 +9,7 @@
 #define __MESHAPP_H__
 
 #include "../common/BaseApp.h"
-#include "Mesh.h"
+#include <OECore/IOEModel.h>
 
 class CMeshApp : public CBaseApp
 {
@@ -25,7 +25,7 @@ private:
 	void Destroy();
 
 private:
-	CMesh* m_pMesh;
+	IOEModel* m_pModel;
 
 };
 

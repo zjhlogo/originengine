@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Model>
+	<RenderData>
+		<Mesh>casual03_high.mesh</Mesh>
+		<Materials count="1">
+			<Material id="0" vertdecl="11267" shader="demo_mesh.fx" texture0="casual03_diffuse_specular.png" />
+		</Materials>
+	</RenderData>
+	<Renderers>
+		<Renderer>COEMeshRender_Impl</Renderer>
+	</Renderers>
+</Model>
