@@ -3,8 +3,7 @@ float3 g_vLightPos;
 float3 g_vEyePos;
 
 texture g_texDiffuse;
-texture g_texNormal;
-texture g_texHeightMap;
+texture g_texNormalHeight;
 
 sampler sampleDiffuse =
 sampler_state
@@ -15,19 +14,10 @@ sampler_state
 	MagFilter = LINEAR;
 };
 
-sampler sampleNormal =
+sampler sampleNormalHeight =
 sampler_state
 {
-	Texture = <g_texNormal>;
-	MipFilter = LINEAR;
-	MinFilter = LINEAR;
-	MagFilter = LINEAR;
-};
-
-sampler sampleHeightMap =
-sampler_state
-{
-	Texture = <g_texHeightMap>;
+	Texture = <g_texNormalHeight>;
 	MipFilter = LINEAR;
 	MinFilter = LINEAR;
 	MagFilter = LINEAR;
@@ -74,8 +64,8 @@ float4 PSMainNormalMap(VS_OUTPUT input) : COLOR
 
 	float3 diffuse = tex2D(sampleDiffuse, input.texcoord);
 
-	float3 normal = tex2D(sampleNormal, input.texcoord);
-	normal = (normal - 0.5f) * 2.0f;
+	float4 normalHeight = tex2D(sampleNormalHeight, input.texcoord);
+	float3 normal = (normalHeight.xyz - 0.5f) * 2.0f;
 
 	float3 diffuseFactor = saturate(dot(normal, lightDir));
 
@@ -88,14 +78,12 @@ float4 PSMainParallaxMap(VS_OUTPUT input) : COLOR
 	float3 lightDir = normalize(input.lightDir);
 	float3 eyeDir = normalize(input.eyeDir);
 
-	//float hsb = tex2D(sampleHeightMap, input.texcoord).x * 0.04f - 0.02f;
-	float hsb = tex2D(sampleHeightMap, input.texcoord).x * 0.02f;
+	float hsb = tex2D(sampleNormalHeight, input.texcoord).w * 0.05f;
 	float2 offsetuv = float2(eyeDir.x, eyeDir.y)*hsb + input.texcoord;
+	float4 normalHeight = tex2D(sampleNormalHeight, offsetuv);
+	float3 normal = (normalHeight.xyz - 0.5f) * 2.0f;
 
 	float3 diffuse = tex2D(sampleDiffuse, offsetuv);
-
-	float3 normal = tex2D(sampleNormal, offsetuv);
-	normal = (normal - 0.5f) * 2.0f;
 
 	float3 diffuseFactor = saturate(dot(normal, lightDir));
 
@@ -110,12 +98,14 @@ float4 PSMainDiffuseTexture(VS_OUTPUT input) : COLOR
 
 float4 PSMainNormalTexture(VS_OUTPUT input) : COLOR
 {
-	return tex2D(sampleNormal, input.texcoord);
+	float3 normal = tex2D(sampleNormalHeight, input.texcoord);
+	return float4(normal, 1.0f);
 }
 
 float4 PSMainHeightMapTexture(VS_OUTPUT input) : COLOR
 {
-	return tex2D(sampleHeightMap, input.texcoord);
+	float4 heightMap = tex2D(sampleNormalHeight, input.texcoord);
+	return float4(heightMap.w, heightMap.w, heightMap.w, 1.0f);
 }
 
 technique NormalMap

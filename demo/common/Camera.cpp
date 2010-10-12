@@ -19,19 +19,10 @@ CCamera::~CCamera()
 
 void CCamera::Init()
 {
-	m_vEye = CVector3(0.0f, 3.0f, -5.0f);
-	m_vLookAt = CVector3(0.0f, 0.0f, 0.0f);
-	m_vUp = CVector3(0.0f, 1.0f, 0.0f);
-
-	m_vForword = m_vLookAt-m_vEye;
-	m_vForword.Normalize();
-
-	m_vLookAt = m_vEye+m_vForword;
-
-	m_vRight = m_vUp^m_vForword;
-	m_vRight.Normalize();
-
-	COEMath::BuildLookAtMatrixLH(m_matView, m_vEye, m_vLookAt, m_vUp);
+	m_vEye = CVector3(0.0f, 0.0f, 0.0f);
+	m_fRotX = 0.0f;
+	m_fRotY = 0.0f;
+	Rotate(0.0f, 0.0f);
 }
 
 void CCamera::Destroy()
@@ -44,12 +35,12 @@ void CCamera::Initialize(const CVector3& vEye, const CVector3& vLookAt)
 	m_vEye = vEye;
 	m_vLookAt = vLookAt;
 
-	m_vForword = m_vLookAt-m_vEye;
-	m_vForword.Normalize();
+	m_vForward = m_vLookAt-m_vEye;
+	m_vForward.Normalize();
 
-	m_vLookAt = m_vEye+m_vForword;
+	m_vLookAt = m_vEye+m_vForward;
 
-	m_vRight = m_vUp^m_vForword;
+	m_vRight = m_vUp^m_vForward;
 	m_vRight.Normalize();
 
 	COEMath::BuildLookAtMatrixLH(m_matView, m_vEye, m_vLookAt, m_vUp);
@@ -61,10 +52,10 @@ void CCamera::InitFromBBox(const CVector3& vMinBBox, const CVector3& vMaxBBox)
 	m_vEye = m_vLookAt;
 	m_vEye.z -= (vMaxBBox.z - vMinBBox.z)*3.0f;
 
-	m_vForword = m_vLookAt-m_vEye;
-	m_vForword.Normalize();
+	m_vForward = m_vLookAt-m_vEye;
+	m_vForward.Normalize();
 
-	m_vRight = m_vUp^m_vForword;
+	m_vRight = m_vUp^m_vForward;
 	m_vRight.Normalize();
 
 	COEMath::BuildLookAtMatrixLH(m_matView, m_vEye, m_vLookAt, m_vUp);
@@ -75,24 +66,39 @@ const CMatrix4x4& CCamera::GetViewMatrix() const
 	return m_matView;
 }
 
-void CCamera::Rotate(const CVector3& vDir, float fRadian)
+void CCamera::Rotate(float fRotY, float fRotX)
 {
-	CQuaternion qr(vDir, fRadian);
-	qr.Normalize();
+	m_fRotY += fRotY;
+	m_fRotX += fRotX;
 
-	CQuaternion t = qr*m_vForword*(-qr);
-	CVector3 vNewForword(t.x, t.y, t.z);
-	vNewForword.Normalize();
+	if (m_fRotY > COEMath::PIX2) m_fRotY -= COEMath::PIX2;
+	else if (m_fRotY < -COEMath::PIX2) m_fRotY += COEMath::PIX2;
 
-	float fCosTheta = fabsf(vNewForword*m_vUp);
-	if (fCosTheta > 0.99f) return;
+	if (m_fRotX > COEMath::PIX2) m_fRotX -= COEMath::PIX2;
+	else if (m_fRotX < -COEMath::PIX2) m_fRotX += COEMath::PIX2;
 
-	m_vLookAt = m_vEye+vNewForword;
+	m_vUp = CVector3(0.0f, 1.0f, 0.0f);
+	m_vRight = CVector3(1.0f, 0.0f, 0.0f);
+	m_vForward = CVector3(0.0f, 0.0f, 1.0f);
 
-	m_vForword = vNewForword;
-	m_vRight = m_vUp^m_vForword;
+	CMatrix4x4 matRot;
+	COEMath::BuildRotationMatrix(matRot, m_vUp, m_fRotY);
+	m_vRight = m_vRight * matRot;
+	m_vForward = m_vForward * matRot;
+
+	COEMath::BuildRotationMatrix(matRot, m_vRight, m_fRotX);
+	m_vUp = m_vUp * matRot;
+	m_vForward = m_vForward * matRot;
+
+	m_vForward.Normalize();
+
+	m_vRight = m_vUp ^ m_vForward;
 	m_vRight.Normalize();
 
+	m_vUp = m_vForward ^ m_vRight;
+	m_vUp.Normalize();
+
+	m_vLookAt = m_vEye + m_vForward;
 	COEMath::BuildLookAtMatrixLH(m_matView, m_vEye, m_vLookAt, m_vUp);
 }
 
@@ -121,7 +127,7 @@ const CVector3& CCamera::GetVectorUp() const
 
 const CVector3& CCamera::GetVectorForword() const
 {
-	return m_vForword;
+	return m_vForward;
 }
 
 const CVector3& CCamera::GetVectorRight() const

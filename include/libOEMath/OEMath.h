@@ -31,6 +31,7 @@ public:
 
 	static void BuildMatrixFromEulerXYZ(CMatrix4x4& matOut, float x, float y, float z);
 	static void BuildQuaternionFromEulerXYZ(CQuaternion& qOut, float x, float y, float z);
+	static void BuildRotationMatrix(CMatrix4x4& matOut, const CVector3& vAxis, float fRadius);
 
 	static void VectorLerp(CVector3& vOut, const CVector3& v1, const CVector3& v2, float t);
 	static void MatrixLerp(CMatrix4x4& matOut, const CMatrix4x4& mat1, const CMatrix4x4& mat2, float t);

@@ -21,7 +21,7 @@ public:
 
 	const CMatrix4x4& GetViewMatrix() const;
 
-	void Rotate(const CVector3& vDir, float fRadian);
+	void Rotate(float fRotY, float fRotX);
 	void Move(const CVector3& vDir, float fDistance);
 
 	const CVector3& GetEyePos() const;
@@ -40,8 +40,11 @@ private:
 	CVector3 m_vLookAt;
 
 	CVector3 m_vUp;
-	CVector3 m_vForword;
+	CVector3 m_vForward;
 	CVector3 m_vRight;
+
+	float m_fRotX;
+	float m_fRotY;
 
 	CMatrix4x4 m_matView;
 };

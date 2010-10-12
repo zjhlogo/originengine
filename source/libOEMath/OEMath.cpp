@@ -263,6 +263,33 @@ void COEMath::BuildQuaternionFromEulerXYZ(CQuaternion& qOut, float x, float y, f
 	qOut.z = cx*cy*sz - sx*sy*cz;
 }
 
+void COEMath::BuildRotationMatrix(CMatrix4x4& matOut, const CVector3& vAxis, float fRadius)
+{
+	float fCos = cosf(fRadius);
+	float fSin = sinf(fRadius);
+	float fSum = 1.0f - fCos;
+
+	matOut.m[0] = (vAxis.x * vAxis.x) * fSum + fCos;
+	matOut.m[1] = (vAxis.x * vAxis.y) * fSum - (vAxis.z * fSin);
+	matOut.m[2] = (vAxis.x * vAxis.z) * fSum + (vAxis.y * fSin);
+	matOut.m[3] = 0.0f;
+
+	matOut.m[4] = (vAxis.y * vAxis.x) * fSum + (vAxis.z * fSin);
+	matOut.m[5] = (vAxis.y * vAxis.y) * fSum + fCos ;
+	matOut.m[6] = (vAxis.y * vAxis.z) * fSum - (vAxis.x * fSin);
+	matOut.m[7] = 0.0f;
+
+	matOut.m[8] = (vAxis.z * vAxis.x) * fSum - (vAxis.y * fSin);
+	matOut.m[9] = (vAxis.z * vAxis.y) * fSum + (vAxis.x * fSin);
+	matOut.m[10] = (vAxis.z * vAxis.z) * fSum + fCos;
+	matOut.m[11] = 0.0f;
+
+	matOut.m[12] = 0.0f;
+	matOut.m[13] = 0.0f;
+	matOut.m[14] = 0.0f;
+	matOut.m[15] = 1.0f;
+}
+
 void COEMath::VectorLerp(CVector3& vOut, const CVector3& v1, const CVector3& v2, float t)
 {
 	float k0 = 1.0f - t;
