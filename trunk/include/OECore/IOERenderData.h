@@ -10,6 +10,8 @@
 
 #include "../libOEBase/IOEObject.h"
 #include "IOEMesh.h"
+#include "IOESkeleton.h"
+#include "IOEMaterial.h"
 #include "IOENode.h"
 
 class IOERenderData : public IOEObject
@@ -20,12 +22,21 @@ public:
 	IOERenderData(IOEObject* pHolder) {m_pHolder = pHolder; m_pNode = NULL;};
 	virtual ~IOERenderData() {};
 
-	virtual IOEMesh* GetMesh() = 0;
-
 	void SetNode(IOENode* pNode) {m_pNode = pNode;};
 	IOENode* GetNode() {return m_pNode;};
-
 	IOEObject* GetHolder() {return m_pHolder;};
+
+	virtual IOEMesh* GetMesh() = 0;
+
+	virtual IOESkeleton* GetSkeleton() = 0;
+	virtual TV_MATRIX4X4& GetSkinMatrix() = 0;
+	virtual IOEMaterial* GetMaterial(int nIndex) = 0;
+
+	virtual void SetAnimLength(float fAnimLength) = 0;
+	virtual float GetAnimLength() const = 0;
+
+	virtual void SetTotalTime(float fTotalTime) = 0;
+	virtual float GetTotalTime() const = 0;
 
 private:
 	IOENode* m_pNode;

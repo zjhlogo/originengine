@@ -1,8 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Model>
-	<Mesh>casual03_medium.mesh</Mesh>
-	<Skeleton>casual03_medium.skel</Skeleton>
-	<Materials count="1">
-		<Material id="0" vertdecl="11267" shader="skinmesh.fx" texture0="casual03_diffuse_specular.png" texture1="casual03_normal.png" />
-	</Materials>
+	<RenderData>
+		<Mesh>casual03_medium.mesh</Mesh>
+		<Skeleton>casual03_medium.skel</Skeleton>
+		<Materials count="1">
+			<Material id="0" vertdecl="11267" shader="skinmesh.fx" texture0="casual03_diffuse_specular.png" texture1="casual03_normal.png" />
+		</Materials>
+	</RenderData>
+	<Controls>
+		<Control>COESkinMeshControl_Impl</Control>
+	</Controls>
+	<Renderers>
+		<Renderer>COESkinMeshRender_Impl</Renderer>
+		<Renderer>COESkeletonRender_Impl</Renderer>
+		<Renderer>COEBoundingBoxRender_Impl</Renderer>
+	</Renderers>
 </Model>
