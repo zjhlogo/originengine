@@ -132,8 +132,7 @@ bool CBaseApp::UpdateRotation(float fDetailTime)
 	if (!m_bLButtonDown) return false;
 	if (m_nMouseDetailX == 0 && m_nMouseDetailY == 0) return false;
 
-	if (m_nMouseDetailX) m_pCamera->Rotate(m_pCamera->GetVectorUp(), m_nMouseDetailX*fDetailTime*ROTATE_ADJUST);
-	if (m_nMouseDetailY) m_pCamera->Rotate(m_pCamera->GetVectorRight(), m_nMouseDetailY*fDetailTime*ROTATE_ADJUST);
+	if (m_nMouseDetailX || m_nMouseDetailY) m_pCamera->Rotate(-m_nMouseDetailX*fDetailTime*ROTATE_ADJUST, -m_nMouseDetailY*fDetailTime*ROTATE_ADJUST);
 
 	m_nMouseDetailY = 0;
 	m_nMouseDetailX = 0;

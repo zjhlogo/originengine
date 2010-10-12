@@ -13,9 +13,8 @@
 CBumpMap::CBumpMap()
 {
 	m_pShader = NULL;
-	m_pTexBase = NULL;
-	m_pTexNormal = NULL;
-	m_pTexHeight = NULL;
+	m_pTexDiffuse = NULL;
+	m_pTexNormalHeight = NULL;
 
 	m_bOK = Init();
 }
@@ -39,14 +38,11 @@ bool CBumpMap::Init()
 	m_pShader = g_pOEShaderMgr->CreateShader(s_Decl, TS("demo_bumpmap.fx"));
 	if (!m_pShader) return false;
 
-	m_pTexBase = g_pOETextureMgr->CreateTextureFromFile(TS("rock_diffuse.png"));
-	if (!m_pTexBase) return false;
+	m_pTexDiffuse = g_pOETextureMgr->CreateTextureFromFile(TS("rock_diffuse.png"));
+	if (!m_pTexDiffuse) return false;
 
-	m_pTexNormal = g_pOETextureMgr->CreateTextureFromFile(TS("rock_normal.png"));
-	if (!m_pTexNormal) return false;
-
-	m_pTexHeight = g_pOETextureMgr->CreateTextureFromFile(TS("rock_height.png"));
-	if (!m_pTexHeight) return false;
+	m_pTexNormalHeight = g_pOETextureMgr->CreateTextureFromFile(TS("rock_normal_height.png"));
+	if (!m_pTexNormalHeight) return false;
 
 	return true;
 }
@@ -54,9 +50,8 @@ bool CBumpMap::Init()
 void CBumpMap::Destroy()
 {
 	SAFE_RELEASE(m_pShader);
-	SAFE_RELEASE(m_pTexBase);
-	SAFE_RELEASE(m_pTexNormal);
-	SAFE_RELEASE(m_pTexHeight);
+	SAFE_RELEASE(m_pTexDiffuse);
+	SAFE_RELEASE(m_pTexNormalHeight);
 }
 
 void CBumpMap::Update(float fDetailTime)
@@ -68,10 +63,10 @@ void CBumpMap::Render(float fDetailTime)
 {
 	static const VERTEX s_Verts[4] =
 	{
-		{-10.0f, 0.0f, -10.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 0.0f},
-		{-10.0f, 0.0f, 10.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 0.0f},
-		{10.0f, 0.0f, 10.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 0.0f},
-		{10.0f, 0.0f, -10.0f, 1.0f, 1.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 0.0f},
+		{-10.0f, -10.0f, 30.0f, 0.0f, 1.0f, 0.0f, 0.0f, -1.0f, 1.0f, 0.0f, 0.0f},
+		{-10.0f, 10.0f, 30.0f, 0.0f, 0.0f, 0.0f, 0.0f, -1.0f, 1.0f, 0.0f, 0.0f},
+		{10.0f, 10.0f, 30.0f, 1.0f, 0.0f, 0.0f, 0.0f, -1.0f, 1.0f, 0.0f, 0.0f},
+		{10.0f, -10.0f, 30.0f, 1.0f, 1.0f, 0.0f, 0.0f, -1.0f, 1.0f, 0.0f, 0.0f},
 	};
 
 	static const ushort s_Indis[6] = {0, 1, 3, 1, 2, 3};
@@ -84,9 +79,8 @@ void CBumpMap::Render(float fDetailTime)
 
 	m_pShader->SetVector(TS("g_vLightPos"), m_vLightPos);
 	m_pShader->SetVector(TS("g_vEyePos"), m_vEyePos);
-	m_pShader->SetTexture(TS("g_texDiffuse"), m_pTexBase);
-	m_pShader->SetTexture(TS("g_texNormal"), m_pTexNormal);
-	m_pShader->SetTexture(TS("g_texHeightMap"), m_pTexHeight);
+	m_pShader->SetTexture(TS("g_texDiffuse"), m_pTexDiffuse);
+	m_pShader->SetTexture(TS("g_texNormalHeight"), m_pTexNormalHeight);
 	g_pOERenderSystem->SetShader(m_pShader);
 	g_pOERenderSystem->DrawTriList(s_Verts, 4, s_Indis, 6);
 }

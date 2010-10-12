@@ -77,6 +77,14 @@ int main(int argc, char** argv)
 		return 0;
 	}
 
-	bool bOK = MergeImage(TS("casual03_diffuse.png"), TS("casual03_m_25.png"), TS("casual03_m_25_spec.png"));
+	tstring strOutput;
+	tstring strRGB;
+	tstring strAlpha;
+
+	COEOS::char2tchar(strOutput, argv[1]);
+	COEOS::char2tchar(strRGB, argv[2]);
+	COEOS::char2tchar(strAlpha, argv[3]);
+
+	bool bOK = MergeImage(strOutput, strRGB, strAlpha);
 	return 0;
 }

@@ -64,8 +64,8 @@ void CBumpMapApp::Update(float fDetailTime)
 	s_fTotalTime += fDetailTime;
 	CVector3 vLightPos;
 	vLightPos.x = cos(s_fTotalTime)*10.0f;
-	vLightPos.y = 5.0f;
-	vLightPos.z = sin(s_fTotalTime)*10.0f;
+	vLightPos.y = sin(s_fTotalTime)*10.0f;
+	vLightPos.z = 0.0f;
 
 	m_pBumpMap->SetEyePos(m_pCamera->GetEyePos());
 	m_pBumpMap->SetLightPos(vLightPos);

@@ -48,9 +48,8 @@ private:
 
 private:
 	IOEShader* m_pShader;
-	IOETexture* m_pTexBase;
-	IOETexture* m_pTexNormal;
-	IOETexture* m_pTexHeight;
+	IOETexture* m_pTexDiffuse;
+	IOETexture* m_pTexNormalHeight;
 
 	CVector3 m_vLightPos;
 	CVector3 m_vEyePos;
