@@ -33,7 +33,11 @@ public:
 
 	virtual IOERenderData* GetRenderData();
 
-	virtual IOEMesh* GetMesh();
+	virtual bool AddControl(const tstring& strControl);
+	virtual void RemoveControl(const tstring& strControl);
+
+	virtual bool AddRender(const tstring& strRender);
+	virtual void RemoveRender(const tstring& strRender);
 
 private:
 	void Init();

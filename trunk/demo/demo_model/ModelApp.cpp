@@ -57,7 +57,7 @@ bool CModelApp::Initialize()
 	CQuaternion qRot(COEMath::VECTOR_UP, COEMath::PI_2);
 	//pRootNode->SetRotation(qRot);
 
-	IOEMesh* pMesh = m_pModel->GetMesh();
+	IOEMesh* pMesh = m_pModel->GetRenderData()->GetMesh();
 	m_pCamera->InitFromBBox(pMesh->GetBoundingBoxMin(), pMesh->GetBoundingBoxMax());
 
 	// registe message

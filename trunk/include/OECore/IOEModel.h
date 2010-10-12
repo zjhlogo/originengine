@@ -19,7 +19,11 @@ public:
 	IOEModel() {};
 	virtual ~IOEModel() {};
 
-	virtual IOEMesh* GetMesh() = 0;
+	virtual bool AddControl(const tstring& strControl) = 0;
+	virtual void RemoveControl(const tstring& strControl) = 0;
+
+	virtual bool AddRender(const tstring& strRender) = 0;
+	virtual void RemoveRender(const tstring& strRender) = 0;
 };
 
 #endif // __IOEMODEL_H__

@@ -58,9 +58,48 @@ IOERenderData* COEModel_Impl::GetRenderData()
 	return m_pRenderData;
 }
 
-IOEMesh* COEModel_Impl::GetMesh()
+bool COEModel_Impl::AddControl(const tstring& strControl)
 {
-	return m_pRenderData->GetMesh();
+	IOEControl* pControl = g_pOEControlMgr->GetControl(strControl);
+	if (!pControl) return false;
+
+	m_vControls.push_back(pControl);
+	return true;
+}
+
+void COEModel_Impl::RemoveControl(const tstring& strControl)
+{
+	for (TV_CONTROL::iterator it = m_vControls.begin(); it != m_vControls.end(); ++it)
+	{
+		IOEControl* pControl = (*it);
+		if (pControl->GetRtti()->GetClassName() == strControl)
+		{
+			m_vControls.erase(it);
+			break;
+		}
+	}
+}
+
+bool COEModel_Impl::AddRender(const tstring& strRender)
+{
+	IOERender* pRender = g_pOERenderMgr->GetRender(strRender);
+	if (!pRender) return false;
+
+	m_vRenders.push_back(pRender);
+	return true;
+}
+
+void COEModel_Impl::RemoveRender(const tstring& strRender)
+{
+	for (TV_RENDER::iterator it = m_vRenders.begin(); it != m_vRenders.end(); ++it)
+	{
+		IOERender* pRender = (*it);
+		if (pRender->GetRtti()->GetClassName() == strRender)
+		{
+			m_vRenders.erase(it);
+			break;
+		}
+	}
 }
 
 bool COEModel_Impl::Create(const tstring& strFile)
@@ -75,20 +114,14 @@ bool COEModel_Impl::Create(const tstring& strFile)
 	if (!bOK) return false;
 
 	// create control
-	IOEControl* pControl = g_pOEControlMgr->GetControl(TS("COESkinMeshControl_Impl"));
-	if (pControl) m_vControls.push_back(pControl);
+	AddControl(TS("COESkinMeshControl_Impl"));
 
 	// for draw skin
-	IOERender* pRender = g_pOERenderMgr->GetRender(TS("COESkinMeshRender_Impl"));
-	if (pRender) m_vRenders.push_back(pRender);
-
+	AddRender(TS("COESkinMeshRender_Impl"));
 	// for draw skelecton
-	pRender = g_pOERenderMgr->GetRender(TS("COESkeletonRender_Impl"));
-	if (pRender) m_vRenders.push_back(pRender);
-
+	AddRender(TS("COESkeletonRender_Impl"));
 	// for draw bounding box
-	pRender = g_pOERenderMgr->GetRender(TS("COEBoundingBoxRender_Impl"));
-	if (pRender) m_vRenders.push_back(pRender);
+	AddRender(TS("COEBoundingBoxRender_Impl"));
 
 	return true;
 }
