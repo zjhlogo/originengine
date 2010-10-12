@@ -12,8 +12,6 @@
 #include <OECore/IOERender.h>
 #include <OECore/IOEShader.h>
 
-#include "../OERenderData/OESkinMeshRenderData_Impl.h"
-
 class COESkeletonRender_Impl : public IOERender
 {
 public:
@@ -28,7 +26,6 @@ private:
 	bool Init();
 	void Destroy();
 
-	COESkinMeshRenderData_Impl* ConvertData(IOERenderData* pRenderData);
 	bool BuildBoneVerts(TV_VERTEX_LINE& vVertsOut, TV_VERTEX_INDEX& vIndisOut, IOESkeleton* pSkeleton, const TV_MATRIX4X4& vmatSkins, int nBoneID, int nParentBoneID);
 
 private:

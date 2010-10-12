@@ -38,14 +38,13 @@ void COESkeletonRender_Impl::Destroy()
 
 bool COESkeletonRender_Impl::Render(IOERenderData* pRenderData)
 {
-	COESkinMeshRenderData_Impl* pData = ConvertData(pRenderData);
-	if (!pData) return false;
+	IOESkeleton* pSkeleton = pRenderData->GetSkeleton();
+	if (!pSkeleton) return false;
 
 	m_vVerts.clear();
 	m_vIndis.clear();
 
-	IOESkeleton* pSkeleton = pData->GetSkeleton();
-	const TV_MATRIX4X4& vmatSkins = pData->GetSkinMatrix();
+	const TV_MATRIX4X4& vmatSkins = pRenderData->GetSkinMatrix();
 
 	int nNumBones = pSkeleton->GetBonesCount();
 	for (int i = 0; i < nNumBones; ++i)
@@ -64,15 +63,6 @@ bool COESkeletonRender_Impl::Render(IOERenderData* pRenderData)
 	g_pOERenderSystem->DrawLineList(&m_vVerts[0], m_vVerts.size(), &m_vIndis[0], m_vIndis.size());
 
 	return true;
-}
-
-COESkinMeshRenderData_Impl* COESkeletonRender_Impl::ConvertData(IOERenderData* pRenderData)
-{
-	if (!pRenderData) return NULL;
-
-	if (!pRenderData->GetRtti()->IsType(TS("COESkinMeshRenderData_Impl"))) return NULL;
-
-	return (COESkinMeshRenderData_Impl*)pRenderData;
 }
 
 bool COESkeletonRender_Impl::BuildBoneVerts(TV_VERTEX_LINE& vVertsOut, TV_VERTEX_INDEX& vIndisOut, IOESkeleton* pSkeleton, const TV_MATRIX4X4& vmatSkins, int nBoneID, int nParentBoneID)

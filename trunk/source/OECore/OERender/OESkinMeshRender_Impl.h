@@ -11,8 +11,6 @@
 #include <OECore/OEBaseTypeEx.h>
 #include <OECore/IOERender.h>
 
-#include "../OERenderData/OESkinMeshRenderData_Impl.h"
-
 class COESkinMeshRender_Impl : public IOERender
 {
 public:
@@ -22,9 +20,6 @@ public:
 	virtual ~COESkinMeshRender_Impl();
 
 	virtual bool Render(IOERenderData* pRenderData);
-
-private:
-	COESkinMeshRenderData_Impl* ConvertData(IOERenderData* pRenderData);
 
 };
 #endif // __OESKINMESHRENDER_IMPL_H__

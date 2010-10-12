@@ -6,7 +6,7 @@
  * \author zjhlogo (zjhlogo@163.com)
  */
 #include "OEModel_Impl.h"
-#include "OERenderData/OESkinMeshRenderData_Impl.h"
+#include "OERenderData_Impl.h"
 #include <OEBase/IOEXmlMgr.h>
 #include <OECore/IOEControlMgr.h>
 #include <OECore/IOERenderMgr.h>
@@ -107,52 +107,60 @@ bool COEModel_Impl::Create(const tstring& strFile)
 	IOEXmlDocument* pXmlDocument = g_pOEXmlMgr->CreateDocument(strFile);
 	if (!pXmlDocument) return false;
 
-	// create render data
 	IOEXmlNode* pXmlRoot = pXmlDocument->GetRootNode();
-	bool bOK = CreateRenderData(pXmlRoot);
-	SAFE_RELEASE(pXmlDocument);
-	if (!bOK) return false;
 
-	// create control
-	AddControl(TS("COESkinMeshControl_Impl"));
+	// create render data
+	IOEXmlNode* pXmlRenderData = pXmlRoot->FirstChild(TS("RenderData"));
+	CreateRenderData(pXmlRenderData);
 
-	// for draw skin
-	AddRender(TS("COESkinMeshRender_Impl"));
-	// for draw skelecton
-	AddRender(TS("COESkeletonRender_Impl"));
-	// for draw bounding box
-	AddRender(TS("COEBoundingBoxRender_Impl"));
+	// create controls
+	IOEXmlNode* pXmlControls = pXmlRoot->FirstChild(TS("Controls"));
+	CreateControls(pXmlControls);
+
+	// create renderer
+	IOEXmlNode* pXmlRenderers = pXmlRoot->FirstChild(TS("Renderers"));
+	CreateRenderers(pXmlRenderers);
 
 	return true;
 }
 
-bool COEModel_Impl::CreateRenderData(IOEXmlNode* pXmlRoot)
+bool COEModel_Impl::CreateRenderData(IOEXmlNode* pXmlRenderData)
 {
-	if (!pXmlRoot) return false;
-
 	// create render data
-	m_pRenderData = new COESkinMeshRenderData_Impl(this);
-	if (!m_pRenderData) return false;
+	m_pRenderData = new COERenderData_Impl(this, pXmlRenderData);
+	if (!m_pRenderData || !m_pRenderData->IsOK()) return false;
 
-	// create mesh
-	IOEXmlNode* pXmlMesh = pXmlRoot->FirstChild(TS("Mesh"));
-	if (!pXmlMesh) return false;
+	return true;
+}
 
-	tstring strMeshFile;
-	if (!pXmlMesh->GetText(strMeshFile)) return false;
-	if (!m_pRenderData->LoadMesh(strMeshFile)) return false;
+bool COEModel_Impl::CreateControls(IOEXmlNode* pXmlControls)
+{
+	if (!pXmlControls) return false;
 
-	// create skeleton
-	IOEXmlNode* pXmlSkeleton = pXmlRoot->FirstChild(TS("Skeleton"));
-	if (!pXmlSkeleton) return false;
+	IOEXmlNode* pXmlControl = pXmlControls->FirstChild(TS("Control"));
+	while (pXmlControl)
+	{
+		tstring strControlName;
+		pXmlControl->GetText(strControlName);
+		AddControl(strControlName);
+		pXmlControl = pXmlControl->NextSibling(TS("Control"));
+	}
 
-	tstring strSkeletonFile;
-	if (!pXmlSkeleton->GetText(strSkeletonFile)) return false;
-	if (!m_pRenderData->LoadSkeleton(strSkeletonFile)) return false;
+	return true;
+}
 
-	// create materials
-	IOEXmlNode* pXmlMaterials = pXmlRoot->FirstChild(TS("Materials"));
-	if (!m_pRenderData->LoadMaterials(pXmlMaterials)) return false;
+bool COEModel_Impl::CreateRenderers(IOEXmlNode* pXmlRenderers)
+{
+	if (!pXmlRenderers) return false;
+
+	IOEXmlNode* pXmlRender = pXmlRenderers->FirstChild(TS("Renderer"));
+	while (pXmlRender)
+	{
+		tstring strControlName;
+		pXmlRender->GetText(strControlName);
+		AddRender(strControlName);
+		pXmlRender = pXmlRender->NextSibling(TS("Renderer"));
+	}
 
 	return true;
 }

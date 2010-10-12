@@ -1,30 +1,31 @@
 /*!
- * \file OESkinMeshRender_Impl.cpp
- * \date 13-2-2010 19:58:25
+ * \file OEMeshRender_Impl.cpp
+ * \date 10-12-2010 17:54:02
  * 
  * 
- * \author zjhlogo (zjhlogo@163.com)
+ * \author zjhlogo (zjhlogo@gmail.com)
  */
-#include "OESkinMeshRender_Impl.h"
+#include "OEMeshRender_Impl.h"
 #include <OECore/IOERenderSystem.h>
 #include <OECore/OERenderSystemUtil.h>
 #include <OEBase/IOEMsgMgr.h>
 #include <libOEMsg/OEMsgShaderParam.h>
 
-COESkinMeshRender_Impl::COESkinMeshRender_Impl()
+COEMeshRender_Impl::COEMeshRender_Impl()
 {
 	// TODO: 
 }
 
-COESkinMeshRender_Impl::~COESkinMeshRender_Impl()
+COEMeshRender_Impl::~COEMeshRender_Impl()
 {
 	// TODO: 
 }
 
-bool COESkinMeshRender_Impl::Render(IOERenderData* pRenderData)
+bool COEMeshRender_Impl::Render(IOERenderData* pRenderData)
 {
 	IOEMesh* pMesh = pRenderData->GetMesh();
 	if (!pMesh) return false;
+
 	int nNumPiece = pMesh->GetNumPieces();
 
 	CMatrix4x4 matWorld = pRenderData->GetNode()->GetFinalMatrix();
@@ -51,15 +52,8 @@ bool COESkinMeshRender_Impl::Render(IOERenderData* pRenderData)
 		COEMsgShaderParam msg(pShader);
 		pRenderData->GetHolder()->CallEvent(msg);
 
-		pShader->SetMatrix(TS("g_matInvWorld"), matWorld.Inverse());
 		pShader->SetMatrix(TS("g_matWorldViewProj"), matWorldViewProj);
 		pShader->SetTexture(TS("g_texDiffuse"), pMaterial->GetTexture(MTT_DIFFUSE));
-		pShader->SetTexture(TS("g_texNormal"), pMaterial->GetTexture(MTT_NORMAL));
-
-		const TV_MATRIX4X4& vmatSkins = pRenderData->GetSkinMatrix();
-		if (vmatSkins.size() <= 0) continue;
-
-		pShader->SetMatrixArray(TS("g_matBoneMatrix"), &vmatSkins[0], vmatSkins.size());
 
 		g_pOERenderSystem->SetShader(pShader);
 		g_pOERenderSystem->DrawTriList(pPiece->GetVerts(), pPiece->GetNumVerts(), pPiece->GetIndis(), pPiece->GetNumIndis());

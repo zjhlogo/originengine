@@ -6,6 +6,7 @@
  * \author zjhlogo (zjhlogo@163.com)
  */
 #include "OERenderMgr_Impl.h"
+#include "OERender/OEMeshRender_Impl.h"
 #include "OERender/OESkinMeshRender_Impl.h"
 #include "OERender/OESkeletonRender_Impl.h"
 #include "OERender/OEBoundingBoxRender_Impl.h"
@@ -26,6 +27,7 @@ COERenderMgr_Impl::~COERenderMgr_Impl()
 
 bool COERenderMgr_Impl::Initialize()
 {
+	AddRenderHandle(new COEMeshRender_Impl());
 	AddRenderHandle(new COESkinMeshRender_Impl());
 	AddRenderHandle(new COESkeletonRender_Impl());
 	AddRenderHandle(new COEBoundingBoxRender_Impl());
