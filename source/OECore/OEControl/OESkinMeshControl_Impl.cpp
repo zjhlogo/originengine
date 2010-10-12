@@ -20,21 +20,18 @@ COESkinMeshControl_Impl::~COESkinMeshControl_Impl()
 
 bool COESkinMeshControl_Impl::Update(IOERenderData* pRenderData, float fDetailTime)
 {
-	COESkinMeshRenderData_Impl* pData = (COESkinMeshRenderData_Impl*)ConvertData(pRenderData);
-	if (!pData) return false;
-
-	float fTotalTime = pData->GetTotalTime() + fDetailTime;
-	float fAnimLength = pData->GetAnimLength();
+	float fTotalTime = pRenderData->GetTotalTime() + fDetailTime;
+	float fAnimLength = pRenderData->GetAnimLength();
 
 	if (fTotalTime > fAnimLength || fTotalTime < 0.0f)
 	{
 		fTotalTime -= floorf(fTotalTime/fAnimLength)*fAnimLength;
 	}
 
-	pData->SetTotalTime(fTotalTime);
+	pRenderData->SetTotalTime(fTotalTime);
 
-	IOESkeleton* pSkeleton = pData->GetSkeleton();
-	TV_MATRIX4X4& vSkinMatrix = pData->GetSkinMatrix();
+	IOESkeleton* pSkeleton = pRenderData->GetSkeleton();
+	TV_MATRIX4X4& vSkinMatrix = pRenderData->GetSkinMatrix();
 
 	int nNumBones = (int)pSkeleton->GetBonesCount();
 	for (int i = 0; i < nNumBones; ++i)
@@ -64,13 +61,4 @@ bool COESkinMeshControl_Impl::Update(IOERenderData* pRenderData, float fDetailTi
 	}
 
 	return true;
-}
-
-COESkinMeshRenderData_Impl* COESkinMeshControl_Impl::ConvertData(IOERenderData* pRenderData)
-{
-	if (!pRenderData) return NULL;
-
-	if (!pRenderData->GetRtti()->IsType(TS("COESkinMeshRenderData_Impl"))) return NULL;
-
-	return (COESkinMeshRenderData_Impl*)pRenderData;
 }

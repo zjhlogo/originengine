@@ -14,8 +14,6 @@
 #include <OEBase/IOEXmlNode.h>
 #include <vector>
 
-#include "OERenderData/OESkinMeshRenderData_Impl.h"
-
 class COEModel_Impl : public IOEModel
 {
 public:
@@ -44,10 +42,13 @@ private:
 	void Destroy();
 
 	bool Create(const tstring& strFile);
-	bool CreateRenderData(IOEXmlNode* pXmlRoot);
+
+	bool CreateRenderData(IOEXmlNode* pXmlRenderData);
+	bool CreateControls(IOEXmlNode* pXmlControls);
+	bool CreateRenderers(IOEXmlNode* pXmlRenderers);
 
 private:
-	COESkinMeshRenderData_Impl* m_pRenderData;
+	IOERenderData* m_pRenderData;
 	TV_CONTROL m_vControls;
 	TV_RENDER m_vRenders;
 

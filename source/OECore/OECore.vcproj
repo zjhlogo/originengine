@@ -337,6 +337,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\OERender\OEMeshRender_Impl.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\OERender\OEMeshRender_Impl.h"
+				>
+			</File>
+			<File
 				RelativePath=".\OERender\OESkeletonRender_Impl.cpp"
 				>
 			</File>
@@ -481,18 +489,6 @@
 				>
 			</File>
 		</Filter>
-		<Filter
-			Name="OERenderData"
-			>
-			<File
-				RelativePath=".\OERenderData\OESkinMeshRenderData_Impl.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\OERenderData\OESkinMeshRenderData_Impl.h"
-				>
-			</File>
-		</Filter>
 		<File
 			RelativePath=".\OEBone_Impl.cpp"
 			>
@@ -571,6 +567,14 @@
 		</File>
 		<File
 			RelativePath=".\OEPiece_Impl.h"
+			>
+		</File>
+		<File
+			RelativePath=".\OERenderData_Impl.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\OERenderData_Impl.h"
 			>
 		</File>
 		<File
