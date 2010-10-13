@@ -19,7 +19,6 @@ CCamera::~CCamera()
 
 void CCamera::Init()
 {
-	m_vEye = CVector3(0.0f, 0.0f, 0.0f);
 	m_fRotX = 0.0f;
 	m_fRotY = 0.0f;
 	Rotate(0.0f, 0.0f);
@@ -44,6 +43,8 @@ void CCamera::Initialize(const CVector3& vEye, const CVector3& vLookAt)
 	m_vRight.Normalize();
 
 	COEMath::BuildLookAtMatrixLH(m_matView, m_vEye, m_vLookAt, m_vUp);
+
+	SyncRotFromForward(m_vForward);
 }
 
 void CCamera::InitFromBBox(const CVector3& vMinBBox, const CVector3& vMaxBBox)
@@ -133,4 +134,17 @@ const CVector3& CCamera::GetVectorForword() const
 const CVector3& CCamera::GetVectorRight() const
 {
 	return m_vRight;
+}
+
+void CCamera::SyncRotFromForward(const CVector3& vForward)
+{
+	CVector3 vDir = vForward;
+	vDir.y = 0.0f;
+	vDir.Normalize();
+	m_fRotY = -acosf(vDir.z);
+
+	vDir = m_vForward;
+	vDir.x = 0.0f;
+	vDir.Normalize();
+	m_fRotX = -acosf(m_vForward.z);
 }

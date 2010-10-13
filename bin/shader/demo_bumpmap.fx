@@ -1,3 +1,4 @@
+float4x4 g_matInvWorld;
 float4x4 g_matWorldViewProj;
 float3 g_vLightPos;
 float3 g_vEyePos;
@@ -27,8 +28,8 @@ struct VS_INPUT
 {
 	float3 pos : POSITION;
 	float2 texcoord : TEXCOORD0;
-	float3 normal : TEXCOORD1;
-	float3 tangent : TEXCOORD2;
+	float3 normal : NORMAL;
+	float3 tangent : TEXCOORD1;
 };
 
 struct VS_OUTPUT
@@ -49,10 +50,12 @@ VS_OUTPUT VSMain(VS_INPUT input)
 	float3 binormal = cross(input.tangent, input.normal);
 	float3x3 rotation = float3x3(input.tangent, binormal, input.normal);
 
-	float3 vLightDir = g_vLightPos - input.pos;
+	float3 lightPos = mul(g_vLightPos, g_matInvWorld);
+	float3 vLightDir = lightPos - input.pos;
 	output.lightDir = mul(rotation, vLightDir);
 
-	float3 vEyeDir = g_vEyePos - input.pos;
+	float3 eyePos = mul(g_vEyePos, g_matInvWorld);
+	float3 vEyeDir = eyePos - input.pos;
 	output.eyeDir = mul(rotation, vEyeDir);
 
 	return output;

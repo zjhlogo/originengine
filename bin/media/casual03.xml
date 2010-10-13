@@ -12,7 +12,5 @@
 	</Controls>
 	<Renderers>
 		<Renderer>COESkinMeshRender_Impl</Renderer>
-		<Renderer>COESkeletonRender_Impl</Renderer>
-		<Renderer>COEBoundingBoxRender_Impl</Renderer>
 	</Renderers>
 </Model>

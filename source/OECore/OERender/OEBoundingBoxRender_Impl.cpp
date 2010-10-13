@@ -12,6 +12,7 @@
 
 COEBoundingBoxRender_Impl::COEBoundingBoxRender_Impl()
 {
+	m_pShader = NULL;
 	m_bOK = Init();
 }
 
@@ -63,49 +64,49 @@ bool COEBoundingBoxRender_Impl::Render(IOERenderData* pRenderData)
 	Verts[0].x = vBBoxMax.x;
 	Verts[0].y = vBBoxMax.y;
 	Verts[0].z = vBBoxMax.z;
-	Verts[0].nColor = 0xFFFFFFFF;
+	Verts[0].nColor = 0xFF808080;
 
 	// vertex 1
 	Verts[1].x = vBBoxMax.x;
 	Verts[1].y = vBBoxMin.y;
 	Verts[1].z = vBBoxMax.z;
-	Verts[1].nColor = 0xFFFFFFFF;
+	Verts[1].nColor = 0xFF808080;
 
 	// vertex 2
 	Verts[2].x = vBBoxMin.x;
 	Verts[2].y = vBBoxMin.y;
 	Verts[2].z = vBBoxMax.z;
-	Verts[2].nColor = 0xFFFFFFFF;
+	Verts[2].nColor = 0xFF808080;
 
 	// vertex 3
 	Verts[3].x = vBBoxMin.x;
 	Verts[3].y = vBBoxMax.y;
 	Verts[3].z = vBBoxMax.z;
-	Verts[3].nColor = 0xFFFFFFFF;
+	Verts[3].nColor = 0xFF808080;
 
 	// vertex 4
 	Verts[4].x = vBBoxMax.x;
 	Verts[4].y = vBBoxMax.y;
 	Verts[4].z = vBBoxMin.z;
-	Verts[4].nColor = 0xFFFFFFFF;
+	Verts[4].nColor = 0xFF808080;
 
 	// vertex 5
 	Verts[5].x = vBBoxMax.x;
 	Verts[5].y = vBBoxMin.y;
 	Verts[5].z = vBBoxMin.z;
-	Verts[5].nColor = 0xFFFFFFFF;
+	Verts[5].nColor = 0xFF808080;
 
 	// vertex 6
 	Verts[6].x = vBBoxMin.x;
 	Verts[6].y = vBBoxMin.y;
 	Verts[6].z = vBBoxMin.z;
-	Verts[6].nColor = 0xFFFFFFFF;
+	Verts[6].nColor = 0xFF808080;
 
 	// vertex 7
 	Verts[7].x = vBBoxMin.x;
 	Verts[7].y = vBBoxMax.y;
 	Verts[7].z = vBBoxMin.z;
-	Verts[7].nColor = 0xFFFFFFFF;
+	Verts[7].nColor = 0xFF808080;
 
 	CDefaultRenderState DefaultState;
 

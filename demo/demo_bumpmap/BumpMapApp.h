@@ -10,7 +10,7 @@
 
 #include "../common/BaseApp.h"
 #include "../common/SimpleShape.h"
-#include "BumpMap.h"
+#include <OECore/IOEModel.h>
 
 class CBumpMapApp : public CBaseApp
 {
@@ -28,10 +28,12 @@ private:
 	void Destroy();
 
 	virtual bool OnKeyDown(COEMsgKeyboard& msg);
+	bool OnSetupShaderParam(COEMsgShaderParam& msg);
 
 private:
 	CSimpleShape* m_pSimpleShape;
-	CBumpMap* m_pBumpMap;
+	CVector3 m_vLightPos;
+	IOEModel* m_pModel;
 
 };
 

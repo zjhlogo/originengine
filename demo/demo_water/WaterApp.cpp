@@ -82,11 +82,6 @@ void CWaterApp::Update(float fDetailTime)
 	m_pWater->SetEyePos(m_pCamera->GetEyePos());
 }
 
-void CWaterApp::Render(float fDetailTime)
-{
-	// TODO: 
-}
-
 bool CWaterApp::OnKeyDown(COEMsgKeyboard& msg)
 {
 	CBaseApp::OnKeyDown(msg);

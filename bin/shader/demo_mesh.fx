@@ -1,3 +1,4 @@
+float4x4 g_matInvWorld;
 float4x4 g_matWorldViewProj;
 texture g_texDiffuse;
 

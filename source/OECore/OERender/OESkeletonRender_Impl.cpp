@@ -76,7 +76,7 @@ bool COESkeletonRender_Impl::BuildBoneVerts(TV_VERTEX_LINE& vVertsOut, TV_VERTEX
 	Vertex.x = matSkin.m[12];
 	Vertex.y = matSkin.m[13];
 	Vertex.z = matSkin.m[14];
-	Vertex.nColor = 0xFFFFFFFF;
+	Vertex.nColor = 0xFF808080;
 
 	int nSelfIndex = vVertsOut.size();
 	vVertsOut.push_back(Vertex);
@@ -88,7 +88,7 @@ bool COESkeletonRender_Impl::BuildBoneVerts(TV_VERTEX_LINE& vVertsOut, TV_VERTEX
 	Vertex.x = matSkin.m[12];
 	Vertex.y = matSkin.m[13];
 	Vertex.z = matSkin.m[14];
-	Vertex.nColor = 0xFFFFFFFF;
+	Vertex.nColor = 0xFF808080;
 
 	int nParentIndex = vVertsOut.size();
 	vVertsOut.push_back(Vertex);

@@ -329,6 +329,14 @@
 			Name="OERender"
 			>
 			<File
+				RelativePath=".\OERender\OEBinormalRender_Impl.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\OERender\OEBinormalRender_Impl.h"
+				>
+			</File>
+			<File
 				RelativePath=".\OERender\OEBoundingBoxRender_Impl.cpp"
 				>
 			</File>
@@ -345,6 +353,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\OERender\OENormalRender_Impl.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\OERender\OENormalRender_Impl.h"
+				>
+			</File>
+			<File
 				RelativePath=".\OERender\OESkeletonRender_Impl.cpp"
 				>
 			</File>
@@ -358,6 +374,14 @@
 			</File>
 			<File
 				RelativePath=".\OERender\OESkinMeshRender_Impl.h"
+				>
+			</File>
+			<File
+				RelativePath=".\OERender\OETangentRender_Impl.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\OERender\OETangentRender_Impl.h"
 				>
 			</File>
 		</Filter>
