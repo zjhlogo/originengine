@@ -14,34 +14,30 @@
 #include "Quaternion.h"
 #include <vector>
 
-CMatrix4x4 operator *(const CMatrix4x4& m1, const CMatrix4x4& m2);
-
-CVector3 operator *(const CVector3& v, const CMatrix4x4& mat);
-CVector3 operator *(const CMatrix4x4& mat, const CVector3& v);
-CVector4 operator *(const CVector4& v, float s);
-
 class COEMath
 {
 public:
 	static void BuildLookAtMatrixLH(CMatrix4x4& matOut, const CVector3& vEye, const CVector3& vAt, const CVector3& vUp);
 	static void BuildProjectMatrixLH(CMatrix4x4& matOut, float fFov, float fAspect, float fNear, float fFar);
+	static void BuildRotationMatrix(CMatrix4x4& matOut, const CVector3& vAxis, float fRadius);
+	static void BuildRotationXMatrix(CMatrix4x4& matOut, float fRadius);
+	static void BuildRotationYMatrix(CMatrix4x4& matOut, float fRadius);
+	static void BuildRotationZMatrix(CMatrix4x4& matOut, float fRadius);
+	static void BuildMatrixFromQuaternion(CMatrix4x4& matOut, const CQuaternion& qIn);
+	static void BuildMatrixFromEulerXYZ(CMatrix4x4& matOut, float x, float y, float z);
+	static void BuildMatrixFromEulerYZX(CMatrix4x4& matOut, float x, float y, float z);
+	static void SetMatrixTranslation(CMatrix4x4& matOut, const CVector3& vPos);
+	static void GetMatrixTranslation(CVector3& vPosOut, const CMatrix4x4& matIn);
+	static void SetMatrixScale(CMatrix4x4& matOut, const CVector3& vScale);
+	static void GetMatrixScale(CVector3& vScaleOut, const CMatrix4x4& matIn);
 
 	static void BuildQuaternionFromMatrix(CQuaternion& qOut, const CMatrix4x4& matIn);
-	static void BuildMatrixFromQuaternion(CMatrix4x4& matOut, const CQuaternion& qIn);
-
-	static void BuildMatrixFromEulerXYZ(CMatrix4x4& matOut, float x, float y, float z);
 	static void BuildQuaternionFromEulerXYZ(CQuaternion& qOut, float x, float y, float z);
-	static void BuildRotationMatrix(CMatrix4x4& matOut, const CVector3& vAxis, float fRadius);
+	static void BuildQuaternionFromEulerYZX(CQuaternion& qOut, float x, float y, float z);
 
 	static void VectorLerp(CVector3& vOut, const CVector3& v1, const CVector3& v2, float t);
 	static void MatrixLerp(CMatrix4x4& matOut, const CMatrix4x4& mat1, const CMatrix4x4& mat2, float t);
 	static void QuaternionSlerp(CQuaternion& qOut, const CQuaternion& q1, const CQuaternion& q2, float t);
-
-	static void SetMatrixTranslation(CMatrix4x4& matOut, const CVector3& vPos);
-	static void GetMatrixTranslation(CVector3& vPosOut, const CMatrix4x4& matIn);
-
-	static void SetMatrixScale(CMatrix4x4& matOut, const CVector3& vScale);
-	static void GetMatrixScale(CVector3& vScaleOut, const CMatrix4x4& matIn);
 
 	static void InverseTranslateVector(CVector3& vInOut, const CMatrix4x4& matIn);
 	static void InverseRotateVector(CVector3& vInOut, const CMatrix4x4& matIn);
@@ -64,6 +60,11 @@ public:
 	static const CVector3 VECTOR_FORWARD;
 
 };
+
+CMatrix4x4 operator *(const CMatrix4x4& m1, const CMatrix4x4& m2);
+CVector3 operator *(const CVector3& v, const CMatrix4x4& mat);
+CVector3 operator *(const CMatrix4x4& mat, const CVector3& v);
+CVector4 operator *(const CVector4& v, float s);
 
 #include "OEMath.inl"
 

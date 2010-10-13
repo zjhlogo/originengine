@@ -83,7 +83,7 @@ void CCamera::Rotate(float fRotY, float fRotX)
 	m_vForward = CVector3(0.0f, 0.0f, 1.0f);
 
 	CMatrix4x4 matRot;
-	COEMath::BuildRotationMatrix(matRot, m_vUp, m_fRotY);
+	COEMath::BuildRotationYMatrix(matRot, m_fRotY);
 	m_vRight = m_vRight * matRot;
 	m_vForward = m_vForward * matRot;
 
