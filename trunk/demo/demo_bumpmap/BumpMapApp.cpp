@@ -8,6 +8,8 @@
 #include "BumpMapApp.h"
 #include "../common/AppHelper.h"
 #include <OECore/IOECore.h>
+#include <OECore/IOEResMgr.h>
+#include <libOEMsg/OEMsgList.h>
 
 IMPLEMENT_OEAPP(CBumpMapApp);
 
@@ -24,7 +26,7 @@ CBumpMapApp::~CBumpMapApp()
 void CBumpMapApp::Init()
 {
 	m_pSimpleShape = NULL;
-	m_pBumpMap = NULL;
+	m_pModel = NULL;
 }
 
 void CBumpMapApp::Destroy()
@@ -39,18 +41,23 @@ bool CBumpMapApp::Initialize()
 	m_pSimpleShape = new CSimpleShape();
 	if (!m_pSimpleShape || !m_pSimpleShape->IsOK()) return false;
 
-	m_pBumpMap = new CBumpMap();
-	if (!m_pBumpMap || !m_pBumpMap->IsOK()) return false;
+	m_pModel = g_pOEResMgr->CreateModel(TS("demo_bumpmap.xml"));
+	if (!m_pModel) return false;
 
-	g_pOECore->GetRootNode()->AttachObject(m_pBumpMap);
+	IOEMesh* pMesh = m_pModel->GetRenderData()->GetMesh();
+	m_pCamera->InitFromBBox(pMesh->GetBoundingBoxMin(), pMesh->GetBoundingBoxMax());
+
+	m_pModel->RegisterEvent(OMI_SETUP_SHADER_PARAM, this, (MSG_FUNC)&CBumpMapApp::OnSetupShaderParam);
+
 	g_pOECore->GetRootNode()->AttachObject(m_pSimpleShape);
+	g_pOECore->GetRootNode()->AttachObject(m_pModel);
 
 	return true;
 }
 
 void CBumpMapApp::Terminate()
 {
-	SAFE_DELETE(m_pBumpMap);
+	SAFE_DELETE(m_pModel);
 	SAFE_DELETE(m_pSimpleShape);
 	CBaseApp::Terminate();
 }
@@ -61,27 +68,38 @@ void CBumpMapApp::Update(float fDetailTime)
 
 	CBaseApp::Update(fDetailTime);
 
-	s_fTotalTime += fDetailTime;
-	CVector3 vLightPos;
-	vLightPos.x = cos(s_fTotalTime)*10.0f;
-	vLightPos.y = sin(s_fTotalTime)*10.0f;
-	vLightPos.z = 0.0f;
+	s_fTotalTime += fDetailTime*0.3f;
+	m_vLightPos.x = cos(s_fTotalTime)*40.0f;
+	m_vLightPos.z = sin(s_fTotalTime)*40.0f;
+	m_vLightPos.y = cos(s_fTotalTime)*sin(s_fTotalTime)*40.0f;
 
-	m_pBumpMap->SetEyePos(m_pCamera->GetEyePos());
-	m_pBumpMap->SetLightPos(vLightPos);
-
-	m_pSimpleShape->SetPosition(vLightPos);
+	m_pSimpleShape->SetPosition(m_vLightPos);
 }
 
 bool CBumpMapApp::OnKeyDown(COEMsgKeyboard& msg)
 {
 	CBaseApp::OnKeyDown(msg);
 
-	if (m_KeyDown['1']) m_pBumpMap->SetTechnique(TS("NormalMap"));
-	if (m_KeyDown['2']) m_pBumpMap->SetTechnique(TS("ParallaxMap"));
-	if (m_KeyDown['3']) m_pBumpMap->SetTechnique(TS("DiffuseTexture"));
-	if (m_KeyDown['4']) m_pBumpMap->SetTechnique(TS("NormalTexture"));
-	if (m_KeyDown['5']) m_pBumpMap->SetTechnique(TS("HeightMapTexture"));
+	IOEShader* pShader = m_pModel->GetRenderData()->GetMaterial(0)->GetShader();
+
+	if (m_KeyDown['1']) pShader->SetTechnique(TS("NormalMap"));
+	if (m_KeyDown['2']) pShader->SetTechnique(TS("ParallaxMap"));
+	if (m_KeyDown['3']) pShader->SetTechnique(TS("DiffuseTexture"));
+	if (m_KeyDown['4']) pShader->SetTechnique(TS("NormalTexture"));
+	if (m_KeyDown['5']) pShader->SetTechnique(TS("HeightMapTexture"));
+
+	return true;
+}
+
+bool CBumpMapApp::OnSetupShaderParam(COEMsgShaderParam& msg)
+{
+	IOEShader* pShader = msg.GetShader();
+
+	pShader->SetVector(TS("g_vLightPos"), m_vLightPos);
+	pShader->SetVector(TS("g_vEyePos"), m_pCamera->GetEyePos());
+
+	IOETexture* pTexture = m_pModel->GetRenderData()->GetMaterial(0)->GetTexture(MTT_NORMAL);
+	pShader->SetTexture(TS("g_texNormalHeight"), pTexture);
 
 	return true;
 }

@@ -35,6 +35,8 @@ private:
 	void Init();
 	void Destroy();
 
+	void SyncRotFromForward(const CVector3& vForward);
+
 private:
 	CVector3 m_vEye;
 	CVector3 m_vLookAt;

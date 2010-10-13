@@ -143,8 +143,8 @@ int CModelExporter::DoExport(const TCHAR* name, ExpInterface* ei, Interface* i, 
 	// save to file
 	tstring strFile;
 	COEOS::GetFileName(strFile, name);
-	SaveMeshFile(strFile + TS(".mesh"));
-	SaveSkeletonFile(strFile + TS(".skel"));
+	if (m_pDlgModelExpOption->IsExportMesh()) SaveMeshFile(strFile + TS(".mesh"));
+	if (m_pDlgModelExpOption->IsExportSkelecton()) SaveSkeletonFile(strFile + TS(".skel"));
 
 	pIGame->ReleaseIGame();
 	pIGame = NULL;
@@ -366,7 +366,7 @@ bool CModelExporter::SaveMeshFile(const tstring& strFileName)
 				pFile->Write(pfTangent, sizeof(pfTangent));
 			}
 
-			if (Piece.nVertexDataMask & COEFmtMesh::VDM_TANGENT)
+			if (Piece.nVertexDataMask & COEFmtMesh::VDM_SKELECTON)
 			{
 				uchar uchIndex[4] = {0};
 				float pfWeight[4] = {0.0f};

@@ -54,6 +54,7 @@ bool COEMeshRender_Impl::Render(IOERenderData* pRenderData)
 
 		pShader->SetMatrix(TS("g_matWorldViewProj"), matWorldViewProj);
 		pShader->SetTexture(TS("g_texDiffuse"), pMaterial->GetTexture(MTT_DIFFUSE));
+		pShader->SetMatrix(TS("g_matInvWorld"), matWorld.Inverse());
 
 		g_pOERenderSystem->SetShader(pShader);
 		g_pOERenderSystem->DrawTriList(pPiece->GetVerts(), pPiece->GetNumVerts(), pPiece->GetIndis(), pPiece->GetNumIndis());

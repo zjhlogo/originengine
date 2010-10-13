@@ -10,6 +10,9 @@
 #include "OERender/OESkinMeshRender_Impl.h"
 #include "OERender/OESkeletonRender_Impl.h"
 #include "OERender/OEBoundingBoxRender_Impl.h"
+#include "OERender/OENormalRender_Impl.h"
+#include "OERender/OETangentRender_Impl.h"
+#include "OERender/OEBinormalRender_Impl.h"
 
 #include <assert.h>
 
@@ -31,6 +34,9 @@ bool COERenderMgr_Impl::Initialize()
 	AddRenderHandle(new COESkinMeshRender_Impl());
 	AddRenderHandle(new COESkeletonRender_Impl());
 	AddRenderHandle(new COEBoundingBoxRender_Impl());
+	AddRenderHandle(new COENormalRender_Impl());
+	AddRenderHandle(new COETangentRender_Impl());
+	AddRenderHandle(new COEBinormalRender_Impl());
 
 	return true;
 }

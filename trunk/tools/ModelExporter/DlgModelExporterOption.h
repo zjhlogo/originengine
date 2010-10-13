@@ -46,6 +46,9 @@ public:
 	void LoadConfig(const wxString& strFile);
 	void SaveConfig(const wxString& strFile);
 
+	bool IsExportMesh() {return m_bExportMesh;};
+	bool IsExportSkelecton() {return m_bExportSkelecton;};
+
 private:
 	void OnChkExportMeshClicked(wxCommandEvent& event);
 	void OnChkExportSkelectonClicked(wxCommandEvent& event);
