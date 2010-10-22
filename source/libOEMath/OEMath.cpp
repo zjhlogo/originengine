@@ -51,6 +51,38 @@ void COEMath::BuildLookAtMatrixLH(CMatrix4x4& matOut, const CVector3& vEye, cons
 	matOut.m[15] = 1.0f;
 }
 
+void COEMath::BuildLookAtMatrixRH(CMatrix4x4& matOut, const CVector3& vEye, const CVector3& vAt, const CVector3& vUp)
+{
+	CVector3 vForward = vAt - vEye;
+	vForward.Normalize();
+
+	CVector3 vRight = vForward ^ vUp;
+	vRight.Normalize();
+
+	CVector3 vNewUp = vRight ^ vForward;
+	vNewUp.Normalize();
+
+	matOut.m[0] = vRight.x;
+	matOut.m[4] = vRight.y;
+	matOut.m[8] = vRight.z;
+	matOut.m[12] = 0.0f;
+
+	matOut.m[1] = vNewUp.x;
+	matOut.m[5] = vNewUp.y;
+	matOut.m[9] = vNewUp.z;
+	matOut.m[13] = 0.0f;
+
+	matOut.m[2] = -vForward.x;
+	matOut.m[6] = -vForward.y;
+	matOut.m[10] = -vForward.z;
+	matOut.m[14] = 0.0f;
+
+	matOut.m[3] = -vEye.x;
+	matOut.m[7] = -vEye.y;
+	matOut.m[11] = -vEye.z;
+	matOut.m[15] = 1.0f;
+}
+
 void COEMath::BuildProjectMatrixLH(CMatrix4x4& matOut, float fFov, float fAspect, float fNear, float fFar)
 {
 	float h = tanf(0.5f*fFov);
@@ -74,6 +106,32 @@ void COEMath::BuildProjectMatrixLH(CMatrix4x4& matOut, float fFov, float fAspect
 	matOut.m[12] = 0.0f;
 	matOut.m[13] = 0.0f;
 	matOut.m[14] = -fNear*fFar/(fFar-fNear);
+	matOut.m[15] = 0.0f;
+}
+
+void COEMath::BuildProjectMatrixRH(CMatrix4x4& matOut, float fFov, float fAspect, float fNear, float fFar)
+{
+	float h = tanf(0.5f*fFov);
+	float w = h*fAspect;
+
+	matOut.m[0] = 1.0f/w;
+	matOut.m[1] = 0.0f;
+	matOut.m[2] = 0.0f;
+	matOut.m[3] = 0.0f;
+
+	matOut.m[4] = 0.0f;
+	matOut.m[5] = 1.0f/h;
+	matOut.m[6] = 0.0f;
+	matOut.m[7] = 0.0f;
+
+	matOut.m[8] = 0.0f;
+	matOut.m[9] = 0.0f;
+	matOut.m[10] = fFar/(fFar-fNear);
+	matOut.m[11] = -1.0f;
+
+	matOut.m[12] = 0.0f;
+	matOut.m[13] = 0.0f;
+	matOut.m[14] = fNear*fFar/(fFar-fNear);
 	matOut.m[15] = 0.0f;
 }
 

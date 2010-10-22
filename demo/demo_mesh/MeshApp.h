@@ -20,12 +20,17 @@ public:
 	virtual bool Initialize();
 	virtual void Terminate();
 
+	virtual void Update(float fDetailTime);
+
 private:
 	void Init();
 	void Destroy();
 
+	bool OnSetupShaderParam(COEMsgShaderParam& msg);
+
 private:
 	IOEModel* m_pModel;
+	CVector3 m_vOffset;
 
 };
 
