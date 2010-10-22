@@ -18,7 +18,9 @@ class COEMath
 {
 public:
 	static void BuildLookAtMatrixLH(CMatrix4x4& matOut, const CVector3& vEye, const CVector3& vAt, const CVector3& vUp);
+	static void BuildLookAtMatrixRH(CMatrix4x4& matOut, const CVector3& vEye, const CVector3& vAt, const CVector3& vUp);
 	static void BuildProjectMatrixLH(CMatrix4x4& matOut, float fFov, float fAspect, float fNear, float fFar);
+	static void BuildProjectMatrixRH(CMatrix4x4& matOut, float fFov, float fAspect, float fNear, float fFar);
 	static void BuildRotationMatrix(CMatrix4x4& matOut, const CVector3& vAxis, float fRadius);
 	static void BuildRotationXMatrix(CMatrix4x4& matOut, float fRadius);
 	static void BuildRotationYMatrix(CMatrix4x4& matOut, float fRadius);

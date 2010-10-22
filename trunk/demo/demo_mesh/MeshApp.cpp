@@ -8,7 +8,9 @@
 #include "MeshApp.h"
 #include "../common/AppHelper.h"
 #include <OECore/IOECore.h>
+#include <OECore/IOERenderSystem.h>
 #include <OECore/IOEResMgr.h>
+#include <libOEMsg/OEMsgList.h>
 
 IMPLEMENT_OEAPP(CMeshApp);
 
@@ -36,8 +38,10 @@ bool CMeshApp::Initialize()
 {
 	if (!CBaseApp::Initialize()) return false;
 
-	m_pModel = g_pOEResMgr->CreateModel(TS("demo_mesh.xml"));
+	m_pModel = g_pOEResMgr->CreateModel(TS("sky.xml"));
 	if (!m_pModel) return false;
+
+	m_pModel->RegisterEvent(OMI_SETUP_SHADER_PARAM, this, (MSG_FUNC)&CMeshApp::OnSetupShaderParam);
 
 	IOEMesh* pMesh = m_pModel->GetRenderData()->GetMesh();
 	m_pCamera->InitFromBBox(pMesh->GetBoundingBoxMin(), pMesh->GetBoundingBoxMax());
@@ -50,4 +54,34 @@ void CMeshApp::Terminate()
 {
 	SAFE_DELETE(m_pModel);
 	CBaseApp::Terminate();
+}
+
+void CMeshApp::Update(float fDetailTime)
+{
+	CBaseApp::Update(fDetailTime);
+
+	m_vOffset.x += fDetailTime*0.01f;
+	m_vOffset.y += fDetailTime*0.01f;
+
+	if (m_vOffset.x > 1.0f) m_vOffset.x -= 1.0f;
+	if (m_vOffset.y > 1.0f) m_vOffset.y -= 1.0f;
+}
+
+bool CMeshApp::OnSetupShaderParam(COEMsgShaderParam& msg)
+{
+	IOEShader* pShader = msg.GetShader();
+
+	const CVector3& vEyePos = m_pCamera->GetEyePos();
+
+	CMatrix4x4 matWorld;
+	COEMath::SetMatrixTranslation(matWorld, vEyePos);
+
+	CMatrix4x4 matWorldViewProj;
+	g_pOERenderSystem->GetTransform(matWorldViewProj, TT_VIEW_PROJ);
+	matWorldViewProj = matWorld * matWorldViewProj;
+	pShader->SetMatrix(TS("g_matWorldViewProj2"), matWorldViewProj);
+
+	pShader->SetVector(TS("g_texOffset"), m_vOffset);
+
+	return true;
 }
