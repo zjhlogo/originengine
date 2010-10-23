@@ -1,4 +1,4 @@
-float4x4 g_matWorldViewProj;
+float4x4 g_matWorldToProject;
 float fTime;
 
 float4 vWaveFreq;
@@ -37,7 +37,7 @@ VS_OUTPUT VSMain(VS_INPUT input)
 
 	float4 newpos = float4(input.pos, 1.0f);
 	newpos.y = newpos.y + dot(vSin, vWaveHeight);
-	output.pos = mul(newpos, g_matWorldViewProj);
+	output.pos = mul(newpos, g_matWorldToProject);
 
 	float3 binormal = float3(1.0f, 0.0f, dot(vCos, float4(1.0f, 1.0f, 1.0f, 1.0f)));
 	float3 tangent = float3(0.0f, 1.0f, binormal.z);

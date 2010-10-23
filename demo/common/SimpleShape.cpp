@@ -146,9 +146,9 @@ void CSimpleShape::DrawCube()
 
 	CDefaultRenderState DefaultState;
 
-	CMatrix4x4 matWorldViewProj;
-	g_pOERenderSystem->GetTransform(matWorldViewProj, TT_WORLD_VIEW_PROJ);
-	m_pShader->SetMatrix(TS("g_matWorldViewProj"), matWorldViewProj);
+	CMatrix4x4 matWorldToProject;
+	g_pOERenderSystem->GetTransform(matWorldToProject, TT_WORLD_VIEW_PROJ);
+	m_pShader->SetMatrix(TS("g_matWorldToProject"), matWorldToProject);
 
 	g_pOERenderSystem->SetShader(m_pShader);
 	g_pOERenderSystem->DrawTriList(Verts, CUBE_VERTS_COUNT, s_Indis, CUBE_INDIS_COUNT);

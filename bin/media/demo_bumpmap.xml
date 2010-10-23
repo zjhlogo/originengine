@@ -10,6 +10,5 @@
 		<Renderer>COEMeshRender_Impl</Renderer>
 		<Renderer>COENormalRender_Impl</Renderer>
 		<Renderer>COETangentRender_Impl</Renderer>
-		<Renderer>COEBinormalRender_Impl</Renderer>
 	</Renderers>
 </Model>

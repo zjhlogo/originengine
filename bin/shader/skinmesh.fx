@@ -1,5 +1,5 @@
-float4x4 g_matInvWorld;
-float4x4 g_matWorldViewProj;
+float4x4 g_matWorldToModel;
+float4x4 g_matWorldToProject;
 float4x3 g_matBoneMatrix[50] : WORLDMATRIXARRAY;
 
 float3 g_vLightPos;
@@ -72,7 +72,7 @@ VS_OUTPUT VSMain(VS_INPUT input)
 
 	float3 skinnedPos = SkinMesh4(float4(input.pos, 1.0f), input.boneIndex, input.boneWeight);
 
-	output.pos = mul(float4(skinnedPos, 1.0f), g_matWorldViewProj);
+	output.pos = mul(float4(skinnedPos, 1.0f), g_matWorldToProject);
 	output.texcoord = input.texcoord;
 
 	float3 skinnedNormal = SkinMesh3(input.normal, input.boneIndex, input.boneWeight);
@@ -84,13 +84,13 @@ VS_OUTPUT VSMain(VS_INPUT input)
 	float3 binormal = cross(tangent, normal);
 	float3x3 rotation = float3x3(tangent, binormal, normal);
 
-	float3 lightPos = mul(g_vLightPos, g_matInvWorld);
+	float3 lightPos = mul(g_vLightPos, g_matWorldToModel);
 	float3 vLightDir = lightPos - skinnedPos;
-	output.lightDir = mul(rotation, vLightDir);
+	output.lightDir = mul(vLightDir, rotation);
 
-	float3 eyePos = mul(g_vEyePos, g_matInvWorld);
+	float3 eyePos = mul(g_vEyePos, g_matWorldToModel);
 	float3 vEyeDir = eyePos - skinnedPos;
-	output.eyeDir = mul(rotation, vEyeDir);
+	output.eyeDir = mul(vEyeDir, rotation);
 
 	return output;
 }

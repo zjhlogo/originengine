@@ -69,6 +69,7 @@ void CBumpMapApp::Update(float fDetailTime)
 	CBaseApp::Update(fDetailTime);
 
 	s_fTotalTime += fDetailTime*0.3f;
+	//s_fTotalTime = 11.0f;
 	m_vLightPos.x = cos(s_fTotalTime)*40.0f;
 	m_vLightPos.z = sin(s_fTotalTime)*40.0f;
 	m_vLightPos.y = cos(s_fTotalTime)*sin(s_fTotalTime)*40.0f;

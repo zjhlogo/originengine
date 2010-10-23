@@ -97,9 +97,9 @@ void CWater::Render(float fDetailTime)
 	CDefaultRenderState DefaultState;
 	g_pOERenderSystem->SetFillMode(FM_WIREFRAME);
 
-	CMatrix4x4 matWorldViewProj;
-	g_pOERenderSystem->GetTransform(matWorldViewProj, TT_WORLD_VIEW_PROJ);
-	m_pShader->SetMatrix(TS("g_matWorldViewProj"), matWorldViewProj);
+	CMatrix4x4 matWorldToProject;
+	g_pOERenderSystem->GetTransform(matWorldToProject, TT_WORLD_VIEW_PROJ);
+	m_pShader->SetMatrix(TS("g_matWorldToProject"), matWorldToProject);
 
 	m_pShader->SetFloat(TS("fTime"), m_fTime);
 	m_pShader->SetVector(TS("vWaveFreq"), m_vVecFreq);
