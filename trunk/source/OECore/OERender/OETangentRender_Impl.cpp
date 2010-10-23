@@ -42,10 +42,10 @@ bool COETangentRender_Impl::Render(IOERenderData* pRenderData)
 
 	int nNumPiece = pMesh->GetNumPieces();
 
-	CMatrix4x4 matWorld = pRenderData->GetNode()->GetFinalMatrix();
+	CMatrix4x4 matModelToWorld = pRenderData->GetNode()->GetFinalMatrix();
 
-	CMatrix4x4 matWorldViewProj = matWorld;
-	g_pOERenderSystem->GetTransform(matWorldViewProj, TT_VIEW_PROJ);
+	CMatrix4x4 matWorldToProject = matModelToWorld;
+	g_pOERenderSystem->GetTransform(matWorldToProject, TT_VIEW_PROJ);
 
 	CDefaultRenderState DefaultState;
 
@@ -61,7 +61,7 @@ bool COETangentRender_Impl::Render(IOERenderData* pRenderData)
 		m_vIndex.clear();
 		CreateTangentLine(m_vLines, m_vIndex, pPiece);
 
-		m_pShader->SetMatrix(TS("g_matWorldViewProj"), matWorldViewProj);
+		m_pShader->SetMatrix(TS("g_matWorldToProject"), matWorldToProject);
 
 		g_pOERenderSystem->SetShader(m_pShader);
 		g_pOERenderSystem->DrawLineList(&m_vLines[0], (uint)m_vLines.size(), &m_vIndex[0], (uint)m_vIndex.size());

@@ -1,5 +1,5 @@
-float4x4 g_matInvWorld;
-float4x4 g_matWorldViewProj;
+float4x4 g_matWorldToModel;
+float4x4 g_matWorldToProject;
 float3 g_vLightPos;
 float3 g_vEyePos;
 
@@ -44,19 +44,19 @@ VS_OUTPUT VSMain(VS_INPUT input)
 {
 	VS_OUTPUT output;
 
-	output.pos = mul(float4(input.pos, 1.0f), g_matWorldViewProj);
+	output.pos = mul(float4(input.pos, 1.0f), g_matWorldToProject);
 	output.texcoord = input.texcoord;
 
 	float3 binormal = cross(input.tangent, input.normal);
 	float3x3 rotation = float3x3(input.tangent, binormal, input.normal);
 
-	float3 lightPos = mul(g_vLightPos, g_matInvWorld);
+	float3 lightPos = mul(g_vLightPos, g_matWorldToModel);
 	float3 vLightDir = lightPos - input.pos;
-	output.lightDir = mul(rotation, vLightDir);
+	output.lightDir = mul(vLightDir, rotation);
 
-	float3 eyePos = mul(g_vEyePos, g_matInvWorld);
+	float3 eyePos = mul(g_vEyePos, g_matWorldToModel);
 	float3 vEyeDir = eyePos - input.pos;
-	output.eyeDir = mul(rotation, vEyeDir);
+	output.eyeDir = mul(vEyeDir, rotation);
 
 	return output;
 }
@@ -81,8 +81,8 @@ float4 PSMainParallaxMap(VS_OUTPUT input) : COLOR
 	float3 lightDir = normalize(input.lightDir);
 	float3 eyeDir = normalize(input.eyeDir);
 
-	float hsb = tex2D(sampleNormalHeight, input.texcoord).w * 0.05f;
-	float2 offsetuv = float2(eyeDir.x, eyeDir.y)*hsb + input.texcoord;
+	float hsb = tex2D(sampleNormalHeight, input.texcoord).w * 0.04f - 0.02f;
+	float2 offsetuv = float2(eyeDir.x, -eyeDir.y)*hsb + input.texcoord;
 	float4 normalHeight = tex2D(sampleNormalHeight, offsetuv);
 	float3 normal = (normalHeight.xyz - 0.5f) * 2.0f;
 

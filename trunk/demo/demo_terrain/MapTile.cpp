@@ -113,9 +113,9 @@ void CMapTile::Render(float fDetailTime)
 
 	CMatrix4x4 matViewProj;
 	g_pOERenderSystem->GetTransform(matViewProj, TT_VIEW_PROJ);
-	CMatrix4x4 matWorldViewProj = matWorld*matViewProj;
+	CMatrix4x4 matWorldToProject = matWorld*matViewProj;
 
-	m_pShader->SetMatrix(TS("g_matWorldViewProj"), matWorldViewProj);
+	m_pShader->SetMatrix(TS("g_matWorldToProject"), matWorldToProject);
 	m_pShader->SetTexture(TS("g_texDiffuse"), m_pTexture);
 	g_pOERenderSystem->SetShader(m_pShader);
 	g_pOERenderSystem->DrawTriList(m_pVerts, TILE_SIZE*TILE_SIZE, m_pIndis, (TILE_SIZE-1)*(TILE_SIZE-1)*6);

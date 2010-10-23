@@ -1,4 +1,4 @@
-float4x4 g_matWorldViewProj;
+float4x4 g_matWorldToProject;
 
 texture g_texDiffuse;
 
@@ -27,7 +27,7 @@ VS_OUTPUT VSMain(VS_INPUT input)
 {
 	VS_OUTPUT output;
 
-	output.pos = mul(float4(input.pos, 1.0f), g_matWorldViewProj);
+	output.pos = mul(float4(input.pos, 1.0f), g_matWorldToProject);
 	output.texcoord = input.texcoord;
 	return output;
 }

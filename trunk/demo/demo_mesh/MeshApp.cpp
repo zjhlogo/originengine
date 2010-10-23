@@ -76,10 +76,10 @@ bool CMeshApp::OnSetupShaderParam(COEMsgShaderParam& msg)
 	CMatrix4x4 matWorld;
 	COEMath::SetMatrixTranslation(matWorld, vEyePos);
 
-	CMatrix4x4 matWorldViewProj;
-	g_pOERenderSystem->GetTransform(matWorldViewProj, TT_VIEW_PROJ);
-	matWorldViewProj = matWorld * matWorldViewProj;
-	pShader->SetMatrix(TS("g_matWorldViewProj2"), matWorldViewProj);
+	CMatrix4x4 matWorldToProject;
+	g_pOERenderSystem->GetTransform(matWorldToProject, TT_VIEW_PROJ);
+	matWorldToProject = matWorld * matWorldToProject;
+	pShader->SetMatrix(TS("g_matWorldToProject2"), matWorldToProject);
 
 	pShader->SetVector(TS("g_texOffset"), m_vOffset);
 

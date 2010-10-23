@@ -110,10 +110,10 @@ bool COEBoundingBoxRender_Impl::Render(IOERenderData* pRenderData)
 
 	CDefaultRenderState DefaultState;
 
-	CMatrix4x4 matWorldViewProj = pRenderData->GetNode()->GetFinalMatrix();
-	g_pOERenderSystem->GetTransform(matWorldViewProj, TT_VIEW_PROJ);
+	CMatrix4x4 matWorldToProject = pRenderData->GetNode()->GetFinalMatrix();
+	g_pOERenderSystem->GetTransform(matWorldToProject, TT_VIEW_PROJ);
 
-	m_pShader->SetMatrix(TS("g_matWorldViewProj"), matWorldViewProj);
+	m_pShader->SetMatrix(TS("g_matWorldToProject"), matWorldToProject);
 	g_pOERenderSystem->SetShader(m_pShader);
 	g_pOERenderSystem->DrawLineList(Verts, 8, s_Indis, 24);
 
