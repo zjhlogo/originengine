@@ -82,15 +82,15 @@ VS_OUTPUT VSMain(VS_INPUT input)
 	float3 tangent = normalize(skinnedTangent);
 
 	float3 binormal = cross(tangent, normal);
-	float3x3 rotation = float3x3(tangent, binormal, normal);
+	float3x3 TangentToModel = float3x3(tangent, binormal, normal);
 
 	float3 lightPos = mul(g_vLightPos, g_matWorldToModel);
 	float3 vLightDir = lightPos - skinnedPos;
-	output.lightDir = mul(vLightDir, rotation);
+	output.lightDir = mul(TangentToModel, vLightDir);				// 这里相当于 mul(vLightDir, TangentToModel.Invert());
 
 	float3 eyePos = mul(g_vEyePos, g_matWorldToModel);
 	float3 vEyeDir = eyePos - skinnedPos;
-	output.eyeDir = mul(vEyeDir, rotation);
+	output.eyeDir = mul(TangentToModel, vEyeDir);					// 这里相当于 mul(vEyeDir, TangentToModel.Invert());
 
 	return output;
 }
@@ -106,7 +106,7 @@ float4 PSMain(VS_OUTPUT input) : COLOR
 	normal = (normal - 0.5f) * 2.0f;
 
 	float diffuseFactor = saturate(dot(normal, lightDir));
-	float specularFactor = pow(saturate(dot(normal, halfWayDir)), 4.0f);
+	float specularFactor = pow(saturate(dot(normal, halfWayDir)), 8.0f);
 
 	float3 finalColor = diffuse.xyz*diffuseFactor + float3(diffuse.w, diffuse.w, diffuse.w)*specularFactor;
 	//finalColor = finalColor*0.8f + diffuse*0.2f;

@@ -48,15 +48,15 @@ VS_OUTPUT VSMain(VS_INPUT input)
 	output.texcoord = input.texcoord;
 
 	float3 binormal = cross(input.tangent, input.normal);
-	float3x3 rotation = float3x3(input.tangent, binormal, input.normal);
+	float3x3 TangentToModel = float3x3(input.tangent, binormal, input.normal);
 
 	float3 lightPos = mul(g_vLightPos, g_matWorldToModel);
 	float3 vLightDir = lightPos - input.pos;
-	output.lightDir = mul(vLightDir, rotation);
+	output.lightDir = mul(TangentToModel, vLightDir);			// 这里相当于 mul(vLightDir, TangentToModel.Invert());
 
 	float3 eyePos = mul(g_vEyePos, g_matWorldToModel);
 	float3 vEyeDir = eyePos - input.pos;
-	output.eyeDir = mul(vEyeDir, rotation);
+	output.eyeDir = mul(TangentToModel, vEyeDir);				// 这里相当于 mul(vEyeDir, TangentToModel.Invert());
 
 	return output;
 }
