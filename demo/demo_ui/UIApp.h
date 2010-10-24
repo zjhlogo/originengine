@@ -16,8 +16,9 @@ public:
 	CUIApp();
 	virtual ~CUIApp();
 
-	virtual bool Initialize();
-	virtual void Terminate();
+	virtual bool UserDataInit();
+	virtual void UserDataTerm();
+	virtual void Update(float fDetailTime);
 
 private:
 	void Init();

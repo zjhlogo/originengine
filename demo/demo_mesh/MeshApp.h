@@ -10,6 +10,7 @@
 
 #include "../common/BaseApp.h"
 #include <OECore/IOEModel.h>
+#include <libOEMsg/OEMsgShaderParam.h>
 
 class CMeshApp : public CBaseApp
 {
@@ -17,8 +18,8 @@ public:
 	CMeshApp();
 	virtual ~CMeshApp();
 
-	virtual bool Initialize();
-	virtual void Terminate();
+	virtual bool UserDataInit();
+	virtual void UserDataTerm();
 
 	virtual void Update(float fDetailTime);
 

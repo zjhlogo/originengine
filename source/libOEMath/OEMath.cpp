@@ -494,6 +494,39 @@ void COEMath::BuildQuaternionFromEulerYZX(CQuaternion& qOut, float x, float y, f
 	qOut.z = cy*sz*cx - sy*cz*sx;
 }
 
+void COEMath::GetEulerAngle(float& x, float& y, float& z, const CQuaternion& qIn)
+{
+	float test = qIn.x*qIn.y + qIn.z*qIn.w;
+
+	if (test > 0.499f)			// singularity at north pole
+	{
+		y = 2.0f * atan2f(qIn.x, qIn.w);
+		z = PI_2;
+		x = 0.0f;
+		return;
+	}
+
+	if (test < -0.499f)			// singularity at south pole
+	{
+		y = -2.0f * atan2(qIn.x, qIn.w);
+		z = -PI_2;
+		x = 0;
+		return;
+	}
+
+	float sqx = qIn.x*qIn.x;
+	float sqy = qIn.y*qIn.y;
+	float sqz = qIn.z*qIn.z;
+	y = atan2(2.0f*qIn.y*qIn.w-2.0f*qIn.x*qIn.z , 1.0f - 2.0f*sqy - 2.0f*sqz);
+	z = asin(2.0f*test);
+	x = atan2(2.0f*qIn.x*qIn.w-2.0f*qIn.y*qIn.z , 1.0f - 2.0f*sqx - 2.0f*sqz);
+}
+
+//void COEMath::GetEulerAngle(float& x, float& y, float& z, const CMatrix4x4& matIn)
+//{
+//
+//}
+
 void COEMath::VectorLerp(CVector3& vOut, const CVector3& v1, const CVector3& v2, float t)
 {
 	float k0 = 1.0f - t;

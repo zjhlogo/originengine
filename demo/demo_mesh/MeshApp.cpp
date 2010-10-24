@@ -34,32 +34,24 @@ void CMeshApp::Destroy()
 	// TODO: 
 }
 
-bool CMeshApp::Initialize()
+bool CMeshApp::UserDataInit()
 {
-	if (!CBaseApp::Initialize()) return false;
-
 	m_pModel = g_pOEResMgr->CreateModel(TS("sky.xml"));
 	if (!m_pModel) return false;
-
+	g_pOECore->GetRootNode()->AttachObject(m_pModel);
 	m_pModel->RegisterEvent(OMI_SETUP_SHADER_PARAM, this, (MSG_FUNC)&CMeshApp::OnSetupShaderParam);
 
-	IOEMesh* pMesh = m_pModel->GetRenderData()->GetMesh();
-	m_pCamera->InitFromBBox(pMesh->GetBoundingBoxMin(), pMesh->GetBoundingBoxMax());
-
-	g_pOECore->GetRootNode()->AttachObject(m_pModel);
+	ResetCameraPosRot(m_pModel);
 	return true;
 }
 
-void CMeshApp::Terminate()
+void CMeshApp::UserDataTerm()
 {
 	SAFE_DELETE(m_pModel);
-	CBaseApp::Terminate();
 }
 
 void CMeshApp::Update(float fDetailTime)
 {
-	CBaseApp::Update(fDetailTime);
-
 	m_vOffset.x += fDetailTime*0.01f;
 	m_vOffset.y += fDetailTime*0.01f;
 
@@ -71,7 +63,10 @@ bool CMeshApp::OnSetupShaderParam(COEMsgShaderParam& msg)
 {
 	IOEShader* pShader = msg.GetShader();
 
-	const CVector3& vEyePos = m_pCamera->GetEyePos();
+	IOENode* pCameraNode = g_pOECore->GetRootNode()->GetChildNode(TS("Camera"));
+	if (!pCameraNode) return false;
+
+	const CVector3& vEyePos = pCameraNode->GetPosition();
 
 	CMatrix4x4 matWorld;
 	COEMath::SetMatrixTranslation(matWorld, vEyePos);

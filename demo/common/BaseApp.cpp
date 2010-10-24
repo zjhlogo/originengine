@@ -6,12 +6,8 @@
  * \author zjhlogo (zjhlogo@gmail.com)
  */
 #include "BaseApp.h"
-#include <libOEMsg/OEMsgList.h>
-#include <OECore/IOERenderSystem.h>
 #include <OECore/IOECore.h>
-#include <OECore/IOEDevice.h>
 #include <OEUI/IOEUIRenderSystem.h>
-#include <assert.h>
 
 CBaseApp::CBaseApp()
 {
@@ -27,11 +23,6 @@ void CBaseApp::Init()
 {
 	m_pCamera = NULL;
 	m_pFPS = NULL;
-	m_bLButtonDown = false;
-	m_nMouseDetailX = 0;
-	m_nMouseDetailY = 0;
-	memset(m_KeyDown, 0, sizeof(m_KeyDown));
-	m_bFirstTimeUpdate = true;
 }
 
 void CBaseApp::Destroy()
@@ -44,98 +35,32 @@ bool CBaseApp::Initialize()
 	m_pCamera = new CCamera();
 	if (!m_pCamera) return false;
 
+	IOENode* pNode = g_pOECore->GetRootNode()->NewChildNode(TS("Camera"));
+	if (!pNode) return false;
+
+	pNode->AttachObject(m_pCamera);
+	m_pCamera->SetTargetNode(pNode);
+
 	m_pFPS = new CFPSWindow(g_pOEUIRenderSystem->GetScreen());
 	if (!m_pFPS) return false;
 
-	// registe message
-	g_pOEDevice->RegisterEvent(OMI_LBUTTON_DOWN, this, (MSG_FUNC)&CBaseApp::OnLButtonDown);
-	g_pOEDevice->RegisterEvent(OMI_LBUTTON_UP, this, (MSG_FUNC)&CBaseApp::OnLButtonUp);
-	g_pOEDevice->RegisterEvent(OMI_MOUSE_MOVE, this, (MSG_FUNC)&CBaseApp::OnMouseMove);
-	g_pOEDevice->RegisterEvent(OMI_KEY_DOWN, this, (MSG_FUNC)&CBaseApp::OnKeyDown);
-	g_pOEDevice->RegisterEvent(OMI_KEY_UP, this, (MSG_FUNC)&CBaseApp::OnKeyUp);
-
-	return true;
+	return UserDataInit();
 }
 
 void CBaseApp::Terminate()
 {
+	UserDataTerm();
 	SAFE_DELETE(m_pCamera);
 }
 
-void CBaseApp::Update(float fDetailTime)
+void CBaseApp::ResetCameraPosRot(IOEModel* pModel)
 {
-	bool bRot = UpdateRotation(fDetailTime);
-	bool bMov = UpdateMovement(fDetailTime);
-	if (bRot || bMov || m_bFirstTimeUpdate) g_pOERenderSystem->SetTransform(TT_VIEW, m_pCamera->GetViewMatrix());
-	m_bFirstTimeUpdate = false;
+	IOEMesh* pMesh = pModel->GetRenderData()->GetMesh();
+	m_pCamera->InitFromBBox(pMesh->GetBoundingBoxMin(), pMesh->GetBoundingBoxMax());
 }
 
-bool CBaseApp::OnLButtonDown(COEMsgMouse& msg)
+void CBaseApp::ResetCameraPosRot(const CVector3& vPos, float fRotY, float fRotX)
 {
-	m_bLButtonDown = true;
-	return true;
-}
-
-bool CBaseApp::OnLButtonUp(COEMsgMouse& msg)
-{
-	m_bLButtonDown = false;
-	return true;
-}
-
-bool CBaseApp::OnMouseMove(COEMsgMouse& msg)
-{
-	if (!m_bLButtonDown) return true;
-	m_nMouseDetailX = msg.GetPosX();
-	m_nMouseDetailY = msg.GetPosY();
-	return true;
-}
-
-bool CBaseApp::OnKeyUp(COEMsgKeyboard& msg)
-{
-	uint nKeyCode = msg.GetKeyCode();
-	assert(nKeyCode > 0 && nKeyCode < KEY_COUNT);
-
-	m_KeyDown[nKeyCode] = false;
-	return true;
-}
-
-bool CBaseApp::OnKeyDown(COEMsgKeyboard& msg)
-{
-	uint nKeyCode = msg.GetKeyCode();
-	assert(nKeyCode > 0 && nKeyCode < KEY_COUNT);
-
-	m_KeyDown[nKeyCode] = true;
-	if (m_KeyDown[0x1B]) g_pOECore->End();		// TODO: 0x1B == VK_ESCAPE
-
-	return true;
-}
-
-bool CBaseApp::UpdateMovement(float fDetailTime)
-{
-	static const float MOVE_DIST = 50.0f;
-
-	bool bUpdateMovement = m_KeyDown['W'] || m_KeyDown['S'] || m_KeyDown['A'] || m_KeyDown['D'];
-	if (!bUpdateMovement) return false;
-
-	if (m_KeyDown['W']) m_pCamera->Move(m_pCamera->GetVectorForword(), MOVE_DIST*fDetailTime);
-	if (m_KeyDown['S']) m_pCamera->Move(m_pCamera->GetVectorForword(), -MOVE_DIST*fDetailTime);
-	if (m_KeyDown['D']) m_pCamera->Move(m_pCamera->GetVectorRight(), MOVE_DIST*fDetailTime);
-	if (m_KeyDown['A']) m_pCamera->Move(m_pCamera->GetVectorRight(), -MOVE_DIST*fDetailTime);
-
-	return true;
-}
-
-bool CBaseApp::UpdateRotation(float fDetailTime)
-{
-	static const float ROTATE_ADJUST = 0.3f;
-
-	if (!m_bLButtonDown) return false;
-	if (m_nMouseDetailX == 0 && m_nMouseDetailY == 0) return false;
-
-	if (m_nMouseDetailX || m_nMouseDetailY) m_pCamera->Rotate(-m_nMouseDetailX*fDetailTime*ROTATE_ADJUST, -m_nMouseDetailY*fDetailTime*ROTATE_ADJUST);
-
-	m_nMouseDetailY = 0;
-	m_nMouseDetailX = 0;
-
-	return true;
+	m_pCamera->MoveTo(vPos);
+	m_pCamera->RotateTo(fRotY, fRotX);
 }

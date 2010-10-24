@@ -31,26 +31,22 @@ void CTerrainApp::Destroy()
 	// TODO: 
 }
 
-bool CTerrainApp::Initialize()
+bool CTerrainApp::UserDataInit()
 {
-	if (!CBaseApp::Initialize()) return false;
-
 	m_pTerrain = new CTerrain();
 	if (!m_pTerrain || !m_pTerrain->IsOK()) return false;
 	if (!m_pTerrain->LoadTerrain()) return false;
-
 	g_pOECore->GetRootNode()->AttachObject(m_pTerrain);
+
 	return true;
 }
 
-void CTerrainApp::Terminate()
+void CTerrainApp::UserDataTerm()
 {
 	SAFE_DELETE(m_pTerrain);
-	CBaseApp::Terminate();
 }
 
 void CTerrainApp::Update(float fDetailTime)
 {
-	CBaseApp::Update(fDetailTime);
-	m_pTerrain->SetEyePos(m_pCamera->GetEyePos());
+	// TODO: 
 }

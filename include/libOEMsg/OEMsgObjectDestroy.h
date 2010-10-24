@@ -1,22 +1,22 @@
 /*!
- * \file OEMsgDestroy.h
- * \date 10-8-2010 23:08:22
+ * \file OEMsgObjectDestroy.h
+ * \date 10-24-2010 8:29:33
  * 
  * 
  * \author zjhlogo (zjhlogo@gmail.com)
  */
-#ifndef __OEMSGDESTROY_H__
-#define __OEMSGDESTROY_H__
+#ifndef __OEMSGOBJECTDESTROY_H__
+#define __OEMSGOBJECTDESTROY_H__
 
 #include "../libOEBase/IOEMsg.h"
 #include "../libOEBase/IOEObject.h"
 
-class COEMsgDestroy: public IOEMsg
+class COEMsgObjectDestroy: public IOEMsg
 {
 public:
-	COEMsgDestroy(IOEObject* pObject);
-	COEMsgDestroy(COEDataBufferRead* pDBRead);
-	virtual ~COEMsgDestroy();
+	COEMsgObjectDestroy(IOEObject* pObject);
+	COEMsgObjectDestroy(COEDataBufferRead* pDBRead);
+	virtual ~COEMsgObjectDestroy();
 
 	IOEObject* GetObjectHandle();
 
@@ -28,5 +28,4 @@ private:
 	IOEObject* m_pObject;
 
 };
-
-#endif // __OEMSGDESTROY_H__
+#endif // __OEMSGOBJECTDESTROY_H__

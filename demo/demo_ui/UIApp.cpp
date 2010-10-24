@@ -32,16 +32,19 @@ void CUIApp::Destroy()
 	// TODO: 
 }
 
-bool CUIApp::Initialize()
+bool CUIApp::UserDataInit()
 {
-	if (!CBaseApp::Initialize()) return false;
-
 	CStringWindow* pStringWindow = new CStringWindow(g_pOEUIRenderSystem->GetScreen());
 
 	return true;
 }
 
-void CUIApp::Terminate()
+void CUIApp::UserDataTerm()
 {
-	CBaseApp::Terminate();
+	// TODO: 
+}
+
+void CUIApp::Update(float fDetailTime)
+{
+	// TODO: 
 }
