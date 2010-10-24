@@ -37,8 +37,6 @@ bool CBaseApp::Initialize()
 
 	IOENode* pNode = g_pOECore->GetRootNode()->NewChildNode(TS("Camera"));
 	if (!pNode) return false;
-
-	pNode->AttachObject(m_pCamera);
 	m_pCamera->SetTargetNode(pNode);
 
 	m_pFPS = new CFPSWindow(g_pOEUIRenderSystem->GetScreen());
