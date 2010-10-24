@@ -37,6 +37,9 @@ public:
 	static void BuildQuaternionFromEulerXYZ(CQuaternion& qOut, float x, float y, float z);
 	static void BuildQuaternionFromEulerYZX(CQuaternion& qOut, float x, float y, float z);
 
+	static void GetEulerAngle(float& x, float& y, float& z, const CQuaternion& qIn);
+	//static void GetEulerAngle(float& x, float& y, float& z, const CMatrix4x4& matIn);
+
 	static void VectorLerp(CVector3& vOut, const CVector3& v1, const CVector3& v2, float t);
 	static void MatrixLerp(CMatrix4x4& matOut, const CMatrix4x4& mat1, const CMatrix4x4& mat2, float t);
 	static void QuaternionSlerp(CQuaternion& qOut, const CQuaternion& q1, const CQuaternion& q2, float t);

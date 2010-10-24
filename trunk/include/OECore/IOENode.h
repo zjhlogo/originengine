@@ -23,6 +23,7 @@ public:
 	virtual IOENode* NewChildNode(const tstring& strName) = 0;
 	virtual bool RemoveChildNode(IOENode* pNode) = 0;
 	virtual IOENode* GetChildNode(int nIndex) = 0;
+	virtual IOENode* GetChildNode(const tstring& strName) = 0;
 	virtual int GetNumChildNodes() = 0;
 
 	virtual bool AttachObject(IOEObject* pObject) = 0;

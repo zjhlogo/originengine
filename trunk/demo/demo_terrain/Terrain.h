@@ -42,9 +42,6 @@ public:
 
 	bool LoadTerrain();
 
-	void SetEyePos(const CVector3& vEyePos);
-	const CVector3& GetEyePos();
-
 private:
 	bool Init();
 	void Destroy();
@@ -66,8 +63,6 @@ private:
 	int m_nLastTileZ;
 
 	IOEFile* m_pMapFile;
-
-	CVector3 m_vEyePos;
 
 };
 #endif // __TERRAIN_H__

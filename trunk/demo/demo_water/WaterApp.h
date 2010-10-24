@@ -9,6 +9,7 @@
 #define __WATERAPP_H__
 
 #include "../common/BaseApp.h"
+#include <libOEMsg/OEMsgKeyboard.h>
 #include "DlgWaveSetting.h"
 #include "Water.h"
 
@@ -18,16 +19,15 @@ public:
 	CWaterApp();
 	virtual ~CWaterApp();
 
-	virtual bool Initialize();
-	virtual void Terminate();
-
+	virtual bool UserDataInit();
+	virtual void UserDataTerm();
 	virtual void Update(float fDetailTime);
 
 private:
 	void Init();
 	void Destroy();
 
-	virtual bool OnKeyDown(COEMsgKeyboard& msg);
+	bool OnKeyDown(COEMsgKeyboard& msg);
 
 private:
 	CDlgWaveSetting* m_pDlgWaveSetting;

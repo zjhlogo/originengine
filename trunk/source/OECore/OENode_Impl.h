@@ -9,7 +9,7 @@
 #define __OENODE_IMPL_H__
 
 #include <OECore/IOENode.h>
-#include <libOEMsg/OEMsgDestroy.h>
+#include <libOEMsg/OEMsgObjectDestroy.h>
 #include <vector>
 
 class COENode_Impl : public IOENode
@@ -28,6 +28,7 @@ public:
 	virtual IOENode* NewChildNode(const tstring& strName);
 	virtual bool RemoveChildNode(IOENode* pNode);
 	virtual IOENode* GetChildNode(int nIndex);
+	virtual IOENode* GetChildNode(const tstring& strName);
 	virtual int GetNumChildNodes();
 
 	virtual bool AttachObject(IOEObject* pObject);
@@ -48,7 +49,7 @@ public:
 
 private:
 	void DestroyChildren();
-	bool OnObjectDestroy(COEMsgDestroy& msg);
+	bool OnObjectDestroy(COEMsgObjectDestroy& msg);
 
 private:
 	TV_NODE m_vNodes;

@@ -6,7 +6,7 @@
  * \author zjhlogo (zjhlogo@gmail.com)
  */
 #include <libOEBase/IOEObject.h>
-#include <libOEMsg/OEMsgDestroy.h>
+#include <libOEMsg/OEMsgObjectDestroy.h>
 #include <assert.h>
 
 IOEObject::IOEObject()
@@ -17,7 +17,7 @@ IOEObject::IOEObject()
 
 IOEObject::~IOEObject()
 {
-	COEMsgDestroy msgDestroy(this);
+	COEMsgObjectDestroy msgDestroy(this);
 	CallEvent(msgDestroy);
 }
 

@@ -405,6 +405,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\include\OECore\IOECamera.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\include\OECore\IOEConfigFileMgr.h"
 				>
 			</File>

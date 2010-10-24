@@ -10,6 +10,7 @@
 
 #include "../common/BaseApp.h"
 #include <OECore/IOEModel.h>
+#include <libOEMsg/OEMsgShaderParam.h>
 #include <vector>
 
 class CModelApp : public CBaseApp
@@ -18,8 +19,8 @@ public:
 	CModelApp();
 	virtual ~CModelApp();
 
-	virtual bool Initialize();
-	virtual void Terminate();
+	virtual bool UserDataInit();
+	virtual void UserDataTerm();
 
 	virtual void Update(float fDetailTime);
 

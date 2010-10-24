@@ -17,8 +17,8 @@ public:
 	CTerrainApp();
 	virtual ~CTerrainApp();
 
-	virtual bool Initialize();
-	virtual void Terminate();
+	virtual bool UserDataInit();
+	virtual void UserDataTerm();
 
 	virtual void Update(float fDetailTime);
 

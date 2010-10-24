@@ -1,21 +1,27 @@
 /*!
  * \file OEMsgList.cpp
- * \date 10-8-2010 23:32:24
+ * \date 10-24-2010 8:35:5
  * 
  * 
  * \author MessageGenerator (zjhlogo@gmail.com)
  */
 #include "OEMsgList.h"
 
-#include "OEMsgDestroy.h"
+#include "OEMsgObjectDestroy.h"
+#include "OEMsgObjectAttach.h"
 #include "OEMsgMouse.h"
 #include "OEMsgKeyboard.h"
 #include "OEMsgCommand.h"
 #include "OEMsgShaderParam.h"
 
-static COEMsgDestroy* __AutoGen_COEMsgDestroy(COEDataBufferRead* pDBRead)
+static COEMsgObjectDestroy* __AutoGen_COEMsgObjectDestroy(COEDataBufferRead* pDBRead)
 {
-	return new COEMsgDestroy(pDBRead);
+	return new COEMsgObjectDestroy(pDBRead);
+}
+
+static COEMsgObjectAttach* __AutoGen_COEMsgObjectAttach(COEDataBufferRead* pDBRead)
+{
+	return new COEMsgObjectAttach(pDBRead);
 }
 
 static COEMsgMouse* __AutoGen_COEMsgMouse(COEDataBufferRead* pDBRead)
@@ -38,9 +44,10 @@ static COEMsgShaderParam* __AutoGen_COEMsgShaderParam(COEDataBufferRead* pDBRead
 	return new COEMsgShaderParam(pDBRead);
 }
 
-const IOEMsgMgr::MSG_GENERATE_MAP g_OEMsgListDB[27] = 
+const IOEMsgMgr::MSG_GENERATE_MAP g_OEMsgListDB[28] = 
 {
-	{OMI_OBJECT_DESTROY,          (IOEMsgMgr::MSG_GENERATE_FUNC)__AutoGen_COEMsgDestroy},
+	{OMI_OBJECT_DESTROY,          (IOEMsgMgr::MSG_GENERATE_FUNC)__AutoGen_COEMsgObjectDestroy},
+	{OMI_OBJECT_ATTACH,           (IOEMsgMgr::MSG_GENERATE_FUNC)__AutoGen_COEMsgObjectAttach},
 	{OMI_LBUTTON_DOWN,            (IOEMsgMgr::MSG_GENERATE_FUNC)__AutoGen_COEMsgMouse},
 	{OMI_LBUTTON_UP,              (IOEMsgMgr::MSG_GENERATE_FUNC)__AutoGen_COEMsgMouse},
 	{OMI_MBUTTON_DOWN,            (IOEMsgMgr::MSG_GENERATE_FUNC)__AutoGen_COEMsgMouse},

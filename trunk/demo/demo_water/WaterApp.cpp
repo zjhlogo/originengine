@@ -10,6 +10,8 @@
 #include "../common/AppHelper.h"
 #include "../common/wxInitHelper.h"
 #include <OECore/IOECore.h>
+#include <OECore/IOEDevice.h>
+#include <libOEMsg/OEMsgList.h>
 
 #include <wx/fs_mem.h>
 #include <wx/xrc/xmlres.h>
@@ -37,12 +39,8 @@ void CWaterApp::Destroy()
 	// TODO: 
 }
 
-bool CWaterApp::Initialize()
+bool CWaterApp::UserDataInit()
 {
-	if (!CBaseApp::Initialize()) return false;
-
-	m_pCamera->Initialize(CVector3(399.75037f, 532.55792f, -279.13873f), CVector3(399.73721f, 531.89636f, -278.38895f));
-
 	// initialize gui
 	if (!wxInitHelper::Initialize()) return false;
 	if (!wxInitHelper::AddMemoryXrc(TS("XRC"), IDR_XRC_DLGWAVESETTING, TS("DlgWaveSetting.xrc"))) return false;
@@ -51,26 +49,26 @@ bool CWaterApp::Initialize()
 
 	m_pWater = new CWater();
 	if (!m_pWater || !m_pWater->IsOK()) return false;
-
 	g_pOECore->GetRootNode()->AttachObject(m_pWater);
+
+	ResetCameraPosRot(CVector3(399.75037f, 532.55792f, -279.13873f), 0.0f, -COEMath::PI/4.0f);
+
+	g_pOEDevice->RegisterEvent(OMI_KEY_DOWN, this, (MSG_FUNC)&CWaterApp::OnKeyDown);
 
 	return true;
 }
 
-void CWaterApp::Terminate()
+void CWaterApp::UserDataTerm()
 {
 	SAFE_DELETE(m_pDlgWaveSetting);
 	wxInitHelper::Uninitialize();
 
 	SAFE_DELETE(m_pWater);
-	CBaseApp::Terminate();
 }
 
 void CWaterApp::Update(float fDetailTime)
 {
 	static float s_fTime = 0.0f;
-
-	CBaseApp::Update(fDetailTime);
 
 	s_fTime += (fDetailTime*m_pDlgWaveSetting->GetTimeScale());
 	m_pWater->SetTime(s_fTime);
@@ -79,14 +77,15 @@ void CWaterApp::Update(float fDetailTime)
 	m_pWater->SetVecDirX(m_pDlgWaveSetting->GetVecDirX());
 	m_pWater->SetVecDirY(m_pDlgWaveSetting->GetVecDirY());
 	m_pWater->SetVecHeight(m_pDlgWaveSetting->GetVecHeight()*m_pDlgWaveSetting->GetHeightScale());
-	m_pWater->SetEyePos(m_pCamera->GetEyePos());
+
+	IOENode* pCameraNode = g_pOECore->GetRootNode()->GetChildNode(TS("Camera"));
+	if (!pCameraNode) return;
+	m_pWater->SetEyePos(pCameraNode->GetPosition());
 }
 
 bool CWaterApp::OnKeyDown(COEMsgKeyboard& msg)
 {
-	CBaseApp::OnKeyDown(msg);
-
-	if (m_KeyDown[0x70]) m_pDlgWaveSetting->Show(!m_pDlgWaveSetting->IsVisible());		// TODO: 0x70 == VK_F1
+	if (msg.GetKeyCode() == 0x70) m_pDlgWaveSetting->Show(!m_pDlgWaveSetting->IsVisible());		// TODO: 0x70 == VK_F1
 
 	return true;
 }

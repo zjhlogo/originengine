@@ -9,20 +9,12 @@
 #define __BASEAPP_H__
 
 #include <libOEBase/IOEApp.h>
-#include <libOEMsg/OEMsgMouse.h>
-#include <libOEMsg/OEMsgKeyboard.h>
-#include <libOEMsg/OEMsgShaderParam.h>
+#include <OECore/IOEModel.h>
 #include "Camera.h"
 #include "FPSWindow.h"
 
 class CBaseApp : public IOEApp
 {
-public:
-	enum CONST_DEFINE
-	{
-		KEY_COUNT = 256,
-	};
-
 public:
 	CBaseApp();
 	virtual ~CBaseApp();
@@ -30,30 +22,19 @@ public:
 	virtual bool Initialize();
 	virtual void Terminate();
 
-	virtual void Update(float fDetailTime);
+	virtual bool UserDataInit() = 0;
+	virtual void UserDataTerm() = 0;
 
-protected:
-	virtual bool OnLButtonDown(COEMsgMouse& msg);
-	virtual bool OnLButtonUp(COEMsgMouse& msg);
-	virtual bool OnMouseMove(COEMsgMouse& msg);
-	virtual bool OnKeyUp(COEMsgKeyboard& msg);
-	virtual bool OnKeyDown(COEMsgKeyboard& msg);
-
-	virtual bool UpdateMovement(float fDetailTime);
-	virtual bool UpdateRotation(float fDetailTime);
+	void ResetCameraPosRot(IOEModel* pModel);
+	void ResetCameraPosRot(const CVector3& vPos, float fRotY, float fRotX);
 
 private:
 	void Init();
 	void Destroy();
 
-protected:
+private:
 	CCamera* m_pCamera;
 	CFPSWindow* m_pFPS;
-	bool m_bLButtonDown;
-	int m_nMouseDetailX;
-	int m_nMouseDetailY;
-	bool m_KeyDown[KEY_COUNT];
-	bool m_bFirstTimeUpdate;
 
 };
 

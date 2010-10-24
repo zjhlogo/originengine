@@ -61,6 +61,17 @@ IOENode* COENode_Impl::GetChildNode(int nIndex)
 	return m_vNodes[nIndex];
 }
 
+IOENode* COENode_Impl::GetChildNode(const tstring& strName)
+{
+	// find it and remove it
+	for (TV_NODE::iterator it = m_vNodes.begin(); it != m_vNodes.end(); ++it)
+	{
+		if ((*it)->GetName() == strName) return (*it);
+	}
+
+	return NULL;
+}
+
 int COENode_Impl::GetNumChildNodes()
 {
 	return (int)m_vNodes.size();
@@ -78,6 +89,7 @@ bool COENode_Impl::AttachObject(IOEObject* pObject)
 
 	pObject->RegisterEvent(OMI_OBJECT_DESTROY, this, (MSG_FUNC)&COENode_Impl::OnObjectDestroy);
 	m_vObjects.push_back(pObject);
+
 	return true;
 }
 
@@ -161,7 +173,7 @@ void COENode_Impl::DestroyChildren()
 	m_vNodes.clear();
 }
 
-bool COENode_Impl::OnObjectDestroy(COEMsgDestroy& msg)
+bool COENode_Impl::OnObjectDestroy(COEMsgObjectDestroy& msg)
 {
 	DettachObject(msg.GetObjectHandle());
 	return true;

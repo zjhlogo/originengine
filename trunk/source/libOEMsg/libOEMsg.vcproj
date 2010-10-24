@@ -283,14 +283,6 @@
 			>
 		</File>
 		<File
-			RelativePath=".\OEMsgDestroy.cpp"
-			>
-		</File>
-		<File
-			RelativePath="..\..\include\libOEMsg\OEMsgDestroy.h"
-			>
-		</File>
-		<File
 			RelativePath=".\OEMsgKeyboard.cpp"
 			>
 		</File>
@@ -312,6 +304,22 @@
 		</File>
 		<File
 			RelativePath="..\..\include\libOEMsg\OEMsgMouse.h"
+			>
+		</File>
+		<File
+			RelativePath=".\OEMsgObjectAttach.cpp"
+			>
+		</File>
+		<File
+			RelativePath="..\..\include\libOEMsg\OEMsgObjectAttach.h"
+			>
+		</File>
+		<File
+			RelativePath=".\OEMsgObjectDestroy.cpp"
+			>
+		</File>
+		<File
+			RelativePath="..\..\include\libOEMsg\OEMsgObjectDestroy.h"
 			>
 		</File>
 		<File

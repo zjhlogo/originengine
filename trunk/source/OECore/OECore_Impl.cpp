@@ -238,6 +238,13 @@ void COECore_Impl::UpdateNodes(IOENode* pNode, bool bParentDirty, const CMatrix4
 	}
 }
 
+void COECore_Impl::ClearObjectList()
+{
+	m_sRenderableObjects.clear();
+	m_vRenderObjectInfo.clear();
+	m_sCamera.clear();
+}
+
 void COECore_Impl::QueryObjects(IOENode* pNode)
 {
 	if (!pNode) return;
@@ -259,10 +266,11 @@ void COECore_Impl::QueryObjects(IOENode* pNode)
 			RENDER_OBJECT_INFO ObjInfo = {pRenderableObject, pNode};
 			m_vRenderObjectInfo.push_back(ObjInfo);
 		}
-		//else if (...)
-		//{
-		//	// TODO: 
-		//}
+		else if (pRtti->IsDerived(TS("IOECamera")))
+		{
+			IOECamera* pCamera = (IOECamera*)pObject;
+			m_sCamera.insert(pCamera);
+		}
 	}
 
 	int nNumChildNodes = pNode->GetNumChildNodes();
@@ -272,8 +280,18 @@ void COECore_Impl::QueryObjects(IOENode* pNode)
 	}
 }
 
+void COECore_Impl::UpdateCamera(float fDetailTime)
+{
+	// update camera first
+	for (TS_CAMERA::iterator it = m_sCamera.begin(); it != m_sCamera.end(); ++it)
+	{
+		(*it)->Update(fDetailTime);
+	}
+}
+
 void COECore_Impl::UpdateObjects(float fDetailTime)
 {
+	// update renderable object
 	for (TS_RENDERABLE_OBJECT::iterator it = m_sRenderableObjects.begin(); it != m_sRenderableObjects.end(); ++it)
 	{
 		(*it)->Update(fDetailTime);
@@ -308,19 +326,21 @@ bool COECore_Impl::OnUpdate(COEMsgCommand& msg)
 {
 	g_pOEApp->Update(g_pOEDevice->GetDetailTime());
 
+	ClearObjectList();
+	QueryObjects(m_pRootNode);
+
 	return true;
 }
 
 bool COECore_Impl::OnPostUpdate(COEMsgCommand& msg)
 {
+	float fDetailTime = g_pOEDevice->GetDetailTime();
+	UpdateCamera(fDetailTime);
+
 	CMatrix4x4 matParent;
 	UpdateNodes(m_pRootNode, false, matParent);
 
-	m_sRenderableObjects.clear();
-	m_vRenderObjectInfo.clear();
-	QueryObjects(m_pRootNode);
-
-	UpdateObjects(g_pOEDevice->GetDetailTime());
+	UpdateObjects(fDetailTime);
 
 	return true;
 }

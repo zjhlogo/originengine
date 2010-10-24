@@ -10,6 +10,8 @@
 
 #include "../common/BaseApp.h"
 #include "../common/SimpleShape.h"
+
+#include <libOEMsg/OEMsgShaderParam.h>
 #include <OECore/IOEModel.h>
 
 class CBumpMapApp : public CBaseApp
@@ -18,8 +20,8 @@ public:
 	CBumpMapApp();
 	virtual ~CBumpMapApp();
 
-	virtual bool Initialize();
-	virtual void Terminate();
+	virtual bool UserDataInit();
+	virtual void UserDataTerm();
 
 	virtual void Update(float fDetailTime);
 
@@ -27,7 +29,7 @@ private:
 	void Init();
 	void Destroy();
 
-	virtual bool OnKeyDown(COEMsgKeyboard& msg);
+	bool OnKeyDown(COEMsgKeyboard& msg);
 	bool OnSetupShaderParam(COEMsgShaderParam& msg);
 
 private:

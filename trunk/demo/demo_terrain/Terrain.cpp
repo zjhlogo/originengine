@@ -6,6 +6,7 @@
  * \author zjhlogo (zjhlogo@gmail.com)
  */
 #include "Terrain.h"
+#include <OECore/IOECore.h>
 #include <assert.h>
 
 CTerrain::CTerrain()
@@ -42,8 +43,13 @@ void CTerrain::Destroy()
 
 void CTerrain::Update(float fDetailTime)
 {
-	float fX = m_vEyePos.x;
-	float fZ = m_vEyePos.z;
+	IOENode* pCameraNode = g_pOECore->GetRootNode()->GetChildNode(TS("Camera"));
+	if (!pCameraNode) return;
+
+	const CVector3 vEyePos = pCameraNode->GetPosition();
+
+	float fX = vEyePos.x;
+	float fZ = vEyePos.z;
 
 	int nX = (int)(fX/CMapTile::TILE_WIDTH);
 	int nZ = (int)(fZ/CMapTile::TILE_HEIGHT);
@@ -180,14 +186,4 @@ const ushort* CTerrain::GetMapTileField(int nIndex)
 	}
 
 	return s_HeightField;
-}
-
-void CTerrain::SetEyePos(const CVector3& vEyePos)
-{
-	m_vEyePos = vEyePos;
-}
-
-const CVector3& CTerrain::GetEyePos()
-{
-	return m_vEyePos;
 }

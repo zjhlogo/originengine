@@ -37,10 +37,8 @@ void CModelApp::Destroy()
 	// TODO: 
 }
 
-bool CModelApp::Initialize()
+bool CModelApp::UserDataInit()
 {
-	if (!CBaseApp::Initialize()) return false;
-
 	m_pModel = g_pOEResMgr->CreateModel(TS("casual03.xml"));
 	if (!m_pModel) return false;
 
@@ -57,8 +55,7 @@ bool CModelApp::Initialize()
 	CQuaternion qRot(COEMath::VECTOR_UP, COEMath::PI_2);
 	//pRootNode->SetRotation(qRot);
 
-	IOEMesh* pMesh = m_pModel->GetRenderData()->GetMesh();
-	m_pCamera->InitFromBBox(pMesh->GetBoundingBoxMin(), pMesh->GetBoundingBoxMax());
+	ResetCameraPosRot(m_pModel);
 
 	// registe message
 	m_pModel->RegisterEvent(OMI_SETUP_SHADER_PARAM, this, (MSG_FUNC)&CModelApp::OnSetupShaderParam);
@@ -66,17 +63,14 @@ bool CModelApp::Initialize()
 	return true;
 }
 
-void CModelApp::Terminate()
+void CModelApp::UserDataTerm()
 {
 	SAFE_RELEASE(m_pModel);
-	CBaseApp::Terminate();
 }
 
 void CModelApp::Update(float fDetailTime)
 {
 	static float s_fTotalTime = 0.0f;
-
-	CBaseApp::Update(fDetailTime);
 
 	s_fTotalTime += (0.3f*fDetailTime);
 
@@ -93,8 +87,11 @@ bool CModelApp::OnSetupShaderParam(COEMsgShaderParam& msg)
 {
 	IOEShader* pShader = msg.GetShader();
 
+	IOENode* pCameraNode = g_pOECore->GetRootNode()->GetChildNode(TS("Camera"));
+	if (!pCameraNode) return false;
+
 	pShader->SetVector(TS("g_vLightPos"), CVector3(0.0f, 0.0f, -300.0f));
-	pShader->SetVector(TS("g_vEyePos"), m_pCamera->GetEyePos());
+	pShader->SetVector(TS("g_vEyePos"), pCameraNode->GetPosition());
 
 	return true;
 }

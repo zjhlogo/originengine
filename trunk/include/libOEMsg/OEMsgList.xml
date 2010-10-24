@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <MessageList minid="1000">
-	<Message id="OMI_OBJECT_DESTROY" class="COEMsgDestroy" />
+	<Message id="OMI_OBJECT_DESTROY" class="COEMsgObjectDestroy" />
+	<Message id="OMI_OBJECT_ATTACH" class="COEMsgObjectAttach" />
 
 	<Message id="OMI_LBUTTON_DOWN" class="COEMsgMouse" />
 	<Message id="OMI_LBUTTON_UP" class="COEMsgMouse" />

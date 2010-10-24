@@ -10,6 +10,7 @@
 
 #include <OECore/IOECore.h>
 #include <OECore/IOERenderableObject.h>
+#include <OECore/IOECamera.h>
 #include <libOEMsg/OEMsgCommand.h>
 #include <set>
 #include <vector>
@@ -18,6 +19,7 @@ class COECore_Impl : public IOECore
 {
 public:
 	typedef std::set<IOERenderableObject*> TS_RENDERABLE_OBJECT;
+	typedef std::set<IOECamera*> TS_CAMERA;
 
 	typedef struct RENDER_OBJECT_INFO_tag
 	{
@@ -51,7 +53,10 @@ private:
 	void RegisterMessage();
 
 	void UpdateNodes(IOENode* pNode, bool bParentDirty, const CMatrix4x4& matParent);
+
+	void ClearObjectList();
 	void QueryObjects(IOENode* pNode);
+	void UpdateCamera(float fDetailTime);
 	void UpdateObjects(float fDetailTime);
 	void RenderObjects(float fDetailTime);
 
@@ -69,6 +74,7 @@ private:
 
 	TS_RENDERABLE_OBJECT m_sRenderableObjects;
 	TV_RENDER_OBJECT_INFO m_vRenderObjectInfo;
+	TS_CAMERA m_sCamera;
 
 };
 
