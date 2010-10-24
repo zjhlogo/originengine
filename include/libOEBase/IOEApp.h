@@ -18,7 +18,9 @@ public:
 	IOEApp();
 	virtual ~IOEApp();
 
+	virtual void PreUpdate(float fDetailTime) = 0;
 	virtual void Update(float fDetailTime) = 0;
+	virtual void PostUpdate(float fDetailTime) = 0;
 
 	void Run();
 

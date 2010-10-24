@@ -53,6 +53,16 @@ void CBaseApp::Terminate()
 	SAFE_DELETE(m_pCamera);
 }
 
+void CBaseApp::PreUpdate(float fDetailTime)
+{
+	m_pCamera->Update(fDetailTime);
+}
+
+void CBaseApp::PostUpdate(float fDetailTime)
+{
+	// TODO: 
+}
+
 void CBaseApp::ResetCameraPosRot(IOEModel* pModel)
 {
 	IOEMesh* pMesh = pModel->GetRenderData()->GetMesh();

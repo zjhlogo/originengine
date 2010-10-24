@@ -25,6 +25,9 @@ public:
 	virtual bool UserDataInit() = 0;
 	virtual void UserDataTerm() = 0;
 
+	virtual void PreUpdate(float fDetailTime);
+	virtual void PostUpdate(float fDetailTime);
+
 	void ResetCameraPosRot(IOEModel* pModel);
 	void ResetCameraPosRot(const CVector3& vPos, float fRotY, float fRotX);
 
