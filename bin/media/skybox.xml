@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Model>
+	<RenderData>
+		<Mesh>skybox.mesh</Mesh>
+		<Materials count="6">
+			<Material id="0" vertdecl="1027" shader="skybox.fx" texture0="sky_posY.png"/>
+			<Material id="1" vertdecl="1027" shader="skybox.fx" texture0="sky_negY.png"/>
+			<Material id="2" vertdecl="1027" shader="skybox.fx" texture0="sky_negX.png"/>
+			<Material id="3" vertdecl="1027" shader="skybox.fx" texture0="sky_posZ.png"/>
+			<Material id="4" vertdecl="1027" shader="skybox.fx" texture0="sky_negZ.png"/>
+			<Material id="5" vertdecl="1027" shader="skybox.fx" texture0="sky_posX.png"/>
+		</Materials>
+	</RenderData>
+	<Renderers>
+		<Renderer>COESkyboxRender_Impl</Renderer>
+	</Renderers>
+</Model>
