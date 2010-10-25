@@ -41,6 +41,9 @@ void CCamera::Init()
 	m_fRotX = 0.0f;
 	m_fRotY = 0.0f;
 
+	m_fMovementSpeed = 50.0f;
+	m_fRotationSpeed = 0.3f;
+
 	RotateTo(0.0f, 0.0f);
 }
 
@@ -217,27 +220,26 @@ bool CCamera::OnKeyDown(COEMsgKeyboard& msg)
 
 bool CCamera::UpdateMovement(float fDetailTime)
 {
-	static const float MOVE_DIST = 50.0f;
-
 	bool bUpdateMovement = m_KeyDown['W'] || m_KeyDown['S'] || m_KeyDown['A'] || m_KeyDown['D'];
 	if (!bUpdateMovement) return false;
 
-	if (m_KeyDown['W']) Move(GetVectorForword(), MOVE_DIST*fDetailTime);
-	if (m_KeyDown['S']) Move(GetVectorForword(), -MOVE_DIST*fDetailTime);
-	if (m_KeyDown['D']) Move(GetVectorRight(), MOVE_DIST*fDetailTime);
-	if (m_KeyDown['A']) Move(GetVectorRight(), -MOVE_DIST*fDetailTime);
+	if (m_KeyDown['W']) Move(GetVectorForword(), m_fMovementSpeed*fDetailTime);
+	if (m_KeyDown['S']) Move(GetVectorForword(), -m_fMovementSpeed*fDetailTime);
+	if (m_KeyDown['D']) Move(GetVectorRight(), m_fMovementSpeed*fDetailTime);
+	if (m_KeyDown['A']) Move(GetVectorRight(), -m_fMovementSpeed*fDetailTime);
 
 	return true;
 }
 
 bool CCamera::UpdateRotation(float fDetailTime)
 {
-	static const float ROTATE_ADJUST = 0.3f;
-
 	if (!m_bLButtonDown) return false;
 	if (m_nMouseDetailX == 0 && m_nMouseDetailY == 0) return false;
 
-	if (m_nMouseDetailX || m_nMouseDetailY) Rotate(-m_nMouseDetailX*fDetailTime*ROTATE_ADJUST, -m_nMouseDetailY*fDetailTime*ROTATE_ADJUST);
+	if (m_nMouseDetailX || m_nMouseDetailY)
+	{
+		Rotate(-m_nMouseDetailX*fDetailTime*m_fRotationSpeed, -m_nMouseDetailY*fDetailTime*m_fRotationSpeed);
+	}
 
 	m_nMouseDetailY = 0;
 	m_nMouseDetailX = 0;

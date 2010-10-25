@@ -377,6 +377,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\OERender\OESkyboxRender_Impl.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\OERender\OESkyboxRender_Impl.h"
+				>
+			</File>
+			<File
 				RelativePath=".\OERender\OETangentRender_Impl.cpp"
 				>
 			</File>

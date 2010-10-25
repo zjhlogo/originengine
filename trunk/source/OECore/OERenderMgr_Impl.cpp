@@ -13,6 +13,7 @@
 #include "OERender/OENormalRender_Impl.h"
 #include "OERender/OETangentRender_Impl.h"
 #include "OERender/OEBinormalRender_Impl.h"
+#include "OERender/OESkyboxRender_Impl.h"
 
 #include <assert.h>
 
@@ -37,6 +38,7 @@ bool COERenderMgr_Impl::Initialize()
 	AddRenderHandle(new COENormalRender_Impl());
 	AddRenderHandle(new COETangentRender_Impl());
 	AddRenderHandle(new COEBinormalRender_Impl());
+	AddRenderHandle(new COESkyboxRender_Impl());
 
 	return true;
 }

@@ -5,51 +5,50 @@
  * 
  * \author zjhlogo (zjhlogo@163.com)
  */
-#include "MeshApp.h"
+#include "SkyApp.h"
 #include "../common/AppHelper.h"
 #include <OECore/IOECore.h>
 #include <OECore/IOERenderSystem.h>
 #include <OECore/IOEResMgr.h>
 #include <libOEMsg/OEMsgList.h>
 
-IMPLEMENT_OEAPP(CMeshApp);
+IMPLEMENT_OEAPP(CSkyApp);
 
-CMeshApp::CMeshApp()
+CSkyApp::CSkyApp()
 {
 	Init();
 }
 
-CMeshApp::~CMeshApp()
+CSkyApp::~CSkyApp()
 {
 	Destroy();
 }
 
-void CMeshApp::Init()
+void CSkyApp::Init()
 {
 	m_pModel = NULL;
 }
 
-void CMeshApp::Destroy()
+void CSkyApp::Destroy()
 {
 	// TODO: 
 }
 
-bool CMeshApp::UserDataInit()
+bool CSkyApp::UserDataInit()
 {
-	m_pModel = g_pOEResMgr->CreateModel(TS("demo_mesh.xml"));
+	m_pModel = g_pOEResMgr->CreateModel(TS("skybox.xml"));
 	if (!m_pModel) return false;
 	g_pOECore->GetRootNode()->AttachObject(m_pModel);
 
-	ResetCameraPosRot(m_pModel);
 	return true;
 }
 
-void CMeshApp::UserDataTerm()
+void CSkyApp::UserDataTerm()
 {
 	SAFE_DELETE(m_pModel);
 }
 
-void CMeshApp::Update(float fDetailTime)
+void CSkyApp::Update(float fDetailTime)
 {
 	// TODO: 
 }

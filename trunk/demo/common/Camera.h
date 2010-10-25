@@ -47,6 +47,12 @@ public:
 	void Move(const CVector3& vDir, float fDistance);
 	void MoveTo(const CVector3& vPos);
 
+	void SetMovementSpeed(float fSpeed) {m_fMovementSpeed = fSpeed;};
+	float GetMovementSpeed() {return m_fMovementSpeed;};
+
+	void SetRotationSpeed(float fSpeed) {m_fRotationSpeed = fSpeed;};
+	float GetRotationSpeed() {return m_fRotationSpeed;};
+
 private:
 	void Init();
 	void Destroy();
@@ -81,6 +87,9 @@ private:
 	bool m_bFirstTimeUpdate;
 
 	IOENode* m_pTargetNode;
+
+	float m_fMovementSpeed;
+	float m_fRotationSpeed;
 
 };
 #endif // __CAMERA_H__

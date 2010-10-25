@@ -175,17 +175,34 @@ void COEOS::tolower(tstring& strOut, const tstring& strIn)
 	std::transform(strOut.begin(), strOut.end(), strOut.begin(), ::tolower);
 }
 
-void COEOS::GetFileName(tstring& strOut, const tstring& strIn)
+void COEOS::GetFileNameWithoutExt(tstring& strOut, const tstring& strIn)
 {
-	size_t nPos = strIn.rfind(TS('.'));
-	if (nPos != tstring::npos)
+	size_t nPosBegin = strIn.rfind(('\\'));
+	if (nPosBegin == tstring::npos)
 	{
-		strOut = strIn.substr(0, nPos);
+		nPosBegin = strIn.rfind(('/'));
+		if (nPosBegin == tstring::npos) nPosBegin = -1;
 	}
-	else
+	++nPosBegin;
+
+	size_t nPosEnd = strIn.rfind(('.'));
+	if (nPosEnd == tstring::npos) nPosEnd = strIn.length();
+
+	strOut = strIn.substr(nPosBegin, nPosEnd-nPosBegin);
+}
+
+void COEOS::GetFileNameWithExt(tstring& strOut, const tstring& strIn)
+{
+	size_t nPosBegin = strIn.rfind(('\\'));
+	if (nPosBegin == tstring::npos)
 	{
-		strOut = strIn;
+		nPosBegin = strIn.rfind(('/'));
+		if (nPosBegin == tstring::npos) nPosBegin = -1;
 	}
+	++nPosBegin;
+
+	size_t nPosEnd = strIn.length();
+	strOut = strIn.substr(nPosBegin, nPosEnd);
 }
 
 void COEOS::GetFileExt(tstring& strOut, const tstring& strIn)

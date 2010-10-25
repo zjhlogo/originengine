@@ -1,21 +1,22 @@
 /*!
- * \file MeshApp.h
- * \date 31-7-2009 20:41:47
+ * \file SkyApp.h
+ * \date 10-24-2010 10:08:02
  * 
  * 
- * \author zjhlogo (zjhlogo@163.com)
+ * \author zjhlogo (zjhlogo@gmail.com)
  */
-#ifndef __MESHAPP_H__
-#define __MESHAPP_H__
+#ifndef __SKYAPP_H__
+#define __SKYAPP_H__
 
 #include "../common/BaseApp.h"
 #include <OECore/IOEModel.h>
+#include <libOEMsg/OEMsgShaderParam.h>
 
-class CMeshApp : public CBaseApp
+class CSkyApp : public CBaseApp
 {
 public:
-	CMeshApp();
-	virtual ~CMeshApp();
+	CSkyApp();
+	virtual ~CSkyApp();
 
 	virtual bool UserDataInit();
 	virtual void UserDataTerm();
@@ -30,5 +31,4 @@ private:
 	IOEModel* m_pModel;
 
 };
-
-#endif // __MESHAPP_H__
+#endif // __SKYAPP_H__
