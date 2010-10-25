@@ -27,6 +27,7 @@ private:
 	void Destroy();
 
 private:
+	IOEModel* m_pModel;
 	CTerrain* m_pTerrain;
 
 };

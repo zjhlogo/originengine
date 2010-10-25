@@ -73,7 +73,7 @@ bool CMapTile::LoadMap(const ushort* pHeightField, int nID)
 			int nIndex = z*TILE_SIZE+x;
 			int nHeightIndex = (TILE_SIZE-z-1)*TILE_SIZE+x;
 			m_pVerts[nIndex].x = x*fDetailWidth;
-			m_pVerts[nIndex].y = pHeightField[nHeightIndex]*0.01f-400.0f;
+			m_pVerts[nIndex].y = pHeightField[nHeightIndex]*0.03f;
 			m_pVerts[nIndex].z = z*fDetailHeight;
 			m_pVerts[nIndex].u = m_pVerts[nIndex].x/TILE_WIDTH;
 			m_pVerts[nIndex].v = 1.0f - m_pVerts[nIndex].z/TILE_HEIGHT;

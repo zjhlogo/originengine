@@ -19,8 +19,8 @@ public:
 	enum CONST_DEFILE
 	{
 		TILE_SIZE	= 65,
-		TILE_WIDTH	= 800,
-		TILE_HEIGHT = 800,
+		TILE_WIDTH	= 2000,
+		TILE_HEIGHT = 2000,
 	};
 
 public:

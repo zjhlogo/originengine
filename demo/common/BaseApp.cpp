@@ -72,3 +72,23 @@ void CBaseApp::ResetCameraPosRot(const CVector3& vPos, float fRotY, float fRotX)
 	m_pCamera->MoveTo(vPos);
 	m_pCamera->RotateTo(fRotY, fRotX);
 }
+
+void CBaseApp::SetMovementSpeed(float fSpeed)
+{
+	m_pCamera->SetMovementSpeed(fSpeed);
+}
+
+float CBaseApp::GetMovementSpeed()
+{
+	return m_pCamera->GetMovementSpeed();
+}
+
+void CBaseApp::SetRotationSpeed(float fSpeed)
+{
+	m_pCamera->SetRotationSpeed(fSpeed);
+}
+
+float CBaseApp::GetRotationSpeed()
+{
+	return m_pCamera->GetRotationSpeed();
+}

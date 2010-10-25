@@ -93,15 +93,17 @@ public:
 
 	typedef std::vector<FACE> TV_FACE;
 
-	typedef struct SKIN_MESH_tag
+	typedef struct MESH_DATA_tag
 	{
 		tstring strName;
 		GMatrix matLocal;
 		TV_VERTEX_SLOT vVertSlots;
 		TV_FACE vFaces;
-	} SKIN_MESH;
+		IGameMaterial* pMaterial;
+		int nMaterialID;
+	} MESH_DATA;
 
-	typedef std::vector<SKIN_MESH> TV_SKIN_MESH;
+	typedef std::vector<MESH_DATA> TV_MESH_DATA;
 
 	// bone information
 	typedef struct KEYFRAME_ROT_tag
@@ -149,6 +151,15 @@ public:
 	typedef std::vector<BONE_INFO> TV_BONE_INFO;
 	typedef std::map<IGameNode*, int> TM_BONE_INFO;
 
+	typedef std::vector<tstring> TV_STRING;
+	typedef struct MATERIAL_tag
+	{
+		int nID;
+		IGameMaterial* pMaterial;
+		TV_STRING vTextureMap;
+	} MATERIAL;
+	typedef std::vector<MATERIAL> TV_MATERIAL;
+
 public:
 	CModelExporter();
 	virtual ~CModelExporter();
@@ -173,14 +184,17 @@ private:
 
 	bool CollectNodes(IGameNode* pGameNode, IGameNode* pParentGameNode = NULL);
 
-	bool BuildMeshsInfo();
 	bool BuildBonesInfo();
+	bool BuildMeshsInfo();
+	bool BuildMaterialsInfo();
+	bool FindMaterial(IGameMaterial* pMaterial);
 
 	bool SaveMeshFile(const tstring& strFileName);
 	bool SaveSkeletonFile(const tstring& strFileName);
+	bool SaveMaterialsFile(const tstring& strFileName, const tstring& strMeshFile, const tstring& strSkeletonFile);
 
-	bool DumpMesh(SKIN_MESH& SkinMeshOut, IGameNode* pGameNode);
-	bool DumpSkin(SKIN_MESH& SkinMeshOut, IGameSkin* pGameSkin);
+	bool DumpMesh(MESH_DATA& MeshDataOut, IGameNode* pGameNode);
+	bool DumpSkin(MESH_DATA& MeshDataOut, IGameSkin* pGameSkin);
 
 	bool DumpController(BONE_INFO& BoneInfo, IGameNode* pGameNode);
 	bool DumpPositionController(BONE_INFO& BoneInfo, IGameControl* pGameControl);
@@ -230,9 +244,10 @@ private:
 private:
 	TV_NODE_INFO m_vMeshNode;
 	TV_NODE_INFO m_vBoneNode;
-	TV_SKIN_MESH m_vSkinMesh;
+	TV_MESH_DATA m_vMeshData;
 	TV_BONE_INFO m_vBoneInfo;
 	TM_BONE_INFO m_vBoneInfoMap;
+	TV_MATERIAL m_vMaterial;
 	CVector3 m_vBoundingBoxMin;
 	CVector3 m_vBoundingBoxMax;
 	Interface* m_pInterface;

@@ -1,39 +1,57 @@
 /*!
- * \file OEMeshRender_Impl.cpp
- * \date 10-12-2010 17:54:02
+ * \file OESkyboxRender_Impl.cpp
+ * \date 10-25-2010 13:56:27
  * 
  * 
  * \author zjhlogo (zjhlogo@gmail.com)
  */
-#include "OEMeshRender_Impl.h"
+#include "OESkyboxRender_Impl.h"
+#include <OECore/IOECore.h>
 #include <OECore/IOERenderSystem.h>
 #include <OECore/OERenderSystemUtil.h>
 #include <libOEMsg/OEMsgShaderParam.h>
 
-COEMeshRender_Impl::COEMeshRender_Impl()
+COESkyboxRender_Impl::COESkyboxRender_Impl()
+{
+	m_bOK = Init();
+}
+
+COESkyboxRender_Impl::~COESkyboxRender_Impl()
+{
+	Destroy();
+}
+
+bool COESkyboxRender_Impl::Init()
+{
+	// TODO: 
+	return true;
+}
+
+void COESkyboxRender_Impl::Destroy()
 {
 	// TODO: 
 }
 
-COEMeshRender_Impl::~COEMeshRender_Impl()
-{
-	// TODO: 
-}
-
-bool COEMeshRender_Impl::Render(IOERenderData* pRenderData)
+bool COESkyboxRender_Impl::Render(IOERenderData* pRenderData)
 {
 	IOEMesh* pMesh = pRenderData->GetMesh();
 	if (!pMesh) return false;
 
-	int nNumPiece = pMesh->GetNumPieces();
+	IOENode* pCameraNode = g_pOECore->GetRootNode()->GetChildNode(TS("Camera"));
+	if (!pCameraNode) return false;
 
-	CMatrix4x4 matModelToWorld = pRenderData->GetNode()->GetFinalMatrix();
+	const CVector3& vEyePos = pCameraNode->GetPosition();
+	CMatrix4x4 matWorld;
+	COEMath::SetMatrixTranslation(matWorld, vEyePos);
 
-	CMatrix4x4 matWorldToProject = matModelToWorld;
+	CMatrix4x4 matWorldToProject = matWorld;
 	g_pOERenderSystem->GetTransform(matWorldToProject, TT_VIEW_PROJ);
 
 	CDefaultRenderState DefaultState;
 
+	g_pOERenderSystem->EnableZBuffer(false);
+
+	int nNumPiece = pMesh->GetNumPieces();
 	for (int i = 0; i < nNumPiece; ++i)
 	{
 		IOEPiece* pPiece = pMesh->GetPiece(i);
@@ -53,7 +71,6 @@ bool COEMeshRender_Impl::Render(IOERenderData* pRenderData)
 
 		pShader->SetMatrix(TS("g_matWorldToProject"), matWorldToProject);
 		pShader->SetTexture(TS("g_texDiffuse"), pMaterial->GetTexture(MTT_DIFFUSE));
-		pShader->SetMatrix(TS("g_matWorldToModel"), matModelToWorld.Inverse());
 
 		g_pOERenderSystem->SetShader(pShader);
 		g_pOERenderSystem->DrawTriList(pPiece->GetVerts(), pPiece->GetNumVerts(), pPiece->GetIndis(), pPiece->GetNumIndis());

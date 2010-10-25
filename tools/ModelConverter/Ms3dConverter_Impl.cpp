@@ -40,12 +40,12 @@ bool CMs3dConverter_Impl::DoConvert(const tstring& strFileIn, const tstring& str
 	if (!LoadFromFile(strFileIn)) return false;
 
 	tstring strMeshFile;
-	COEOS::GetFileName(strMeshFile, strFileOut);
+	COEOS::GetFileNameWithoutExt(strMeshFile, strFileOut);
 	strMeshFile += TS(".mesh");
 	if (!SaveToMeshFile(strMeshFile)) return false;
 
 	tstring strSkeletonFile;
-	COEOS::GetFileName(strSkeletonFile, strFileOut);
+	COEOS::GetFileNameWithoutExt(strSkeletonFile, strFileOut);
 	strSkeletonFile += TS(".skel");
 	if (!SaveToSkeletonFile(strSkeletonFile)) return false;
 

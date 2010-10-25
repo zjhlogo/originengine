@@ -33,7 +33,7 @@ int main(int argc, char** argv)
 	COEOS::char2tchar(strFileIn, argv[1]);
 
 	tstring strFileOut;
-	COEOS::GetFileName(strFileOut, strFileIn);
+	COEOS::GetFileNameWithoutExt(strFileOut, strFileIn);
 
 	CConverterMgr::Get().DoConvert(strFileIn, strFileOut);
 
