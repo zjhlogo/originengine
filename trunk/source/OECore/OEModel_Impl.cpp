@@ -72,7 +72,7 @@ void COEModel_Impl::RemoveControl(const tstring& strControl)
 	for (TV_CONTROL::iterator it = m_vControls.begin(); it != m_vControls.end(); ++it)
 	{
 		IOEControl* pControl = (*it);
-		if (pControl->GetRtti()->GetClassName() == strControl)
+		if (pControl->GetRtti()->GetTypeName() == strControl)
 		{
 			m_vControls.erase(it);
 			break;
@@ -94,7 +94,7 @@ void COEModel_Impl::RemoveRender(const tstring& strRender)
 	for (TV_RENDER::iterator it = m_vRenders.begin(); it != m_vRenders.end(); ++it)
 	{
 		IOERender* pRender = (*it);
-		if (pRender->GetRtti()->GetClassName() == strRender)
+		if (pRender->GetRtti()->GetTypeName() == strRender)
 		{
 			m_vRenders.erase(it);
 			break;

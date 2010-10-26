@@ -354,6 +354,14 @@
 			>
 		</File>
 		<File
+			RelativePath=".\OED3DRenderTargetTexture_Impl.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\OED3DRenderTargetTexture_Impl.h"
+			>
+		</File>
+		<File
 			RelativePath=".\OED3DShader_Impl.cpp"
 			>
 		</File>

@@ -28,6 +28,7 @@ public:
 
 	virtual IOETexture* CreateTextureFromFile(const tstring& strFile);
 	virtual IOETexture* CreateTexture(int nWidth, int nHeight, TEXTURE_FORMAT eFormat);
+	virtual IOETexture* CreateRenderTargetTexture(int nWidth, int nHeight, TEXTURE_FORMAT eFormat);
 
 	virtual void SetDefaultDir(const tstring& strDir);
 	virtual const tstring& GetDefaultDir();

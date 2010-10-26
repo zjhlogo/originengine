@@ -1,11 +1,11 @@
 /*!
- * \file OEUIFontMgr_Impl.cpp
- * \date 27-7-2009 21:59:00
+ * \file OEUIResMgr_Impl.cpp
+ * \date 10-26-2010 0:06:12
  * 
  * 
- * \author zjhlogo (zjhlogo@163.com)
+ * \author zjhlogo (zjhlogo@gmail.com)
  */
-#include "OEUIFontMgr_Impl.h"
+#include "OEUIResMgr_Impl.h"
 #include "OEUIFont_Impl.h"
 #include "OEUIBitmapFont_Impl.h"
 
@@ -14,31 +14,31 @@
 #include <algorithm>
 #include <assert.h>
 
-COEUIFontMgr_Impl::COEUIFontMgr_Impl()
+COEUIResMgr_Impl::COEUIResMgr_Impl()
 {
-	assert(!g_pOEUIFontMgr);
-	g_pOEUIFontMgr = this;
+	assert(!g_pOEUIResMgr);
+	g_pOEUIResMgr = this;
 	m_bOK = Init();
 }
 
-COEUIFontMgr_Impl::~COEUIFontMgr_Impl()
+COEUIResMgr_Impl::~COEUIResMgr_Impl()
 {
 	Destroy();
-	g_pOEUIFontMgr = NULL;
+	g_pOEUIResMgr = NULL;
 }
 
-bool COEUIFontMgr_Impl::Init()
+bool COEUIResMgr_Impl::Init()
 {
 	// TODO: 
 	return true;
 }
 
-void COEUIFontMgr_Impl::Destroy()
+void COEUIResMgr_Impl::Destroy()
 {
 	// TODO: 
 }
 
-bool COEUIFontMgr_Impl::Initialize()
+bool COEUIResMgr_Impl::Initialize()
 {
 	tstring strDefaultFontDir;
 	g_pOEConfigFileMgr->GetValue(strDefaultFontDir, TS("DefaultFontDir"), TS("media"));
@@ -47,18 +47,18 @@ bool COEUIFontMgr_Impl::Initialize()
 	return true;
 }
 
-void COEUIFontMgr_Impl::Terminate()
+void COEUIResMgr_Impl::Terminate()
 {
 	// TODO: check m_UIFontMap whether is empty, and logout
 }
 
-IOEUIFont* COEUIFontMgr_Impl::CreateFont(const tstring& strFile)
+IOEUIFont* COEUIResMgr_Impl::CreateFont(const tstring& strFile)
 {
 	// TODO: 
 	return NULL;
 }
 
-IOEUIFont* COEUIFontMgr_Impl::CreateBitmapFont(const tstring& strFile)
+IOEUIFont* COEUIResMgr_Impl::CreateBitmapFont(const tstring& strFile)
 {
 	// get font file path
 	tstring strFilePath;
@@ -86,17 +86,17 @@ IOEUIFont* COEUIFontMgr_Impl::CreateBitmapFont(const tstring& strFile)
 	return pFont;
 }
 
-void COEUIFontMgr_Impl::SetDefaultDir(const tstring& strDir)
+void COEUIResMgr_Impl::SetDefaultDir(const tstring& strDir)
 {
 	m_strDefaultDir = strDir;
 }
 
-const tstring& COEUIFontMgr_Impl::GetDefaultDir()
+const tstring& COEUIResMgr_Impl::GetDefaultDir()
 {
 	return m_strDefaultDir;
 }
 
-bool COEUIFontMgr_Impl::GetFontFilePath(tstring& strFilePathOut, const tstring& strFile)
+bool COEUIResMgr_Impl::GetFontFilePath(tstring& strFilePathOut, const tstring& strFile)
 {
 	strFilePathOut = m_strDefaultDir + TS("\\") + strFile;
 	COEOS::tolower(strFilePathOut, strFilePathOut);

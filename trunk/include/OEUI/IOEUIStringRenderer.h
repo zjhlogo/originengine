@@ -1,24 +1,24 @@
 /*!
- * \file IOEUIString.h
- * \date 27-7-2009 17:50:41
+ * \file IOEUIStringRenderer.h
+ * \date 10-26-2010 0:01:13
  * 
  * 
- * \author zjhlogo (zjhlogo@163.com)
+ * \author zjhlogo (zjhlogo@gmail.com)
  */
-#ifndef __IOEUISTRING_H__
-#define __IOEUISTRING_H__
+#ifndef __IOEUISTRINGRENDERER_H__
+#define __IOEUISTRINGRENDERER_H__
 
 #include "../libOEUI/OEUIType.h"
 #include "IOEUIRenderableObject.h"
 #include "IOEUIFont.h"
 
-class IOEUIString : public IOEUIRenderableObject
+class IOEUIStringRenderer : public IOEUIRenderableObject
 {
 public:
-	RTTI_DEF(IOEUIString, IOEUIRenderableObject);
+	RTTI_DEF(IOEUIStringRenderer, IOEUIRenderableObject);
 
-	IOEUIString() {};
-	virtual ~IOEUIString() {};
+	IOEUIStringRenderer() {};
+	virtual ~IOEUIStringRenderer() {};
 
 	virtual void SetText(const tstring& strText) = 0;
 	virtual const tstring& GetText() const = 0;
@@ -33,4 +33,4 @@ public:
 	virtual const CPoint& GetPosition() = 0;
 
 };
-#endif // __IOEUISTRING_H__
+#endif // __IOEUISTRINGRENDERER_H__

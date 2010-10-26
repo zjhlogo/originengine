@@ -14,6 +14,7 @@
 #include "OED3DTexture_Impl.h"
 #include "OED3DShader_Impl.h"
 #include "OED3DRenderState.h"
+#include <d3d9.h>
 
 #include <stack>
 
@@ -33,6 +34,9 @@ public:
 
 	virtual void SetShader(IOEShader* pShader);
 	virtual IOEShader* GetShader() const;
+
+	virtual bool SetRenderTarget(IOETexture* pTexture);
+	virtual void RestoreRenderTarget();
 
 	virtual bool SetTransform(TRANSFORM_TYPE eType, const CMatrix4x4& mat);
 	virtual bool GetTransform(CMatrix4x4& matOut, TRANSFORM_TYPE eType) const;
@@ -69,6 +73,8 @@ private:
 
 private:
 	COED3DShader_Impl* m_pShader;
+	IOETexture* m_pRenderTarget;
+	IDirect3DSurface9* m_pD3DBackBufferSurface;
 
 	TK_RENDER_STATE m_kRenderState;
 	COED3DRenderState m_CurrRenderState;

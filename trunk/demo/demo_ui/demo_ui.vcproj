@@ -358,19 +358,19 @@
 			</File>
 		</Filter>
 		<File
-			RelativePath=".\StringWindow.cpp"
-			>
-		</File>
-		<File
-			RelativePath=".\StringWindow.h"
-			>
-		</File>
-		<File
 			RelativePath=".\UIApp.cpp"
 			>
 		</File>
 		<File
 			RelativePath=".\UIApp.h"
+			>
+		</File>
+		<File
+			RelativePath=".\UITestWindow.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\UITestWindow.h"
 			>
 		</File>
 	</Files>

@@ -19,7 +19,7 @@ public:
 	{
 		VERTEX_CACHE_SIZE = 4096*32,
 		INDEX_CACHE_COUNT = (4096*3)/2+2,
-		VERTEX_CACHE_COUNT = 1,
+		VERTEX_CACHE_COUNT = 5,
 	};
 
 public:

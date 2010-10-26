@@ -1,17 +1,17 @@
 /*!
- * \file OEUIString_Impl.h
- * \date 28-7-2009 8:49:13
+ * \file OEUIStringRenderer_Impl.h
+ * \date 10-26-2010 0:02:33
  * 
  * 
- * \author zjhlogo (zjhlogo@163.com)
+ * \author zjhlogo (zjhlogo@gmail.com)
  */
-#ifndef __OEUISTRING_IMPL_H__
-#define __OEUISTRING_IMPL_H__
+#ifndef __OEUISTRINGRENDERER_IMPL_H__
+#define __OEUISTRINGRENDERER_IMPL_H__
 
-#include <OEUI/IOEUIString.h>
+#include <OEUI/IOEUIStringRenderer.h>
 #include <vector>
 
-class COEUIString_Impl : public IOEUIString
+class COEUIStringRenderer_Impl : public IOEUIStringRenderer
 {
 public:
 	typedef struct CHAR_RENDER_INFO_tag
@@ -24,10 +24,10 @@ public:
 	typedef std::vector<CHAR_RENDER_INFO> VCHAR_RENDER_INFO;
 
 public:
-	RTTI_DEF(COEUIString_Impl, IOEUIString);
+	RTTI_DEF(COEUIStringRenderer_Impl, IOEUIStringRenderer);
 
-	COEUIString_Impl(IOEUIFont* pFont);
-	virtual ~COEUIString_Impl();
+	COEUIStringRenderer_Impl(IOEUIFont* pFont);
+	virtual ~COEUIStringRenderer_Impl();
 
 	virtual void Update(float fDetailTime);
 	virtual void Render(float fDetailTime);
@@ -59,4 +59,4 @@ private:
 	CPoint m_vPos;
 
 };
-#endif // __OEUISTRING_IMPL_H__
+#endif // __OEUISTRINGRENDERER_IMPL_H__

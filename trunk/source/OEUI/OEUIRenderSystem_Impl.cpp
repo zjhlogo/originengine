@@ -140,13 +140,17 @@ void COEUIRenderSystem_Impl::FlushAll()
 
 bool COEUIRenderSystem_Impl::OnUpdate(COEMsgCommand& msg)
 {
-	m_pScreen->Update(g_pOEDevice->GetDetailTime());
+	float fDetailTime = g_pOEDevice->GetDetailTime();
+	m_pScreen->Update(fDetailTime);
+	m_pScreen->UpdateChildren(fDetailTime);
 	return true;
 }
 
 bool COEUIRenderSystem_Impl::OnRender(COEMsgCommand& msg)
 {
-	m_pScreen->Render(g_pOEDevice->GetDetailTime());
+	float fDetailTime = g_pOEDevice->GetDetailTime();
+	m_pScreen->Render(fDetailTime);
+	m_pScreen->RenderChildren(fDetailTime);
 	return true;
 }
 

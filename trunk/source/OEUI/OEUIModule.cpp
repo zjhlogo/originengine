@@ -7,12 +7,12 @@
  */
 #include "OEUIModule.h"
 #include "OEUIRenderSystem_Impl.h"
-#include "OEUIFontMgr_Impl.h"
-#include "OEUIStringMgr_Impl.h"
+#include "OEUIResMgr_Impl.h"
+#include "OEUIRendererMgr_Impl.h"
 
 COEUIRenderSystem_Impl* g_pOEUIRenderSystem_Impl = NULL;
-COEUIFontMgr_Impl* g_pOEUIFontMgr_Impl = NULL;
-COEUIStringMgr_Impl* g_pOEUIStringMgr_Impl = NULL;
+COEUIResMgr_Impl* g_pOEUIResMgr_Impl = NULL;
+COEUIRendererMgr_Impl* g_pOEUIRendererMgr_Impl = NULL;
 static COEHolder g_OEHolder;
 
 bool CreateSingleton()
@@ -24,17 +24,17 @@ bool CreateSingleton()
 		return false;
 	}
 
-	g_pOEUIFontMgr_Impl = new COEUIFontMgr_Impl();
-	if (!g_pOEUIFontMgr_Impl || !g_pOEUIFontMgr_Impl->IsOK())
+	g_pOEUIResMgr_Impl = new COEUIResMgr_Impl();
+	if (!g_pOEUIResMgr_Impl || !g_pOEUIResMgr_Impl->IsOK())
 	{
-		SAFE_DELETE(g_pOEUIFontMgr_Impl);
+		SAFE_DELETE(g_pOEUIResMgr_Impl);
 		return false;
 	}
 
-	g_pOEUIStringMgr_Impl = new COEUIStringMgr_Impl();
-	if (!g_pOEUIStringMgr_Impl || !g_pOEUIStringMgr_Impl->IsOK())
+	g_pOEUIRendererMgr_Impl = new COEUIRendererMgr_Impl();
+	if (!g_pOEUIRendererMgr_Impl || !g_pOEUIRendererMgr_Impl->IsOK())
 	{
-		SAFE_DELETE(g_pOEUIStringMgr_Impl);
+		SAFE_DELETE(g_pOEUIRendererMgr_Impl);
 		return false;
 	}
 
@@ -43,8 +43,8 @@ bool CreateSingleton()
 
 void DestroySingleton()
 {
-	SAFE_DELETE(g_pOEUIStringMgr_Impl);
-	SAFE_DELETE(g_pOEUIFontMgr_Impl);
+	SAFE_DELETE(g_pOEUIRendererMgr_Impl);
+	SAFE_DELETE(g_pOEUIResMgr_Impl);
 	SAFE_DELETE(g_pOEUIRenderSystem_Impl);
 }
 

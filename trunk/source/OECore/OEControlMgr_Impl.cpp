@@ -41,9 +41,9 @@ void COEControlMgr_Impl::Terminate()
 
 bool COEControlMgr_Impl::AddControlHandle(IOEControl* pControl)
 {
-	if (GetControl(pControl->GetRtti()->GetClassName())) return false;
+	if (GetControl(pControl->GetRtti()->GetTypeName())) return false;
 
-	m_ControlMap.insert(std::make_pair(pControl->GetRtti()->GetClassName(), pControl));
+	m_ControlMap.insert(std::make_pair(pControl->GetRtti()->GetTypeName(), pControl));
 	return true;
 }
 

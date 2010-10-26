@@ -1,26 +1,26 @@
 /*!
- * \file OEUIFontMgr_Impl.h
- * \date 27-7-2009 21:58:14
+ * \file OEUIResMgr_Impl.h
+ * \date 10-26-2010 0:06:04
  * 
  * 
- * \author zjhlogo (zjhlogo@163.com)
+ * \author zjhlogo (zjhlogo@gmail.com)
  */
-#ifndef __OEUIFONTMGR_IMPL_H__
-#define __OEUIFONTMGR_IMPL_H__
+#ifndef __OEUIRESMGR_IMPL_H__
+#define __OEUIRESMGR_IMPL_H__
 
-#include <OEUI/IOEUIFontMgr.h>
+#include <OEUI/IOEUIResMgr.h>
 #include <map>
 
-class COEUIFontMgr_Impl : public IOEUIFontMgr
+class COEUIResMgr_Impl : public IOEUIResMgr
 {
 public:
 	typedef std::map<tstring, IOEUIFont*> TM_FONT;
 
 public:
-	RTTI_DEF(COEUIFontMgr_Impl, IOEUIFontMgr);
+	RTTI_DEF(COEUIResMgr_Impl, IOEUIResMgr);
 
-	COEUIFontMgr_Impl();
-	virtual ~COEUIFontMgr_Impl();
+	COEUIResMgr_Impl();
+	virtual ~COEUIResMgr_Impl();
 
 	virtual bool Initialize();
 	virtual void Terminate();
@@ -42,4 +42,4 @@ private:
 	tstring m_strDefaultDir;
 
 };
-#endif // __OEUIFONTMGR_IMPL_H__
+#endif // __OEUIRESMGR_IMPL_H__
