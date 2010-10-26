@@ -57,9 +57,6 @@ bool CModelApp::UserDataInit()
 
 	ResetCameraPosRot(m_pModel);
 
-	// registe message
-	m_pModel->RegisterEvent(OMI_SETUP_SHADER_PARAM, this, (MSG_FUNC)&CModelApp::OnSetupShaderParam);
-
 	return true;
 }
 
@@ -81,17 +78,4 @@ void CModelApp::Update(float fDetailTime)
 	m_pNode1->SetRotation(qRotNode1);
 
 	m_pNode2->SetRotation(qRotRoot);
-}
-
-bool CModelApp::OnSetupShaderParam(COEMsgShaderParam& msg)
-{
-	IOEShader* pShader = msg.GetShader();
-
-	IOENode* pCameraNode = g_pOECore->GetRootNode()->GetChildNode(TS("Camera"));
-	if (!pCameraNode) return false;
-
-	pShader->SetVector(TS("g_vLightPos"), CVector3(0.0f, 0.0f, -300.0f));
-	pShader->SetVector(TS("g_vEyePos"), pCameraNode->GetPosition());
-
-	return true;
 }

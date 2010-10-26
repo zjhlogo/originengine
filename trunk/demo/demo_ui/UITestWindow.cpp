@@ -15,7 +15,6 @@ CUITestWindow::CUITestWindow(COEUIWindow* pParent)
 {
 	m_pFont = NULL;
 	m_pString = NULL;
-	m_pTexture = NULL;
 	m_pImage = NULL;
 
 	m_bOK = Init();
@@ -34,24 +33,20 @@ bool CUITestWindow::Init()
 	m_pString = g_pOEUIRendererMgr->CreateStringRenderer(m_pFont);
 	if (!m_pString) return false;
 
-	m_pTexture = g_pOETextureMgr->CreateTextureFromFile(TS("brick_diffuse.png"));
-	if (!m_pTexture) return false;
-
 	m_pImage = g_pOEUIRendererMgr->CreateImageRenderer();
 	if (!m_pImage) return false;
 
 	m_pString->SetText(TS("HANDLE g_hTickEvent = ::CreateEvent(NULL, FALSE, FALSE, NULL);"));
 	m_pString->SetPosition(CPoint(550.0f, 100.0f));
 
-	m_pImage->SetTexture(m_pTexture, true);
-	m_pImage->SetPosition(CPoint(10.0f, 10.0f));
+	m_pImage->SetPosition(CPoint(20.0f, 20.0f));
+	m_pImage->SetSize(CSize(200.0f, 150.0f));
 	return true;
 }
 
 void CUITestWindow::Destroy()
 {
 	SAFE_RELEASE(m_pImage);
-	SAFE_RELEASE(m_pTexture);
 	SAFE_RELEASE(m_pString);
 	SAFE_RELEASE(m_pFont);
 }
@@ -65,4 +60,9 @@ void CUITestWindow::Render(float fDetailTime)
 {
 	m_pString->Render(fDetailTime);
 	m_pImage->Render(fDetailTime);
+}
+
+void CUITestWindow::SetRenderTargetTexture(IOETexture* pTexture)
+{
+	m_pImage->SetTexture(pTexture);
 }

@@ -35,8 +35,9 @@ public:
 	virtual void SetShader(IOEShader* pShader);
 	virtual IOEShader* GetShader() const;
 
-	virtual bool SetRenderTarget(IOETexture* pTexture);
-	virtual void RestoreRenderTarget();
+	virtual bool BeginRenderTarget(IOETexture* pTexture);
+	virtual void EndRenderTarget();
+	virtual bool CopyBackbuffer(IOETexture* pTexture);
 
 	virtual bool SetTransform(TRANSFORM_TYPE eType, const CMatrix4x4& mat);
 	virtual bool GetTransform(CMatrix4x4& matOut, TRANSFORM_TYPE eType) const;

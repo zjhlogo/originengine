@@ -22,6 +22,8 @@ public:
 	virtual void Update(float fDetailTime);
 	virtual void Render(float fDetailTime);
 
+	void SetRenderTargetTexture(IOETexture* pTexture);
+
 private:
 	bool Init();
 	void Destroy();
@@ -29,7 +31,6 @@ private:
 private:
 	IOEUIFont* m_pFont;
 	IOEUIStringRenderer* m_pString;
-	IOETexture* m_pTexture;
 	IOEUIImageRenderer* m_pImage;
 
 };

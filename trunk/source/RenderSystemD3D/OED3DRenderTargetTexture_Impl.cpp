@@ -60,7 +60,7 @@ bool COED3DRenderTargetTexture_Impl::Create(int nWidth, int nHeight, TEXTURE_FOR
 	D3DFORMAT eD3DFmt = COED3DUtil::ToD3DTexFmt(eFormat);
 	if (eD3DFmt == D3DFMT_UNKNOWN) return false;
 
-	HRESULT hRet = g_pd3dDevice->CreateTexture(nWidth, nHeight, 0, D3DUSAGE_RENDERTARGET, eD3DFmt, D3DPOOL_MANAGED, &m_pTexture, NULL);
+	HRESULT hRet = g_pd3dDevice->CreateTexture(nWidth, nHeight, 1, D3DUSAGE_RENDERTARGET, eD3DFmt, D3DPOOL_DEFAULT, &m_pTexture, NULL);
 	if (FAILED(hRet)) return false;
 
 	m_nWidth = nWidth;
