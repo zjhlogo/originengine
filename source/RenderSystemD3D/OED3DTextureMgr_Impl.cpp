@@ -7,6 +7,7 @@
  */
 #include "OED3DTextureMgr_Impl.h"
 #include "OED3DTexture_Impl.h"
+#include "OED3DRenderTargetTexture_Impl.h"
 
 #include <OEBase/IOELogFileMgr.h>
 #include <OECore/IOEConfigFileMgr.h>
@@ -84,7 +85,21 @@ IOETexture* COED3DTextureMgr_Impl::CreateTexture(int nWidth, int nHeight, TEXTUR
 	COED3DTexture_Impl* pTexture = new COED3DTexture_Impl(nWidth, nHeight, eFormat);
 	if (!pTexture || !pTexture->IsOK())
 	{
-		LOGOUT(TS("IOETextureMgr::CreateTextureFromFile Failed width=%d, height=%d, format=%d"), nWidth, nHeight, eFormat);
+		LOGOUT(TS("IOETextureMgr::CreateTexture Failed width=%d, height=%d, format=%d"), nWidth, nHeight, eFormat);
+		SAFE_RELEASE(pTexture);
+		return NULL;
+	}
+
+	m_vMemoryTexture.push_back(pTexture);
+	return pTexture;
+}
+
+IOETexture* COED3DTextureMgr_Impl::CreateRenderTargetTexture(int nWidth, int nHeight, TEXTURE_FORMAT eFormat)
+{
+	COED3DRenderTargetTexture_Impl* pTexture = new COED3DRenderTargetTexture_Impl(nWidth, nHeight, eFormat);
+	if (!pTexture || !pTexture->IsOK())
+	{
+		LOGOUT(TS("IOETextureMgr::CreateRenderTargetTexture Failed width=%d, height=%d, format=%d"), nWidth, nHeight, eFormat);
 		SAFE_RELEASE(pTexture);
 		return NULL;
 	}

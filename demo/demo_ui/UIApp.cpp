@@ -8,7 +8,7 @@
 #include "UIApp.h"
 #include "../common/AppHelper.h"
 #include <OEUI/IOEUIRenderSystem.h>
-#include "StringWindow.h"
+#include "UITestWindow.h"
 
 IMPLEMENT_OEAPP(CUIApp);
 
@@ -34,7 +34,7 @@ void CUIApp::Destroy()
 
 bool CUIApp::UserDataInit()
 {
-	CStringWindow* pStringWindow = new CStringWindow(g_pOEUIRenderSystem->GetScreen());
+	CUITestWindow* pStringWindow = new CUITestWindow(g_pOEUIRenderSystem->GetScreen());
 
 	return true;
 }

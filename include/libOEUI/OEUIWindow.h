@@ -23,15 +23,12 @@ public:
 	virtual void Update(float fDetailTime);
 	virtual void Render(float fDetailTime);
 
-	virtual void UpdateSelf(float fDetailTime);
-	virtual void RenderSelf(float fDetailTime);
+	virtual void UpdateChildren(float fDetailTime);
+	virtual void RenderChildren(float fDetailTime);
 
 private:
 	bool Init();
 	void Destroy();
-
-	void UpdateChildren(float fDetailTime);
-	void RenderChildren(float fDetailTime);
 
 	bool AddChild(COEUIWindow* pChild);
 

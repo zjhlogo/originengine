@@ -6,6 +6,7 @@
  * \author zjhlogo (zjhlogo@163.com)
  */
 #include "OED3DRenderSystem_Impl.h"
+#include "OED3DRenderTargetTexture_Impl.h"
 #include "OED3DUtil.h"
 
 #include <OEBase/IOEMsgMgr.h>
@@ -31,6 +32,8 @@ COED3DRenderSystem_Impl::~COED3DRenderSystem_Impl()
 bool COED3DRenderSystem_Impl::Init()
 {
 	m_pShader = NULL;
+	m_pRenderTarget = NULL;
+	m_pD3DBackBufferSurface = NULL;
 	return true;
 }
 
@@ -41,6 +44,9 @@ void COED3DRenderSystem_Impl::Destroy()
 
 bool COED3DRenderSystem_Impl::Initialize()
 {
+	m_pD3DBackBufferSurface = NULL;
+	if (FAILED(g_pd3dDevice->GetRenderTarget(0, &m_pD3DBackBufferSurface))) return false;
+
 	g_pOEDevice->RegisterEvent(OMI_PRE_RENDER, this, (MSG_FUNC)&COED3DRenderSystem_Impl::OnPreRender3D);
 	g_pOEDevice->RegisterEvent(OMI_POST_RENDER, this, (MSG_FUNC)&COED3DRenderSystem_Impl::OnPostRender3D);
 
@@ -60,6 +66,27 @@ void COED3DRenderSystem_Impl::SetShader(IOEShader* pShader)
 IOEShader* COED3DRenderSystem_Impl::GetShader() const
 {
 	return m_pShader;
+}
+
+bool COED3DRenderSystem_Impl::SetRenderTarget(IOETexture* pTexture)
+{
+	if (!pTexture) return false;
+
+	if (pTexture->GetRtti()->GetTypeName() != TS("COED3DRenderTargetTexture_Impl")) return false;
+	COED3DRenderTargetTexture_Impl* pRenderTarget = (COED3DRenderTargetTexture_Impl*)pTexture;
+
+	IDirect3DTexture9* pD3DRenderTarget = pRenderTarget->GetTexture();
+	IDirect3DSurface9* pD3DSurface = NULL;
+	if (FAILED(pD3DRenderTarget->GetSurfaceLevel(0, &pD3DSurface))) return false;
+
+	if (FAILED(g_pd3dDevice->SetRenderTarget(0, pD3DSurface))) return false;
+
+	return true;
+}
+
+void COED3DRenderSystem_Impl::RestoreRenderTarget()
+{
+	g_pd3dDevice->SetRenderTarget(0, m_pD3DBackBufferSurface);
 }
 
 bool COED3DRenderSystem_Impl::SetTransform(TRANSFORM_TYPE eType, const CMatrix4x4& mat)

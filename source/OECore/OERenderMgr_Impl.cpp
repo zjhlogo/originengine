@@ -55,9 +55,9 @@ void COERenderMgr_Impl::Terminate()
 
 bool COERenderMgr_Impl::AddRenderHandle(IOERender* pRender)
 {
-	if (GetRender(pRender->GetRtti()->GetClassName())) return false;
+	if (GetRender(pRender->GetRtti()->GetTypeName())) return false;
 
-	m_RenderMap.insert(std::make_pair(pRender->GetRtti()->GetClassName(), pRender));
+	m_RenderMap.insert(std::make_pair(pRender->GetRtti()->GetTypeName(), pRender));
 	return true;
 }
 

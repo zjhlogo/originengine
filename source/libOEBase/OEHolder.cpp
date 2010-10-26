@@ -29,8 +29,8 @@
 
 // UI模块
 #include <OEUI/IOEUIRenderSystem.h>
-#include <OEUI/IOEUIFontMgr.h>
-#include <OEUI/IOEUIStringMgr.h>
+#include <OEUI/IOEUIResMgr.h>
+#include <OEUI/IOEUIRendererMgr.h>
 
 // 用户层
 #include <libOEBase/IOEApp.h>
@@ -56,8 +56,8 @@ IOEShaderMgr* g_pOEShaderMgr = NULL;
 
 // UI模块
 IOEUIRenderSystem* g_pOEUIRenderSystem = NULL;
-IOEUIFontMgr* g_pOEUIFontMgr = NULL;
-IOEUIStringMgr* g_pOEUIStringMgr = NULL;
+IOEUIResMgr* g_pOEUIResMgr = NULL;
+IOEUIRendererMgr* g_pOEUIRendererMgr = NULL;
 
 // 用户层
 IOEApp* g_pOEApp = NULL;
@@ -95,8 +95,8 @@ void COEHolder::Init()
 
 	// UI模块
 	AddInterface(TS("IOEUIRenderSystem"), (void**)&g_pOEUIRenderSystem);
-	AddInterface(TS("IOEUIFontMgr"), (void**)&g_pOEUIFontMgr);
-	AddInterface(TS("IOEUIStringMgr"), (void**)&g_pOEUIStringMgr);
+	AddInterface(TS("IOEUIResMgr"), (void**)&g_pOEUIResMgr);
+	AddInterface(TS("IOEUIRendererMgr"), (void**)&g_pOEUIRendererMgr);
 
 	// 用户层
 	AddInterface(TS("IOEApp"), (void**)&g_pOEApp);

@@ -1,42 +1,42 @@
 /*!
- * \file OEUIString_Impl.cpp
- * \date 28-7-2009 8:51:40
+ * \file OEUIStringRenderer_Impl.cpp
+ * \date 10-26-2010 0:03:16
  * 
  * 
- * \author zjhlogo (zjhlogo@163.com)
+ * \author zjhlogo (zjhlogo@gmail.com)
  */
-#include "OEUIString_Impl.h"
+#include "OEUIStringRenderer_Impl.h"
 #include <OECore/OEBaseTypeEx.h>
 #include <OEUI/IOEUIRenderSystem.h>
 
-COEUIString_Impl::COEUIString_Impl(IOEUIFont* pFont)
+COEUIStringRenderer_Impl::COEUIStringRenderer_Impl(IOEUIFont* pFont)
 {
 	Init();
 	m_bOK = SetFont(pFont);
 }
 
-COEUIString_Impl::~COEUIString_Impl()
+COEUIStringRenderer_Impl::~COEUIStringRenderer_Impl()
 {
 	Destroy();
 }
 
-void COEUIString_Impl::Init()
+void COEUIStringRenderer_Impl::Init()
 {
 	m_pFont = NULL;
 	m_nColor = 0xFFFFFFFF;
 }
 
-void COEUIString_Impl::Destroy()
+void COEUIStringRenderer_Impl::Destroy()
 {
 	DestroyRenderChars();
 }
 
-void COEUIString_Impl::Update(float fDetailTime)
+void COEUIStringRenderer_Impl::Update(float fDetailTime)
 {
 	// TODO: 
 }
 
-void COEUIString_Impl::Render(float fDetailTime)
+void COEUIStringRenderer_Impl::Render(float fDetailTime)
 {
 	static const int VERTS_COUNT = 4;
 	static const int INDIS_COUNT = 6;
@@ -85,49 +85,49 @@ void COEUIString_Impl::Render(float fDetailTime)
 	}
 }
 
-void COEUIString_Impl::SetText(const tstring& strText)
+void COEUIStringRenderer_Impl::SetText(const tstring& strText)
 {
 	m_strText = strText;
 	CreateRenderChars();
 }
 
-const tstring& COEUIString_Impl::GetText() const
+const tstring& COEUIStringRenderer_Impl::GetText() const
 {
 	return m_strText;
 }
 
-void COEUIString_Impl::SetTextColor(uint nColor)
+void COEUIStringRenderer_Impl::SetTextColor(uint nColor)
 {
 	m_nColor = nColor;
 }
 
-uint COEUIString_Impl::GetTextColor() const
+uint COEUIStringRenderer_Impl::GetTextColor() const
 {
 	return m_nColor;
 }
 
-bool COEUIString_Impl::SetFont(IOEUIFont* pFont)
+bool COEUIStringRenderer_Impl::SetFont(IOEUIFont* pFont)
 {
 	m_pFont = pFont;
 	return CreateRenderChars();
 }
 
-const IOEUIFont* COEUIString_Impl::GetFont() const
+const IOEUIFont* COEUIStringRenderer_Impl::GetFont() const
 {
 	return m_pFont;
 }
 
-void COEUIString_Impl::SetPosition(const CPoint& pos)
+void COEUIStringRenderer_Impl::SetPosition(const CPoint& pos)
 {
 	m_vPos = pos;
 }
 
-const CPoint& COEUIString_Impl::GetPosition()
+const CPoint& COEUIStringRenderer_Impl::GetPosition()
 {
 	return m_vPos;
 }
 
-bool COEUIString_Impl::CreateRenderChars()
+bool COEUIStringRenderer_Impl::CreateRenderChars()
 {
 	DestroyRenderChars();
 
@@ -166,7 +166,7 @@ bool COEUIString_Impl::CreateRenderChars()
 	return true;
 }
 
-void COEUIString_Impl::DestroyRenderChars()
+void COEUIStringRenderer_Impl::DestroyRenderChars()
 {
 	m_vCharRenderInfo.clear();
 }

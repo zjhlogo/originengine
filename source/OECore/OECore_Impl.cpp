@@ -22,8 +22,8 @@
 #include <OECore/IOERenderSystem.h>
 
 #include <OEUI/IOEUIRenderSystem.h>
-#include <OEUI/IOEUIFontMgr.h>
-#include <OEUI/IOEUIStringMgr.h>
+#include <OEUI/IOEUIResMgr.h>
+#include <OEUI/IOEUIRendererMgr.h>
 
 #include <libOEBase/IOEApp.h>
 #include <libOEMsg/OEMsgList.h>
@@ -151,10 +151,10 @@ bool COECore_Impl::InitializeInterfaces()
 	if (!g_pOEUIRenderSystem->Initialize()) return false;
 
 	// UI 字体管理类
-	if (!g_pOEUIFontMgr->Initialize()) return false;
+	if (!g_pOEUIResMgr->Initialize()) return false;
 
 	// UI 字符串管理类
-	if (!g_pOEUIStringMgr->Initialize()) return false;
+	if (!g_pOEUIRendererMgr->Initialize()) return false;
 
 	return true;
 }
@@ -162,10 +162,10 @@ bool COECore_Impl::InitializeInterfaces()
 void COECore_Impl::TerminateInterfaces()
 {
 	// UI 字符串管理类
-	g_pOEUIStringMgr->Terminate();
+	g_pOEUIRendererMgr->Terminate();
 
 	// UI 字体管理类
-	g_pOEUIFontMgr->Terminate();
+	g_pOEUIResMgr->Terminate();
 
 	// UI 渲染管理类
 	g_pOEUIRenderSystem->Terminate();

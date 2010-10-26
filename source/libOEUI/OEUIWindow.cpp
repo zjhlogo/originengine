@@ -38,22 +38,10 @@ void COEUIWindow::Destroy()
 
 void COEUIWindow::Update(float fDetailTime)
 {
-	UpdateSelf(fDetailTime);
-	UpdateChildren(fDetailTime);
-}
-
-void COEUIWindow::Render(float fDetailTime)
-{
-	RenderSelf(fDetailTime);
-	RenderChildren(fDetailTime);
-}
-
-void COEUIWindow::UpdateSelf(float fDetailTime)
-{
 	// TODO: 
 }
 
-void COEUIWindow::RenderSelf(float fDetailTime)
+void COEUIWindow::Render(float fDetailTime)
 {
 	// TODO: 
 }

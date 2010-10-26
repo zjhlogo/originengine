@@ -19,8 +19,8 @@ CFPSWindow::CFPSWindow(COEUIWindow* pParent)
 	m_pStringFPS = NULL;
 
 	// initialize fps string
-	m_pFontFPS = g_pOEUIFontMgr->CreateBitmapFont(TS("12px_Tahoma.fnt"));
-	m_pStringFPS = g_pOEUIStringMgr->CreateUIString(m_pFontFPS);
+	m_pFontFPS = g_pOEUIResMgr->CreateBitmapFont(TS("12px_Tahoma.fnt"));
+	m_pStringFPS = g_pOEUIRendererMgr->CreateStringRenderer(m_pFontFPS);
 
 	m_fLastFPSTime = g_pOEDevice->GetCurrTime();
 	m_nFPSCount = 0;
@@ -32,13 +32,13 @@ CFPSWindow::~CFPSWindow()
 	SAFE_RELEASE(m_pFontFPS);
 }
 
-void CFPSWindow::UpdateSelf(float fDetailTime)
+void CFPSWindow::Update(float fDetailTime)
 {
 	// calculate fps
 	CalculateFPS();
 }
 
-void CFPSWindow::RenderSelf(float fDetailTime)
+void CFPSWindow::Render(float fDetailTime)
 {
 	// render fps
 	m_pStringFPS->Render(fDetailTime);

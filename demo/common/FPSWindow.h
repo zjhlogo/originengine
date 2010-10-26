@@ -9,8 +9,8 @@
 #define __FPSWINDOW_H__
 
 #include <libOEUI/OEUIWindow.h>
-#include <OEUI/IOEUIFontMgr.h>
-#include <OEUI/IOEUIStringMgr.h>
+#include <OEUI/IOEUIResMgr.h>
+#include <OEUI/IOEUIRendererMgr.h>
 
 class CFPSWindow : public COEUIWindow
 {
@@ -20,8 +20,8 @@ public:
 	CFPSWindow(COEUIWindow* pParent);
 	virtual ~CFPSWindow();
 
-	virtual void UpdateSelf(float fDetailTime);
-	virtual void RenderSelf(float fDetailTime);
+	virtual void Update(float fDetailTime);
+	virtual void Render(float fDetailTime);
 
 private:
 	void CalculateFPS();
@@ -31,7 +31,7 @@ private:
 	float m_fLastFPSTime;
 	int m_nFPSCount;
 	IOEUIFont* m_pFontFPS;
-	IOEUIString* m_pStringFPS;
+	IOEUIStringRenderer* m_pStringFPS;
 
 };
 #endif // __FPSWINDOW_H__

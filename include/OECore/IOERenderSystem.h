@@ -25,6 +25,9 @@ public:
 	virtual void SetShader(IOEShader* pShader) = 0;
 	virtual IOEShader* GetShader() const = 0;
 
+	virtual bool SetRenderTarget(IOETexture* pTexture) = 0;
+	virtual void RestoreRenderTarget() = 0;
+
 	virtual bool SetTransform(TRANSFORM_TYPE eType, const CMatrix4x4& mat) = 0;
 	virtual bool GetTransform(CMatrix4x4& matOut, TRANSFORM_TYPE eType) const = 0;
 
