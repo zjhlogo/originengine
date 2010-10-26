@@ -6,10 +6,13 @@
  * \author zjhlogo (zjhlogo@163.com)
  */
 #include "OESkinMeshRender_Impl.h"
+#include <OECore/IOECore.h>
 #include <OECore/IOERenderSystem.h>
 #include <OECore/OERenderSystemUtil.h>
 #include <OEBase/IOEMsgMgr.h>
+#include <libOEMsg/OEMsgList.h>
 #include <libOEMsg/OEMsgShaderParam.h>
+#include <libOEMsg/OEMsgCommand.h>
 
 COESkinMeshRender_Impl::COESkinMeshRender_Impl()
 {
@@ -25,7 +28,9 @@ bool COESkinMeshRender_Impl::Render(IOERenderData* pRenderData)
 {
 	IOEMesh* pMesh = pRenderData->GetMesh();
 	if (!pMesh) return false;
-	int nNumPiece = pMesh->GetNumPieces();
+
+	IOENode* pCameraNode = g_pOECore->GetRootNode()->GetChildNode(TS("Camera"));
+	if (!pCameraNode) return false;
 
 	CMatrix4x4 matModelToWorld = pRenderData->GetNode()->GetFinalMatrix();
 
@@ -34,6 +39,11 @@ bool COESkinMeshRender_Impl::Render(IOERenderData* pRenderData)
 
 	CDefaultRenderState DefaultState;
 
+	// pre render event
+	COEMsgCommand msgPreRender(OMI_PRE_RENDER);
+	pRenderData->GetHolder()->CallEvent(msgPreRender);
+
+	int nNumPiece = pMesh->GetNumPieces();
 	for (int i = 0; i < nNumPiece; ++i)
 	{
 		IOEPiece* pPiece = pMesh->GetPiece(i);
@@ -48,14 +58,15 @@ bool COESkinMeshRender_Impl::Render(IOERenderData* pRenderData)
 		if (pPiece->GetVertDeclMask() != pMaterial->GetVertDeclMask()) continue;
 
 		// give user chance to setup shader parameter
-		COEMsgShaderParam msg(pShader);
-		pRenderData->GetHolder()->CallEvent(msg);
+		COEMsgShaderParam msgShaderParam(pShader);
+		pRenderData->GetHolder()->CallEvent(msgShaderParam);
 
 		pShader->SetMatrix(TS("g_matWorldToModel"), matModelToWorld.Inverse());
 		pShader->SetMatrix(TS("g_matWorldToProject"), matWorldToProject);
 		pShader->SetTexture(TS("g_texDiffuse"), pMaterial->GetTexture(MTT_DIFFUSE));
 		pShader->SetTexture(TS("g_texNormal"), pMaterial->GetTexture(MTT_NORMAL));
-
+		pShader->SetVector(TS("g_vEyePos"), pCameraNode->GetPosition());
+		
 		const TV_MATRIX4X4& vmatSkins = pRenderData->GetSkinMatrix();
 		if (vmatSkins.size() <= 0) continue;
 
@@ -64,6 +75,10 @@ bool COESkinMeshRender_Impl::Render(IOERenderData* pRenderData)
 		g_pOERenderSystem->SetShader(pShader);
 		g_pOERenderSystem->DrawTriList(pPiece->GetVerts(), pPiece->GetNumVerts(), pPiece->GetIndis(), pPiece->GetNumIndis());
 	}
+
+	// post render event
+	COEMsgCommand msgPostRender(OMI_POST_RENDER);
+	pRenderData->GetHolder()->CallEvent(msgPostRender);
 
 	return true;
 }

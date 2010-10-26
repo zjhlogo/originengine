@@ -10,7 +10,6 @@
 
 #include "../common/BaseApp.h"
 #include <OECore/IOEModel.h>
-#include <libOEMsg/OEMsgShaderParam.h>
 #include <vector>
 
 class CModelApp : public CBaseApp
@@ -27,8 +26,6 @@ public:
 private:
 	void Init();
 	void Destroy();
-
-	bool OnSetupShaderParam(COEMsgShaderParam& msg);
 
 private:
 	IOEModel* m_pModel;

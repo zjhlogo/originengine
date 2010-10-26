@@ -9,6 +9,8 @@
 #define __UIAPP_H__
 
 #include "../common/BaseApp.h"
+#include <OECore/IOEModel.h>
+#include <libOEMsg/OEMsgCommand.h>
 
 class CUIApp : public CBaseApp
 {
@@ -23,6 +25,13 @@ public:
 private:
 	void Init();
 	void Destroy();
+
+	bool OnPreRender(COEMsgCommand& msg);
+	bool OnPostRender(COEMsgCommand& msg);
+
+private:
+	IOEModel* m_pModel;
+	IOETexture* m_pRenderTargetTexture;
 
 };
 
