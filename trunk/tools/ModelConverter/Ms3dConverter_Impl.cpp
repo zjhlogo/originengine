@@ -35,6 +35,17 @@ void CMs3dConverter_Impl::Destroy()
 	// TODO: 
 }
 
+bool CMs3dConverter_Impl::CanConvert(const tstring& strFile)
+{
+	tstring strExt;
+	COEOS::GetFileExt(strExt, strFile);
+
+	COEOS::tolower(strExt, strExt);
+	if (strExt == TS("ms3d")) return true;
+
+	return false;
+}
+
 bool CMs3dConverter_Impl::DoConvert(const tstring& strFileIn, const tstring& strFileOut)
 {
 	if (!LoadFromFile(strFileIn)) return false;
@@ -52,16 +63,6 @@ bool CMs3dConverter_Impl::DoConvert(const tstring& strFileIn, const tstring& str
 	return true;
 }
 
-bool CMs3dConverter_Impl::CanConvert(const tstring& strFile)
-{
-	tstring strExt;
-	COEOS::GetFileExt(strExt, strFile);
-
-	COEOS::tolower(strExt, strExt);
-	if (strExt == TS("ms3d")) return true;
-
-	return false;
-}
 
 bool CMs3dConverter_Impl::LoadFromFile(const tstring& strFile)
 {

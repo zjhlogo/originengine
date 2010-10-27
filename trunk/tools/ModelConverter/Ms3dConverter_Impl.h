@@ -9,7 +9,7 @@
 #define __MS3DCONVERTER_IMPL_H__
 
 #include "IConverter.h"
-#include "FmtMs3d.h"
+#include "format/FmtMs3d.h"
 
 #include <OECore/OEFmtMesh.h>
 #include <OECore/OEFmtSkeleton.h>

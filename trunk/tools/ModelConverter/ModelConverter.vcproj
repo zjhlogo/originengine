@@ -330,10 +330,14 @@
 	</References>
 	<Files>
 		<Filter
-			Name="Format Files"
+			Name="format"
 			>
 			<File
-				RelativePath=".\FmtMs3d.h"
+				RelativePath=".\format\FmtMs3d.h"
+				>
+			</File>
+			<File
+				RelativePath=".\format\FmtTds.h"
 				>
 			</File>
 		</Filter>
@@ -375,6 +379,14 @@
 		</File>
 		<File
 			RelativePath="..\common\OEModuleLoader.h"
+			>
+		</File>
+		<File
+			RelativePath=".\TdsConverter_Impl.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\TdsConverter_Impl.h"
 			>
 		</File>
 	</Files>

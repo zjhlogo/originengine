@@ -114,9 +114,16 @@ void CCamera::Update(float fDetailTime)
 void CCamera::InitFromBBox(const CVector3& vMinBBox, const CVector3& vMaxBBox)
 {
 	CVector3 vPos = (vMinBBox + vMaxBBox)/2.0f;
-	vPos.z -= (vMaxBBox.z - vMinBBox.z)*3.0f;
 
-	RotateTo(0.0f, 0.0f);
+	float fDetailX = vMaxBBox.x - vMinBBox.x;
+	float fDetailY = vMaxBBox.y - vMinBBox.y;
+	float fDetailMax = COEMath::Max(fDetailX, fDetailY);
+
+	vPos.y += fDetailY/2.0f;
+	vPos.z -= fDetailMax;
+
+	float fAngle = atanf(fDetailY/(2.0f*fDetailMax));
+	RotateTo(0.0f, -fAngle);
 	MoveTo(vPos);
 }
 
