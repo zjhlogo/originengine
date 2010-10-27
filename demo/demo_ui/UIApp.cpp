@@ -57,6 +57,8 @@ bool CUIApp::UserDataInit()
 	m_pModel->RegisterEvent(OMI_POST_RENDER, this, (MSG_FUNC)&CUIApp::OnPostRender);
 
 	pTestWindow->SetRenderTargetTexture(m_pRenderTargetTexture);
+
+	ResetCameraPosRot(m_pModel);
 	return true;
 }
 

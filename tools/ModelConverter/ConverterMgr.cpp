@@ -7,6 +7,7 @@
  */
 #include "ConverterMgr.h"
 #include "Ms3dConverter_Impl.h"
+#include "TdsConverter_Impl.h"
 
 CConverterMgr::CConverterMgr()
 {
@@ -21,6 +22,7 @@ CConverterMgr::~CConverterMgr()
 void CConverterMgr::Init()
 {
 	m_vConverter.push_back(new CMs3dConverter_Impl());
+	m_vConverter.push_back(new CTdsConverter_Impl());
 }
 
 void CConverterMgr::Destroy()

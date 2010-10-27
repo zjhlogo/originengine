@@ -1,9 +1,9 @@
 /*!
  * \file FmtMs3d.h
- * \date 10-20-2009 15:16:35
+ * \date ?
  * 
  * 
- * \author zjhlogo (zjhlogo@163.com)
+ * \author ?
  */
 #ifndef __FMTMS3D_H__
 #define __FMTMS3D_H__
