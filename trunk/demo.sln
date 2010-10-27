@@ -64,6 +64,14 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "demo_sky", "demo\demo_sky\d
 		{1811B7AB-DF7A-48BE-B26E-8E8543F9ED99} = {1811B7AB-DF7A-48BE-B26E-8E8543F9ED99}
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "demo_lake", "demo\demo_lake\demo_lake.vcproj", "{439CE383-8FF0-424A-A974-21ED647E2DD0}"
+	ProjectSection(ProjectDependencies) = postProject
+		{BF852F28-01B5-4492-9273-6E69EE1E4929} = {BF852F28-01B5-4492-9273-6E69EE1E4929}
+		{FC86443B-245B-4F29-BEF2-2D39A8F8B063} = {FC86443B-245B-4F29-BEF2-2D39A8F8B063}
+		{D5CB127E-5595-40FE-B847-93E32CB99D23} = {D5CB127E-5595-40FE-B847-93E32CB99D23}
+		{1811B7AB-DF7A-48BE-B26E-8E8543F9ED99} = {1811B7AB-DF7A-48BE-B26E-8E8543F9ED99}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -160,6 +168,14 @@ Global
 		{36C995F4-1FB7-49A5-9E29-77DE6941FD36}.Unicode Debug|Win32.Build.0 = Unicode Debug|Win32
 		{36C995F4-1FB7-49A5-9E29-77DE6941FD36}.Unicode Release|Win32.ActiveCfg = Unicode Release|Win32
 		{36C995F4-1FB7-49A5-9E29-77DE6941FD36}.Unicode Release|Win32.Build.0 = Unicode Release|Win32
+		{439CE383-8FF0-424A-A974-21ED647E2DD0}.Debug|Win32.ActiveCfg = Debug|Win32
+		{439CE383-8FF0-424A-A974-21ED647E2DD0}.Debug|Win32.Build.0 = Debug|Win32
+		{439CE383-8FF0-424A-A974-21ED647E2DD0}.Release|Win32.ActiveCfg = Release|Win32
+		{439CE383-8FF0-424A-A974-21ED647E2DD0}.Release|Win32.Build.0 = Release|Win32
+		{439CE383-8FF0-424A-A974-21ED647E2DD0}.Unicode Debug|Win32.ActiveCfg = Unicode Debug|Win32
+		{439CE383-8FF0-424A-A974-21ED647E2DD0}.Unicode Debug|Win32.Build.0 = Unicode Debug|Win32
+		{439CE383-8FF0-424A-A974-21ED647E2DD0}.Unicode Release|Win32.ActiveCfg = Unicode Release|Win32
+		{439CE383-8FF0-424A-A974-21ED647E2DD0}.Unicode Release|Win32.Build.0 = Unicode Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

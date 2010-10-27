@@ -60,6 +60,7 @@ public:
 	static const float FLOAT_MIN;	// 1.175494351e-38F
 	static const float FLOAT_MAX;	// 3.402823466e+38F
 
+	static const CVector3 VECTOR_ZERO;
 	static const CVector3 VECTOR_RIGHT;
 	static const CVector3 VECTOR_UP;
 	static const CVector3 VECTOR_FORWARD;

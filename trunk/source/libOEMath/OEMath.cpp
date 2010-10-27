@@ -16,6 +16,7 @@ const float COEMath::TOL = 1E-5f;								// float type tolerance
 const float COEMath::FLOAT_MIN = 1.175494351e-38F;			// 1.175494351e-38F
 const float COEMath::FLOAT_MAX = 3.402823466e+38F;			// 3.402823466e+38F
 
+const CVector3 COEMath::VECTOR_ZERO(0.0f, 0.0f, 0.0f);
 const CVector3 COEMath::VECTOR_RIGHT(1.0f, 0.0f, 0.0f);
 const CVector3 COEMath::VECTOR_UP(0.0f, 1.0f, 0.0f);
 const CVector3 COEMath::VECTOR_FORWARD(0.0f, 0.0f, 1.0f);
