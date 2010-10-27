@@ -307,7 +307,7 @@ bool COED3DDevice_Impl::InternalCreateD3D()
 	d3dpp.SwapEffect = D3DSWAPEFFECT_DISCARD;
 	d3dpp.BackBufferFormat = D3DFMT_UNKNOWN;
 	d3dpp.EnableAutoDepthStencil = TRUE;
-	d3dpp.AutoDepthStencilFormat = D3DFMT_D16;
+	d3dpp.AutoDepthStencilFormat = D3DFMT_D24X8;
 	d3dpp.PresentationInterval = D3DPRESENT_INTERVAL_IMMEDIATE;
 
 	uint nAdapterToUse = D3DADAPTER_DEFAULT;
@@ -427,7 +427,7 @@ void COED3DDevice_Impl::InitializeD3D()
 	g_pOERenderSystem->SetTransform(TT_WORLD, matWorld);
 
 	CMatrix4x4 matView;
-	COEMath::BuildLookAtMatrixLH(matView, CVector3(0.0f, 3.0f, -5.0f), CVector3(0.0f, 0.0f, 0.0f), CVector3(0.0f, 1.0f, 0.0f));
+	COEMath::BuildLookAtMatrixLH(matView, COEMath::VECTOR_ZERO, COEMath::VECTOR_FORWARD, COEMath::VECTOR_UP);
 	g_pOERenderSystem->SetTransform(TT_VIEW, matView);
 
 	CMatrix4x4 matProj;

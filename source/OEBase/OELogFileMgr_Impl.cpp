@@ -38,7 +38,7 @@ void COELogFileMgr_Impl::Destroy()
 
 bool COELogFileMgr_Impl::Initialize()
 {
-	return CreateLogFile(m_strFile);
+	return true;
 }
 
 void COELogFileMgr_Impl::Terminate()
@@ -54,6 +54,8 @@ void COELogFileMgr_Impl::SetLogFile(const tstring& strFile)
 
 void COELogFileMgr_Impl::LogOut(const tstring& strLogMsg)
 {
+	if (!m_pLogFile && !CreateLogFile(m_strFile)) return;
+
 	COEOS::LOCAL_TIME LocalTime;
 	COEOS::TimeLocal(LocalTime, COEOS::TimeNow());
 
