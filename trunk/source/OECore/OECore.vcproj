@@ -521,6 +521,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\include\OECore\OERenderState.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\include\OECore\OERenderSystemUtil.h"
 				>
 			</File>

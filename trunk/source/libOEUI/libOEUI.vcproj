@@ -275,6 +275,14 @@
 	</References>
 	<Files>
 		<File
+			RelativePath=".\OEUIPicture.cpp"
+			>
+		</File>
+		<File
+			RelativePath="..\..\include\libOEUI\OEUIPicture.h"
+			>
+		</File>
+		<File
 			RelativePath=".\OEUIScreen.cpp"
 			>
 		</File>

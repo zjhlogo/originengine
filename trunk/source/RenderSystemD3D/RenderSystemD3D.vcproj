@@ -338,14 +338,6 @@
 			>
 		</File>
 		<File
-			RelativePath=".\OED3DRenderState.cpp"
-			>
-		</File>
-		<File
-			RelativePath=".\OED3DRenderState.h"
-			>
-		</File>
-		<File
 			RelativePath=".\OED3DRenderSystem_Impl.cpp"
 			>
 		</File>

@@ -68,9 +68,12 @@ public:
 };
 
 CMatrix4x4 operator *(const CMatrix4x4& m1, const CMatrix4x4& m2);
+
 CVector3 operator *(const CVector3& v, const CMatrix4x4& mat);
 CVector3 operator *(const CMatrix4x4& mat, const CVector3& v);
-CVector4 operator *(const CVector4& v, float s);
+
+CVector4 operator *(const CVector4& v, const CMatrix4x4& mat);
+CVector4 operator *(const CMatrix4x4& mat, const CVector4& v);
 
 #include "OEMath.inl"
 

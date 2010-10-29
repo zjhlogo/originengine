@@ -12,6 +12,9 @@
 #include <OEBase/IOEMsgMgr.h>
 #include <OECore/IOEDevice.h>
 #include <libOEMsg/OEMsgList.h>
+#include <libOEMsg/OEMsgRenderState.h>
+#include <libOEMsg/OEMsgTransform.h>
+
 #include <assert.h>
 
 extern IDirect3DDevice9* g_pd3dDevice;
@@ -34,6 +37,8 @@ bool COED3DRenderSystem_Impl::Init()
 	m_pShader = NULL;
 	m_pRenderTarget = NULL;
 	m_pD3DBackBufferSurface = NULL;
+	m_pD3DBackBufferDepthStencilSurface = NULL;
+	m_bLockCullMode = false;
 	return true;
 }
 
@@ -45,6 +50,18 @@ void COED3DRenderSystem_Impl::Destroy()
 bool COED3DRenderSystem_Impl::Initialize()
 {
 	if (FAILED(g_pd3dDevice->GetRenderTarget(0, &m_pD3DBackBufferSurface))) return false;
+	if (FAILED(g_pd3dDevice->GetDepthStencilSurface(&m_pD3DBackBufferDepthStencilSurface))) return false;
+
+	m_LastRenderState.m_bZBuffer = true;
+	m_LastRenderState.m_bAlphaTest = false;
+	m_LastRenderState.m_bFog = false;
+	m_LastRenderState.m_nFogColor;
+	m_LastRenderState.m_fFogNear;
+	m_LastRenderState.m_fFogFar;
+	m_LastRenderState.m_eFillMode = FM_SOLID;
+	m_LastRenderState.m_eCullMode = CMT_CCW;
+	m_LastRenderState.m_bEnableClipPlane = false;
+	m_LastRenderState.m_vClipPlane.Init(0.0f, 0.0f, 0.0f, 0.0f);
 
 	g_pOEDevice->RegisterEvent(OMI_PRE_RENDER, this, (MSG_FUNC)&COED3DRenderSystem_Impl::OnPreRender3D);
 	g_pOEDevice->RegisterEvent(OMI_POST_RENDER, this, (MSG_FUNC)&COED3DRenderSystem_Impl::OnPostRender3D);
@@ -69,17 +86,16 @@ IOEShader* COED3DRenderSystem_Impl::GetShader() const
 
 bool COED3DRenderSystem_Impl::BeginRenderTarget(IOETexture* pTexture)
 {
-	if (!pTexture) return false;
+	if (m_pRenderTarget) return false;
 
+	if (!pTexture) return false;
 	if (pTexture->GetRtti()->GetTypeName() != TS("COED3DRenderTargetTexture_Impl")) return false;
 	COED3DRenderTargetTexture_Impl* pRenderTarget = (COED3DRenderTargetTexture_Impl*)pTexture;
 
-	IDirect3DTexture9* pD3DRenderTarget = pRenderTarget->GetTexture();
-	IDirect3DSurface9* pD3DSurface = NULL;
-	if (FAILED(pD3DRenderTarget->GetSurfaceLevel(0, &pD3DSurface))) return false;
+	if (FAILED(g_pd3dDevice->SetRenderTarget(0, pRenderTarget->GetSurface()))) return false;
+	if (FAILED(g_pd3dDevice->SetDepthStencilSurface(pRenderTarget->GetDepthStencilSurface()))) return false;
 
-	if (FAILED(g_pd3dDevice->SetRenderTarget(0, pD3DSurface))) return false;
-
+	m_pRenderTarget = pTexture;
 	g_pd3dDevice->Clear(0, NULL, D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER, D3DCOLOR_XRGB(0, 0, 0), 1.0f, 0);
 
 	return true;
@@ -87,7 +103,9 @@ bool COED3DRenderSystem_Impl::BeginRenderTarget(IOETexture* pTexture)
 
 void COED3DRenderSystem_Impl::EndRenderTarget()
 {
+	g_pd3dDevice->SetDepthStencilSurface(m_pD3DBackBufferDepthStencilSurface);
 	g_pd3dDevice->SetRenderTarget(0, m_pD3DBackBufferSurface);
+	m_pRenderTarget = NULL;
 }
 
 bool COED3DRenderSystem_Impl::CopyBackbuffer(IOETexture* pTexture)
@@ -97,11 +115,7 @@ bool COED3DRenderSystem_Impl::CopyBackbuffer(IOETexture* pTexture)
 	if (pTexture->GetRtti()->GetTypeName() != TS("COED3DRenderTargetTexture_Impl")) return false;
 	COED3DRenderTargetTexture_Impl* pRenderTarget = (COED3DRenderTargetTexture_Impl*)pTexture;
 
-	IDirect3DTexture9* pD3DRenderTarget = pRenderTarget->GetTexture();
-	IDirect3DSurface9* pD3DSurface = NULL;
-	if (FAILED(pD3DRenderTarget->GetSurfaceLevel(0, &pD3DSurface))) return false;
-
-	HRESULT hRet = g_pd3dDevice->StretchRect(m_pD3DBackBufferSurface, 0, pD3DSurface, 0, D3DTEXF_NONE);
+	HRESULT hRet = g_pd3dDevice->StretchRect(m_pD3DBackBufferSurface, 0, pRenderTarget->GetSurface(), 0, D3DTEXF_NONE);
 	if (FAILED(hRet)) return false;
 
 	return true;
@@ -127,30 +141,39 @@ bool COED3DRenderSystem_Impl::SetTransform(TRANSFORM_TYPE eType, const CMatrix4x
 	case TT_PROJECTION:
 		m_matProjection = mat;
 		break;
+	default:
+		return false;
+		break;
 	}
 
 	return true;
 }
 
-bool COED3DRenderSystem_Impl::GetTransform(CMatrix4x4& matOut, TRANSFORM_TYPE eType) const
+bool COED3DRenderSystem_Impl::GetTransform(CMatrix4x4& matOut, TRANSFORM_TYPE eType)
 {
 	bool bOK = false;
 
 	if (eType & TT_WORLD)
 	{
-		matOut *= m_matWorld;
+		COEMsgTransform msg(OMI_GET_TRANSFORM, m_matWorld, TT_WORLD);
+		CallEvent(msg);
+		matOut *= msg.GetMatrix();
 		bOK = true;
 	}
 
 	if (eType & TT_VIEW)
 	{
-		matOut *= m_matView;
+		COEMsgTransform msg(OMI_GET_TRANSFORM, m_matView, TT_VIEW);
+		CallEvent(msg);
+		matOut *= msg.GetMatrix();
 		bOK = true;
 	}
 
 	if (eType & TT_PROJECTION)
 	{
-		matOut *= m_matProjection;
+		COEMsgTransform msg(OMI_GET_TRANSFORM, m_matProjection, TT_PROJECTION);
+		CallEvent(msg);
+		matOut *= msg.GetMatrix();
 		bOK = true;
 	}
 
@@ -188,10 +211,15 @@ bool COED3DRenderSystem_Impl::PushRenderState()
 	return true;
 }
 
-bool COED3DRenderSystem_Impl::RestoreRenderState()
+bool COED3DRenderSystem_Impl::RestoreRenderState(const tstring& strCommon /* = EMPTY_STRING */)
 {
-	static const COED3DRenderState s_DefaultRenderState;
-	m_CurrRenderState = s_DefaultRenderState;
+	static const COERenderState s_DefaultRenderState;
+
+	COEMsgRenderState msg(s_DefaultRenderState, strCommon);
+	CallEvent(msg);
+
+	m_CurrRenderState = msg.GetRenderState();
+
 	return true;
 }
 
@@ -199,7 +227,10 @@ bool COED3DRenderSystem_Impl::PopRenderState()
 {
 	if (m_kRenderState.empty()) return false;
 
+	CULL_MODE_TYPE eCullMode = m_CurrRenderState.m_eCullMode;
 	m_CurrRenderState = m_kRenderState.top();
+	if (m_bLockCullMode) m_CurrRenderState.m_eCullMode = eCullMode;
+
 	m_kRenderState.pop();
 	return true;
 }
@@ -226,9 +257,34 @@ void COED3DRenderSystem_Impl::SetFogInfo(uint nColor, float fNear, float fFar)
 	m_CurrRenderState.m_fFogFar = fFar;
 }
 
+void COED3DRenderSystem_Impl::EnableClipPlane(bool bEnable)
+{
+	m_CurrRenderState.m_bEnableClipPlane = bEnable;
+}
+
+void COED3DRenderSystem_Impl::SetClipPlane(const CVector4& vClipPlane)
+{
+	m_CurrRenderState.m_vClipPlane = vClipPlane;
+}
+
+const CVector4& COED3DRenderSystem_Impl::GetClipPlane()
+{
+	return m_CurrRenderState.m_vClipPlane;
+}
+
 void COED3DRenderSystem_Impl::SetCullMode(CULL_MODE_TYPE eCullMode)
 {
-	m_CurrRenderState.m_eCullMode = eCullMode;
+	if (!m_bLockCullMode) m_CurrRenderState.m_eCullMode = eCullMode;
+}
+
+void COED3DRenderSystem_Impl::LockCullMode(const tstring& strReason)
+{
+	m_bLockCullMode = true;
+}
+
+void COED3DRenderSystem_Impl::UnlockCullMode()
+{
+	m_bLockCullMode = false;
 }
 
 void COED3DRenderSystem_Impl::SetFillMode(FILL_MODE eFillMode)
@@ -311,6 +367,33 @@ bool COED3DRenderSystem_Impl::ApplyRenderState()
 	{
 		D3DFILLMODE eD3DFill = COED3DUtil::ToD3DFillMode(m_CurrRenderState.m_eFillMode);
 		g_pd3dDevice->SetRenderState(D3DRS_FILLMODE, eD3DFill);
+	}
+
+	// apply clip plane
+	if (m_LastRenderState.m_bEnableClipPlane != m_CurrRenderState.m_bEnableClipPlane)
+	{
+		if (m_CurrRenderState.m_bEnableClipPlane)
+		{
+			g_pd3dDevice->SetRenderState(D3DRS_CLIPPLANEENABLE, TRUE);
+		}
+		else
+		{
+			g_pd3dDevice->SetRenderState(D3DRS_CLIPPLANEENABLE, FALSE);
+		}
+	}
+
+	// apply clip plane data
+	if (fabsf(m_LastRenderState.m_vClipPlane.x-m_CurrRenderState.m_vClipPlane.x) > COEMath::TOL
+		|| fabsf(m_LastRenderState.m_vClipPlane.y-m_CurrRenderState.m_vClipPlane.y) > COEMath::TOL
+		|| fabsf(m_LastRenderState.m_vClipPlane.z-m_CurrRenderState.m_vClipPlane.z) > COEMath::TOL
+		|| fabsf(m_LastRenderState.m_vClipPlane.w-m_CurrRenderState.m_vClipPlane.w) > COEMath::TOL)
+	{
+		float pClipSpacePlane[4];
+		pClipSpacePlane[0] = m_CurrRenderState.m_vClipPlane.x;
+		pClipSpacePlane[1] = m_CurrRenderState.m_vClipPlane.y;
+		pClipSpacePlane[2] = m_CurrRenderState.m_vClipPlane.z;
+		pClipSpacePlane[3] = m_CurrRenderState.m_vClipPlane.w;
+		g_pd3dDevice->SetClipPlane(0, pClipSpacePlane);
 	}
 
 	m_LastRenderState = m_CurrRenderState;

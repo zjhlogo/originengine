@@ -46,7 +46,7 @@ bool CMeshApp::UserDataInit()
 
 void CMeshApp::UserDataTerm()
 {
-	SAFE_DELETE(m_pModel);
+	SAFE_RELEASE(m_pModel);
 }
 
 void CMeshApp::Update(float fDetailTime)

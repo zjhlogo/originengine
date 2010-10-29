@@ -31,7 +31,6 @@ CUIApp::~CUIApp()
 void CUIApp::Init()
 {
 	m_pModel = NULL;
-	m_pRenderTargetTexture = NULL;
 }
 
 void CUIApp::Destroy()
@@ -50,38 +49,16 @@ bool CUIApp::UserDataInit()
 	CUITestWindow* pTestWindow = new CUITestWindow(g_pOEUIRenderSystem->GetScreen());
 	if (!pTestWindow) return false;
 
-	m_pRenderTargetTexture = g_pOETextureMgr->CreateRenderTargetTexture(200, 150, TF_A8R8G8B8);
-	if (!m_pRenderTargetTexture) return false;
-
-	m_pModel->RegisterEvent(OMI_PRE_RENDER, this, (MSG_FUNC)&CUIApp::OnPreRender);
-	m_pModel->RegisterEvent(OMI_POST_RENDER, this, (MSG_FUNC)&CUIApp::OnPostRender);
-
-	pTestWindow->SetRenderTargetTexture(m_pRenderTargetTexture);
-
 	ResetCameraPosRot(m_pModel);
 	return true;
 }
 
 void CUIApp::UserDataTerm()
 {
-	SAFE_RELEASE(m_pRenderTargetTexture);
 	SAFE_RELEASE(m_pModel);
 }
 
 void CUIApp::Update(float fDetailTime)
 {
 	// TODO: 
-}
-
-bool CUIApp::OnPreRender(COEMsgCommand& msg)
-{
-	//g_pOERenderSystem->BeginRenderTarget(m_pRenderTargetTexture);
-	return true;
-}
-
-bool CUIApp::OnPostRender(COEMsgCommand& msg)
-{
-	//g_pOERenderSystem->EndRenderTarget();
-	g_pOERenderSystem->CopyBackbuffer(m_pRenderTargetTexture);
-	return true;
 }

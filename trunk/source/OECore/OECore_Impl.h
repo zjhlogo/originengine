@@ -42,6 +42,9 @@ public:
 
 	virtual IOENode* GetRootNode();
 
+	virtual bool RenderSceneToTexture(IOETexture* pTexture);
+	virtual bool IsRenderingSceneToTexture();
+
 private:
 	bool Init();
 	void Destroy();
@@ -72,6 +75,9 @@ private:
 
 	TS_RENDERABLE_OBJECT m_sRenderableObjects;
 	TV_RENDER_OBJECT_INFO m_vRenderObjectInfo;
+
+	bool m_bRendering;
+	bool m_bRenderingSceneToTexture;
 
 };
 

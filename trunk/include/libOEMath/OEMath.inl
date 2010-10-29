@@ -22,9 +22,20 @@ inline CVector3 operator *(const CMatrix4x4& mat, const CVector3& v)
 					v.x*mat.m[2]+v.y*mat.m[6]+v.z*mat.m[10]+mat.m[14]);
 }
 
-inline CVector4 operator *(const CVector4& v, float s)
+inline CVector4 operator *(const CVector4& v, const CMatrix4x4& mat)
 {
-	return CVector4(v.x*s, v.y*s, v.z*s, v.w*s);
+	return CVector4(v.x*mat.m[0]+v.y*mat.m[4]+v.z*mat.m[8]+v.w*mat.m[12],
+					v.x*mat.m[1]+v.y*mat.m[5]+v.z*mat.m[9]+v.w*mat.m[13],
+					v.x*mat.m[2]+v.y*mat.m[6]+v.z*mat.m[10]+v.w*mat.m[14],
+					v.x*mat.m[3]+v.y*mat.m[7]+v.z*mat.m[11]+v.w*mat.m[15]);
+}
+
+inline CVector4 operator *(const CMatrix4x4& mat, const CVector4& v)
+{
+	return CVector4(v.x*mat.m[0]+v.y*mat.m[4]+v.z*mat.m[8]+v.w*mat.m[12],
+					v.x*mat.m[1]+v.y*mat.m[5]+v.z*mat.m[9]+v.w*mat.m[13],
+					v.x*mat.m[2]+v.y*mat.m[6]+v.z*mat.m[10]+v.w*mat.m[14],
+					v.x*mat.m[3]+v.y*mat.m[7]+v.z*mat.m[11]+v.w*mat.m[15]);
 }
 
 inline CMatrix4x4 operator *(const CMatrix4x4& m1, const CMatrix4x4& m2)

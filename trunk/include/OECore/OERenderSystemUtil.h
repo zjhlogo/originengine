@@ -13,10 +13,10 @@
 class CDefaultRenderState
 {
 public:
-	CDefaultRenderState()
+	CDefaultRenderState(const tstring& strCommon = EMPTY_STRING)
 	{
 		g_pOERenderSystem->PushRenderState();
-		g_pOERenderSystem->RestoreRenderState();
+		g_pOERenderSystem->RestoreRenderState(strCommon);
 	};
 
 	~CDefaultRenderState()

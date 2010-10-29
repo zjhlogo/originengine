@@ -45,7 +45,7 @@ bool CSkyApp::UserDataInit()
 
 void CSkyApp::UserDataTerm()
 {
-	SAFE_DELETE(m_pModel);
+	SAFE_RELEASE(m_pModel);
 }
 
 void CSkyApp::Update(float fDetailTime)

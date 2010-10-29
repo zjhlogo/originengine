@@ -10,6 +10,7 @@
 
 #include "IOEMgr.h"
 #include "IOENode.h"
+#include "IOETexture.h"
 
 class IOECore : public IOEMgr
 {
@@ -24,6 +25,8 @@ public:
 
 	virtual IOENode* GetRootNode() = 0;
 
+	virtual bool RenderSceneToTexture(IOETexture* pTexture) = 0;
+	virtual bool IsRenderingSceneToTexture() = 0;
 };
 
 extern IOECore* g_pOECore;

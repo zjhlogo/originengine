@@ -19,7 +19,7 @@ class IOERenderData : public IOEObject
 public:
 	RTTI_DEF(IOERenderData, IOEObject);
 
-	IOERenderData(IOEObject* pHolder) {m_pHolder = pHolder; m_pNode = NULL;};
+	IOERenderData(IOEObject* pHolder) {m_pHolder = pHolder; m_pNode = NULL; m_pRenderTarget = NULL;};
 	virtual ~IOERenderData() {};
 
 	void SetNode(IOENode* pNode) {m_pNode = pNode;};
@@ -38,9 +38,13 @@ public:
 	virtual void SetTotalTime(float fTotalTime) = 0;
 	virtual float GetTotalTime() const = 0;
 
+	virtual void SetRenderTarget(IOETexture* pTexture) {m_pRenderTarget = pTexture;};
+	virtual IOETexture* GetRenderTarget() {return m_pRenderTarget;};
+
 private:
 	IOENode* m_pNode;
 	IOEObject* m_pHolder;
+	IOETexture* m_pRenderTarget;
 
 };
 #endif // __IOERENDERDATA_H__

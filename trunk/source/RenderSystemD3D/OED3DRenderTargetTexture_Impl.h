@@ -23,7 +23,8 @@ public:
 	virtual int GetHeight() const;
 	virtual TEXTURE_FORMAT GetFormat() const;
 
-	IDirect3DTexture9* GetTexture() const;
+	IDirect3DSurface9* GetSurface();
+	IDirect3DSurface9* GetDepthStencilSurface();
 
 private:
 	void Init();
@@ -33,6 +34,7 @@ private:
 
 private:
 	IDirect3DTexture9* m_pTexture;
+	IDirect3DSurface9* m_pDepthStencilSurface;
 	int m_nWidth;
 	int m_nHeight;
 	TEXTURE_FORMAT m_eFormat;

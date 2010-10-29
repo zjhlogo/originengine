@@ -12,7 +12,7 @@ const float COEMath::PI = 3.14159265f;
 const float COEMath::PIX2 = 6.2831853f;
 const float COEMath::G = -32.174f;							// acceleration due to gravity, ft/s^2
 const float COEMath::RHO = 0.0023769f;						// desity of air at sea level, slugs/ft^3
-const float COEMath::TOL = 1E-5f;								// float type tolerance
+const float COEMath::TOL = 1E-5f;							// float type tolerance
 const float COEMath::FLOAT_MIN = 1.175494351e-38F;			// 1.175494351e-38F
 const float COEMath::FLOAT_MAX = 3.402823466e+38F;			// 3.402823466e+38F
 
