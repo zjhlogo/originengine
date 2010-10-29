@@ -87,4 +87,14 @@ inline CVector4 CVector4::operator -() const
 	return CVector4(-x, -y, -z, -w);
 }
 
+inline CVector4 operator *(const CVector4& v, float s)
+{
+	return CVector4(v.x*s, v.y*s, v.z*s, v.w*s);
+}
+
+inline CVector4 operator *(float s, const CVector4& v)
+{
+	return CVector4(v.x*s, v.y*s, v.z*s, v.w*s);
+}
+
 #endif // __VECTOR4_INL__

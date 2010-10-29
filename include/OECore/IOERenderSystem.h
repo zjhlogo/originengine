@@ -30,7 +30,7 @@ public:
 	virtual bool CopyBackbuffer(IOETexture* pTexture) = 0;
 
 	virtual bool SetTransform(TRANSFORM_TYPE eType, const CMatrix4x4& mat) = 0;
-	virtual bool GetTransform(CMatrix4x4& matOut, TRANSFORM_TYPE eType) const = 0;
+	virtual bool GetTransform(CMatrix4x4& matOut, TRANSFORM_TYPE eType) = 0;
 
 	virtual void DrawLineList(const void* pVerts, uint nVerts, const ushort* pIndis, uint nIndis) = 0;
 	virtual void DrawLineStrip(const void* pVerts, uint nVerts, const ushort* pIndis, uint nIndis) = 0;
@@ -40,7 +40,7 @@ public:
 	virtual void DrawTriFan(const void* pVerts, uint nVerts, const ushort* pIndis, uint nIndis) = 0;
 
 	virtual bool PushRenderState() = 0;
-	virtual bool RestoreRenderState() = 0;
+	virtual bool RestoreRenderState(const tstring& strCommon = EMPTY_STRING) = 0;
 	virtual bool PopRenderState() = 0;
 
 	virtual void EnableZBuffer(bool bEnable) = 0;
@@ -49,7 +49,14 @@ public:
 	virtual void EnableFog(bool bEnable) = 0;
 	virtual void SetFogInfo(uint nColor, float fNear, float fFar) = 0;
 
+	virtual void EnableClipPlane(bool bEnable) = 0;
+	virtual void SetClipPlane(const CVector4& vClipPlane) = 0;
+	virtual const CVector4& GetClipPlane() = 0;
+
 	virtual void SetCullMode(CULL_MODE_TYPE eCullMode) = 0;
+	virtual void LockCullMode(const tstring& strReason) = 0;
+	virtual void UnlockCullMode() = 0;
+
 	virtual void SetFillMode(FILL_MODE eFillMode) = 0;
 
 };

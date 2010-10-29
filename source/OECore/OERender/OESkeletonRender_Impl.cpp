@@ -57,7 +57,7 @@ bool COESkeletonRender_Impl::Render(IOERenderData* pRenderData)
 
 	CMatrix4x4 matModelToWorld = pRenderData->GetNode()->GetFinalMatrix();
 	CMatrix4x4 matWorldToProject = matModelToWorld;
-	g_pOERenderSystem->GetTransform(matWorldToProject, TT_VIEW_PROJ);
+	g_pOERenderSystem->GetTransform(matWorldToProject, TT_WORLD_VIEW_PROJ);
 
 	m_pShader->SetMatrix(TS("g_matWorldToProject"), matWorldToProject);
 	g_pOERenderSystem->SetShader(m_pShader);

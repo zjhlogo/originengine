@@ -26,12 +26,8 @@ private:
 	void Init();
 	void Destroy();
 
-	bool OnPreRender(COEMsgCommand& msg);
-	bool OnPostRender(COEMsgCommand& msg);
-
 private:
 	IOEModel* m_pModel;
-	IOETexture* m_pRenderTargetTexture;
 
 };
 

@@ -358,6 +358,14 @@
 			RelativePath=".\LakeApp.h"
 			>
 		</File>
+		<File
+			RelativePath=".\OEWaterRender_Impl.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\OEWaterRender_Impl.h"
+			>
+		</File>
 	</Files>
 	<Globals>
 	</Globals>

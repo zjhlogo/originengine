@@ -39,7 +39,7 @@ public:
 	virtual void Release();
 
 	virtual void RegisterEvent(uint nMsgID, IOEObject* pHandler, MSG_FUNC pFunc);
-	virtual void UnregisterEvent(uint nMsgID, IOEObject* pHandler);
+	virtual void UnregisterEvent(uint nMsgID, IOEObject* pHandler, MSG_FUNC pFunc);
 	bool CallEvent(IOEMsg& msg);
 
 	int IncRef();

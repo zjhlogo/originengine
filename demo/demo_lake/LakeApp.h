@@ -27,8 +27,10 @@ private:
 	void Destroy();
 
 private:
+	IOEModel* m_pModelSky;
 	IOEModel* m_pModelLand;
 	IOEModel* m_pModelLake;
+	IOETexture* m_pRenderTargetTexture;
 
 };
 #endif // __LAKEAPP_H__

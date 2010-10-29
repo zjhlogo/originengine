@@ -39,10 +39,12 @@ bool CBaseApp::Initialize()
 	if (!pNode) return false;
 	m_pCamera->SetTargetNode(pNode);
 
+	if (!UserDataInit()) return false;
+
 	m_pFPS = new CFPSWindow(g_pOEUIRenderSystem->GetScreen());
 	if (!m_pFPS) return false;
 
-	return UserDataInit();
+	return true;
 }
 
 void CBaseApp::Terminate()

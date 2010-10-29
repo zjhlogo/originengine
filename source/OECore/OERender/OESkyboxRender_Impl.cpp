@@ -37,17 +37,12 @@ bool COESkyboxRender_Impl::Render(IOERenderData* pRenderData)
 	IOEMesh* pMesh = pRenderData->GetMesh();
 	if (!pMesh) return false;
 
-	IOENode* pCameraNode = g_pOECore->GetRootNode()->GetChildNode(TS("Camera"));
-	if (!pCameraNode) return false;
+	CMatrix4x4 matWorldToProject;
+	g_pOERenderSystem->GetTransform(matWorldToProject, TT_WORLD_VIEW);
+	COEMath::SetMatrixTranslation(matWorldToProject, COEMath::VECTOR_ZERO);
+	g_pOERenderSystem->GetTransform(matWorldToProject, TT_PROJECTION);
 
-	const CVector3& vEyePos = pCameraNode->GetPosition();
-	CMatrix4x4 matWorld;
-	COEMath::SetMatrixTranslation(matWorld, vEyePos);
-
-	CMatrix4x4 matWorldToProject = matWorld;
-	g_pOERenderSystem->GetTransform(matWorldToProject, TT_VIEW_PROJ);
-
-	CDefaultRenderState DefaultState;
+	CDefaultRenderState DefaultState(TS("ModelSpace"));
 
 	g_pOERenderSystem->EnableZBuffer(false);
 
@@ -65,7 +60,7 @@ bool COESkyboxRender_Impl::Render(IOERenderData* pRenderData)
 
 		if (pPiece->GetVertDeclMask() != pMaterial->GetVertDeclMask()) continue;
 
-		// give user chance to setup shader parameter
+		// give user a chance to setup shader parameter
 		COEMsgShaderParam msg(pShader);
 		pRenderData->GetHolder()->CallEvent(msg);
 

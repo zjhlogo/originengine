@@ -323,11 +323,27 @@
 			>
 		</File>
 		<File
+			RelativePath=".\OEMsgRenderState.cpp"
+			>
+		</File>
+		<File
+			RelativePath="..\..\include\libOEMsg\OEMsgRenderState.h"
+			>
+		</File>
+		<File
 			RelativePath=".\OEMsgShaderParam.cpp"
 			>
 		</File>
 		<File
 			RelativePath="..\..\include\libOEMsg\OEMsgShaderParam.h"
+			>
+		</File>
+		<File
+			RelativePath=".\OEMsgTransform.cpp"
+			>
+		</File>
+		<File
+			RelativePath="..\..\include\libOEMsg\OEMsgTransform.h"
 			>
 		</File>
 	</Files>

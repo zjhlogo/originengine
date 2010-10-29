@@ -35,6 +35,9 @@ public:
 
 };
 
+CVector4 operator *(const CVector4& v, float s);
+CVector4 operator *(float s, const CVector4& v);
+
 #include "Vector4.inl"
 
 #endif // __VECTOR4_H__

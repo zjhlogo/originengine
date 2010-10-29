@@ -46,6 +46,8 @@ bool COECore_Impl::Init()
 {
 	m_bRunning = false;
 	m_pRootNode = NULL;
+	m_bRendering = false;
+	m_bRenderingSceneToTexture = false;
 	return true;
 }
 
@@ -106,6 +108,26 @@ void COECore_Impl::End()
 IOENode* COECore_Impl::GetRootNode()
 {
 	return m_pRootNode;
+}
+
+bool COECore_Impl::RenderSceneToTexture(IOETexture* pTexture)
+{
+	if (!m_bRendering) return false;
+	if (m_bRenderingSceneToTexture) return false;
+
+	if (!g_pOERenderSystem->BeginRenderTarget(pTexture)) return false;
+
+	m_bRenderingSceneToTexture = true;
+	RenderObjects(g_pOEDevice->GetDetailTime());
+	m_bRenderingSceneToTexture = false;
+
+	g_pOERenderSystem->EndRenderTarget();
+	return true;
+}
+
+bool COECore_Impl::IsRenderingSceneToTexture()
+{
+	return m_bRenderingSceneToTexture;
 }
 
 bool COECore_Impl::InitializeInterfaces()
@@ -293,6 +315,7 @@ void COECore_Impl::RenderObjects(float fDetailTime)
 	for (TV_RENDER_OBJECT_INFO::iterator it = m_vRenderObjectInfo.begin(); it != m_vRenderObjectInfo.end(); ++it)
 	{
 		RENDER_OBJECT_INFO& ObjInfo = (*it);
+		if (!ObjInfo.pObject->IsVisible()) continue;
 		IOERenderData* pRenderData = ObjInfo.pObject->GetRenderData();
 		if (pRenderData) pRenderData->SetNode(ObjInfo.pNode);
 		ObjInfo.pObject->Render(fDetailTime);
@@ -339,7 +362,7 @@ bool COECore_Impl::OnPostUpdate(COEMsgCommand& msg)
 
 bool COECore_Impl::OnPreRender(COEMsgCommand& msg)
 {
-	// TODO: 
+	m_bRendering = true;
 	return true;
 }
 
@@ -352,6 +375,6 @@ bool COECore_Impl::OnRender(COEMsgCommand& msg)
 
 bool COECore_Impl::OnPostRender(COEMsgCommand& msg)
 {
-	// TODO: 
+	m_bRendering = false;
 	return true;
 }

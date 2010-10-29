@@ -12,7 +12,6 @@
 #include <OEBase/IOEMsgMgr.h>
 #include <libOEMsg/OEMsgList.h>
 #include <libOEMsg/OEMsgShaderParam.h>
-#include <libOEMsg/OEMsgCommand.h>
 
 COESkinMeshRender_Impl::COESkinMeshRender_Impl()
 {
@@ -33,15 +32,10 @@ bool COESkinMeshRender_Impl::Render(IOERenderData* pRenderData)
 	if (!pCameraNode) return false;
 
 	CMatrix4x4 matModelToWorld = pRenderData->GetNode()->GetFinalMatrix();
-
 	CMatrix4x4 matWorldToProject = matModelToWorld;
-	g_pOERenderSystem->GetTransform(matWorldToProject, TT_VIEW_PROJ);
+	g_pOERenderSystem->GetTransform(matWorldToProject, TT_WORLD_VIEW_PROJ);
 
 	CDefaultRenderState DefaultState;
-
-	// pre render event
-	COEMsgCommand msgPreRender(OMI_PRE_RENDER);
-	pRenderData->GetHolder()->CallEvent(msgPreRender);
 
 	int nNumPiece = pMesh->GetNumPieces();
 	for (int i = 0; i < nNumPiece; ++i)
@@ -75,10 +69,6 @@ bool COESkinMeshRender_Impl::Render(IOERenderData* pRenderData)
 		g_pOERenderSystem->SetShader(pShader);
 		g_pOERenderSystem->DrawTriList(pPiece->GetVerts(), pPiece->GetNumVerts(), pPiece->GetIndis(), pPiece->GetNumIndis());
 	}
-
-	// post render event
-	COEMsgCommand msgPostRender(OMI_POST_RENDER);
-	pRenderData->GetHolder()->CallEvent(msgPostRender);
 
 	return true;
 }

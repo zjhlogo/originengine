@@ -32,4 +32,7 @@
 	<Message id="OMI_UI_POST_RENDER" class="COEMsgCommand" />
 
 	<Message id="OMI_SETUP_SHADER_PARAM" class="COEMsgShaderParam" />
+	<Message id="OMI_GET_TRANSFORM" class="COEMsgTransform" />
+	<Message id="OMI_RESTORE_RENDER_STATE" class="COEMsgRenderState" />
+
 </MessageList>

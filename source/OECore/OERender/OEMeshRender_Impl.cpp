@@ -25,15 +25,13 @@ bool COEMeshRender_Impl::Render(IOERenderData* pRenderData)
 	IOEMesh* pMesh = pRenderData->GetMesh();
 	if (!pMesh) return false;
 
-	int nNumPiece = pMesh->GetNumPieces();
-
 	CMatrix4x4 matModelToWorld = pRenderData->GetNode()->GetFinalMatrix();
-
 	CMatrix4x4 matWorldToProject = matModelToWorld;
-	g_pOERenderSystem->GetTransform(matWorldToProject, TT_VIEW_PROJ);
+	g_pOERenderSystem->GetTransform(matWorldToProject, TT_WORLD_VIEW_PROJ);
 
 	CDefaultRenderState DefaultState;
 
+	int nNumPiece = pMesh->GetNumPieces();
 	for (int i = 0; i < nNumPiece; ++i)
 	{
 		IOEPiece* pPiece = pMesh->GetPiece(i);

@@ -55,14 +55,27 @@ void IOEObject::RegisterEvent(uint nMsgID, IOEObject* pHandler, MSG_FUNC pFunc)
 	m_EventsMap.insert(std::make_pair(nMsgID, handler));
 }
 
-void IOEObject::UnregisterEvent(uint nMsgID, IOEObject* pHandler)
+void IOEObject::UnregisterEvent(uint nMsgID, IOEObject* pHandler, MSG_FUNC pFunc)
 {
-	// TODO: 
+	TP_EVENT_HANDLER range = m_EventsMap.equal_range(nMsgID);
+	if (range.first == range.second) return;
+
+	for (TM_EVENT_HANDLER::iterator it = range.first; it != range.second; ++it)
+	{
+		EVENT_HANDLER& handler = it->second;
+		if (handler.pHandler == pHandler && handler.pFunc == pFunc)
+		{
+			m_EventsMap.erase(it);
+			return;
+		}
+	}
 }
 
 bool IOEObject::CallEvent(IOEMsg& msg)
 {
 	TP_EVENT_HANDLER range = m_EventsMap.equal_range(msg.GetMsgID());
+	if (range.first == range.second) return false;
+
 	for (TM_EVENT_HANDLER::iterator it = range.first; it != range.second; ++it)
 	{
 		EVENT_HANDLER& handler = it->second;
