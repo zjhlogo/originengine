@@ -10,6 +10,9 @@
 #include "OEMesh_Impl.h"
 #include "OESkeleton_Impl.h"
 #include "OEMaterial_Impl.h"
+#include "OERenderData_Impl.h"
+#include "OEAnimData_Impl.h"
+#include "OEMaterialsList_Impl.h"
 
 #include <OEBase/IOELogFileMgr.h>
 #include <OECore/IOEConfigFileMgr.h>
@@ -51,6 +54,19 @@ bool COEResMgr_Impl::Initialize()
 void COEResMgr_Impl::Terminate()
 {
 	// TODO: check m_MeshMap/m_BonesMap whether is empty, and logout
+}
+
+IOERenderData* COEResMgr_Impl::CreateRenderData()
+{
+	COERenderData_Impl* pRenderData = new COERenderData_Impl();
+	if (!pRenderData || !pRenderData->IsOK())
+	{
+		LOGOUT(TS("IOEModelMgr::CreateRenderData Failed"));
+		SAFE_DELETE(pRenderData);
+		return NULL;
+	}
+
+	return pRenderData;
 }
 
 IOEModel* COEResMgr_Impl::CreateModel(const tstring& strFile)
@@ -138,6 +154,32 @@ IOEMaterial* COEResMgr_Impl::CreateMaterial(IOEXmlNode* pXmlMaterial)
 	}
 
 	return pMaterial;
+}
+
+IOEAnimData* COEResMgr_Impl::CreateAnimData(const tstring& strFile)
+{
+	COEAnimData_Impl* pAnimData = new COEAnimData_Impl(strFile);
+	if (!pAnimData || !pAnimData->IsOK())
+	{
+		LOGOUT(TS("IOEModelMgr::CreateAnimData Failed"));
+		SAFE_DELETE(pAnimData);
+		return NULL;
+	}
+
+	return pAnimData;
+}
+
+IOEMaterialsList* COEResMgr_Impl::CreateMaterialsList(IOEXmlNode* pXmlMaterials)
+{
+	COEMaterialsList_Impl* pMaterialsList = new COEMaterialsList_Impl(pXmlMaterials);
+	if (!pMaterialsList || !pMaterialsList->IsOK())
+	{
+		LOGOUT(TS("IOEModelMgr::CreateMaterialsList Failed"));
+		SAFE_DELETE(pMaterialsList);
+		return NULL;
+	}
+
+	return pMaterialsList;
 }
 
 void COEResMgr_Impl::SetDefaultDir(const tstring& strDir)

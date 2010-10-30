@@ -10,6 +10,7 @@
 #include <OECore/IOERenderSystem.h>
 #include <OECore/OERenderSystemUtil.h>
 #include <OECore/OEFmtMesh.h>
+#include <OECore/IOENode.h>
 
 COETangentRender_Impl::COETangentRender_Impl()
 {
@@ -37,18 +38,18 @@ void COETangentRender_Impl::Destroy()
 
 bool COETangentRender_Impl::Render(IOERenderData* pRenderData)
 {
-	IOEMesh* pMesh = pRenderData->GetMesh();
+	IOEMesh* pMesh = pRenderData->GetMesh(TS("MainMesh"));
 	if (!pMesh) return false;
 
-	int nNumPiece = pMesh->GetNumPieces();
+	IOENode* pAttachedNode = (IOENode*)pRenderData->GetObject(TS("AttachedNode"));
+	if (!pAttachedNode) return false;
 
-	CMatrix4x4 matModelToWorld = pRenderData->GetNode()->GetFinalMatrix();
-
-	CMatrix4x4 matWorldToProject = matModelToWorld;
+	CMatrix4x4 matWorldToProject = pAttachedNode->GetFinalMatrix();
 	g_pOERenderSystem->GetTransform(matWorldToProject, TT_WORLD_VIEW_PROJ);
 
 	CDefaultRenderState DefaultState;
 
+	int nNumPiece = pMesh->GetNumPieces();
 	for (int i = 0; i < nNumPiece; ++i)
 	{
 		IOEPiece* pPiece = pMesh->GetPiece(i);

@@ -20,44 +20,47 @@ COESkinMeshControl_Impl::~COESkinMeshControl_Impl()
 
 bool COESkinMeshControl_Impl::Update(IOERenderData* pRenderData, float fDetailTime)
 {
-	float fTotalTime = pRenderData->GetTotalTime() + fDetailTime;
-	float fAnimLength = pRenderData->GetAnimLength();
+	IOEAnimData* pAnimData = pRenderData->GetAnimData(TS("MainAnimData"));
+	if (!pAnimData) return false;
 
-	if (fTotalTime > fAnimLength || fTotalTime < 0.0f)
+	float fCurrTime = pAnimData->GetCurrTime() + fDetailTime;
+	float fAnimLength = pAnimData->GetAnimLength();
+
+	if (fCurrTime > fAnimLength || fCurrTime < 0.0f)
 	{
-		fTotalTime -= floorf(fTotalTime/fAnimLength)*fAnimLength;
+		fCurrTime -= floorf(fCurrTime/fAnimLength)*fAnimLength;
 	}
 
-	pRenderData->SetTotalTime(fTotalTime);
+	pAnimData->SetCurrTime(fCurrTime);
 
-	IOESkeleton* pSkeleton = pRenderData->GetSkeleton();
-	TV_MATRIX4X4& vSkinMatrix = pRenderData->GetSkinMatrix();
+	IOESkeleton* pSkeleton = pAnimData->GetSkeleton();
+	CMatrix4x4* pSkinMatrixs = pAnimData->GetSkinMatrixs();
 
-	int nNumBones = (int)pSkeleton->GetBonesCount();
+	int nNumBones = pSkeleton->GetBonesCount();
 	for (int i = 0; i < nNumBones; ++i)
 	{
 		IOEBone* pBone = pSkeleton->GetBone(i);
 
-		if (fTotalTime > pBone->GetTimeLength())
+		if (fCurrTime > pBone->GetTimeLength())
 		{
-			pBone->SlerpMatrix(vSkinMatrix[i], fTotalTime, false);
+			pBone->SlerpMatrix(pSkinMatrixs[i], fCurrTime, false);
 		}
 		else
 		{
-			pBone->SlerpMatrix(vSkinMatrix[i], fTotalTime, true);
+			pBone->SlerpMatrix(pSkinMatrixs[i], fCurrTime, true);
 		}
 
 		int nParentID = pBone->GetParentID();
 		if (nParentID != COEFmtSkeleton::INVALID_BONE_ID)
 		{
-			vSkinMatrix[i] *= vSkinMatrix[nParentID];
+			pSkinMatrixs[i] *= pSkinMatrixs[nParentID];
 		}
 	}
 
 	for (int i = 0; i < nNumBones; ++i)
 	{
 		IOEBone* pBone = pSkeleton->GetBone(i);
-		vSkinMatrix[i] = pBone->GetWorldMatrixInv()*vSkinMatrix[i];
+		pSkinMatrixs[i] = pBone->GetWorldMatrixInv()*pSkinMatrixs[i];
 	}
 
 	return true;

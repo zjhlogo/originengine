@@ -10,6 +10,7 @@
 #include <OECore/IOERenderSystem.h>
 #include <OECore/OERenderSystemUtil.h>
 #include <OECore/OEFmtMesh.h>
+#include <OECore/IOENode.h>
 
 COEBinormalRender_Impl::COEBinormalRender_Impl()
 {
@@ -37,10 +38,13 @@ void COEBinormalRender_Impl::Destroy()
 
 bool COEBinormalRender_Impl::Render(IOERenderData* pRenderData)
 {
-	IOEMesh* pMesh = pRenderData->GetMesh();
+	IOEMesh* pMesh = pRenderData->GetMesh(TS("MainMesh"));
 	if (!pMesh) return false;
 
-	CMatrix4x4 matModelToWorld = pRenderData->GetNode()->GetFinalMatrix();
+	IOENode* pAttachedNode = (IOENode*)pRenderData->GetObject(TS("AttachedNode"));
+	if (!pAttachedNode) return false;
+
+	CMatrix4x4 matModelToWorld = pAttachedNode->GetFinalMatrix();
 	CMatrix4x4 matWorldToProject = matModelToWorld;
 	g_pOERenderSystem->GetTransform(matWorldToProject, TT_WORLD_VIEW_PROJ);
 

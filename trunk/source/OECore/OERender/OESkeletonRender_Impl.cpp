@@ -11,6 +11,7 @@
 #include <OECore/IOERenderSystem.h>
 #include <OECore/OERenderSystemUtil.h>
 #include <OECore/OEFmtSkeleton.h>
+#include <OECore/IOENode.h>
 #include <assert.h>
 
 COESkeletonRender_Impl::COESkeletonRender_Impl()
@@ -38,25 +39,30 @@ void COESkeletonRender_Impl::Destroy()
 
 bool COESkeletonRender_Impl::Render(IOERenderData* pRenderData)
 {
-	IOESkeleton* pSkeleton = pRenderData->GetSkeleton();
+	IOEAnimData* pAnimData = pRenderData->GetAnimData(TS("MainAnimData"));
+	if (!pAnimData) return false;
+
+	IOESkeleton* pSkeleton = pAnimData->GetSkeleton();
 	if (!pSkeleton) return false;
 
 	m_vVerts.clear();
 	m_vIndis.clear();
 
-	const TV_MATRIX4X4& vmatSkins = pRenderData->GetSkinMatrix();
+	const CMatrix4x4* pSkinMatrixs = pAnimData->GetSkinMatrixs();
 
 	int nNumBones = pSkeleton->GetBonesCount();
 	for (int i = 0; i < nNumBones; ++i)
 	{
 		IOEBone* pBone = pSkeleton->GetBone(i);
-		BuildBoneVerts(m_vVerts, m_vIndis, pSkeleton, vmatSkins, pBone->GetID(), pBone->GetParentID());
+		BuildBoneVerts(m_vVerts, m_vIndis, pSkeleton, pSkinMatrixs, pBone->GetID(), pBone->GetParentID());
 	}
 
 	CDefaultRenderState DefaultState;
 
-	CMatrix4x4 matModelToWorld = pRenderData->GetNode()->GetFinalMatrix();
-	CMatrix4x4 matWorldToProject = matModelToWorld;
+	IOENode* pAttachedNode = (IOENode*)pRenderData->GetObject(TS("AttachedNode"));
+	if (!pAttachedNode) return false;
+
+	CMatrix4x4 matWorldToProject = pAttachedNode->GetFinalMatrix();
 	g_pOERenderSystem->GetTransform(matWorldToProject, TT_WORLD_VIEW_PROJ);
 
 	m_pShader->SetMatrix(TS("g_matWorldToProject"), matWorldToProject);
@@ -66,13 +72,13 @@ bool COESkeletonRender_Impl::Render(IOERenderData* pRenderData)
 	return true;
 }
 
-bool COESkeletonRender_Impl::BuildBoneVerts(TV_VERTEX_LINE& vVertsOut, TV_VERTEX_INDEX& vIndisOut, IOESkeleton* pSkeleton, const TV_MATRIX4X4& vmatSkins, int nBoneID, int nParentBoneID)
+bool COESkeletonRender_Impl::BuildBoneVerts(TV_VERTEX_LINE& vVertsOut, TV_VERTEX_INDEX& vIndisOut, IOESkeleton* pSkeleton, const CMatrix4x4* pSkinMatrixs, int nBoneID, int nParentBoneID)
 {
 	if (nParentBoneID == COEFmtSkeleton::INVALID_BONE_ID) return false;
 
 	IOEBone* pBone = pSkeleton->GetBone(nBoneID);
 	assert(pBone);
-	CMatrix4x4 matSkin = pBone->GetWorldMatrix() * vmatSkins[nBoneID];
+	CMatrix4x4 matSkin = pBone->GetWorldMatrix() * pSkinMatrixs[nBoneID];
 	VERTEX_LINE Vertex;
 	Vertex.x = matSkin.m[12];
 	Vertex.y = matSkin.m[13];
@@ -85,7 +91,7 @@ bool COESkeletonRender_Impl::BuildBoneVerts(TV_VERTEX_LINE& vVertsOut, TV_VERTEX
 
 	IOEBone* pBoneParent = pSkeleton->GetBone(nParentBoneID);
 	assert(pBoneParent);
-	matSkin = pBoneParent->GetWorldMatrix() * vmatSkins[nParentBoneID];
+	matSkin = pBoneParent->GetWorldMatrix() * pSkinMatrixs[nParentBoneID];
 	Vertex.x = matSkin.m[12];
 	Vertex.y = matSkin.m[13];
 	Vertex.z = matSkin.m[14];

@@ -65,7 +65,7 @@ void CBaseApp::PostUpdate(float fDetailTime)
 
 void CBaseApp::ResetCameraPosRot(IOEModel* pModel)
 {
-	IOEMesh* pMesh = pModel->GetRenderData()->GetMesh();
+	IOEMesh* pMesh = pModel->GetRenderData()->GetMesh(TS("MainMesh"));
 	m_pCamera->InitFromBBox(pMesh->GetBoundingBoxMin(), pMesh->GetBoundingBoxMax());
 }
 

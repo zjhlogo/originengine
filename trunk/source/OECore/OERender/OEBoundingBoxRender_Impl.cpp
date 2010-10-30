@@ -9,6 +9,7 @@
 #include <OECore/IOEShaderMgr.h>
 #include <OECore/IOERenderSystem.h>
 #include <OECore/OERenderSystemUtil.h>
+#include <OECore/IOENode.h>
 
 COEBoundingBoxRender_Impl::COEBoundingBoxRender_Impl()
 {
@@ -52,7 +53,7 @@ bool COEBoundingBoxRender_Impl::Render(IOERenderData* pRenderData)
 		3, 7,
 	};
 
-	IOEMesh* pMesh = pRenderData->GetMesh();
+	IOEMesh* pMesh = pRenderData->GetMesh(TS("MainMesh"));
 	if (!pMesh) return false;
 
 	const CVector3 vBBoxMin = pMesh->GetBoundingBoxMin();
@@ -110,7 +111,10 @@ bool COEBoundingBoxRender_Impl::Render(IOERenderData* pRenderData)
 
 	CDefaultRenderState DefaultState;
 
-	CMatrix4x4 matWorldToProject = pRenderData->GetNode()->GetFinalMatrix();
+	IOENode* pAttachedNode = (IOENode*)pRenderData->GetObject(TS("AttachedNode"));
+	if (!pAttachedNode) return false;
+
+	CMatrix4x4 matWorldToProject = pAttachedNode->GetFinalMatrix();
 	g_pOERenderSystem->GetTransform(matWorldToProject, TT_WORLD_VIEW_PROJ);
 
 	m_pShader->SetMatrix(TS("g_matWorldToProject"), matWorldToProject);

@@ -10,6 +10,7 @@
 #include <OECore/IOERenderSystem.h>
 #include <OECore/OERenderSystemUtil.h>
 #include <libOEMsg/OEMsgList.h>
+#include <libOEMsg/OEMsgShaderParam.h>
 
 COEWaterRender_Impl::COEWaterRender_Impl()
 {
@@ -23,26 +24,32 @@ COEWaterRender_Impl::~COEWaterRender_Impl()
 
 bool COEWaterRender_Impl::Render(IOERenderData* pRenderData)
 {
-	if (!CreateReflectTexture(pRenderData->GetRenderTarget())) return false;
-
-	IOEMesh* pMesh = pRenderData->GetMesh();
+	IOEMesh* pMesh = pRenderData->GetMesh(TS("MainMesh"));
 	if (!pMesh) return false;
 
-	int nNumPiece = pMesh->GetNumPieces();
+	IOENode* pAttachedNode = (IOENode*)pRenderData->GetObject(TS("AttachedNode"));
+	if (!pAttachedNode) return false;
 
-	CMatrix4x4 matModelToWorld = pRenderData->GetNode()->GetFinalMatrix();
+	IOEMaterialsList* pMaterialsList = pRenderData->GetMaterialsList(TS("MainMaterialsList"));
+	if (!pMaterialsList) return false;
 
-	CMatrix4x4 matWorldToProject = matModelToWorld;
+	IOETexture* pRenderTarget = pRenderData->GetTexture(TS("RenderTargetTexture"));
+	if (!pRenderTarget) return false;
+
+	if (!CreateReflectTexture(pRenderTarget)) return false;
+
+	CMatrix4x4 matWorldToProject = pAttachedNode->GetFinalMatrix();
 	g_pOERenderSystem->GetTransform(matWorldToProject, TT_WORLD_VIEW_PROJ);
 
 	CDefaultRenderState DefaultState;
 
+	int nNumPiece = pMesh->GetNumPieces();
 	for (int i = 0; i < nNumPiece; ++i)
 	{
 		IOEPiece* pPiece = pMesh->GetPiece(i);
 		if (!pPiece) continue;
 
-		IOEMaterial* pMaterial = pRenderData->GetMaterial(pPiece->GetMaterialID());
+		IOEMaterial* pMaterial = pMaterialsList->GetMaterial(pPiece->GetMaterialID());
 		if (!pMaterial) continue;
 
 		IOEShader* pShader = pMaterial->GetShader();
@@ -50,12 +57,16 @@ bool COEWaterRender_Impl::Render(IOERenderData* pRenderData)
 
 		if (pPiece->GetVertDeclMask() != pMaterial->GetVertDeclMask()) continue;
 
-		//// give user chance to setup shader parameter
-		//COEMsgShaderParam msg(pShader);
-		//pRenderData->GetHolder()->CallEvent(msg);
+		// give user chance to setup shader parameter
+		IOEObject* pHolder = pRenderData->GetObject(TS("Holder"));
+		if (pHolder)
+		{
+			COEMsgShaderParam msg(pShader);
+			pHolder->CallEvent(msg);
+		}
 
 		pShader->SetMatrix(TS("g_matWorldToProject"), matWorldToProject);
-		pShader->SetTexture(TS("g_texDiffuse"), pRenderData->GetRenderTarget());
+		pShader->SetTexture(TS("g_texDiffuse"), pRenderTarget);
 
 		g_pOERenderSystem->SetShader(pShader);
 		g_pOERenderSystem->DrawTriList(pPiece->GetVerts(), pPiece->GetNumVerts(), pPiece->GetIndis(), pPiece->GetNumIndis());

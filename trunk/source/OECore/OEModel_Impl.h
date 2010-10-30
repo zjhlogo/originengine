@@ -47,6 +47,18 @@ private:
 	bool CreateControls(IOEXmlNode* pXmlControls);
 	bool CreateRenderers(IOEXmlNode* pXmlRenderers);
 
+	bool LoadMesh(const tstring& strFile);
+	bool LoadAnimData(const tstring& strFile);
+	bool LoadMaterialsList(IOEXmlNode* pXmlMaterials);
+
+	bool CreateMesh(const tstring& strFile);
+	bool CreateAnimData(const tstring& strFile);
+	bool CreateMaterialsList(IOEXmlNode* pXmlMaterials);
+
+	void DestroyMesh();
+	void DestroyAnimData();
+	void DestroyMaterialsList();
+
 private:
 	IOERenderData* m_pRenderData;
 	TV_CONTROL m_vControls;

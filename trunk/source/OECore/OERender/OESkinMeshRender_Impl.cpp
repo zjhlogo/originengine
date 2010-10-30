@@ -9,6 +9,7 @@
 #include <OECore/IOECore.h>
 #include <OECore/IOERenderSystem.h>
 #include <OECore/OERenderSystemUtil.h>
+#include <OECore/IOENode.h>
 #include <OEBase/IOEMsgMgr.h>
 #include <libOEMsg/OEMsgList.h>
 #include <libOEMsg/OEMsgShaderParam.h>
@@ -25,13 +26,22 @@ COESkinMeshRender_Impl::~COESkinMeshRender_Impl()
 
 bool COESkinMeshRender_Impl::Render(IOERenderData* pRenderData)
 {
-	IOEMesh* pMesh = pRenderData->GetMesh();
+	IOEMesh* pMesh = pRenderData->GetMesh(TS("MainMesh"));
 	if (!pMesh) return false;
 
 	IOENode* pCameraNode = g_pOECore->GetRootNode()->GetChildNode(TS("Camera"));
 	if (!pCameraNode) return false;
 
-	CMatrix4x4 matModelToWorld = pRenderData->GetNode()->GetFinalMatrix();
+	IOENode* pAttachedNode = (IOENode*)pRenderData->GetObject(TS("AttachedNode"));
+	if (!pAttachedNode) return false;
+
+	IOEMaterialsList* pMaterialsList = pRenderData->GetMaterialsList(TS("MainMaterialsList"));
+	if (!pMaterialsList) return false;
+
+	IOEAnimData* pAnimData = pRenderData->GetAnimData(TS("MainAnimData"));
+	if (!pAnimData) return false;
+
+	CMatrix4x4 matModelToWorld = pAttachedNode->GetFinalMatrix();
 	CMatrix4x4 matWorldToProject = matModelToWorld;
 	g_pOERenderSystem->GetTransform(matWorldToProject, TT_WORLD_VIEW_PROJ);
 
@@ -43,7 +53,7 @@ bool COESkinMeshRender_Impl::Render(IOERenderData* pRenderData)
 		IOEPiece* pPiece = pMesh->GetPiece(i);
 		if (!pPiece) continue;
 
-		IOEMaterial* pMaterial = pRenderData->GetMaterial(pPiece->GetMaterialID());
+		IOEMaterial* pMaterial = pMaterialsList->GetMaterial(pPiece->GetMaterialID());
 		if (!pMaterial) continue;
 
 		IOEShader* pShader = pMaterial->GetShader();
@@ -52,19 +62,19 @@ bool COESkinMeshRender_Impl::Render(IOERenderData* pRenderData)
 		if (pPiece->GetVertDeclMask() != pMaterial->GetVertDeclMask()) continue;
 
 		// give user chance to setup shader parameter
-		COEMsgShaderParam msgShaderParam(pShader);
-		pRenderData->GetHolder()->CallEvent(msgShaderParam);
+		IOEObject* pHolder = pRenderData->GetObject(TS("Holder"));
+		if (pHolder)
+		{
+			COEMsgShaderParam msg(pShader);
+			pHolder->CallEvent(msg);
+		}
 
 		pShader->SetMatrix(TS("g_matWorldToModel"), matModelToWorld.Inverse());
 		pShader->SetMatrix(TS("g_matWorldToProject"), matWorldToProject);
 		pShader->SetTexture(TS("g_texDiffuse"), pMaterial->GetTexture(MTT_DIFFUSE));
 		pShader->SetTexture(TS("g_texNormal"), pMaterial->GetTexture(MTT_NORMAL));
 		pShader->SetVector(TS("g_vEyePos"), pCameraNode->GetPosition());
-		
-		const TV_MATRIX4X4& vmatSkins = pRenderData->GetSkinMatrix();
-		if (vmatSkins.size() <= 0) continue;
-
-		pShader->SetMatrixArray(TS("g_matBoneMatrix"), &vmatSkins[0], vmatSkins.size());
+		pShader->SetMatrixArray(TS("g_matBoneMatrix"), pAnimData->GetSkinMatrixs(), pAnimData->GetNumSkinMatrixs());
 
 		g_pOERenderSystem->SetShader(pShader);
 		g_pOERenderSystem->DrawTriList(pPiece->GetVerts(), pPiece->GetNumVerts(), pPiece->GetIndis(), pPiece->GetNumIndis());
