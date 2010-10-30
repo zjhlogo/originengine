@@ -8,6 +8,7 @@
 #include "OEMeshRender_Impl.h"
 #include <OECore/IOERenderSystem.h>
 #include <OECore/OERenderSystemUtil.h>
+#include <OECore/IOENode.h>
 #include <libOEMsg/OEMsgShaderParam.h>
 
 COEMeshRender_Impl::COEMeshRender_Impl()
@@ -22,10 +23,16 @@ COEMeshRender_Impl::~COEMeshRender_Impl()
 
 bool COEMeshRender_Impl::Render(IOERenderData* pRenderData)
 {
-	IOEMesh* pMesh = pRenderData->GetMesh();
+	IOEMesh* pMesh = pRenderData->GetMesh(TS("MainMesh"));
 	if (!pMesh) return false;
 
-	CMatrix4x4 matModelToWorld = pRenderData->GetNode()->GetFinalMatrix();
+	IOEMaterialsList* pMaterialsList = pRenderData->GetMaterialsList(TS("MainMaterialsList"));
+	if (!pMaterialsList) return false;
+
+	IOENode* pAttachedNode = (IOENode*)pRenderData->GetObject(TS("AttachedNode"));
+	if (!pAttachedNode) return false;
+
+	CMatrix4x4 matModelToWorld = pAttachedNode->GetFinalMatrix();
 	CMatrix4x4 matWorldToProject = matModelToWorld;
 	g_pOERenderSystem->GetTransform(matWorldToProject, TT_WORLD_VIEW_PROJ);
 
@@ -37,7 +44,7 @@ bool COEMeshRender_Impl::Render(IOERenderData* pRenderData)
 		IOEPiece* pPiece = pMesh->GetPiece(i);
 		if (!pPiece) continue;
 
-		IOEMaterial* pMaterial = pRenderData->GetMaterial(pPiece->GetMaterialID());
+		IOEMaterial* pMaterial = pMaterialsList->GetMaterial(pPiece->GetMaterialID());
 		if (!pMaterial) continue;
 
 		IOEShader* pShader = pMaterial->GetShader();
@@ -46,8 +53,12 @@ bool COEMeshRender_Impl::Render(IOERenderData* pRenderData)
 		if (pPiece->GetVertDeclMask() != pMaterial->GetVertDeclMask()) continue;
 
 		// give user chance to setup shader parameter
-		COEMsgShaderParam msg(pShader);
-		pRenderData->GetHolder()->CallEvent(msg);
+		IOEObject* pHolder = pRenderData->GetObject(TS("Holder"));
+		if (pHolder)
+		{
+			COEMsgShaderParam msg(pShader);
+			pHolder->CallEvent(msg);
+		}
 
 		pShader->SetMatrix(TS("g_matWorldToProject"), matWorldToProject);
 		pShader->SetTexture(TS("g_texDiffuse"), pMaterial->GetTexture(MTT_DIFFUSE));

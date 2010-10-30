@@ -8,11 +8,9 @@
 #include "OERenderData_Impl.h"
 #include "OEBone_Impl.h"
 
-COERenderData_Impl::COERenderData_Impl(IOEObject* pHolder, IOEXmlNode* pXmlRenderData)
-:IOERenderData(pHolder)
+COERenderData_Impl::COERenderData_Impl()
 {
-	Init();
-	m_bOK = CreateRenderData(pXmlRenderData);
+	m_bOK = Init();
 }
 
 COERenderData_Impl::~COERenderData_Impl()
@@ -20,185 +18,247 @@ COERenderData_Impl::~COERenderData_Impl()
 	Destroy();
 }
 
-void COERenderData_Impl::Init()
+bool COERenderData_Impl::Init()
 {
-	m_pMesh = NULL;
-	m_pSkeleton = NULL;
-	m_fAnimLength = 0.0f;
-	m_fTotalTime = 0.0f;
+	// TODO: 
+	return true;
 }
 
 void COERenderData_Impl::Destroy()
 {
-	DestroyMesh();
-	DestroySkeleton();
-	DestroyMaterials();
+	// TODO: 
 }
 
-IOEMesh* COERenderData_Impl::GetMesh()
+bool COERenderData_Impl::SetInt(const tstring& strKey, int nValue)
 {
-	return m_pMesh;
+	m_mapInts.insert(std::make_pair(strKey, nValue));
+	return true;
 }
 
-IOESkeleton* COERenderData_Impl::GetSkeleton()
+bool COERenderData_Impl::RemoveInt(const tstring& strKey)
 {
-	return m_pSkeleton;
+	TM_INT::iterator itfound = m_mapInts.find(strKey);
+	if (itfound == m_mapInts.end()) return false;
+
+	m_mapInts.erase(itfound);
+	return true;
 }
 
-TV_MATRIX4X4& COERenderData_Impl::GetSkinMatrix()
+bool COERenderData_Impl::GetInt(int& nValue, const tstring& strKey)
 {
-	return m_vmatSkin;
+	TM_INT::iterator itfound = m_mapInts.find(strKey);
+	if (itfound == m_mapInts.end()) return false;
+
+	nValue = itfound->second;
+	return true;
 }
 
-IOEMaterial* COERenderData_Impl::GetMaterial(int nIndex)
+bool COERenderData_Impl::SetFloat(const tstring& strKey, float fValue)
 {
-	TM_MATERIAL::iterator itfound = m_MaterialMap.find(nIndex);
-	if (itfound == m_MaterialMap.end()) return NULL;
+	m_mapFloats.insert(std::make_pair(strKey, fValue));
+	return true;
+}
+
+bool COERenderData_Impl::RemoveFloat(const tstring& strKey)
+{
+	TM_FLOAT::iterator itfound = m_mapFloats.find(strKey);
+	if (itfound == m_mapFloats.end()) return false;
+
+	m_mapFloats.erase(itfound);
+	return true;
+}
+
+bool COERenderData_Impl::GetFloat(float& fValue, const tstring& strKey)
+{
+	TM_FLOAT::iterator itfound = m_mapFloats.find(strKey);
+	if (itfound == m_mapFloats.end()) return false;
+
+	fValue = itfound->second;
+	return true;
+}
+
+bool COERenderData_Impl::SetVector(const tstring& strKey, const CVector3& vValue)
+{
+	m_mapVectors.insert(std::make_pair(strKey, vValue));
+	return true;
+}
+
+bool COERenderData_Impl::RemoveVector(const tstring& strKey)
+{
+	TM_VECTOR::iterator itfound = m_mapVectors.find(strKey);
+	if (itfound == m_mapVectors.end()) return false;
+
+	m_mapVectors.erase(strKey);
+	return true;
+}
+
+bool COERenderData_Impl::GetVector(CVector3& vValue, const tstring& strKey)
+{
+	TM_VECTOR::iterator itfound = m_mapVectors.find(strKey);
+	if (itfound == m_mapVectors.end()) return false;
+
+	vValue = itfound->second;
+	return true;
+}
+
+bool COERenderData_Impl::SetMatrix(const tstring& strKey, const CMatrix4x4& matValue)
+{
+	m_mapMatrixs.insert(std::make_pair(strKey, matValue));
+	return true;
+}
+
+bool COERenderData_Impl::RemoveMatrix(const tstring& strKey)
+{
+	TM_MATRIX::iterator itfound = m_mapMatrixs.find(strKey);
+	if (itfound == m_mapMatrixs.end()) return false;
+
+	m_mapMatrixs.erase(itfound);
+	return true;
+}
+
+bool COERenderData_Impl::GetMatrix(CMatrix4x4& matValue, const tstring& strKey)
+{
+	TM_MATRIX::iterator itfound = m_mapMatrixs.find(strKey);
+	if (itfound == m_mapMatrixs.end()) return false;
+
+	matValue = itfound->second;
+	return true;
+}
+
+bool COERenderData_Impl::SetTexture(const tstring& strKey, IOETexture* pTexture)
+{
+	m_mapTextures.insert(std::make_pair(strKey, pTexture));
+	return true;
+}
+
+bool COERenderData_Impl::RemoveTexture(const tstring& strKey)
+{
+	TM_TEXTURE::iterator itfound = m_mapTextures.find(strKey);
+	if (itfound == m_mapTextures.end()) return false;
+
+	m_mapTextures.erase(itfound);
+	return true;
+}
+
+IOETexture* COERenderData_Impl::GetTexture(const tstring& strKey)
+{
+	TM_TEXTURE::iterator itfound = m_mapTextures.find(strKey);
+	if (itfound == m_mapTextures.end()) return false;
+
 	return itfound->second;
 }
 
-void COERenderData_Impl::SetAnimLength(float fAnimLength)
+bool COERenderData_Impl::SetMesh(const tstring& strKey, IOEMesh* pMesh)
 {
-	m_fAnimLength = fAnimLength;
-}
-
-float COERenderData_Impl::GetAnimLength() const
-{
-	return m_fAnimLength;
-}
-
-void COERenderData_Impl::SetTotalTime(float fTotalTime)
-{
-	m_fTotalTime = fTotalTime;
-}
-
-float COERenderData_Impl::GetTotalTime() const
-{
-	return m_fTotalTime;
-}
-
-bool COERenderData_Impl::CreateRenderData(IOEXmlNode* pXmlRenderData)
-{
-	if (!pXmlRenderData) return false;
-
-	// create mesh
-	IOEXmlNode* pXmlMesh = pXmlRenderData->FirstChild(TS("Mesh"));
-	if (pXmlMesh)
-	{
-		tstring strMeshFile;
-		if (!pXmlMesh->GetText(strMeshFile)) return false;
-		if (!LoadMesh(strMeshFile)) return false;
-	}
-
-	// create skeleton
-	IOEXmlNode* pXmlSkeleton = pXmlRenderData->FirstChild(TS("Skeleton"));
-	if (pXmlSkeleton)
-	{
-		tstring strSkeletonFile;
-		if (!pXmlSkeleton->GetText(strSkeletonFile)) return false;
-		if (!LoadSkeleton(strSkeletonFile)) return false;
-	}
-
-	// create materials
-	IOEXmlNode* pXmlMaterials = pXmlRenderData->FirstChild(TS("Materials"));
-	if (pXmlMaterials)
-	{
-		if (!LoadMaterials(pXmlMaterials)) return false;
-	}
-
+	m_mapMeshes.insert(std::make_pair(strKey, pMesh));
 	return true;
 }
 
-bool COERenderData_Impl::LoadMesh(const tstring& strFile)
+bool COERenderData_Impl::RemoveMesh(const tstring& strKey)
 {
-	DestroyMesh();
-	return CreateMesh(strFile);
-}
+	TM_MESH::iterator itfound = m_mapMeshes.find(strKey);
+	if (itfound == m_mapMeshes.end()) return false;
 
-bool COERenderData_Impl::LoadSkeleton(const tstring& strFile)
-{
-	DestroySkeleton();
-	return CreateSkeleton(strFile);
-}
-
-bool COERenderData_Impl::LoadMaterials(IOEXmlNode* pXmlMaterials)
-{
-	DestroyMaterials();
-	return CreateMaterials(pXmlMaterials);
-}
-
-bool COERenderData_Impl::CreateMesh(const tstring& strFile)
-{
-	DestroyMesh();
-
-	m_pMesh = g_pOEResMgr->CreateMesh(strFile);
-	if (!m_pMesh) return false;
-
+	m_mapMeshes.erase(itfound);
 	return true;
 }
 
-bool COERenderData_Impl::CreateSkeleton(const tstring& strFile)
+IOEMesh* COERenderData_Impl::GetMesh(const tstring& strKey)
 {
-	DestroySkeleton();
+	TM_MESH::iterator itfound = m_mapMeshes.find(strKey);
+	if (itfound == m_mapMeshes.end()) return false;
 
-	m_pSkeleton = g_pOEResMgr->CreateSkeleton(strFile);
-	if (!m_pSkeleton) return false;
+	return itfound->second;
+}
 
-	int nBonesCount = m_pSkeleton->GetBonesCount();
-	for (int i = 0; i < nBonesCount; ++i)
-	{
-		IOEBone* pBone = m_pSkeleton->GetBone(i);
-		if (m_fAnimLength < pBone->GetTimeLength()) m_fAnimLength = pBone->GetTimeLength();
-	}
-
-	m_vmatSkin.resize(nBonesCount);
+bool COERenderData_Impl::SetAnimData(const tstring& strKey, IOEAnimData* pAnimData)
+{
+	m_mapAnimDatas.insert(std::make_pair(strKey, pAnimData));
 	return true;
 }
 
-bool COERenderData_Impl::CreateMaterials(IOEXmlNode* pXmlMaterials)
+bool COERenderData_Impl::RemoveAnimData(const tstring& strKey)
 {
-	if (!pXmlMaterials) return false;
+	TM_ANIM_DATA::iterator itfound = m_mapAnimDatas.find(strKey);
+	if (itfound == m_mapAnimDatas.end()) return false;
 
-	int nMaterialCount = 0;
-	if (!pXmlMaterials->GetAttribute(nMaterialCount, TS("count"))) return false;
-
-	IOEXmlNode* pXmlMaterial = pXmlMaterials->FirstChild(TS("Material"));
-	for (int i = 0; i < nMaterialCount; ++i)
-	{
-		IOEMaterial* pMaterial = g_pOEResMgr->CreateMaterial(pXmlMaterial);
-		if (!pMaterial) return false;
-
-		if (GetMaterial(pMaterial->GetID()))
-		{
-			SAFE_RELEASE(pMaterial);
-			return false;
-		}
-
-		m_MaterialMap.insert(std::make_pair(pMaterial->GetID(), pMaterial));
-
-		pXmlMaterial = pXmlMaterial->NextSibling(TS("Material"));
-	}
-
+	m_mapAnimDatas.erase(itfound);
 	return true;
 }
 
-void COERenderData_Impl::DestroyMesh()
+IOEAnimData* COERenderData_Impl::GetAnimData(const tstring& strKey)
 {
-	SAFE_RELEASE(m_pMesh);
+	TM_ANIM_DATA::iterator itfound = m_mapAnimDatas.find(strKey);
+	if (itfound == m_mapAnimDatas.end()) return NULL;
+
+	return itfound->second;
 }
 
-void COERenderData_Impl::DestroySkeleton()
+bool COERenderData_Impl::SetMaterial(const tstring& strKey, IOEMaterial* pMaterial)
 {
-	SAFE_RELEASE(m_pSkeleton);
-	m_fAnimLength = 0.0f;
+	m_mapMaterials.insert(std::make_pair(strKey, pMaterial));
+	return true;
 }
 
-void COERenderData_Impl::DestroyMaterials()
+bool COERenderData_Impl::RemoveMaterial(const tstring& strKey)
 {
-	for (TM_MATERIAL::iterator it = m_MaterialMap.begin(); it != m_MaterialMap.end(); ++it)
-	{
-		IOEMaterial* pMaterial = it->second;
-		SAFE_RELEASE(pMaterial);
-	}
-	m_MaterialMap.clear();
+	TM_MATERIAL::iterator itfound = m_mapMaterials.find(strKey);
+	if (itfound == m_mapMaterials.end()) return false;
+
+	m_mapMaterials.erase(itfound);
+	return true;
+}
+
+IOEMaterial* COERenderData_Impl::GetMaterial(const tstring& strKey)
+{
+	TM_MATERIAL::iterator itfound = m_mapMaterials.find(strKey);
+	if (itfound == m_mapMaterials.end()) return false;
+
+	return itfound->second;
+}
+
+bool COERenderData_Impl::SetMaterialsList(const tstring& strKey, IOEMaterialsList* pMaterialsList)
+{
+	m_mapMaterialsList.insert(std::make_pair(strKey, pMaterialsList));
+	return true;
+}
+
+bool COERenderData_Impl::RemoveMaterialsList(const tstring& strKey)
+{
+	TM_MATERIALS_LIST::iterator itfound = m_mapMaterialsList.find(strKey);
+	if (itfound == m_mapMaterialsList.end()) return false;
+
+	m_mapMaterialsList.erase(itfound);
+	return false;
+}
+
+IOEMaterialsList* COERenderData_Impl::GetMaterialsList(const tstring& strKey)
+{
+	TM_MATERIALS_LIST::iterator itfound = m_mapMaterialsList.find(strKey);
+	if (itfound == m_mapMaterialsList.end()) return false;
+
+	return itfound->second;
+}
+
+bool COERenderData_Impl::SetObject(const tstring& strKey, IOEObject* pObject)
+{
+	m_mapObjects.insert(std::make_pair(strKey, pObject));
+	return true;
+}
+
+bool COERenderData_Impl::RemoveObject(const tstring& strKey)
+{
+	TM_OBJECT::iterator itfound = m_mapObjects.find(strKey);
+	if (itfound == m_mapObjects.end()) return false;
+
+	m_mapObjects.erase(itfound);
+	return true;
+}
+
+IOEObject* COERenderData_Impl::GetObject(const tstring& strKey)
+{
+	TM_OBJECT::iterator itfound = m_mapObjects.find(strKey);
+	if (itfound == m_mapObjects.end()) return false;
+
+	return itfound->second;
 }

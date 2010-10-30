@@ -26,7 +26,7 @@ private:
 	bool Init();
 	void Destroy();
 
-	bool BuildBoneVerts(TV_VERTEX_LINE& vVertsOut, TV_VERTEX_INDEX& vIndisOut, IOESkeleton* pSkeleton, const TV_MATRIX4X4& vmatSkins, int nBoneID, int nParentBoneID);
+	bool BuildBoneVerts(TV_VERTEX_LINE& vVertsOut, TV_VERTEX_INDEX& vIndisOut, IOESkeleton* pSkeleton, const CMatrix4x4* pSkinMatrixs, int nBoneID, int nParentBoneID);
 
 private:
 	TV_VERTEX_LINE m_vVerts;

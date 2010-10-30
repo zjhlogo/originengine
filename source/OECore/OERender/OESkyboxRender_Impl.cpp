@@ -9,6 +9,7 @@
 #include <OECore/IOECore.h>
 #include <OECore/IOERenderSystem.h>
 #include <OECore/OERenderSystemUtil.h>
+#include <OECore/IOENode.h>
 #include <libOEMsg/OEMsgShaderParam.h>
 
 COESkyboxRender_Impl::COESkyboxRender_Impl()
@@ -34,8 +35,11 @@ void COESkyboxRender_Impl::Destroy()
 
 bool COESkyboxRender_Impl::Render(IOERenderData* pRenderData)
 {
-	IOEMesh* pMesh = pRenderData->GetMesh();
+	IOEMesh* pMesh = pRenderData->GetMesh(TS("MainMesh"));
 	if (!pMesh) return false;
+
+	IOEMaterialsList* pMaterialsList = pRenderData->GetMaterialsList(TS("MainMaterialsList"));
+	if (!pMaterialsList) return false;
 
 	CMatrix4x4 matWorldToProject;
 	g_pOERenderSystem->GetTransform(matWorldToProject, TT_WORLD_VIEW);
@@ -52,7 +56,7 @@ bool COESkyboxRender_Impl::Render(IOERenderData* pRenderData)
 		IOEPiece* pPiece = pMesh->GetPiece(i);
 		if (!pPiece) continue;
 
-		IOEMaterial* pMaterial = pRenderData->GetMaterial(pPiece->GetMaterialID());
+		IOEMaterial* pMaterial = pMaterialsList->GetMaterial(pPiece->GetMaterialID());
 		if (!pMaterial) continue;
 
 		IOEShader* pShader = pMaterial->GetShader();
@@ -60,9 +64,13 @@ bool COESkyboxRender_Impl::Render(IOERenderData* pRenderData)
 
 		if (pPiece->GetVertDeclMask() != pMaterial->GetVertDeclMask()) continue;
 
-		// give user a chance to setup shader parameter
-		COEMsgShaderParam msg(pShader);
-		pRenderData->GetHolder()->CallEvent(msg);
+		// give user chance to setup shader parameter
+		IOEObject* pHolder = pRenderData->GetObject(TS("Holder"));
+		if (pHolder)
+		{
+			COEMsgShaderParam msg(pShader);
+			pHolder->CallEvent(msg);
+		}
 
 		pShader->SetMatrix(TS("g_matWorldToProject"), matWorldToProject);
 		pShader->SetTexture(TS("g_texDiffuse"), pMaterial->GetTexture(MTT_DIFFUSE));

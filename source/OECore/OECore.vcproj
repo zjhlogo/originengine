@@ -409,6 +409,10 @@
 			Name="SDK Header Files"
 			>
 			<File
+				RelativePath="..\..\include\OECore\IOEAnimData.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\include\OECore\IOEBone.h"
 				>
 			</File>
@@ -438,6 +442,10 @@
 			</File>
 			<File
 				RelativePath="..\..\include\OECore\IOEMaterial.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\include\OECore\IOEMaterialsList.h"
 				>
 			</File>
 			<File
@@ -530,6 +538,14 @@
 			</File>
 		</Filter>
 		<File
+			RelativePath=".\OEAnimData_Impl.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\OEAnimData_Impl.h"
+			>
+		</File>
+		<File
 			RelativePath=".\OEBone_Impl.cpp"
 			>
 		</File>
@@ -575,6 +591,14 @@
 		</File>
 		<File
 			RelativePath=".\OEMaterial_Impl.h"
+			>
+		</File>
+		<File
+			RelativePath=".\OEMaterialsList_Impl.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\OEMaterialsList_Impl.h"
 			>
 		</File>
 		<File

@@ -26,10 +26,14 @@ public:
 	virtual bool Initialize();
 	virtual void Terminate();
 
+	virtual IOERenderData* CreateRenderData();
 	virtual IOEModel* CreateModel(const tstring& strFile);
 	virtual IOEMesh* CreateMesh(const tstring& strFile);
 	virtual IOESkeleton* CreateSkeleton(const tstring& strFile);
 	virtual IOEMaterial* CreateMaterial(IOEXmlNode* pXmlMaterial);
+
+	virtual IOEAnimData* CreateAnimData(const tstring& strFile);
+	virtual IOEMaterialsList* CreateMaterialsList(IOEXmlNode* pXmlMaterials);
 
 	virtual void SetDefaultDir(const tstring& strDir);
 	virtual const tstring& GetDefaultDir();

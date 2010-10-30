@@ -57,7 +57,7 @@ bool CLakeApp::UserDataInit()
 
 	m_pRenderTargetTexture = g_pOETextureMgr->CreateRenderTargetTexture(800, 600, TF_A8R8G8B8);
 	if (!m_pRenderTargetTexture) return false;
-	m_pModelLake->GetRenderData()->SetRenderTarget(m_pRenderTargetTexture);
+	m_pModelLake->GetRenderData()->SetTexture(TS("RenderTargetTexture"), m_pRenderTargetTexture);
 
 	COEUIPicture* pPicture = new COEUIPicture(g_pOEUIRenderSystem->GetScreen());
 	if (!pPicture) return false;

@@ -6,10 +6,10 @@
  * \author zjhlogo (zjhlogo@163.com)
  */
 #include "OEModel_Impl.h"
-#include "OERenderData_Impl.h"
 #include <OEBase/IOEXmlMgr.h>
 #include <OECore/IOEControlMgr.h>
 #include <OECore/IOERenderMgr.h>
+#include <OECore/IOEResMgr.h>
 
 COEModel_Impl::COEModel_Impl(const tstring& strFile)
 {
@@ -30,9 +30,10 @@ void COEModel_Impl::Init()
 void COEModel_Impl::Destroy()
 {
 	// release data
+	DestroyMesh();
+	DestroyAnimData();
+	DestroyMaterialsList();
 	SAFE_RELEASE(m_pRenderData);
-	m_vControls.clear();
-	m_vRenders.clear();
 }
 
 void COEModel_Impl::Update(float fDetailTime)
@@ -126,9 +127,37 @@ bool COEModel_Impl::Create(const tstring& strFile)
 
 bool COEModel_Impl::CreateRenderData(IOEXmlNode* pXmlRenderData)
 {
+	if (!pXmlRenderData) return false;
+
 	// create render data
-	m_pRenderData = new COERenderData_Impl(this, pXmlRenderData);
-	if (!m_pRenderData || !m_pRenderData->IsOK()) return false;
+	m_pRenderData = g_pOEResMgr->CreateRenderData();
+	if (!m_pRenderData) return false;
+	m_pRenderData->SetObject(TS("Holder"), this);
+
+	// create mesh
+	IOEXmlNode* pXmlMesh = pXmlRenderData->FirstChild(TS("Mesh"));
+	if (pXmlMesh)
+	{
+		tstring strMeshFile;
+		if (!pXmlMesh->GetText(strMeshFile)) return false;
+		if (!LoadMesh(strMeshFile)) return false;
+	}
+
+	// create skeleton
+	IOEXmlNode* pXmlSkeleton = pXmlRenderData->FirstChild(TS("Skeleton"));
+	if (pXmlSkeleton)
+	{
+		tstring strSkeletonFile;
+		if (!pXmlSkeleton->GetText(strSkeletonFile)) return false;
+		if (!LoadAnimData(strSkeletonFile)) return false;
+	}
+
+	// create materials
+	IOEXmlNode* pXmlMaterials = pXmlRenderData->FirstChild(TS("Materials"));
+	if (pXmlMaterials)
+	{
+		if (!LoadMaterialsList(pXmlMaterials)) return false;
+	}
 
 	return true;
 }
@@ -163,4 +192,78 @@ bool COEModel_Impl::CreateRenderers(IOEXmlNode* pXmlRenderers)
 	}
 
 	return true;
+}
+
+bool COEModel_Impl::LoadMesh(const tstring& strFile)
+{
+	DestroyMesh();
+	return CreateMesh(strFile);
+}
+
+bool COEModel_Impl::LoadAnimData(const tstring& strFile)
+{
+	DestroyAnimData();
+	return CreateAnimData(strFile);
+}
+
+bool COEModel_Impl::LoadMaterialsList(IOEXmlNode* pXmlMaterials)
+{
+	DestroyMaterialsList();
+	return CreateMaterialsList(pXmlMaterials);
+}
+
+bool COEModel_Impl::CreateMesh(const tstring& strFile)
+{
+	DestroyMesh();
+
+	IOEMesh* pMesh = g_pOEResMgr->CreateMesh(strFile);
+	if (!pMesh) return false;
+
+	m_pRenderData->SetMesh(TS("MainMesh"), pMesh);
+	return true;
+}
+
+bool COEModel_Impl::CreateAnimData(const tstring& strFile)
+{
+	DestroyAnimData();
+
+	IOEAnimData* pAnimData = g_pOEResMgr->CreateAnimData(strFile);
+	if (!pAnimData) return false;
+
+	m_pRenderData->SetAnimData(TS("MainAnimData"), pAnimData);
+	return true;
+}
+
+bool COEModel_Impl::CreateMaterialsList(IOEXmlNode* pXmlMaterials)
+{
+	DestroyMaterialsList();
+
+	IOEMaterialsList* pMaterialsList = g_pOEResMgr->CreateMaterialsList(pXmlMaterials);
+	if (!pMaterialsList) return false;
+
+	m_pRenderData->SetMaterialsList(TS("MainMaterialsList"), pMaterialsList);
+	return true;
+}
+
+void COEModel_Impl::DestroyMesh()
+{
+	IOEMesh* pMesh = m_pRenderData->GetMesh(TS("MainMesh"));
+	SAFE_RELEASE(pMesh);
+	m_pRenderData->RemoveMesh(TS("MainMesh"));
+}
+
+void COEModel_Impl::DestroyAnimData()
+{
+	IOEAnimData* pAnimData = m_pRenderData->GetAnimData(TS("MainAnimData"));
+	SAFE_RELEASE(pAnimData);
+
+	m_pRenderData->RemoveAnimData(TS("MainAnimData"));
+}
+
+void COEModel_Impl::DestroyMaterialsList()
+{
+	IOEMaterialsList* pMaterialsList = m_pRenderData->GetMaterialsList(TS("MainMaterialsList"));
+	SAFE_RELEASE(pMaterialsList);
+
+	m_pRenderData->RemoveMaterialsList(TS("MainMaterialsList"));
 }
