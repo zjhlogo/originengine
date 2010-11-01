@@ -38,6 +38,8 @@ static const tchar WINDOW_NAME[] = TS("Origin Engine");
 static const float MAX_FPS = 60.0f;
 
 static const tstring PARAM_HWIND = TS("HWIND");
+static const tstring PARAM_WINDOW_WIDTH = TS("WINDOW_WIDTH");
+static const tstring PARAM_WINDOW_HEIGHT = TS("WINDOW_HEIGHT");
 
 COED3DDevice_Impl::COED3DDevice_Impl()
 {
@@ -222,10 +224,21 @@ bool COED3DDevice_Impl::GetDeviceParam(void* pData, const tstring& strParamName)
 	if (strParamName == PARAM_HWIND)
 	{
 		*(HWND*)pData = g_hWnd;
-		return true;
+	}
+	else if (strParamName == PARAM_WINDOW_WIDTH)
+	{
+		*(int*)pData = m_nWindowWidth;
+	}
+	else if (strParamName == PARAM_WINDOW_HEIGHT)
+	{
+		*(int*)pData = m_nWindowHeight;
+	}
+	else
+	{
+		return false;
 	}
 
-	return false;
+	return true;
 }
 
 bool COED3DDevice_Impl::InternalCreateWindow()

@@ -48,6 +48,10 @@ public:
 
 	static D3DFORMAT ToD3DTexFmt(TEXTURE_FORMAT eFormat);
 	static TEXTURE_FORMAT ToOETexFmt(D3DFORMAT eFormat);
+
+	static uint ToD3DColorWriteChannel(uint nColorWriteChannel);
+	static uint ToOEColorWriteChannel(uint nColorWriteChannel);
+
 };
 
 #endif // __OED3DUTIL_H__

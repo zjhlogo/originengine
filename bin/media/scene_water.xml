@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Model>
+	<RenderData>
+		<Mesh>scene_water.mesh</Mesh>
+		<Materials count="2">
+			<Material id="0" vertdecl="3075" shader="water.fx" texture1="wavebump.png"/>
+			<Material id="1" vertdecl="3075" shader="water_refract.fx"/>
+		</Materials>
+	</RenderData>
+	<Renderers>
+		<Renderer>COEWaterRender_Impl</Renderer>
+	</Renderers>
+</Model>

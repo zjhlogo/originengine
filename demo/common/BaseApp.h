@@ -30,12 +30,16 @@ public:
 
 	void ResetCameraPosRot(IOEModel* pModel);
 	void ResetCameraPosRot(const CVector3& vPos, float fRotY, float fRotX);
+	void ResetCameraPosRot(const CVector3& vPos, const CQuaternion& qRot);
 
 	void SetMovementSpeed(float fSpeed);
 	float GetMovementSpeed();
 
 	void SetRotationSpeed(float fSpeed);
 	float GetRotationSpeed();
+
+	void ShowFPS(bool bShow);
+	void ShowCameraPosRot(bool bShow);
 
 private:
 	void Init();

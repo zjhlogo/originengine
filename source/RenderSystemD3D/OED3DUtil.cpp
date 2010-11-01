@@ -312,3 +312,15 @@ TEXTURE_FORMAT COED3DUtil::ToOETexFmt(D3DFORMAT eFormat)
 
 	return TF_UNKNOWN;
 }
+
+uint COED3DUtil::ToD3DColorWriteChannel(uint nColorWriteChannel)
+{
+	// so far they are the same value
+	return nColorWriteChannel;
+}
+
+uint COED3DUtil::ToOEColorWriteChannel(uint nColorWriteChannel)
+{
+	// so far they are the same value
+	return nColorWriteChannel;
+}

@@ -23,6 +23,7 @@ public:
 	virtual bool Render(IOERenderData* pRenderData);
 
 private:
+	bool CreateRefractTexture(IOERenderData* pRenderData, IOETexture* pTexture);
 	bool CreateReflectTexture(IOETexture* pTexture);
 	void CalcuteClipPlane();
 

@@ -52,6 +52,7 @@ private:
 	TSGMaterial* m_pMaterials;
 	TSGMesh* m_pMeshes;
 	TSGVertex* m_pVertices;
+	uint m_nVertDecl;
 
 	CVector3 m_vBoundingBoxMin;
 	CVector3 m_vBoundingBoxMax;

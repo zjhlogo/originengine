@@ -38,7 +38,6 @@ bool COED3DRenderSystem_Impl::Init()
 	m_pRenderTarget = NULL;
 	m_pD3DBackBufferSurface = NULL;
 	m_pD3DBackBufferDepthStencilSurface = NULL;
-	m_bLockCullMode = false;
 	return true;
 }
 
@@ -62,6 +61,7 @@ bool COED3DRenderSystem_Impl::Initialize()
 	m_LastRenderState.m_eCullMode = CMT_CCW;
 	m_LastRenderState.m_bEnableClipPlane = false;
 	m_LastRenderState.m_vClipPlane.Init(0.0f, 0.0f, 0.0f, 0.0f);
+	m_LastRenderState.m_nColorWriteChannel = CWC_ALL;
 
 	g_pOEDevice->RegisterEvent(OMI_PRE_RENDER, this, (MSG_FUNC)&COED3DRenderSystem_Impl::OnPreRender3D);
 	g_pOEDevice->RegisterEvent(OMI_POST_RENDER, this, (MSG_FUNC)&COED3DRenderSystem_Impl::OnPostRender3D);
@@ -226,11 +226,7 @@ bool COED3DRenderSystem_Impl::RestoreRenderState(const tstring& strCommon /* = E
 bool COED3DRenderSystem_Impl::PopRenderState()
 {
 	if (m_kRenderState.empty()) return false;
-
-	CULL_MODE_TYPE eCullMode = m_CurrRenderState.m_eCullMode;
 	m_CurrRenderState = m_kRenderState.top();
-	if (m_bLockCullMode) m_CurrRenderState.m_eCullMode = eCullMode;
-
 	m_kRenderState.pop();
 	return true;
 }
@@ -274,22 +270,17 @@ const CVector4& COED3DRenderSystem_Impl::GetClipPlane()
 
 void COED3DRenderSystem_Impl::SetCullMode(CULL_MODE_TYPE eCullMode)
 {
-	if (!m_bLockCullMode) m_CurrRenderState.m_eCullMode = eCullMode;
-}
-
-void COED3DRenderSystem_Impl::LockCullMode(const tstring& strReason)
-{
-	m_bLockCullMode = true;
-}
-
-void COED3DRenderSystem_Impl::UnlockCullMode()
-{
-	m_bLockCullMode = false;
+	m_CurrRenderState.m_eCullMode = eCullMode;
 }
 
 void COED3DRenderSystem_Impl::SetFillMode(FILL_MODE eFillMode)
 {
 	m_CurrRenderState.m_eFillMode = eFillMode;
+}
+
+void COED3DRenderSystem_Impl::SetColorWriteChannel(uint nChannel)
+{
+	m_CurrRenderState.m_nColorWriteChannel = nChannel;
 }
 
 bool COED3DRenderSystem_Impl::ApplyRenderState()
@@ -394,6 +385,13 @@ bool COED3DRenderSystem_Impl::ApplyRenderState()
 		pClipSpacePlane[2] = m_CurrRenderState.m_vClipPlane.z;
 		pClipSpacePlane[3] = m_CurrRenderState.m_vClipPlane.w;
 		g_pd3dDevice->SetClipPlane(0, pClipSpacePlane);
+	}
+
+	// apply color write
+	if (m_LastRenderState.m_nColorWriteChannel != m_CurrRenderState.m_nColorWriteChannel)
+	{
+		uint nD3DColorWriteChannel = COED3DUtil::ToD3DColorWriteChannel(m_CurrRenderState.m_nColorWriteChannel);
+		g_pd3dDevice->SetRenderState(D3DRS_COLORWRITEENABLE, nD3DColorWriteChannel);
 	}
 
 	m_LastRenderState = m_CurrRenderState;

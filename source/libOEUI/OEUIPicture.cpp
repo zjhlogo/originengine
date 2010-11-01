@@ -35,6 +35,16 @@ IOETexture* COEUIPicture::GetPicture()
 	return m_pImage->GetTexture();
 }
 
+void COEUIPicture::SetPosition(const CPoint& pos)
+{
+	m_pImage->SetPosition(pos);
+}
+
+const CPoint& COEUIPicture::GetPosition()
+{
+	return m_pImage->GetPosition();
+}
+
 void COEUIPicture::SetSize(const CSize& size)
 {
 	return m_pImage->SetSize(size);
