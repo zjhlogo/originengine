@@ -52,7 +52,7 @@ bool CModelApp::UserDataInit()
 	m_pNode2->SetPosition(CVector3(100.0f, 0.0f, 0.0f));
 	m_pNode2->AttachObject(m_pModel);
 
-	CQuaternion qRot(COEMath::VECTOR_UP, COEMath::PI_2);
+	//CQuaternion qRot(COEMath::VECTOR_UP, COEMath::PI_2);
 	//pRootNode->SetRotation(qRot);
 
 	ResetCameraPosRot(m_pModel);
