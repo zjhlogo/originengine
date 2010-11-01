@@ -30,9 +30,12 @@ bool COEUIRenderSystem_Impl::Init()
 	m_pTexture = NULL;
 	m_pShader = NULL;
 
-	memset(m_pVertsCache, 0, sizeof(m_pVertsCache));
+	memset(m_pSolidVertsCache, 0, sizeof(m_pSolidVertsCache));
+	memset(m_pTransparentVertsCache, 0, sizeof(m_pTransparentVertsCache));
+
 	m_pScreen = NULL;
 
+	m_fCurrDepth = 1.0f;
 	return true;
 }
 
@@ -46,10 +49,16 @@ bool COEUIRenderSystem_Impl::Initialize()
 	m_pShader = g_pOEShaderMgr->CreateDefaultShader(DST_POLY_UI);
 	if (!m_pShader) return false;
 
-	for (int i = 0; i < VERTEX_CACHE_COUNT; ++i)
+	for (int i = 0; i < NUM_SOLID_CACHE; ++i)
 	{
-		m_pVertsCache[i] = new COEUIVertexCache(VERTEX_CACHE_SIZE, INDEX_CACHE_COUNT);
-		if (!m_pVertsCache[i] || !m_pVertsCache[i]->IsOK()) return false;
+		m_pSolidVertsCache[i] = new COEUIVertexCache(SOLID_VERTEX_CACHE, SOLID_INDEX_CACHE);
+		if (!m_pSolidVertsCache[i] || !m_pSolidVertsCache[i]->IsOK()) return false;
+	}
+
+	for (int i = 0; i < NUM_TRANSPARENT_CACHE; ++i)
+	{
+		m_pTransparentVertsCache[i] = new COEUIVertexCache(TRANSPARENT_VERTEX_CACHE, TRANSPARENT_INDEX_CACHE);
+		if (!m_pTransparentVertsCache[i] || !m_pTransparentVertsCache[i]->IsOK()) return false;
 	}
 
 	m_pScreen = new COEUIScreen();
@@ -66,9 +75,15 @@ void COEUIRenderSystem_Impl::Terminate()
 {
 	SAFE_RELEASE(m_pScreen);
 	SAFE_RELEASE(m_pShader);
-	for (int i = 0; i < VERTEX_CACHE_COUNT; ++i)
+
+	for (int i = 0; i < NUM_TRANSPARENT_CACHE; ++i)
 	{
-		SAFE_DELETE(m_pVertsCache[i]);
+		SAFE_DELETE(m_pTransparentVertsCache[i]);
+	}
+
+	for (int i = 0; i < NUM_SOLID_CACHE; ++i)
+	{
+		SAFE_DELETE(m_pSolidVertsCache[i]);
 	}
 }
 
@@ -87,22 +102,22 @@ IOETexture* COEUIRenderSystem_Impl::GetTexture() const
 	return m_pTexture;
 }
 
-void COEUIRenderSystem_Impl::DrawTriList(const void* pVerts, uint nVerts, const ushort* pIndis, uint nIndis)
+void COEUIRenderSystem_Impl::DrawSolidTriList(const void* pVerts, uint nVerts, const ushort* pIndis, uint nIndis)
 {
 	COEUIVertexCache* pEmptyCache = NULL;
 	COEUIVertexCache* pMatchCache = NULL;
 
-	for (int i = 0; i < VERTEX_CACHE_COUNT; ++i)
+	for (int i = 0; i < NUM_SOLID_CACHE; ++i)
 	{
-		if (m_pVertsCache[i]->Compare(m_pTexture, m_pShader))
+		if (m_pSolidVertsCache[i]->Compare(m_pTexture, m_pShader))
 		{
-			pMatchCache = m_pVertsCache[i];
+			pMatchCache = m_pSolidVertsCache[i];
 			break;
 		}
 
-		if (!pEmptyCache && m_pVertsCache[i]->GetVertsCount() == 0)
+		if (!pEmptyCache && m_pSolidVertsCache[i]->GetVertsCount() == 0)
 		{
-			pEmptyCache = m_pVertsCache[i];
+			pEmptyCache = m_pSolidVertsCache[i];
 		}
 	}
 
@@ -128,14 +143,79 @@ void COEUIRenderSystem_Impl::DrawTriList(const void* pVerts, uint nVerts, const 
 	}
 }
 
+void COEUIRenderSystem_Impl::DrawTransparentTriList(const void* pVerts, uint nVerts, const ushort* pIndis, uint nIndis)
+{
+	COEUIVertexCache* pEmptyCache = NULL;
+	COEUIVertexCache* pMatchCache = NULL;
+
+	for (int i = 0; i < NUM_TRANSPARENT_CACHE; ++i)
+	{
+		if (m_pTransparentVertsCache[i]->Compare(m_pTexture, m_pShader))
+		{
+			pMatchCache = m_pTransparentVertsCache[i];
+			break;
+		}
+
+		if (!pEmptyCache && m_pTransparentVertsCache[i]->GetVertsCount() == 0)
+		{
+			pEmptyCache = m_pTransparentVertsCache[i];
+		}
+	}
+
+	if (pMatchCache)
+	{
+		if (!pMatchCache->AddVerts(pVerts, nVerts, pIndis, nIndis))
+		{
+			FlushSolid();
+			pMatchCache->Flush();
+			bool bOK = pMatchCache->AddVerts(pVerts, nVerts, pIndis, nIndis);
+			assert(bOK);
+		}
+	}
+	else if (pEmptyCache)
+	{
+		pEmptyCache->SetTexture(m_pTexture);
+		pEmptyCache->SetShader(m_pShader);
+		bool bOK = pEmptyCache->AddVerts(pVerts, nVerts, pIndis, nIndis);
+		assert(bOK);
+	}
+	else
+	{
+		assert(false);
+	}
+}
+
+float COEUIRenderSystem_Impl::NextDepth()
+{
+	float fLastDepth = m_fCurrDepth;
+	m_fCurrDepth -= COEMath::TOL;
+	return fLastDepth;
+}
+
+void COEUIRenderSystem_Impl::FlushSolid()
+{
+	for (int i = 0; i < NUM_SOLID_CACHE; ++i)
+	{
+		m_pSolidVertsCache[i]->Flush();
+		m_pSolidVertsCache[i]->SetTexture(NULL);
+		m_pSolidVertsCache[i]->SetShader(NULL);
+	}
+}
+
+void COEUIRenderSystem_Impl::FlushTransparent()
+{
+	for (int i = 0; i < NUM_TRANSPARENT_CACHE; ++i)
+	{
+		m_pTransparentVertsCache[i]->Flush();
+		m_pTransparentVertsCache[i]->SetTexture(NULL);
+		m_pTransparentVertsCache[i]->SetShader(NULL);
+	}
+}
+
 void COEUIRenderSystem_Impl::FlushAll()
 {
-	for (int i = 0; i < VERTEX_CACHE_COUNT; ++i)
-	{
-		m_pVertsCache[i]->Flush();
-		m_pVertsCache[i]->SetTexture(NULL);
-		m_pVertsCache[i]->SetShader(NULL);
-	}
+	FlushSolid();
+	FlushTransparent();
 }
 
 bool COEUIRenderSystem_Impl::OnUpdate(COEMsgCommand& msg)
@@ -157,5 +237,6 @@ bool COEUIRenderSystem_Impl::OnRender(COEMsgCommand& msg)
 bool COEUIRenderSystem_Impl::OnPostRender(COEMsgCommand& msg)
 {
 	FlushAll();
+	m_fCurrDepth = 1.0f;
 	return true;
 }

@@ -43,6 +43,7 @@ void COEUIStringRenderer_Impl::Render(float fDetailTime)
 	static const ushort s_Indis[INDIS_COUNT] = {0, 1, 3, 1, 2, 3};
 
 	VERTEX_POLY_UI Verts[VERTS_COUNT];
+	float fDepth = g_pOEUIRenderSystem->NextDepth();
 
 	for (VCHAR_RENDER_INFO::iterator it = m_vCharRenderInfo.begin(); it != m_vCharRenderInfo.end(); ++it)
 	{
@@ -50,7 +51,7 @@ void COEUIStringRenderer_Impl::Render(float fDetailTime)
 
 		Verts[0].x = m_vPos.x+CharRenderInfo.x;
 		Verts[0].y = m_vPos.y+CharRenderInfo.y+CharRenderInfo.pCharInfo->height;
-		Verts[0].z = 0.0f;
+		Verts[0].z = fDepth;
 		Verts[0].w = 1.0f;
 		Verts[0].nColor = m_nColor;
 		Verts[0].u = CharRenderInfo.pCharInfo->u;
@@ -58,7 +59,7 @@ void COEUIStringRenderer_Impl::Render(float fDetailTime)
 
 		Verts[1].x = m_vPos.x+CharRenderInfo.x;
 		Verts[1].y = m_vPos.y+CharRenderInfo.y;
-		Verts[1].z = 0.0f;
+		Verts[1].z = fDepth;
 		Verts[1].w = 1.0f;
 		Verts[1].nColor = m_nColor;
 		Verts[1].u = CharRenderInfo.pCharInfo->u;
@@ -66,7 +67,7 @@ void COEUIStringRenderer_Impl::Render(float fDetailTime)
 
 		Verts[2].x = m_vPos.x+CharRenderInfo.x+CharRenderInfo.pCharInfo->width;
 		Verts[2].y = m_vPos.y+CharRenderInfo.y;
-		Verts[2].z = 0.0f;
+		Verts[2].z = fDepth;
 		Verts[2].w = 1.0f;
 		Verts[2].nColor = m_nColor;
 		Verts[2].u = CharRenderInfo.pCharInfo->u+CharRenderInfo.pCharInfo->w;
@@ -74,14 +75,14 @@ void COEUIStringRenderer_Impl::Render(float fDetailTime)
 
 		Verts[3].x = m_vPos.x+CharRenderInfo.x+CharRenderInfo.pCharInfo->width;
 		Verts[3].y = m_vPos.y+CharRenderInfo.y+CharRenderInfo.pCharInfo->height;
-		Verts[3].z = 0.0f;
+		Verts[3].z = fDepth;
 		Verts[3].w = 1.0f;
 		Verts[3].nColor = m_nColor;
 		Verts[3].u = CharRenderInfo.pCharInfo->u+CharRenderInfo.pCharInfo->w;
 		Verts[3].v = CharRenderInfo.pCharInfo->v+CharRenderInfo.pCharInfo->h;
 
 		g_pOEUIRenderSystem->SetTexture(CharRenderInfo.pCharInfo->pTexture);
-		g_pOEUIRenderSystem->DrawTriList(Verts, VERTS_COUNT, s_Indis, INDIS_COUNT);
+		g_pOEUIRenderSystem->DrawTransparentTriList(Verts, VERTS_COUNT, s_Indis, INDIS_COUNT);
 	}
 }
 
