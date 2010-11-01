@@ -74,7 +74,7 @@ void CBumpMapApp::Update(float fDetailTime)
 
 bool CBumpMapApp::OnKeyDown(COEMsgKeyboard& msg)
 {
-	IOEShader* pShader = m_pModel->GetRenderData()->GetMaterial(0)->GetShader();
+	IOEShader* pShader = m_pModel->GetRenderData()->GetMaterialsList(TS("MainMaterialsList"))->GetMaterial(0)->GetShader();
 
 	switch (msg.GetKeyCode())
 	{
@@ -108,7 +108,7 @@ bool CBumpMapApp::OnSetupShaderParam(COEMsgShaderParam& msg)
 	pShader->SetVector(TS("g_vLightPos"), m_vLightPos);
 	pShader->SetVector(TS("g_vEyePos"), pCameraNode->GetPosition());
 
-	IOETexture* pTexture = m_pModel->GetRenderData()->GetMaterial(0)->GetTexture(MTT_NORMAL);
+	IOETexture* pTexture = m_pModel->GetRenderData()->GetMaterialsList(TS("MainMaterialsList"))->GetMaterial(0)->GetTexture(MTT_NORMAL);
 	pShader->SetTexture(TS("g_texNormalHeight"), pTexture);
 
 	return true;

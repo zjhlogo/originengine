@@ -31,7 +31,16 @@ void COERenderData_Impl::Destroy()
 
 bool COERenderData_Impl::SetInt(const tstring& strKey, int nValue)
 {
-	m_mapInts.insert(std::make_pair(strKey, nValue));
+	TM_INT::iterator itfound = m_mapInts.find(strKey);
+	if (itfound == m_mapInts.end())
+	{
+		m_mapInts.insert(std::make_pair(strKey, nValue));
+	}
+	else
+	{
+		itfound->second = nValue;
+	}
+
 	return true;
 }
 
@@ -55,7 +64,15 @@ bool COERenderData_Impl::GetInt(int& nValue, const tstring& strKey)
 
 bool COERenderData_Impl::SetFloat(const tstring& strKey, float fValue)
 {
-	m_mapFloats.insert(std::make_pair(strKey, fValue));
+	TM_FLOAT::iterator itfound = m_mapFloats.find(strKey);
+	if (itfound == m_mapFloats.end())
+	{
+		m_mapFloats.insert(std::make_pair(strKey, fValue));
+	}
+	else
+	{
+		itfound->second = fValue;
+	}
 	return true;
 }
 
@@ -79,7 +96,16 @@ bool COERenderData_Impl::GetFloat(float& fValue, const tstring& strKey)
 
 bool COERenderData_Impl::SetVector(const tstring& strKey, const CVector3& vValue)
 {
-	m_mapVectors.insert(std::make_pair(strKey, vValue));
+	TM_VECTOR::iterator itfound = m_mapVectors.find(strKey);
+	if (itfound == m_mapVectors.end())
+	{
+		m_mapVectors.insert(std::make_pair(strKey, vValue));
+	}
+	else
+	{
+		itfound->second = vValue;
+	}
+
 	return true;
 }
 
@@ -103,7 +129,16 @@ bool COERenderData_Impl::GetVector(CVector3& vValue, const tstring& strKey)
 
 bool COERenderData_Impl::SetMatrix(const tstring& strKey, const CMatrix4x4& matValue)
 {
-	m_mapMatrixs.insert(std::make_pair(strKey, matValue));
+	TM_MATRIX::iterator itfound = m_mapMatrixs.find(strKey);
+	if (itfound == m_mapMatrixs.end())
+	{
+		m_mapMatrixs.insert(std::make_pair(strKey, matValue));
+	}
+	else
+	{
+		itfound->second = matValue;
+	}
+
 	return true;
 }
 
@@ -127,7 +162,16 @@ bool COERenderData_Impl::GetMatrix(CMatrix4x4& matValue, const tstring& strKey)
 
 bool COERenderData_Impl::SetTexture(const tstring& strKey, IOETexture* pTexture)
 {
-	m_mapTextures.insert(std::make_pair(strKey, pTexture));
+	TM_TEXTURE::iterator itfound = m_mapTextures.find(strKey);
+	if (itfound == m_mapTextures.end())
+	{
+		m_mapTextures.insert(std::make_pair(strKey, pTexture));
+	}
+	else
+	{
+		itfound->second = pTexture;
+	}
+
 	return true;
 }
 
@@ -150,7 +194,16 @@ IOETexture* COERenderData_Impl::GetTexture(const tstring& strKey)
 
 bool COERenderData_Impl::SetMesh(const tstring& strKey, IOEMesh* pMesh)
 {
-	m_mapMeshes.insert(std::make_pair(strKey, pMesh));
+	TM_MESH::iterator itfound = m_mapMeshes.find(strKey);
+	if (itfound == m_mapMeshes.end())
+	{
+		m_mapMeshes.insert(std::make_pair(strKey, pMesh));
+	}
+	else
+	{
+		itfound->second = pMesh;
+	}
+
 	return true;
 }
 
@@ -173,7 +226,16 @@ IOEMesh* COERenderData_Impl::GetMesh(const tstring& strKey)
 
 bool COERenderData_Impl::SetAnimData(const tstring& strKey, IOEAnimData* pAnimData)
 {
-	m_mapAnimDatas.insert(std::make_pair(strKey, pAnimData));
+	TM_ANIM_DATA::iterator itfound = m_mapAnimDatas.find(strKey);
+	if (itfound == m_mapAnimDatas.end())
+	{
+		m_mapAnimDatas.insert(std::make_pair(strKey, pAnimData));
+	}
+	else
+	{
+		itfound->second = pAnimData;
+	}
+
 	return true;
 }
 
@@ -196,7 +258,16 @@ IOEAnimData* COERenderData_Impl::GetAnimData(const tstring& strKey)
 
 bool COERenderData_Impl::SetMaterial(const tstring& strKey, IOEMaterial* pMaterial)
 {
-	m_mapMaterials.insert(std::make_pair(strKey, pMaterial));
+	TM_MATERIAL::iterator itfound = m_mapMaterials.find(strKey);
+	if (itfound == m_mapMaterials.end())
+	{
+		m_mapMaterials.insert(std::make_pair(strKey, pMaterial));
+	}
+	else
+	{
+		itfound->second = pMaterial;
+	}
+
 	return true;
 }
 
@@ -219,7 +290,16 @@ IOEMaterial* COERenderData_Impl::GetMaterial(const tstring& strKey)
 
 bool COERenderData_Impl::SetMaterialsList(const tstring& strKey, IOEMaterialsList* pMaterialsList)
 {
-	m_mapMaterialsList.insert(std::make_pair(strKey, pMaterialsList));
+	TM_MATERIALS_LIST::iterator itfound = m_mapMaterialsList.find(strKey);
+	if (itfound == m_mapMaterialsList.end())
+	{
+		m_mapMaterialsList.insert(std::make_pair(strKey, pMaterialsList));
+	}
+	else
+	{
+		itfound->second = pMaterialsList;
+	}
+
 	return true;
 }
 
@@ -242,7 +322,16 @@ IOEMaterialsList* COERenderData_Impl::GetMaterialsList(const tstring& strKey)
 
 bool COERenderData_Impl::SetObject(const tstring& strKey, IOEObject* pObject)
 {
-	m_mapObjects.insert(std::make_pair(strKey, pObject));
+	TM_OBJECT::iterator itfound = m_mapObjects.find(strKey);
+	if (itfound == m_mapObjects.end())
+	{
+		m_mapObjects.insert(std::make_pair(strKey, pObject));
+	}
+	else
+	{
+		itfound->second = pObject;
+	}
+
 	return true;
 }
 

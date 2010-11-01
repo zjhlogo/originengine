@@ -317,7 +317,10 @@ void COECore_Impl::RenderObjects(float fDetailTime)
 		RENDER_OBJECT_INFO& ObjInfo = (*it);
 		if (!ObjInfo.pObject->IsVisible()) continue;
 		IOERenderData* pRenderData = ObjInfo.pObject->GetRenderData();
-		if (pRenderData) pRenderData->SetObject(TS("AttachedNode"), ObjInfo.pNode);
+		if (pRenderData)
+		{
+			pRenderData->SetObject(TS("AttachedNode"), ObjInfo.pNode);
+		}
 		ObjInfo.pObject->Render(fDetailTime);
 	}
 }
