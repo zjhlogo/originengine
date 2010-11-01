@@ -26,7 +26,9 @@ public:
 	virtual void SetTexture(IOETexture* pTexture) = 0;
 	virtual IOETexture* GetTexture() const = 0;
 
-	virtual void DrawTriList(const void* pVerts, uint nVerts, const ushort* pIndis, uint nIndis) = 0;
+	virtual void DrawSolidTriList(const void* pVerts, uint nVerts, const ushort* pIndis, uint nIndis) = 0;
+	virtual void DrawTransparentTriList(const void* pVerts, uint nVerts, const ushort* pIndis, uint nIndis) = 0;
+	virtual float NextDepth() = 0;
 
 };
 

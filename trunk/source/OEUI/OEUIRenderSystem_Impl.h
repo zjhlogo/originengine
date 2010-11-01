@@ -17,9 +17,13 @@ class COEUIRenderSystem_Impl : public IOEUIRenderSystem
 public:
 	enum CONST_DEFINE
 	{
-		VERTEX_CACHE_SIZE = 4096*32,
-		INDEX_CACHE_COUNT = (4096*3)/2+2,
-		VERTEX_CACHE_COUNT = 5,
+		SOLID_VERTEX_CACHE = 4096*32,
+		SOLID_INDEX_CACHE = (4096*3)/2+2,
+		NUM_SOLID_CACHE = 5,
+
+		TRANSPARENT_VERTEX_CACHE = 4096*32,
+		TRANSPARENT_INDEX_CACHE = (4096*3)/2+2,
+		NUM_TRANSPARENT_CACHE = 5,
 	};
 
 public:
@@ -36,12 +40,16 @@ public:
 	virtual void SetTexture(IOETexture* pTexture);
 	virtual IOETexture* GetTexture() const;
 
-	virtual void DrawTriList(const void* pVerts, uint nVerts, const ushort* pIndis, uint nIndis);
+	virtual void DrawSolidTriList(const void* pVerts, uint nVerts, const ushort* pIndis, uint nIndis);
+	virtual void DrawTransparentTriList(const void* pVerts, uint nVerts, const ushort* pIndis, uint nIndis);
+	virtual float NextDepth();
 
 private:
 	bool Init();
 	void Destroy();
 
+	void FlushSolid();
+	void FlushTransparent();
 	void FlushAll();
 
 	bool OnUpdate(COEMsgCommand& msg);
@@ -52,8 +60,11 @@ private:
 	IOETexture* m_pTexture;
 	IOEShader* m_pShader;
 
-	COEUIVertexCache* m_pVertsCache[VERTEX_CACHE_COUNT];
+	COEUIVertexCache* m_pSolidVertsCache[NUM_SOLID_CACHE];
+	COEUIVertexCache* m_pTransparentVertsCache[NUM_TRANSPARENT_CACHE];
 	COEUIScreen* m_pScreen;
+
+	float m_fCurrDepth;
 
 };
 #endif // __OEUIRENDERSYSTEM_IMPL_H__
