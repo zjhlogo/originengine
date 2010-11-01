@@ -87,8 +87,10 @@ bool COEUIBitmapFont_Impl::Create(const tstring& strFile)
 	if (!CreateCharsInfo(pCharsInfo)) return false;
 
 	IOEXmlNode* pKerningsInfo = pRootNode->FirstChild(TS("kernings"));
-	if (!pKerningsInfo) return false;
-	if (!CreateKerningsInfo(pKerningsInfo)) return false;
+	if (pKerningsInfo)
+	{
+		if (!CreateKerningsInfo(pKerningsInfo)) return false;
+	}
 
 	SAFE_RELEASE(m_pXmlDocument);
 	return true;
