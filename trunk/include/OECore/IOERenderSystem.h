@@ -54,11 +54,10 @@ public:
 	virtual const CVector4& GetClipPlane() = 0;
 
 	virtual void SetCullMode(CULL_MODE_TYPE eCullMode) = 0;
-	virtual void LockCullMode(const tstring& strReason) = 0;
-	virtual void UnlockCullMode() = 0;
 
 	virtual void SetFillMode(FILL_MODE eFillMode) = 0;
 
+	virtual void SetColorWriteChannel(uint nChannel) = 0;
 };
 
 extern IOERenderSystem* g_pOERenderSystem;

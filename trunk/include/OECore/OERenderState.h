@@ -28,6 +28,7 @@ public:
 		m_eFillMode = FM_SOLID;
 
 		m_bEnableClipPlane = false;
+		m_nColorWriteChannel = CWC_ALL;
 	};
 
 	COERenderState(const COERenderState& rs)
@@ -42,6 +43,11 @@ public:
 
 		m_eCullMode = rs.m_eCullMode;
 		m_eFillMode = rs.m_eFillMode;
+
+		m_bEnableClipPlane = rs.m_bEnableClipPlane;
+		m_vClipPlane = rs.m_vClipPlane;
+
+		m_nColorWriteChannel = rs.m_nColorWriteChannel;
 	};
 
 	~COERenderState() {};
@@ -60,6 +66,8 @@ public:
 
 	bool m_bEnableClipPlane;
 	CVector4 m_vClipPlane;
+
+	uint m_nColorWriteChannel;
 
 };
 #endif // __OERENDERSTATE_H__

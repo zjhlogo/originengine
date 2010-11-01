@@ -64,10 +64,10 @@ public:
 	virtual const CVector4& GetClipPlane();
 
 	virtual void SetCullMode(CULL_MODE_TYPE eCullMode);
-	virtual void LockCullMode(const tstring& strReason);
-	virtual void UnlockCullMode();
 
 	virtual void SetFillMode(FILL_MODE eFillMode);
+
+	virtual void SetColorWriteChannel(uint nChannel);
 
 private:
 	bool Init();
@@ -92,8 +92,6 @@ private:
 	CMatrix4x4 m_matWorld;
 	CMatrix4x4 m_matView;
 	CMatrix4x4 m_matProjection;
-
-	bool m_bLockCullMode;
 
 };
 

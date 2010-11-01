@@ -75,6 +75,15 @@ void CBaseApp::ResetCameraPosRot(const CVector3& vPos, float fRotY, float fRotX)
 	m_pCamera->RotateTo(fRotY, fRotX);
 }
 
+void CBaseApp::ResetCameraPosRot(const CVector3& vPos, const CQuaternion& qRot)
+{
+	m_pCamera->MoveTo(vPos);
+
+	float x, y, z;
+	COEMath::GetEulerAngle(x, y, z, qRot);
+	m_pCamera->RotateTo(y, x);
+}
+
 void CBaseApp::SetMovementSpeed(float fSpeed)
 {
 	m_pCamera->SetMovementSpeed(fSpeed);
@@ -93,4 +102,14 @@ void CBaseApp::SetRotationSpeed(float fSpeed)
 float CBaseApp::GetRotationSpeed()
 {
 	return m_pCamera->GetRotationSpeed();
+}
+
+void CBaseApp::ShowFPS(bool bShow)
+{
+	m_pFPS->ShowFPS(bShow);
+}
+
+void CBaseApp::ShowCameraPosRot(bool bShow)
+{
+	m_pFPS->ShowCameraPosRot(bShow);
 }

@@ -15,9 +15,6 @@ struct VS_INPUT
 	float3 pos : POSITION;
 	float2 texcoord : TEXCOORD0;
 	float3 normal : NORMAL;
-	float3 tangent : TEXCOORD1;
-	int4 boneIndex : BLENDINDICES;
-	float4 boneWeight : BLENDWEIGHT;
 };
 
 struct VS_OUTPUT

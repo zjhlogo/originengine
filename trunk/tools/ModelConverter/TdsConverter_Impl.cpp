@@ -25,6 +25,7 @@ void CTdsConverter_Impl::Init()
 	m_pMaterials = NULL;
 	m_pMeshes = NULL;
 	m_pVertices = NULL;
+	m_nVertDecl = COEFmtMesh::VDM_POSITION | COEFmtMesh::VDM_TEXCOORD0 | COEFmtMesh::VDM_NORMAL;
 }
 
 void CTdsConverter_Impl::Destroy()
@@ -197,7 +198,7 @@ bool CTdsConverter_Impl::SaveToMeshFile(const tstring& strFile)
 	{
 		strncpy_s(vPiece[i].szName, COEFmtMesh::PIECE_NAME_SIZE, m_pMeshes[i].pName, _TRUNCATE);
 		vPiece[i].nPieceMask = COEFmtMesh::PM_VISIBLE;
-		vPiece[i].nVertexDataMask = COEFmtMesh::VDM_POSITION | COEFmtMesh::VDM_TEXCOORD0 | COEFmtMesh::VDM_NORMAL;
+		vPiece[i].nVertexDataMask = m_nVertDecl;
 		vPiece[i].nMaterialID = m_pMeshes[i].wMaterialID;
 
 		TV_USHORT vIndis;
@@ -281,7 +282,7 @@ bool CTdsConverter_Impl::SaveToXmlFile(const tstring& strFile, const tstring& st
 		TSGMaterial& Material = m_pMaterials[i];
 		IOEXmlNode* pXmlMaterial = pXmlMaterials->InsertChild(TS("Material"));
 		pXmlMaterial->SetAttribute(TS("id"), i);
-		pXmlMaterial->SetAttribute(TS("vertdecl"), COEFmtMesh::VDM_POSITION | COEFmtMesh::VDM_TEXCOORD0 | COEFmtMesh::VDM_NORMAL);
+		pXmlMaterial->SetAttribute(TS("vertdecl"), (int)m_nVertDecl);
 		pXmlMaterial->SetAttribute(TS("shader"), EMPTY_STRING);
 
 		tstring strTextureMap;

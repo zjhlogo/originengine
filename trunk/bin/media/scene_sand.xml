@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Model>
+	<RenderData>
+		<Mesh>scene_sand.mesh</Mesh>
+		<Materials count="2">
+			<Material id="0" vertdecl="1027" shader="mesh.fx" texture0="terrain_cmap.png"/>
+			<Material id="1" vertdecl="1027" shader="mesh.fx" texture0="wood.png"/>
+		</Materials>
+	</RenderData>
+	<Renderers>
+		<Renderer>COEMeshRender_Impl</Renderer>
+	</Renderers>
+</Model>

@@ -24,6 +24,9 @@ public:
 	bool SetPicture(IOETexture* pTexture);
 	IOETexture* GetPicture();
 
+	void SetPosition(const CPoint& pos);
+	const CPoint& GetPosition();
+
 	void SetSize(const CSize& size);
 	const CSize& GetSize();
 
