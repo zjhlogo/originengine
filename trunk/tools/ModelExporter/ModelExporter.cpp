@@ -605,8 +605,7 @@ bool CModelExporter::SaveMaterialsFile(const tstring& strFileName, const tstring
 			tstring strName;
 			COEOS::GetFileNameWithExt(strName, strMap);
 
-			tstring strKey;
-			COEOS::strformat(strKey, TS("texture%d"), nTexIndex);
+			const tstring& strKey = GetTextureKey((MATERIAL_TEXTURE_TYPE)nTexIndex);
 			pXmlMaterial->SetAttribute(strKey, strName);
 			++nTexIndex;
 		}
@@ -616,6 +615,25 @@ bool CModelExporter::SaveMaterialsFile(const tstring& strFileName, const tstring
 	SAFE_RELEASE(pXmlDocument);
 
 	return true;
+}
+
+const tstring& CModelExporter::GetTextureKey(MATERIAL_TEXTURE_TYPE eType)
+{
+	static const tstring s_EmptyTexture;
+	static const tstring s_TextureKey[MTT_NUM] =
+	{
+		TS("texdiffuse"),
+		TS("texnormal"),
+		TS("texture2"),
+		TS("texture3"),
+		TS("texture4"),
+		TS("texture5"),
+		TS("texture6"),
+		TS("texture7"),
+	};
+	assert(MTT_NUM == 8);
+	if (eType < 0 || eType >= MTT_NUM) return s_EmptyTexture;
+	return s_TextureKey[eType];
 }
 
 bool CModelExporter::DumpMesh(MESH_DATA& MeshDataOut, IGameNode* pGameNode)

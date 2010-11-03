@@ -81,17 +81,17 @@ void COEUIImageRenderer_Impl::Render(float fDetailTime)
 	g_pOEUIRenderSystem->DrawSolidTriList(Verts, VERTS_COUNT, s_Indis, INDIS_COUNT);
 }
 
-void COEUIImageRenderer_Impl::SetTexture(IOETexture* pTexture, bool bAdjustSizeFromTexture /* = false */)
+void COEUIImageRenderer_Impl::SetImage(IOETexture* pTexture, bool bAdjustSizeFromImage /* = false */)
 {
 	m_pTexture = pTexture;
-	if (bAdjustSizeFromTexture && m_pTexture)
+	if (bAdjustSizeFromImage && m_pTexture)
 	{
 		m_Size.width = (float)m_pTexture->GetWidth();
 		m_Size.height = (float)m_pTexture->GetHeight();
 	}
 }
 
-IOETexture* COEUIImageRenderer_Impl::GetTexture()
+IOETexture* COEUIImageRenderer_Impl::GetImage()
 {
 	return m_pTexture;
 }

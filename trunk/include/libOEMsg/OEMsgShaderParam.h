@@ -10,15 +10,17 @@
 
 #include "../libOEBase/IOEMsg.h"
 #include "../OECore/IOEShader.h"
+#include "../OECore/IOEMaterial.h"
 
 class COEMsgShaderParam : public IOEMsg
 {
 public:
-	COEMsgShaderParam(IOEShader* pShader);
+	COEMsgShaderParam(IOEShader* pShader, IOEMaterial* pMaterial);
 	COEMsgShaderParam(COEDataBufferRead* pDBRead);
 	virtual ~COEMsgShaderParam();
 
 	IOEShader* GetShader() const;
+	IOEMaterial* GetMaterial() const;
 
 protected:
 	virtual bool FromBuffer(COEDataBufferRead* pDBRead);
@@ -26,6 +28,7 @@ protected:
 
 private:
 	IOEShader* m_pShader;
+	IOEMaterial* m_pMaterial;
 
 };
 #endif // __OEMSGSHADERPARAM_H__

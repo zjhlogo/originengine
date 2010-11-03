@@ -158,6 +158,8 @@ bool COED3DShader_Impl::GetMatrixArray(CMatrix4x4* pmatOut, uint nCount, const t
 
 bool COED3DShader_Impl::SetTexture(const tstring& strParamName, IOETexture* pTexture)
 {
+	if (!pTexture) return false;
+
 	std::string strANSIName;
 	if (!COEOS::tchar2char(strANSIName, strParamName.c_str())) return false;
 

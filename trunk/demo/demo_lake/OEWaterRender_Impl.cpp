@@ -71,13 +71,13 @@ bool COEWaterRender_Impl::Render(IOERenderData* pRenderData)
 
 		if (pPiece->GetVertDeclMask() != pMaterial->GetVertDeclMask()) continue;
 
-		// give user chance to setup shader parameter
-		IOEObject* pHolder = pRenderData->GetObject(TS("Holder"));
-		if (pHolder)
-		{
-			COEMsgShaderParam msg(pShader);
-			pHolder->CallEvent(msg);
-		}
+		//// give user chance to setup shader parameter
+		//IOEObject* pHolder = pRenderData->GetObject(TS("Holder"));
+		//if (pHolder)
+		//{
+		//	COEMsgShaderParam msg(pShader, pMaterial);
+		//	pHolder->CallEvent(msg);
+		//}
 
 		pShader->SetMatrix(TS("g_matWorldToProject"), matWorldToProject);
 		pShader->SetTexture(TS("g_texReflect"), pRenderTargetReflect);
@@ -124,13 +124,13 @@ bool COEWaterRender_Impl::CreateRefractTexture(IOERenderData* pRenderData, IOETe
 
 		if (pPiece->GetVertDeclMask() != pMaterial->GetVertDeclMask()) continue;
 
-		// give user chance to setup shader parameter
-		IOEObject* pHolder = pRenderData->GetObject(TS("Holder"));
-		if (pHolder)
-		{
-			COEMsgShaderParam msg(pShader);
-			pHolder->CallEvent(msg);
-		}
+		//// give user chance to setup shader parameter
+		//IOEObject* pHolder = pRenderData->GetObject(TS("Holder"));
+		//if (pHolder)
+		//{
+		//	COEMsgShaderParam msg(pShader, pMaterial);
+		//	pHolder->CallEvent(msg);
+		//}
 
 		pShader->SetMatrix(TS("g_matWorldToProject"), matWorldToProject);
 

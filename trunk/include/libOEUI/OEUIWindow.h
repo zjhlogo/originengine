@@ -16,6 +16,15 @@ class COEUIWindow : public IOEUIRenderableObject
 public:
 	typedef std::vector<COEUIWindow*> TV_WINDOW;
 
+	enum WINDOW_LAYER
+	{
+		WL_UNKNOWN = 0,
+		WL_FRONT,
+		WL_BACK,
+		WL_NEXT,
+		WL_PREVIOUS,
+	};
+
 public:
 	COEUIWindow(COEUIWindow* pParent);
 	virtual ~COEUIWindow();
@@ -26,11 +35,14 @@ public:
 	virtual void UpdateChildren(float fDetailTime);
 	virtual void RenderChildren(float fDetailTime);
 
+	virtual bool SetChildWindowLayer(COEUIWindow* pChild, WINDOW_LAYER eLayer, COEUIWindow* pChildRelative = NULL);
+
 private:
 	bool Init();
 	void Destroy();
 
 	bool AddChild(COEUIWindow* pChild);
+	TV_WINDOW::iterator FindChild(COEUIWindow* pChild);
 
 private:
 	COEUIWindow* m_pParent;

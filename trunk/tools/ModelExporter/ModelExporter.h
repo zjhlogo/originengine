@@ -11,6 +11,7 @@
 #include <OEBase/IOEFileMgr.h>
 #include <OECore/OEFmtMesh.h>
 #include <OECore/OEFmtSkeleton.h>
+#include <OECore/OEBaseTypeEx.h>
 
 #include <max.h>
 #include <IGame/IGame.h>
@@ -192,6 +193,7 @@ private:
 	bool SaveMeshFile(const tstring& strFileName);
 	bool SaveSkeletonFile(const tstring& strFileName);
 	bool SaveMaterialsFile(const tstring& strFileName, const tstring& strMeshFile, const tstring& strSkeletonFile);
+	const tstring& GetTextureKey(MATERIAL_TEXTURE_TYPE eType);
 
 	bool DumpMesh(MESH_DATA& MeshDataOut, IGameNode* pGameNode);
 	bool DumpSkin(MESH_DATA& MeshDataOut, IGameSkin* pGameSkin);

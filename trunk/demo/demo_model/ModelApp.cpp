@@ -27,7 +27,6 @@ CModelApp::~CModelApp()
 void CModelApp::Init()
 {
 	m_pModel = NULL;
-	m_pNodeRoot = NULL;
 	m_pNode1 = NULL;
 	m_pNode2 = NULL;
 }
@@ -42,21 +41,21 @@ bool CModelApp::UserDataInit()
 	m_pModel = g_pOEResMgr->CreateModel(TS("casual03.xml"));
 	if (!m_pModel) return false;
 
-	m_pNodeRoot = g_pOECore->GetRootNode();
+	IOENode* pRootNode = g_pOECore->GetRootNode();
+	if (!pRootNode) return false;
 
-	m_pNode1 = m_pNodeRoot->NewChildNode(TS("Node1"));
+	IOENode* pNodeLight = pRootNode->GetChildNode(TS("Light"));
+	pNodeLight->SetPosition(CVector3(0.0f, 0.0f, -300.0f));
+
+	m_pNode1 = pRootNode->NewChildNode(TS("Node1"));
 	m_pNode1->SetPosition(CVector3(-100.0f, 0.0f, 0.0f));
 	m_pNode1->AttachObject(m_pModel);
 
-	m_pNode2 = m_pNodeRoot->NewChildNode(TS("Node2"));
+	m_pNode2 = pRootNode->NewChildNode(TS("Node2"));
 	m_pNode2->SetPosition(CVector3(100.0f, 0.0f, 0.0f));
 	m_pNode2->AttachObject(m_pModel);
 
-	//CQuaternion qRot(COEMath::VECTOR_UP, COEMath::PI_2);
-	//pRootNode->SetRotation(qRot);
-
 	ResetCameraPosRot(m_pModel);
-
 	return true;
 }
 
@@ -72,7 +71,7 @@ void CModelApp::Update(float fDetailTime)
 	s_fTotalTime += (0.3f*fDetailTime);
 
 	CQuaternion qRotRoot(COEMath::VECTOR_UP, s_fTotalTime);
-	m_pNodeRoot->SetRotation(qRotRoot);
+	g_pOECore->GetRootNode()->SetRotation(qRotRoot);
 
 	CQuaternion qRotNode1(COEMath::VECTOR_UP, -2.0f*s_fTotalTime);
 	m_pNode1->SetRotation(qRotNode1);

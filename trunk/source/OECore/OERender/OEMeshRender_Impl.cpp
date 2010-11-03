@@ -8,7 +8,7 @@
 #include "OEMeshRender_Impl.h"
 #include <OECore/IOERenderSystem.h>
 #include <OECore/OERenderSystemUtil.h>
-#include <OECore/IOENode.h>
+#include <OECore/IOECore.h>
 #include <libOEMsg/OEMsgShaderParam.h>
 
 COEMeshRender_Impl::COEMeshRender_Impl()
@@ -31,6 +31,8 @@ bool COEMeshRender_Impl::Render(IOERenderData* pRenderData)
 
 	IOENode* pAttachedNode = (IOENode*)pRenderData->GetObject(TS("AttachedNode"));
 	if (!pAttachedNode) return false;
+
+	IOENode* pLightNode = g_pOECore->GetRootNode()->GetChildNode(TS("Light"));
 
 	CMatrix4x4 matModelToWorld = pAttachedNode->GetFinalMatrix();
 	CMatrix4x4 matWorldToProject = matModelToWorld;
@@ -56,13 +58,15 @@ bool COEMeshRender_Impl::Render(IOERenderData* pRenderData)
 		IOEObject* pHolder = pRenderData->GetObject(TS("Holder"));
 		if (pHolder)
 		{
-			COEMsgShaderParam msg(pShader);
+			COEMsgShaderParam msg(pShader, pMaterial);
 			pHolder->CallEvent(msg);
 		}
 
+		pShader->SetMatrix(TS("g_matWorldToModel"), matModelToWorld.Inverse());
 		pShader->SetMatrix(TS("g_matWorldToProject"), matWorldToProject);
 		pShader->SetTexture(TS("g_texDiffuse"), pMaterial->GetTexture(MTT_DIFFUSE));
-		pShader->SetMatrix(TS("g_matWorldToModel"), matModelToWorld.Inverse());
+		pShader->SetTexture(TS("g_texNormal"), pMaterial->GetTexture(MTT_NORMAL));
+		if (pLightNode) pShader->SetVector(TS("g_vLightPos"), pLightNode->GetPosition());
 
 		g_pOERenderSystem->SetShader(pShader);
 		g_pOERenderSystem->DrawTriList(pPiece->GetVerts(), pPiece->GetNumVerts(), pPiece->GetIndis(), pPiece->GetNumIndis());

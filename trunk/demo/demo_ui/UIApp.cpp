@@ -42,7 +42,12 @@ bool CUIApp::UserDataInit()
 {
 	m_pModel = g_pOEResMgr->CreateModel(TS("casual03.xml"));
 	if (!m_pModel) return false;
-	g_pOECore->GetRootNode()->AttachObject(m_pModel);
+
+	IOENode* pRootNode = g_pOECore->GetRootNode();
+	pRootNode->AttachObject(m_pModel);
+
+	IOENode* pLightNode = pRootNode->GetChildNode(TS("Light"));
+	pLightNode->SetPosition(CVector3(0.0f, 0.0f, -300.0f));
 
 	CUITestWindow* pTestWindow = new CUITestWindow(g_pOEUIRenderSystem->GetScreen());
 	if (!pTestWindow) return false;

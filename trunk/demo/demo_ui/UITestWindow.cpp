@@ -40,9 +40,9 @@ bool CUITestWindow::Init()
 	if (!m_pTexture) return false;
 
 	m_pString->SetText(TS("HANDLE g_hTickEvent = ::CreateEvent(NULL, FALSE, FALSE, NULL);"));
-	m_pString->SetPosition(CPoint(550.0f, 100.0f));
+	m_pString->SetPosition(CPoint(350.0f, 100.0f));
 
-	m_pImage->SetTexture(m_pTexture);
+	m_pImage->SetImage(m_pTexture);
 	m_pImage->SetPosition(CPoint(20.0f, 20.0f));
 	m_pImage->SetSize(CSize(200.0f, 150.0f));
 	return true;

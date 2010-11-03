@@ -1,49 +1,49 @@
 /*!
- * \file MeshApp.cpp
- * \date 31-7-2009 20:46:39
+ * \file CartoonApp.cpp
+ * \date 11-2-2010 22:02:32
  * 
  * 
- * \author zjhlogo (zjhlogo@163.com)
+ * \author zjhlogo (zjhlogo@gmail.com)
  */
-#include "MeshApp.h"
+#include "CartoonApp.h"
 #include "../common/AppHelper.h"
 #include <OECore/IOECore.h>
 #include <OECore/IOERenderSystem.h>
 #include <OECore/IOEResMgr.h>
 #include <libOEMsg/OEMsgList.h>
 
-IMPLEMENT_OEAPP(CMeshApp);
+IMPLEMENT_OEAPP(CCartoonApp);
 
-CMeshApp::CMeshApp()
+CCartoonApp::CCartoonApp()
 {
 	Init();
 }
 
-CMeshApp::~CMeshApp()
+CCartoonApp::~CCartoonApp()
 {
 	Destroy();
 }
 
-void CMeshApp::Init()
+void CCartoonApp::Init()
 {
 	m_pModel = NULL;
 }
 
-void CMeshApp::Destroy()
+void CCartoonApp::Destroy()
 {
 	// TODO: 
 }
 
-bool CMeshApp::UserDataInit()
+bool CCartoonApp::UserDataInit()
 {
-	m_pModel = g_pOEResMgr->CreateModel(TS("demo_mesh.xml"));
+	m_pModel = g_pOEResMgr->CreateModel(TS("demo_cartoon.xml"));
 	if (!m_pModel) return false;
 
 	IOENode* pRootNode = g_pOECore->GetRootNode();
 	if (!pRootNode) return false;
 
 	IOENode* pNodeLight = pRootNode->GetChildNode(TS("Light"));
-	pNodeLight->SetPosition(CVector3(0.0f, 0.0f, -300.0f));
+	pNodeLight->SetPosition(CVector3(300.0f, 0.0f, -300.0f));
 
 	pRootNode->AttachObject(m_pModel);
 
@@ -51,12 +51,12 @@ bool CMeshApp::UserDataInit()
 	return true;
 }
 
-void CMeshApp::UserDataTerm()
+void CCartoonApp::UserDataTerm()
 {
 	SAFE_RELEASE(m_pModel);
 }
 
-void CMeshApp::Update(float fDetailTime)
+void CCartoonApp::Update(float fDetailTime)
 {
 	// TODO: 
 }

@@ -2,7 +2,7 @@ float4x4 g_matWorldToModel;
 float4x4 g_matWorldToProject;
 float4x3 g_matBoneMatrix[50] : WORLDMATRIXARRAY;
 
-float3 g_vLightPos = {0.0f, 0.0f, -300.0f};
+float3 g_vLightPos;
 float3 g_vEyePos;
 
 texture g_texDiffuse;

@@ -21,8 +21,8 @@ public:
 	virtual void Update(float fDetailTime);
 	virtual void Render(float fDetailTime);
 
-	virtual void SetTexture(IOETexture* pTexture, bool bAdjustSizeFromTexture = false);
-	virtual IOETexture* GetTexture();
+	virtual void SetImage(IOETexture* pTexture, bool bAdjustSizeFromImage = false);
+	virtual IOETexture* GetImage();
 
 	virtual void SetPosition(const CPoint& pos);
 	virtual const CPoint& GetPosition();

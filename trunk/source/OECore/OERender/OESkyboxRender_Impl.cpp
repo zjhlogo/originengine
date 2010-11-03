@@ -68,7 +68,7 @@ bool COESkyboxRender_Impl::Render(IOERenderData* pRenderData)
 		IOEObject* pHolder = pRenderData->GetObject(TS("Holder"));
 		if (pHolder)
 		{
-			COEMsgShaderParam msg(pShader);
+			COEMsgShaderParam msg(pShader, pMaterial);
 			pHolder->CallEvent(msg);
 		}
 

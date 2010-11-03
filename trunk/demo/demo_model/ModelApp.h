@@ -29,7 +29,6 @@ private:
 
 private:
 	IOEModel* m_pModel;
-	IOENode* m_pNodeRoot;
 	IOENode* m_pNode1;
 	IOENode* m_pNode2;
 

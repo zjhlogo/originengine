@@ -3,7 +3,7 @@
 	<RenderData>
 		<Mesh>casual03_high.mesh</Mesh>
 		<Materials count="1">
-			<Material id="0" vertdecl="11267" shader="demo_mesh.fx" texture0="casual03_diffuse_specular.png" />
+			<Material id="0" vertdecl="11267" shader="demo_mesh.fx" texdiffuse="casual03_diffuse_specular.png" texnormal="casual03_normal.png"/>
 		</Materials>
 	</RenderData>
 	<Renderers>

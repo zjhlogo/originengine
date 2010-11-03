@@ -19,7 +19,7 @@ CFPSWindow::CFPSWindow(COEUIWindow* pParent)
 	m_pFont = NULL;
 	m_pStringFPS = NULL;
 	m_bShowFPS = true;
-	m_bShowCameraPosRot = true;
+	m_bShowCameraPosRot = false;
 
 	// initialize fps string
 	m_pFont = g_pOEUIResMgr->CreateBitmapFont(TS("12px_Tahoma.fnt"));

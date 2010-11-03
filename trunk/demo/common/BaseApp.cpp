@@ -35,15 +35,20 @@ bool CBaseApp::Initialize()
 	m_pCamera = new CCamera();
 	if (!m_pCamera) return false;
 
-	IOENode* pNode = g_pOECore->GetRootNode()->NewChildNode(TS("Camera"));
-	if (!pNode) return false;
-	m_pCamera->SetTargetNode(pNode);
+	IOENode* pRootNode = g_pOECore->GetRootNode();
+	if (!pRootNode) return false;
 
-	if (!UserDataInit()) return false;
+	IOENode* pCameraNode = pRootNode->GetChildNode(TS("Camera"));
+	if (!pCameraNode) return false;
+
+	m_pCamera->SetTargetNode(pCameraNode);
 
 	m_pFPS = new CFPSWindow(g_pOEUIRenderSystem->GetScreen());
 	if (!m_pFPS) return false;
 
+	if (!UserDataInit()) return false;
+
+	g_pOEUIRenderSystem->GetScreen()->SetChildWindowLayer(m_pFPS, COEUIWindow::WL_FRONT);
 	return true;
 }
 
