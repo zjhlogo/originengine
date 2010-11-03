@@ -71,16 +71,16 @@ bool CLakeApp::UserDataInit()
 	m_pModelLake->GetRenderData()->SetTexture(TS("RenderTargetReflect"), m_pRenderTargetReflect);
 	m_pModelLake->GetRenderData()->SetTexture(TS("RenderTargetRefract"), m_pRenderTargetRefract);
 
-	COEUIPicture* pPicReflect = new COEUIPicture(g_pOEUIRenderSystem->GetScreen());
-	if (!pPicReflect) return false;
-	pPicReflect->SetPicture(m_pRenderTargetReflect);
-	pPicReflect->SetSize(CSize(200.0f, 150.0f));
+	//COEUIPicture* pPicReflect = new COEUIPicture(g_pOEUIRenderSystem->GetScreen());
+	//if (!pPicReflect) return false;
+	//pPicReflect->SetPicture(m_pRenderTargetReflect);
+	//pPicReflect->SetSize(CSize(200.0f, 150.0f));
 
-	COEUIPicture* pPicRefract = new COEUIPicture(g_pOEUIRenderSystem->GetScreen());
-	if (!pPicRefract) return false;
-	pPicRefract->SetPicture(m_pRenderTargetRefract);
-	pPicRefract->SetPosition(CPoint(nWindowWidth-200.0f, 0.0f));
-	pPicRefract->SetSize(CSize(200.0f, 150.0f));
+	//COEUIPicture* pPicRefract = new COEUIPicture(g_pOEUIRenderSystem->GetScreen());
+	//if (!pPicRefract) return false;
+	//pPicRefract->SetPicture(m_pRenderTargetRefract);
+	//pPicRefract->SetPosition(CPoint(nWindowWidth-200.0f, 0.0f));
+	//pPicRefract->SetSize(CSize(200.0f, 150.0f));
 
 	IOENode* pRootNode = g_pOECore->GetRootNode();
 	pRootNode->AttachObject(m_pModelSky);

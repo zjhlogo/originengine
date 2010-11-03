@@ -28,6 +28,7 @@ void CBumpMapApp::Init()
 {
 	m_pSimpleShape = NULL;
 	m_pModel = NULL;
+	m_bTimeStop = true;
 }
 
 void CBumpMapApp::Destroy()
@@ -61,10 +62,9 @@ void CBumpMapApp::UserDataTerm()
 
 void CBumpMapApp::Update(float fDetailTime)
 {
-	static float s_fTotalTime = 0.0f;
+	static float s_fTotalTime = 11.0f;
 
-	s_fTotalTime += fDetailTime*0.3f;
-	//s_fTotalTime = 11.0f;
+	if (!m_bTimeStop) s_fTotalTime += fDetailTime*0.3f;
 	m_vLightPos.x = cos(s_fTotalTime)*40.0f;
 	m_vLightPos.z = sin(s_fTotalTime)*40.0f;
 	m_vLightPos.y = cos(s_fTotalTime)*sin(s_fTotalTime)*40.0f;
@@ -94,6 +94,9 @@ bool CBumpMapApp::OnKeyDown(COEMsgKeyboard& msg)
 	case '5':
 		pShader->SetTechnique(TS("HeightMapTexture"));
 		break;
+	case ' ':
+		m_bTimeStop = !m_bTimeStop;
+		break;
 	}
 
 	return true;
@@ -108,9 +111,6 @@ bool CBumpMapApp::OnSetupShaderParam(COEMsgShaderParam& msg)
 	if (!pCameraNode) return false;
 
 	pShader->SetVector(TS("g_vEyePos"), pCameraNode->GetPosition());
-
-	IOETexture* pTexture = pMaterial->GetTexture(MTT_NORMAL);
-	pShader->SetTexture(TS("g_texNormalHeight"), pTexture);
 
 	return true;
 }

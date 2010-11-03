@@ -36,6 +36,7 @@ private:
 	CSimpleShape* m_pSimpleShape;
 	CVector3 m_vLightPos;
 	IOEModel* m_pModel;
+	bool m_bTimeStop;
 
 };
 
