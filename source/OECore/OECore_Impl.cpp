@@ -69,6 +69,8 @@ bool COECore_Impl::Initialize()
 
 	m_pRootNode = new COENode_Impl(TS("RootNode"));
 	if (!m_pRootNode) return false;
+	m_pRootNode->NewChildNode(TS("Camera"));
+	m_pRootNode->NewChildNode(TS("Light"));
 
 	// 应用程序接口类
 	if (!g_pOEApp->Initialize()) return false;

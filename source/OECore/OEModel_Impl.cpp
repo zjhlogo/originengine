@@ -247,6 +247,8 @@ bool COEModel_Impl::CreateMaterialsList(IOEXmlNode* pXmlMaterials)
 
 void COEModel_Impl::DestroyMesh()
 {
+	if (!m_pRenderData) return;
+
 	IOEMesh* pMesh = m_pRenderData->GetMesh(TS("MainMesh"));
 	SAFE_RELEASE(pMesh);
 	m_pRenderData->RemoveMesh(TS("MainMesh"));
@@ -254,6 +256,8 @@ void COEModel_Impl::DestroyMesh()
 
 void COEModel_Impl::DestroyAnimData()
 {
+	if (!m_pRenderData) return;
+
 	IOEAnimData* pAnimData = m_pRenderData->GetAnimData(TS("MainAnimData"));
 	SAFE_RELEASE(pAnimData);
 
@@ -262,6 +266,8 @@ void COEModel_Impl::DestroyAnimData()
 
 void COEModel_Impl::DestroyMaterialsList()
 {
+	if (!m_pRenderData) return;
+
 	IOEMaterialsList* pMaterialsList = m_pRenderData->GetMaterialsList(TS("MainMaterialsList"));
 	SAFE_RELEASE(pMaterialsList);
 

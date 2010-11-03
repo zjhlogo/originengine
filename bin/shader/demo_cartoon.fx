@@ -3,7 +3,6 @@ float4x4 g_matWorldToProject;
 float3 g_vLightPos;
 
 texture g_texDiffuse;
-texture g_texNormal;
 
 sampler sampleDiffuse =
 sampler_state
@@ -12,15 +11,8 @@ sampler_state
 	MipFilter = LINEAR;
 	MinFilter = LINEAR;
 	MagFilter = LINEAR;
-};
-
-sampler sampleNormal =
-sampler_state
-{
-	Texture = <g_texNormal>;
-	MipFilter = LINEAR;
-	MinFilter = LINEAR;
-	MagFilter = LINEAR;
+	AddressU = CLAMP;
+	AddressV = CLAMP;
 };
 
 struct VS_INPUT
@@ -28,9 +20,6 @@ struct VS_INPUT
 	float3 pos : POSITION;
 	float2 texcoord : TEXCOORD0;
 	float3 normal : NORMAL;
-	float3 tangent : TEXCOORD1;
-	int4 boneIndex : BLENDINDICES;
-	float4 boneWeight : BLENDWEIGHT;
 };
 
 struct VS_OUTPUT
@@ -38,6 +27,7 @@ struct VS_OUTPUT
 	float4 pos : POSITION;
 	float2 texcoord : TEXCOORD0;
 	float3 lightDir : TEXCOORD1;
+	float3 normal : TEXCOORD2;
 };
 
 VS_OUTPUT VSMain(VS_INPUT input)
@@ -47,26 +37,21 @@ VS_OUTPUT VSMain(VS_INPUT input)
 	output.pos = mul(float4(input.pos, 1.0f), g_matWorldToProject);
 	output.texcoord = input.texcoord;
 
-	float3 binormal = cross(input.tangent, input.normal);
-	float3x3 TangentToModel = float3x3(input.tangent, binormal, input.normal);
-
 	float3 lightPos = mul(g_vLightPos, g_matWorldToModel);
-	float3 vLightDir = lightPos - input.pos;
-	output.lightDir = mul(TangentToModel, vLightDir);				// 这里相当于 mul(vLightDir, TangentToModel.Invert());
+	output.lightDir = lightPos - input.pos;
 
+	output.normal = input.normal;
 	return output;
 }
 
 float4 PSMain(VS_OUTPUT input) : COLOR
 {
 	float3 lightDir = normalize(input.lightDir);
-
-	float3 diffuse = tex2D(sampleDiffuse, input.texcoord);
-	float3 normal = tex2D(sampleNormal, input.texcoord);
-	normal = (normal - 0.5f) * 2.0f;
+	float3 normal = normalize(input.normal);
 
 	float diffuseFactor = saturate(dot(normal, lightDir));
-	return float4(diffuse*diffuseFactor, 1.0f);
+	float4 diffuse = tex2D(sampleDiffuse, float2(diffuseFactor, 0.5f));
+	return diffuse;
 }
 
 technique Normal

@@ -287,11 +287,11 @@ bool CTdsConverter_Impl::SaveToXmlFile(const tstring& strFile, const tstring& st
 
 		tstring strTextureMap;
 		COEOS::char2tchar(strTextureMap, Material.pTextureMap);
-		if (!strTextureMap.empty()) pXmlMaterial->SetAttribute(TS("texture0"), strTextureMap);
+		if (!strTextureMap.empty()) pXmlMaterial->SetAttribute(TS("texdiffuse"), strTextureMap);
 
 		tstring strReflectionMap;
 		COEOS::char2tchar(strReflectionMap, Material.pReflectionMap);
-		if (!strReflectionMap.empty()) pXmlMaterial->SetAttribute(TS("texture1"), strReflectionMap);
+		if (!strReflectionMap.empty()) pXmlMaterial->SetAttribute(TS("texnormal"), strReflectionMap);
 	}
 
 	pXmlDocument->SaveFile(strFile);

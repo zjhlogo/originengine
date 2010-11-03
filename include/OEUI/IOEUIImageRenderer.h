@@ -20,8 +20,8 @@ public:
 	IOEUIImageRenderer() {};
 	virtual ~IOEUIImageRenderer() {};
 
-	virtual void SetTexture(IOETexture* pTexture, bool bAdjustSizeFromTexture = false) = 0;
-	virtual IOETexture* GetTexture() = 0;
+	virtual void SetImage(IOETexture* pTexture, bool bAdjustSizeFromImage = false) = 0;
+	virtual IOETexture* GetImage() = 0;
 
 	virtual void SetPosition(const CPoint& pos) = 0;
 	virtual const CPoint& GetPosition() = 0;

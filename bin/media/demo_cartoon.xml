@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Model>
 	<RenderData>
-		<Mesh>box.mesh</Mesh>
+		<Mesh>teapot.mesh</Mesh>
 		<Materials count="1">
-			<Material id="0" vertdecl="3075" shader="demo_bumpmap.fx" texdiffuse="brick_diffuse.png" texnormal="brick_normal_height.png" />
+			<Material id="0" vertdecl="1027" shader="demo_cartoon.fx" texdiffuse="cartoonlevel.png"/>
 		</Materials>
 	</RenderData>
 	<Renderers>

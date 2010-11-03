@@ -26,13 +26,13 @@ void COEUIPicture::Render(float fDetailTime)
 
 bool COEUIPicture::SetPicture(IOETexture* pTexture)
 {
-	m_pImage->SetTexture(pTexture);
+	m_pImage->SetImage(pTexture);
 	return true;
 }
 
 IOETexture* COEUIPicture::GetPicture()
 {
-	return m_pImage->GetTexture();
+	return m_pImage->GetImage();
 }
 
 void COEUIPicture::SetPosition(const CPoint& pos)

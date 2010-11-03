@@ -41,6 +41,8 @@ bool COESkinMeshRender_Impl::Render(IOERenderData* pRenderData)
 	IOEAnimData* pAnimData = pRenderData->GetAnimData(TS("MainAnimData"));
 	if (!pAnimData) return false;
 
+	IOENode* pLightNode = g_pOECore->GetRootNode()->GetChildNode(TS("Light"));
+
 	CMatrix4x4 matModelToWorld = pAttachedNode->GetFinalMatrix();
 	CMatrix4x4 matWorldToProject = matModelToWorld;
 	g_pOERenderSystem->GetTransform(matWorldToProject, TT_WORLD_VIEW_PROJ);
@@ -65,7 +67,7 @@ bool COESkinMeshRender_Impl::Render(IOERenderData* pRenderData)
 		IOEObject* pHolder = pRenderData->GetObject(TS("Holder"));
 		if (pHolder)
 		{
-			COEMsgShaderParam msg(pShader);
+			COEMsgShaderParam msg(pShader, pMaterial);
 			pHolder->CallEvent(msg);
 		}
 
@@ -73,6 +75,7 @@ bool COESkinMeshRender_Impl::Render(IOERenderData* pRenderData)
 		pShader->SetMatrix(TS("g_matWorldToProject"), matWorldToProject);
 		pShader->SetTexture(TS("g_texDiffuse"), pMaterial->GetTexture(MTT_DIFFUSE));
 		pShader->SetTexture(TS("g_texNormal"), pMaterial->GetTexture(MTT_NORMAL));
+		if (pLightNode) pShader->SetVector(TS("g_vLightPos"), pLightNode->GetPosition());
 		pShader->SetVector(TS("g_vEyePos"), pCameraNode->GetPosition());
 		pShader->SetMatrixArray(TS("g_matBoneMatrix"), pAnimData->GetSkinMatrixs(), pAnimData->GetNumSkinMatrixs());
 

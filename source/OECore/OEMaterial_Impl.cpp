@@ -87,8 +87,8 @@ const tstring& COEMaterial_Impl::GetTextureKey(MATERIAL_TEXTURE_TYPE eType)
 	static const tstring s_EmptyTexture;
 	static const tstring s_TextureKey[MTT_NUM] =
 	{
-		TS("texture0"),
-		TS("texture1"),
+		TS("texdiffuse"),
+		TS("texnormal"),
 		TS("texture2"),
 		TS("texture3"),
 		TS("texture4"),
