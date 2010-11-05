@@ -112,7 +112,7 @@ bool COEModel_Impl::Create(const tstring& strFile)
 
 	// create render data
 	IOEXmlNode* pXmlRenderData = pXmlRoot->FirstChild(TS("RenderData"));
-	CreateRenderData(pXmlRenderData);
+	if (!CreateRenderData(pXmlRenderData)) return false;
 
 	// create controls
 	IOEXmlNode* pXmlControls = pXmlRoot->FirstChild(TS("Controls"));
