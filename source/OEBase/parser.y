@@ -1,3 +1,13 @@
+/*!
+ * \file parser.y
+ * \date 9-10-2009 17:13:08
+ * 
+ * 
+ * \author zjhlogo (zjhlogo@163.com)
+ * 
+ * Usage: yacc -p xml --defines=XmlParser.hpp --output=XmlParser.cpp parser.y
+ * 
+ */
 %{
 #include "XmlGenerator.h"
 %}
