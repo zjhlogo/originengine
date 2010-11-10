@@ -1,3 +1,13 @@
+/*!
+ * \file scanner.l
+ * \date 9-10-2009 17:13:08
+ * 
+ * 
+ * \author zjhlogo (zjhlogo@163.com)
+ * 
+ * Usage: lex -+ --yyclass=xmlFlexLexer --header-file=XmlScanner.hpp --outfile=XmlScanner.cpp scanner.l
+ * 
+ */
 %{
 #include "XmlGenerator.h"
 #include "XmlParser.hpp"
@@ -10,7 +20,7 @@
 %x header
 %x node
 
-NAME [_A-Za-z][A-Za-z0-9]*
+NAME [_A-Za-z][_A-Za-z0-9]*
 BLANK [ \t\r\n]
 STRING (\"[^\"]*\")|(\'[^\']*\')
 

@@ -1,6 +1,6 @@
-#ifndef xmlHEADER_H
-#define xmlHEADER_H 1
-#define xmlIN_HEADER 1
+#ifndef yyHEADER_H
+#define yyHEADER_H 1
+#define yyIN_HEADER 1
 
 #line 6 "XmlScanner.hpp"
 
@@ -62,7 +62,6 @@ typedef int flex_int32_t;
 typedef unsigned char flex_uint8_t; 
 typedef unsigned short int flex_uint16_t;
 typedef unsigned int flex_uint32_t;
-#endif /* ! C99 */
 
 /* Limits of integral types. */
 #ifndef INT8_MIN
@@ -93,12 +92,15 @@ typedef unsigned int flex_uint32_t;
 #define UINT32_MAX             (4294967295U)
 #endif
 
+#endif /* ! C99 */
+
 #endif /* ! FLEXINT_H */
 
 /* begin standard C++ headers. */
 #include <iostream> 
 #include <errno.h>
 #include <cstdlib>
+#include <cstdio>
 #include <cstring>
 /* end standard C++ headers. */
 
@@ -125,7 +127,15 @@ typedef unsigned int flex_uint32_t;
 
 /* Size of default input buffer. */
 #ifndef YY_BUF_SIZE
+#ifdef __ia64__
+/* On IA-64, the buffer size is 16k, not 8k.
+ * Moreover, YY_BUF_SIZE is 2*YY_READ_BUF_SIZE in the general case.
+ * Ditto for the __ia64__ case accordingly.
+ */
+#define YY_BUF_SIZE 32768
+#else
 #define YY_BUF_SIZE 16384
+#endif /* __ia64__ */
 #endif
 
 #ifndef YY_TYPEDEF_YY_BUFFER_STATE
@@ -192,16 +202,16 @@ struct yy_buffer_state
 	};
 #endif /* !YY_STRUCT_YY_BUFFER_STATE */
 
-void *xmlalloc (yy_size_t  );
-void *xmlrealloc (void *,yy_size_t  );
-void xmlfree (void *  );
+void *yyalloc (yy_size_t  );
+void *yyrealloc (void *,yy_size_t  );
+void yyfree (void *  );
 
 /* Begin user sect3 */
 
 #define yytext_ptr yytext
 #define YY_INTERACTIVE
 
-#include "FlexLexer.h"
+#include <FlexLexer.h>
 
 #ifdef YY_HEADER_EXPORT_START_CONDITIONS
 #define INITIAL 0
@@ -209,6 +219,14 @@ void xmlfree (void *  );
 #define header 2
 #define node 3
 
+#endif
+
+#ifndef YY_NO_UNISTD_H
+/* Special case for "unistd.h", since it is non-ANSI. We include it way
+ * down here because we want the user's section 1 to have been scanned first.
+ * The user has a chance to override it with an option.
+ */
+#include <unistd.h>
 #endif
 
 #ifndef YY_EXTRA_TYPE
@@ -229,7 +247,12 @@ static int yy_flex_strlen (yyconst char * );
 
 /* Amount of stuff to slurp up with each read. */
 #ifndef YY_READ_BUF_SIZE
+#ifdef __ia64__
+/* On IA-64, the buffer size is 16k, not 8k */
+#define YY_READ_BUF_SIZE 16384
+#else
 #define YY_READ_BUF_SIZE 8192
+#endif /* __ia64__ */
 #endif
 
 /* Number of entries by which start-condition stack grows. */
@@ -262,6 +285,6 @@ static int yy_flex_strlen (yyconst char * );
 #line 39 "scanner.l"
 
 
-#line 266 "XmlScanner.hpp"
-#undef xmlIN_HEADER
-#endif /* xmlHEADER_H */
+#line 289 "XmlScanner.hpp"
+#undef yyIN_HEADER
+#endif /* yyHEADER_H */
