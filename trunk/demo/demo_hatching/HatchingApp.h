@@ -31,6 +31,8 @@ private:
 
 private:
 	IOEModel* m_pModel;
+	CVector3 m_vLightPos;
+	float m_bTimeStop;
 
 };
 #endif // __HATCHINGAPP_H__

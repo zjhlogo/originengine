@@ -52,6 +52,8 @@ public:
 	static uint ToD3DColorWriteChannel(uint nColorWriteChannel);
 	static uint ToOEColorWriteChannel(uint nColorWriteChannel);
 
+	static uint ToD3DClearScreenMask(uint nClearScreenMask);
+	static uint ToOEClearScreenMask(uint nClearScreenMask);
 };
 
 #endif // __OED3DUTIL_H__

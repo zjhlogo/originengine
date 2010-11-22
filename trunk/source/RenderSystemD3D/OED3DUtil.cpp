@@ -324,3 +324,15 @@ uint COED3DUtil::ToOEColorWriteChannel(uint nColorWriteChannel)
 	// so far they are the same value
 	return nColorWriteChannel;
 }
+
+uint COED3DUtil::ToD3DClearScreenMask(uint nClearScreenMask)
+{
+	// so far they are the same value
+	return nClearScreenMask;
+}
+
+uint COED3DUtil::ToOEClearScreenMask(uint nClearScreenMask)
+{
+	// so far they are the same value
+	return nClearScreenMask;
+}

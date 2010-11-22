@@ -54,10 +54,12 @@ public:
 	virtual const CVector4& GetClipPlane() = 0;
 
 	virtual void SetCullMode(CULL_MODE_TYPE eCullMode) = 0;
-
 	virtual void SetFillMode(FILL_MODE eFillMode) = 0;
-
 	virtual void SetColorWriteChannel(uint nChannel) = 0;
+
+	virtual uint GetClearScreenColor() = 0;
+	virtual void SetClearScreenColor(uint nARGB) = 0;
+	virtual void ClearScreen(uint nMask) = 0;			// See CLEAR_SCREEN_MASK
 };
 
 extern IOERenderSystem* g_pOERenderSystem;

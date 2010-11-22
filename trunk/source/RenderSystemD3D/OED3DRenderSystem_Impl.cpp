@@ -38,6 +38,7 @@ bool COED3DRenderSystem_Impl::Init()
 	m_pRenderTarget = NULL;
 	m_pD3DBackBufferSurface = NULL;
 	m_pD3DBackBufferDepthStencilSurface = NULL;
+	m_nClearScreenColor = 0xFF000000;
 	return true;
 }
 
@@ -281,6 +282,22 @@ void COED3DRenderSystem_Impl::SetFillMode(FILL_MODE eFillMode)
 void COED3DRenderSystem_Impl::SetColorWriteChannel(uint nChannel)
 {
 	m_CurrRenderState.m_nColorWriteChannel = nChannel;
+}
+
+uint COED3DRenderSystem_Impl::GetClearScreenColor()
+{
+	return m_nClearScreenColor;
+}
+
+void COED3DRenderSystem_Impl::SetClearScreenColor(uint nARGB)
+{
+	m_nClearScreenColor = nARGB;
+}
+
+void COED3DRenderSystem_Impl::ClearScreen(uint nMask)
+{
+	uint nD3DMask = COED3DUtil::ToD3DClearScreenMask(nMask);
+	g_pd3dDevice->Clear(0, NULL, nD3DMask, m_nClearScreenColor, 1.0f, 0);
 }
 
 bool COED3DRenderSystem_Impl::ApplyRenderState()

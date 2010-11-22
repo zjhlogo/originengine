@@ -400,7 +400,7 @@ void COED3DDevice_Impl::PerformOnce(float fDetailTime)
 	COEMsgCommand msgUIPostUpdate(OMI_UI_POST_UPDATE);
 	CallEvent(msgUIPostUpdate);
 
-	g_pd3dDevice->Clear(0, NULL, D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER, D3DCOLOR_XRGB(0, 0, 0), 1.0f, 0);
+	g_pOERenderSystem->ClearScreen(CSM_TARGET|CSM_ZBUFFER);
 	if (SUCCEEDED(g_pd3dDevice->BeginScene()))
 	{
 		// notify pre render 3d
@@ -415,7 +415,7 @@ void COED3DDevice_Impl::PerformOnce(float fDetailTime)
 		COEMsgCommand msgPostRender3D(OMI_POST_RENDER);
 		CallEvent(msgPostRender3D);
 
-		g_pd3dDevice->Clear(0, NULL, D3DCLEAR_ZBUFFER, D3DCOLOR_XRGB(0, 0, 0), 1.0f, 0);
+		g_pOERenderSystem->ClearScreen(CSM_ZBUFFER);
 		// notify pre render 2d
 		COEMsgCommand msgUIPreRender3D(OMI_UI_PRE_RENDER);
 		CallEvent(msgUIPreRender3D);
