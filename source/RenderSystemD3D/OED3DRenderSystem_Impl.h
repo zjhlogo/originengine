@@ -64,10 +64,12 @@ public:
 	virtual const CVector4& GetClipPlane();
 
 	virtual void SetCullMode(CULL_MODE_TYPE eCullMode);
-
 	virtual void SetFillMode(FILL_MODE eFillMode);
-
 	virtual void SetColorWriteChannel(uint nChannel);
+
+	virtual uint GetClearScreenColor();
+	virtual void SetClearScreenColor(uint nARGB);
+	virtual void ClearScreen(uint nMask);			// See CLEAR_SCREEN_MASK
 
 private:
 	bool Init();
@@ -93,6 +95,7 @@ private:
 	CMatrix4x4 m_matView;
 	CMatrix4x4 m_matProjection;
 
+	uint m_nClearScreenColor;
 };
 
 #endif // __OED3DRENDERSYSTEM_IMPL_H__

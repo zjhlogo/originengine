@@ -75,7 +75,10 @@ void CBumpMapApp::Update(float fDetailTime)
 
 bool CBumpMapApp::OnKeyDown(COEMsgKeyboard& msg)
 {
-	IOEShader* pShader = m_pModel->GetRenderData()->GetMaterialsList(TS("MainMaterialsList"))->GetMaterial(0)->GetShader();
+	IOERenderData* pRenderData = m_pModel->GetRenderData();
+	IOEMaterialsList* pMaterialsList = pRenderData->GetMaterialsList(TS("MainMaterialsList"));
+	IOEMaterial* pMaterial = pMaterialsList->GetMaterial(0);
+	IOEShader* pShader = pMaterial->GetShader();
 
 	switch (msg.GetKeyCode())
 	{
@@ -86,12 +89,15 @@ bool CBumpMapApp::OnKeyDown(COEMsgKeyboard& msg)
 		pShader->SetTechnique(TS("ParallaxMap"));
 		break;
 	case '3':
-		pShader->SetTechnique(TS("DiffuseTexture"));
+		pShader->SetTechnique(TS("ConeMap"));
 		break;
 	case '4':
-		pShader->SetTechnique(TS("NormalTexture"));
+		pShader->SetTechnique(TS("DiffuseTexture"));
 		break;
 	case '5':
+		pShader->SetTechnique(TS("NormalTexture"));
+		break;
+	case '6':
 		pShader->SetTechnique(TS("HeightMapTexture"));
 		break;
 	case ' ':
@@ -111,6 +117,7 @@ bool CBumpMapApp::OnSetupShaderParam(COEMsgShaderParam& msg)
 	if (!pCameraNode) return false;
 
 	pShader->SetVector(TS("g_vEyePos"), pCameraNode->GetPosition());
+	pShader->SetTexture(TS("g_texConeMap"), pMaterial->GetTexture(MTT_TEXTURE2));
 
 	return true;
 }

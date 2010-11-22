@@ -48,6 +48,9 @@ bool CCartoonApp::UserDataInit()
 	pRootNode->AttachObject(m_pModel);
 
 	ResetCameraPosRot(m_pModel);
+
+	m_pModel->RegisterEvent(OMI_SETUP_SHADER_PARAM, this, (MSG_FUNC)&CCartoonApp::OnSetupShaderParam);
+	g_pOERenderSystem->SetClearScreenColor(0xFFFFFFFF);
 	return true;
 }
 
@@ -59,4 +62,20 @@ void CCartoonApp::UserDataTerm()
 void CCartoonApp::Update(float fDetailTime)
 {
 	// TODO: 
+}
+
+bool CCartoonApp::OnSetupShaderParam(COEMsgShaderParam& msg)
+{
+	IOENode* pRootNode = g_pOECore->GetRootNode();
+	if (!pRootNode) return false;
+
+	IOENode* pCamera = pRootNode->GetChildNode(TS("Camera"));
+	if (!pCamera) return false;
+
+	IOEShader* pShader = msg.GetShader();
+	if (!pShader) return false;
+
+	pShader->SetVector(TS("g_vEyePos"), pCamera->GetPosition());
+
+	return true;
 }

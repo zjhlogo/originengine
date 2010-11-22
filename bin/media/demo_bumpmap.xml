@@ -3,7 +3,7 @@
 	<RenderData>
 		<Mesh>box.mesh</Mesh>
 		<Materials count="1">
-			<Material id="0" vertdecl="3075" shader="demo_bumpmap.fx" texdiffuse="brick_diffuse.png" texnormal="brick_normal_height.png" />
+			<Material id="0" vertdecl="3075" shader="demo_bumpmap.fx" texdiffuse="brick_diffuse.png" texnormal="brick_normal_height.png" texture2="brick_cone_map.png" />
 		</Materials>
 	</RenderData>
 	<Renderers>
