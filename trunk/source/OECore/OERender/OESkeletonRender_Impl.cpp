@@ -80,9 +80,9 @@ bool COESkeletonRender_Impl::BuildBoneVerts(TV_VERTEX_LINE& vVertsOut, TV_VERTEX
 	assert(pBone);
 	CMatrix4x4 matSkin = pBone->GetWorldMatrix() * pSkinMatrixs[nBoneID];
 	VERTEX_LINE Vertex;
-	Vertex.x = matSkin.m[12];
-	Vertex.y = matSkin.m[13];
-	Vertex.z = matSkin.m[14];
+	Vertex.x = matSkin.e[12];
+	Vertex.y = matSkin.e[13];
+	Vertex.z = matSkin.e[14];
 	Vertex.nColor = 0xFF808080;
 
 	int nSelfIndex = vVertsOut.size();
@@ -92,9 +92,9 @@ bool COESkeletonRender_Impl::BuildBoneVerts(TV_VERTEX_LINE& vVertsOut, TV_VERTEX
 	IOEBone* pBoneParent = pSkeleton->GetBone(nParentBoneID);
 	assert(pBoneParent);
 	matSkin = pBoneParent->GetWorldMatrix() * pSkinMatrixs[nParentBoneID];
-	Vertex.x = matSkin.m[12];
-	Vertex.y = matSkin.m[13];
-	Vertex.z = matSkin.m[14];
+	Vertex.x = matSkin.e[12];
+	Vertex.y = matSkin.e[13];
+	Vertex.z = matSkin.e[14];
 	Vertex.nColor = 0xFF808080;
 
 	int nParentIndex = vVertsOut.size();

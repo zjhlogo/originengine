@@ -31,25 +31,25 @@ void COEMath::BuildLookAtMatrixLH(CMatrix4x4& matOut, const CVector3& vEye, cons
 
 	CVector3 vAxisY = vAxisZ^vAxisX;
 
-	matOut.m[0] = vAxisX.x;
-	matOut.m[1] = vAxisY.x;
-	matOut.m[2] = vAxisZ.x;
-	matOut.m[3] = 0.0f;
+	matOut.e[0] = vAxisX.x;
+	matOut.e[1] = vAxisY.x;
+	matOut.e[2] = vAxisZ.x;
+	matOut.e[3] = 0.0f;
 
-	matOut.m[4] = vAxisX.y;
-	matOut.m[5] = vAxisY.y;
-	matOut.m[6] = vAxisZ.y;
-	matOut.m[7] = 0.0f;
+	matOut.e[4] = vAxisX.y;
+	matOut.e[5] = vAxisY.y;
+	matOut.e[6] = vAxisZ.y;
+	matOut.e[7] = 0.0f;
 
-	matOut.m[8] = vAxisX.z;
-	matOut.m[9] = vAxisY.z;
-	matOut.m[10] = vAxisZ.z;
-	matOut.m[11] = 0.0f;
+	matOut.e[8] = vAxisX.z;
+	matOut.e[9] = vAxisY.z;
+	matOut.e[10] = vAxisZ.z;
+	matOut.e[11] = 0.0f;
 
-	matOut.m[12] = -(vAxisX*vEye);
-	matOut.m[13] = -(vAxisY*vEye);
-	matOut.m[14] = -(vAxisZ*vEye);
-	matOut.m[15] = 1.0f;
+	matOut.e[12] = -(vAxisX*vEye);
+	matOut.e[13] = -(vAxisY*vEye);
+	matOut.e[14] = -(vAxisZ*vEye);
+	matOut.e[15] = 1.0f;
 }
 
 void COEMath::BuildLookAtMatrixRH(CMatrix4x4& matOut, const CVector3& vEye, const CVector3& vAt, const CVector3& vUp)
@@ -63,25 +63,25 @@ void COEMath::BuildLookAtMatrixRH(CMatrix4x4& matOut, const CVector3& vEye, cons
 	CVector3 vNewUp = vRight ^ vForward;
 	vNewUp.Normalize();
 
-	matOut.m[0] = vRight.x;
-	matOut.m[4] = vRight.y;
-	matOut.m[8] = vRight.z;
-	matOut.m[12] = 0.0f;
+	matOut.e[0] = vRight.x;
+	matOut.e[4] = vRight.y;
+	matOut.e[8] = vRight.z;
+	matOut.e[12] = 0.0f;
 
-	matOut.m[1] = vNewUp.x;
-	matOut.m[5] = vNewUp.y;
-	matOut.m[9] = vNewUp.z;
-	matOut.m[13] = 0.0f;
+	matOut.e[1] = vNewUp.x;
+	matOut.e[5] = vNewUp.y;
+	matOut.e[9] = vNewUp.z;
+	matOut.e[13] = 0.0f;
 
-	matOut.m[2] = -vForward.x;
-	matOut.m[6] = -vForward.y;
-	matOut.m[10] = -vForward.z;
-	matOut.m[14] = 0.0f;
+	matOut.e[2] = -vForward.x;
+	matOut.e[6] = -vForward.y;
+	matOut.e[10] = -vForward.z;
+	matOut.e[14] = 0.0f;
 
-	matOut.m[3] = -vEye.x;
-	matOut.m[7] = -vEye.y;
-	matOut.m[11] = -vEye.z;
-	matOut.m[15] = 1.0f;
+	matOut.e[3] = -vEye.x;
+	matOut.e[7] = -vEye.y;
+	matOut.e[11] = -vEye.z;
+	matOut.e[15] = 1.0f;
 }
 
 void COEMath::BuildProjectMatrixLH(CMatrix4x4& matOut, float fFov, float fAspect, float fNear, float fFar)
@@ -89,25 +89,25 @@ void COEMath::BuildProjectMatrixLH(CMatrix4x4& matOut, float fFov, float fAspect
 	float h = tanf(0.5f*fFov);
 	float w = h*fAspect;
 
-	matOut.m[0] = 1.0f/w;
-	matOut.m[1] = 0.0f;
-	matOut.m[2] = 0.0f;
-	matOut.m[3] = 0.0f;
+	matOut.e[0] = 1.0f/w;
+	matOut.e[1] = 0.0f;
+	matOut.e[2] = 0.0f;
+	matOut.e[3] = 0.0f;
 
-	matOut.m[4] = 0.0f;
-	matOut.m[5] = 1.0f/h;
-	matOut.m[6] = 0.0f;
-	matOut.m[7] = 0.0f;
+	matOut.e[4] = 0.0f;
+	matOut.e[5] = 1.0f/h;
+	matOut.e[6] = 0.0f;
+	matOut.e[7] = 0.0f;
 
-	matOut.m[8] = 0.0f;
-	matOut.m[9] = 0.0f;
-	matOut.m[10] = fFar/(fFar-fNear);
-	matOut.m[11] = 1.0f;
+	matOut.e[8] = 0.0f;
+	matOut.e[9] = 0.0f;
+	matOut.e[10] = fFar/(fFar-fNear);
+	matOut.e[11] = 1.0f;
 
-	matOut.m[12] = 0.0f;
-	matOut.m[13] = 0.0f;
-	matOut.m[14] = -fNear*fFar/(fFar-fNear);
-	matOut.m[15] = 0.0f;
+	matOut.e[12] = 0.0f;
+	matOut.e[13] = 0.0f;
+	matOut.e[14] = -fNear*fFar/(fFar-fNear);
+	matOut.e[15] = 0.0f;
 }
 
 void COEMath::BuildProjectMatrixRH(CMatrix4x4& matOut, float fFov, float fAspect, float fNear, float fFar)
@@ -115,25 +115,25 @@ void COEMath::BuildProjectMatrixRH(CMatrix4x4& matOut, float fFov, float fAspect
 	float h = tanf(0.5f*fFov);
 	float w = h*fAspect;
 
-	matOut.m[0] = 1.0f/w;
-	matOut.m[1] = 0.0f;
-	matOut.m[2] = 0.0f;
-	matOut.m[3] = 0.0f;
+	matOut.e[0] = 1.0f/w;
+	matOut.e[1] = 0.0f;
+	matOut.e[2] = 0.0f;
+	matOut.e[3] = 0.0f;
 
-	matOut.m[4] = 0.0f;
-	matOut.m[5] = 1.0f/h;
-	matOut.m[6] = 0.0f;
-	matOut.m[7] = 0.0f;
+	matOut.e[4] = 0.0f;
+	matOut.e[5] = 1.0f/h;
+	matOut.e[6] = 0.0f;
+	matOut.e[7] = 0.0f;
 
-	matOut.m[8] = 0.0f;
-	matOut.m[9] = 0.0f;
-	matOut.m[10] = fFar/(fFar-fNear);
-	matOut.m[11] = -1.0f;
+	matOut.e[8] = 0.0f;
+	matOut.e[9] = 0.0f;
+	matOut.e[10] = fFar/(fFar-fNear);
+	matOut.e[11] = -1.0f;
 
-	matOut.m[12] = 0.0f;
-	matOut.m[13] = 0.0f;
-	matOut.m[14] = fNear*fFar/(fFar-fNear);
-	matOut.m[15] = 0.0f;
+	matOut.e[12] = 0.0f;
+	matOut.e[13] = 0.0f;
+	matOut.e[14] = fNear*fFar/(fFar-fNear);
+	matOut.e[15] = 0.0f;
 }
 
 void COEMath::BuildMatrixFromQuaternion(CMatrix4x4& matOut, const CQuaternion& qIn)
@@ -154,25 +154,25 @@ void COEMath::BuildMatrixFromQuaternion(CMatrix4x4& matOut, const CQuaternion& q
 	float f2YZ = 2.0f*qIn.y*qIn.z;
 	float f2ZZ = 2.0f*qIn.z*qIn.z;
 
-	matOut.m[0] = 1.0f - f2YY - f2ZZ;
-	matOut.m[1] = f2XY + f2WZ;
-	matOut.m[2] = f2XZ - f2WY;
-	matOut.m[3] = 0.0f;
+	matOut.e[0] = 1.0f - f2YY - f2ZZ;
+	matOut.e[1] = f2XY + f2WZ;
+	matOut.e[2] = f2XZ - f2WY;
+	matOut.e[3] = 0.0f;
 
-	matOut.m[4] = f2XY - f2WZ;
-	matOut.m[5] = 1.0f - f2XX - f2ZZ;
-	matOut.m[6] = f2YZ + f2WX;
-	matOut.m[7] = 0.0f;
+	matOut.e[4] = f2XY - f2WZ;
+	matOut.e[5] = 1.0f - f2XX - f2ZZ;
+	matOut.e[6] = f2YZ + f2WX;
+	matOut.e[7] = 0.0f;
 
-	matOut.m[8] = f2XZ + f2WY;
-	matOut.m[9] = f2YZ - f2WX;
-	matOut.m[10] = 1.0f - f2XX - f2YY;
-	matOut.m[11] = 0.0f;
+	matOut.e[8] = f2XZ + f2WY;
+	matOut.e[9] = f2YZ - f2WX;
+	matOut.e[10] = 1.0f - f2XX - f2YY;
+	matOut.e[11] = 0.0f;
 
-	matOut.m[12] = 0.0f;
-	matOut.m[13] = 0.0f;
-	matOut.m[14] = 0.0f;
-	matOut.m[15] = 1.0f;
+	matOut.e[12] = 0.0f;
+	matOut.e[13] = 0.0f;
+	matOut.e[14] = 0.0f;
+	matOut.e[15] = 1.0f;
 }
 
 void COEMath::BuildMatrixFromEulerXYZ(CMatrix4x4& matOut, float x, float y, float z)
@@ -190,25 +190,25 @@ void COEMath::BuildMatrixFromEulerXYZ(CMatrix4x4& matOut, float x, float y, floa
 	float sy = sinf(y);
 	float sz = sinf(z);
 
-	matOut.m[0] = cy*cz;
-	matOut.m[1] = -cy*sz;
-	matOut.m[2] = sy;
-	matOut.m[3] = 0.0f;
+	matOut.e[0] = cy*cz;
+	matOut.e[1] = -cy*sz;
+	matOut.e[2] = sy;
+	matOut.e[3] = 0.0f;
 
-	matOut.m[4] = cz*sx*sy + cx*sz;
-	matOut.m[5] = cx*cz - sx*sy*sz;
-	matOut.m[6] = -cy*sx;
-	matOut.m[7] = 0.0f;
+	matOut.e[4] = cz*sx*sy + cx*sz;
+	matOut.e[5] = cx*cz - sx*sy*sz;
+	matOut.e[6] = -cy*sx;
+	matOut.e[7] = 0.0f;
 
-	matOut.m[8] = -cx*cz*sy + sx*sz;
-	matOut.m[9] = cz*sx + cx*sy*sz;
-	matOut.m[10] = cx*cy;
-	matOut.m[11] = 0.0f;
+	matOut.e[8] = -cx*cz*sy + sx*sz;
+	matOut.e[9] = cz*sx + cx*sy*sz;
+	matOut.e[10] = cx*cy;
+	matOut.e[11] = 0.0f;
 
-	matOut.m[12] = 0.0f;
-	matOut.m[13] = 0.0f;
-	matOut.m[14] = 0.0f;
-	matOut.m[15] = 1.0f;
+	matOut.e[12] = 0.0f;
+	matOut.e[13] = 0.0f;
+	matOut.e[14] = 0.0f;
+	matOut.e[15] = 1.0f;
 }
 
 void COEMath::BuildMatrixFromEulerYZX(CMatrix4x4& matOut, float x, float y, float z)
@@ -226,25 +226,25 @@ void COEMath::BuildMatrixFromEulerYZX(CMatrix4x4& matOut, float x, float y, floa
 	float sy = sinf(y);
 	float sz = sinf(z);
 
-	matOut.m[0] = cy*cz;
-	matOut.m[1] = -cy*sz*cx+sy*sx;
-	matOut.m[2] = cy*sz*sx+sy*cx;
-	matOut.m[3] = 0.0f;
+	matOut.e[0] = cy*cz;
+	matOut.e[1] = -cy*sz*cx+sy*sx;
+	matOut.e[2] = cy*sz*sx+sy*cx;
+	matOut.e[3] = 0.0f;
 
-	matOut.m[4] = sz;
-	matOut.m[5] = cz*cx;
-	matOut.m[6] = -cz*sx;
-	matOut.m[7] = 0.0f;
+	matOut.e[4] = sz;
+	matOut.e[5] = cz*cx;
+	matOut.e[6] = -cz*sx;
+	matOut.e[7] = 0.0f;
 
-	matOut.m[8] = -sy*cz;
-	matOut.m[9] = sy*sz*cx+cy*sx;
-	matOut.m[10] = -sy*sz*sx+cy*cx;
-	matOut.m[11] = 0.0f;
+	matOut.e[8] = -sy*cz;
+	matOut.e[9] = sy*sz*cx+cy*sx;
+	matOut.e[10] = -sy*sz*sx+cy*cx;
+	matOut.e[11] = 0.0f;
 
-	matOut.m[12] = 0.0f;
-	matOut.m[13] = 0.0f;
-	matOut.m[14] = 0.0f;
-	matOut.m[15] = 1.0f;
+	matOut.e[12] = 0.0f;
+	matOut.e[13] = 0.0f;
+	matOut.e[14] = 0.0f;
+	matOut.e[15] = 1.0f;
 }
 
 void COEMath::BuildRotationMatrix(CMatrix4x4& matOut, const CVector3& vAxis, float fRadius)
@@ -261,25 +261,25 @@ void COEMath::BuildRotationMatrix(CMatrix4x4& matOut, const CVector3& vAxis, flo
 	float fSin = sinf(fRadius);
 	float fSum = 1.0f - fCos;
 
-	matOut.m[0] = (vAxis.x * vAxis.x) * fSum + fCos;
-	matOut.m[1] = (vAxis.x * vAxis.y) * fSum - (vAxis.z * fSin);
-	matOut.m[2] = (vAxis.x * vAxis.z) * fSum + (vAxis.y * fSin);
-	matOut.m[3] = 0.0f;
+	matOut.e[0] = (vAxis.x * vAxis.x) * fSum + fCos;
+	matOut.e[1] = (vAxis.x * vAxis.y) * fSum - (vAxis.z * fSin);
+	matOut.e[2] = (vAxis.x * vAxis.z) * fSum + (vAxis.y * fSin);
+	matOut.e[3] = 0.0f;
 
-	matOut.m[4] = (vAxis.y * vAxis.x) * fSum + (vAxis.z * fSin);
-	matOut.m[5] = (vAxis.y * vAxis.y) * fSum + fCos ;
-	matOut.m[6] = (vAxis.y * vAxis.z) * fSum - (vAxis.x * fSin);
-	matOut.m[7] = 0.0f;
+	matOut.e[4] = (vAxis.y * vAxis.x) * fSum + (vAxis.z * fSin);
+	matOut.e[5] = (vAxis.y * vAxis.y) * fSum + fCos ;
+	matOut.e[6] = (vAxis.y * vAxis.z) * fSum - (vAxis.x * fSin);
+	matOut.e[7] = 0.0f;
 
-	matOut.m[8] = (vAxis.z * vAxis.x) * fSum - (vAxis.y * fSin);
-	matOut.m[9] = (vAxis.z * vAxis.y) * fSum + (vAxis.x * fSin);
-	matOut.m[10] = (vAxis.z * vAxis.z) * fSum + fCos;
-	matOut.m[11] = 0.0f;
+	matOut.e[8] = (vAxis.z * vAxis.x) * fSum - (vAxis.y * fSin);
+	matOut.e[9] = (vAxis.z * vAxis.y) * fSum + (vAxis.x * fSin);
+	matOut.e[10] = (vAxis.z * vAxis.z) * fSum + fCos;
+	matOut.e[11] = 0.0f;
 
-	matOut.m[12] = 0.0f;
-	matOut.m[13] = 0.0f;
-	matOut.m[14] = 0.0f;
-	matOut.m[15] = 1.0f;
+	matOut.e[12] = 0.0f;
+	matOut.e[13] = 0.0f;
+	matOut.e[14] = 0.0f;
+	matOut.e[15] = 1.0f;
 }
 
 void COEMath::BuildRotationXMatrix(CMatrix4x4& matOut, float fRadius)
@@ -293,25 +293,25 @@ void COEMath::BuildRotationXMatrix(CMatrix4x4& matOut, float fRadius)
 	float cr = cos(fRadius);
 	float sr = sin(fRadius);
 
-	matOut.m[0] = 1.0f;
-	matOut.m[1] = 0.0f;
-	matOut.m[2] = 0.0f;
-	matOut.m[3] = 0.0f;
+	matOut.e[0] = 1.0f;
+	matOut.e[1] = 0.0f;
+	matOut.e[2] = 0.0f;
+	matOut.e[3] = 0.0f;
 
-	matOut.m[4] = 0.0f;
-	matOut.m[5] = cr;
-	matOut.m[6] = -sr;
-	matOut.m[7] = 0.0f;
+	matOut.e[4] = 0.0f;
+	matOut.e[5] = cr;
+	matOut.e[6] = -sr;
+	matOut.e[7] = 0.0f;
 
-	matOut.m[8] = 0.0f;
-	matOut.m[9] = sr;
-	matOut.m[10] = cr;
-	matOut.m[11] = 0.0f;
+	matOut.e[8] = 0.0f;
+	matOut.e[9] = sr;
+	matOut.e[10] = cr;
+	matOut.e[11] = 0.0f;
 
-	matOut.m[12] = 0.0f;
-	matOut.m[13] = 0.0f;
-	matOut.m[14] = 0.0f;
-	matOut.m[15] = 1.0f;
+	matOut.e[12] = 0.0f;
+	matOut.e[13] = 0.0f;
+	matOut.e[14] = 0.0f;
+	matOut.e[15] = 1.0f;
 }
 
 void COEMath::BuildRotationYMatrix(CMatrix4x4& matOut, float fRadius)
@@ -325,25 +325,25 @@ void COEMath::BuildRotationYMatrix(CMatrix4x4& matOut, float fRadius)
 	float cr = cos(fRadius);
 	float sr = sin(fRadius);
 
-	matOut.m[0] = cr;
-	matOut.m[1] = 0.0f;
-	matOut.m[2] = sr;
-	matOut.m[3] = 0.0f;
+	matOut.e[0] = cr;
+	matOut.e[1] = 0.0f;
+	matOut.e[2] = sr;
+	matOut.e[3] = 0.0f;
 
-	matOut.m[4] = 0.0f;
-	matOut.m[5] = 1.0f;
-	matOut.m[6] = 0.0f;
-	matOut.m[7] = 0.0f;
+	matOut.e[4] = 0.0f;
+	matOut.e[5] = 1.0f;
+	matOut.e[6] = 0.0f;
+	matOut.e[7] = 0.0f;
 
-	matOut.m[8] = -sr;
-	matOut.m[9] = 0.0f;
-	matOut.m[10] = cr;
-	matOut.m[11] = 0.0f;
+	matOut.e[8] = -sr;
+	matOut.e[9] = 0.0f;
+	matOut.e[10] = cr;
+	matOut.e[11] = 0.0f;
 
-	matOut.m[12] = 0.0f;
-	matOut.m[13] = 0.0f;
-	matOut.m[14] = 0.0f;
-	matOut.m[15] = 1.0f;
+	matOut.e[12] = 0.0f;
+	matOut.e[13] = 0.0f;
+	matOut.e[14] = 0.0f;
+	matOut.e[15] = 1.0f;
 }
 
 void COEMath::BuildRotationZMatrix(CMatrix4x4& matOut, float fRadius)
@@ -357,33 +357,33 @@ void COEMath::BuildRotationZMatrix(CMatrix4x4& matOut, float fRadius)
 	float cr = cos(fRadius);
 	float sr = sin(fRadius);
 
-	matOut.m[0] = cr;
-	matOut.m[1] = -sr;
-	matOut.m[2] = 0.0f;
-	matOut.m[3] = 0.0f;
+	matOut.e[0] = cr;
+	matOut.e[1] = -sr;
+	matOut.e[2] = 0.0f;
+	matOut.e[3] = 0.0f;
 
-	matOut.m[4] = sr;
-	matOut.m[5] = cr;
-	matOut.m[6] = 0.0f;
-	matOut.m[7] = 0.0f;
+	matOut.e[4] = sr;
+	matOut.e[5] = cr;
+	matOut.e[6] = 0.0f;
+	matOut.e[7] = 0.0f;
 
-	matOut.m[8] = 0.0f;
-	matOut.m[9] = 0.0f;
-	matOut.m[10] = 1.0f;
-	matOut.m[11] = 0.0f;
+	matOut.e[8] = 0.0f;
+	matOut.e[9] = 0.0f;
+	matOut.e[10] = 1.0f;
+	matOut.e[11] = 0.0f;
 
-	matOut.m[12] = 0.0f;
-	matOut.m[13] = 0.0f;
-	matOut.m[14] = 0.0f;
-	matOut.m[15] = 1.0f;
+	matOut.e[12] = 0.0f;
+	matOut.e[13] = 0.0f;
+	matOut.e[14] = 0.0f;
+	matOut.e[15] = 1.0f;
 }
 
 void COEMath::BuildQuaternionFromMatrix(CQuaternion& qOut, const CMatrix4x4& matIn)
 {
-	float fWSquaredMinus1 = matIn.m[0] + matIn.m[5] + matIn.m[10];
-	float fXSquaredMinus1 = matIn.m[0] - matIn.m[5] - matIn.m[10];
-	float fYSquaredMinus1 = matIn.m[5] - matIn.m[0] - matIn.m[10];
-	float fZSquaredMinus1 = matIn.m[10] - matIn.m[0] - matIn.m[5];
+	float fWSquaredMinus1 = matIn.e[0] + matIn.e[5] + matIn.e[10];
+	float fXSquaredMinus1 = matIn.e[0] - matIn.e[5] - matIn.e[10];
+	float fYSquaredMinus1 = matIn.e[5] - matIn.e[0] - matIn.e[10];
+	float fZSquaredMinus1 = matIn.e[10] - matIn.e[0] - matIn.e[5];
 
 	int nBiggestIndex = 0;
 	float fBiggestSquaredMinus1 = fWSquaredMinus1;
@@ -415,27 +415,27 @@ void COEMath::BuildQuaternionFromMatrix(CQuaternion& qOut, const CMatrix4x4& mat
 	{
 	case 0:
 		qOut.w = fBiggestValue;
-		qOut.x = (matIn.m[6] - matIn.m[9]) * fMult;
-		qOut.y = (matIn.m[8] - matIn.m[2]) * fMult;
-		qOut.z = (matIn.m[1] - matIn.m[4]) * fMult;
+		qOut.x = (matIn.e[6] - matIn.e[9]) * fMult;
+		qOut.y = (matIn.e[8] - matIn.e[2]) * fMult;
+		qOut.z = (matIn.e[1] - matIn.e[4]) * fMult;
 		break;
 	case 1:
 		qOut.x = fBiggestValue;
-		qOut.w = (matIn.m[6] - matIn.m[9]) * fMult;
-		qOut.y = (matIn.m[1] + matIn.m[4]) * fMult;
-		qOut.z = (matIn.m[8] + matIn.m[2]) * fMult;
+		qOut.w = (matIn.e[6] - matIn.e[9]) * fMult;
+		qOut.y = (matIn.e[1] + matIn.e[4]) * fMult;
+		qOut.z = (matIn.e[8] + matIn.e[2]) * fMult;
 		break;
 	case 2:
 		qOut.y = fBiggestValue;
-		qOut.w = (matIn.m[8] - matIn.m[2]) * fMult;
-		qOut.x = (matIn.m[1] + matIn.m[4]) * fMult;
-		qOut.z = (matIn.m[6] + matIn.m[9]) * fMult;
+		qOut.w = (matIn.e[8] - matIn.e[2]) * fMult;
+		qOut.x = (matIn.e[1] + matIn.e[4]) * fMult;
+		qOut.z = (matIn.e[6] + matIn.e[9]) * fMult;
 		break;
 	case 3:
 		qOut.z = fBiggestValue;
-		qOut.w = (matIn.m[1] - matIn.m[4]) * fMult;
-		qOut.x = (matIn.m[8] + matIn.m[2]) * fMult;
-		qOut.y = (matIn.m[6] + matIn.m[9]) * fMult;
+		qOut.w = (matIn.e[1] - matIn.e[4]) * fMult;
+		qOut.x = (matIn.e[8] + matIn.e[2]) * fMult;
+		qOut.y = (matIn.e[6] + matIn.e[9]) * fMult;
 		break;
 	}
 }
@@ -543,25 +543,25 @@ void COEMath::MatrixLerp(CMatrix4x4& matOut, const CMatrix4x4& mat1, const CMatr
 	float k0 = 1.0f - t;
 	float k1 = t;
 
-	matOut.m[0] = k0*mat1.m[0] + k1*mat2.m[0];
-	matOut.m[1] = k0*mat1.m[1] + k1*mat2.m[1];
-	matOut.m[2] = k0*mat1.m[2] + k1*mat2.m[2];
-	matOut.m[3] = 0.0f;
+	matOut.e[0] = k0*mat1.e[0] + k1*mat2.e[0];
+	matOut.e[1] = k0*mat1.e[1] + k1*mat2.e[1];
+	matOut.e[2] = k0*mat1.e[2] + k1*mat2.e[2];
+	matOut.e[3] = 0.0f;
 
-	matOut.m[4] = k0*mat1.m[4] + k1*mat2.m[4];
-	matOut.m[5] = k0*mat1.m[5] + k1*mat2.m[5];
-	matOut.m[6] = k0*mat1.m[6] + k1*mat2.m[6];
-	matOut.m[7] = 0.0f;
+	matOut.e[4] = k0*mat1.e[4] + k1*mat2.e[4];
+	matOut.e[5] = k0*mat1.e[5] + k1*mat2.e[5];
+	matOut.e[6] = k0*mat1.e[6] + k1*mat2.e[6];
+	matOut.e[7] = 0.0f;
 
-	matOut.m[8] = k0*mat1.m[8] + k1*mat2.m[8];
-	matOut.m[9] = k0*mat1.m[9] + k1*mat2.m[9];
-	matOut.m[10] = k0*mat1.m[10] + k1*mat2.m[10];
-	matOut.m[11] = 0.0f;
+	matOut.e[8] = k0*mat1.e[8] + k1*mat2.e[8];
+	matOut.e[9] = k0*mat1.e[9] + k1*mat2.e[9];
+	matOut.e[10] = k0*mat1.e[10] + k1*mat2.e[10];
+	matOut.e[11] = 0.0f;
 
-	matOut.m[12] = k0*mat1.m[12] + k1*mat2.m[12];
-	matOut.m[13] = k0*mat1.m[13] + k1*mat2.m[13];
-	matOut.m[14] = k0*mat1.m[14] + k1*mat2.m[14];
-	matOut.m[15] = 1.0f;
+	matOut.e[12] = k0*mat1.e[12] + k1*mat2.e[12];
+	matOut.e[13] = k0*mat1.e[13] + k1*mat2.e[13];
+	matOut.e[14] = k0*mat1.e[14] + k1*mat2.e[14];
+	matOut.e[15] = 1.0f;
 }
 
 void COEMath::QuaternionSlerp(CQuaternion& qOut, const CQuaternion& q1, const CQuaternion& q2, float t)
