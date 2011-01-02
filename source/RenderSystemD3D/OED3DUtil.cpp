@@ -10,12 +10,12 @@
 
 void COED3DUtil::ToD3DXMatrix(D3DXMATRIX& matOut, const CMatrix4x4& matIn)
 {
-	memcpy(matOut.m, matIn.m, sizeof(matIn.m));
+	memcpy(matOut.m, matIn.e, sizeof(matIn.e));
 }
 
 void COED3DUtil::ToOEMatrix(CMatrix4x4& matOut, const D3DXMATRIX& matIn)
 {
-	memcpy(matOut.m, matIn.m, sizeof(matIn.m));
+	memcpy(matOut.e, matIn.m, sizeof(matIn.m));
 }
 
 void COED3DUtil::ToD3DVector3(D3DXVECTOR3& vOut, const CVector3& vIn)

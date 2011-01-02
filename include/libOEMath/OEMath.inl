@@ -10,106 +10,106 @@
 
 inline CVector3 operator *(const CVector3& v, const CMatrix4x4& mat)
 {
-	return CVector3(v.x*mat.m[0]+v.y*mat.m[4]+v.z*mat.m[8]+mat.m[12],
-					v.x*mat.m[1]+v.y*mat.m[5]+v.z*mat.m[9]+mat.m[13],
-					v.x*mat.m[2]+v.y*mat.m[6]+v.z*mat.m[10]+mat.m[14]);
+	return CVector3(v.x*mat.e[0]+v.y*mat.e[4]+v.z*mat.e[8]+mat.e[12],
+					v.x*mat.e[1]+v.y*mat.e[5]+v.z*mat.e[9]+mat.e[13],
+					v.x*mat.e[2]+v.y*mat.e[6]+v.z*mat.e[10]+mat.e[14]);
 }
 
 inline CVector3 operator *(const CMatrix4x4& mat, const CVector3& v)
 {
-	return CVector3(v.x*mat.m[0]+v.y*mat.m[4]+v.z*mat.m[8]+mat.m[12],
-					v.x*mat.m[1]+v.y*mat.m[5]+v.z*mat.m[9]+mat.m[13],
-					v.x*mat.m[2]+v.y*mat.m[6]+v.z*mat.m[10]+mat.m[14]);
+	return CVector3(v.x*mat.e[0]+v.y*mat.e[4]+v.z*mat.e[8]+mat.e[12],
+					v.x*mat.e[1]+v.y*mat.e[5]+v.z*mat.e[9]+mat.e[13],
+					v.x*mat.e[2]+v.y*mat.e[6]+v.z*mat.e[10]+mat.e[14]);
 }
 
 inline CVector4 operator *(const CVector4& v, const CMatrix4x4& mat)
 {
-	return CVector4(v.x*mat.m[0]+v.y*mat.m[4]+v.z*mat.m[8]+v.w*mat.m[12],
-					v.x*mat.m[1]+v.y*mat.m[5]+v.z*mat.m[9]+v.w*mat.m[13],
-					v.x*mat.m[2]+v.y*mat.m[6]+v.z*mat.m[10]+v.w*mat.m[14],
-					v.x*mat.m[3]+v.y*mat.m[7]+v.z*mat.m[11]+v.w*mat.m[15]);
+	return CVector4(v.x*mat.e[0]+v.y*mat.e[4]+v.z*mat.e[8]+v.w*mat.e[12],
+					v.x*mat.e[1]+v.y*mat.e[5]+v.z*mat.e[9]+v.w*mat.e[13],
+					v.x*mat.e[2]+v.y*mat.e[6]+v.z*mat.e[10]+v.w*mat.e[14],
+					v.x*mat.e[3]+v.y*mat.e[7]+v.z*mat.e[11]+v.w*mat.e[15]);
 }
 
 inline CVector4 operator *(const CMatrix4x4& mat, const CVector4& v)
 {
-	return CVector4(v.x*mat.m[0]+v.y*mat.m[4]+v.z*mat.m[8]+v.w*mat.m[12],
-					v.x*mat.m[1]+v.y*mat.m[5]+v.z*mat.m[9]+v.w*mat.m[13],
-					v.x*mat.m[2]+v.y*mat.m[6]+v.z*mat.m[10]+v.w*mat.m[14],
-					v.x*mat.m[3]+v.y*mat.m[7]+v.z*mat.m[11]+v.w*mat.m[15]);
+	return CVector4(v.x*mat.e[0]+v.y*mat.e[4]+v.z*mat.e[8]+v.w*mat.e[12],
+					v.x*mat.e[1]+v.y*mat.e[5]+v.z*mat.e[9]+v.w*mat.e[13],
+					v.x*mat.e[2]+v.y*mat.e[6]+v.z*mat.e[10]+v.w*mat.e[14],
+					v.x*mat.e[3]+v.y*mat.e[7]+v.z*mat.e[11]+v.w*mat.e[15]);
 }
 
 inline CMatrix4x4 operator *(const CMatrix4x4& m1, const CMatrix4x4& m2)
 {
-	return CMatrix4x4(m1.m[0]*m2.m[0] + m1.m[1]*m2.m[4] + m1.m[2]*m2.m[8] + m1.m[3]*m2.m[12],
-		m1.m[0]*m2.m[1] + m1.m[1]*m2.m[5] + m1.m[2]*m2.m[9] + m1.m[3]*m2.m[13],
-		m1.m[0]*m2.m[2] + m1.m[1]*m2.m[6] + m1.m[2]*m2.m[10] + m1.m[3]*m2.m[14],
-		m1.m[0]*m2.m[3] + m1.m[1]*m2.m[7] + m1.m[2]*m2.m[11] + m1.m[3]*m2.m[15],
+	return CMatrix4x4(m1.e[0]*m2.e[0] + m1.e[1]*m2.e[4] + m1.e[2]*m2.e[8] + m1.e[3]*m2.e[12],
+		m1.e[0]*m2.e[1] + m1.e[1]*m2.e[5] + m1.e[2]*m2.e[9] + m1.e[3]*m2.e[13],
+		m1.e[0]*m2.e[2] + m1.e[1]*m2.e[6] + m1.e[2]*m2.e[10] + m1.e[3]*m2.e[14],
+		m1.e[0]*m2.e[3] + m1.e[1]*m2.e[7] + m1.e[2]*m2.e[11] + m1.e[3]*m2.e[15],
 
-		m1.m[4]*m2.m[0] + m1.m[5]*m2.m[4] + m1.m[6]*m2.m[8] + m1.m[7]*m2.m[12],
-		m1.m[4]*m2.m[1] + m1.m[5]*m2.m[5] + m1.m[6]*m2.m[9] + m1.m[7]*m2.m[13],
-		m1.m[4]*m2.m[2] + m1.m[5]*m2.m[6] + m1.m[6]*m2.m[10] + m1.m[7]*m2.m[14],
-		m1.m[4]*m2.m[3] + m1.m[5]*m2.m[7] + m1.m[6]*m2.m[11] + m1.m[7]*m2.m[15],
+		m1.e[4]*m2.e[0] + m1.e[5]*m2.e[4] + m1.e[6]*m2.e[8] + m1.e[7]*m2.e[12],
+		m1.e[4]*m2.e[1] + m1.e[5]*m2.e[5] + m1.e[6]*m2.e[9] + m1.e[7]*m2.e[13],
+		m1.e[4]*m2.e[2] + m1.e[5]*m2.e[6] + m1.e[6]*m2.e[10] + m1.e[7]*m2.e[14],
+		m1.e[4]*m2.e[3] + m1.e[5]*m2.e[7] + m1.e[6]*m2.e[11] + m1.e[7]*m2.e[15],
 
-		m1.m[8]*m2.m[0] + m1.m[9]*m2.m[4] + m1.m[10]*m2.m[8] + m1.m[11]*m2.m[12],
-		m1.m[8]*m2.m[1] + m1.m[9]*m2.m[5] + m1.m[10]*m2.m[9] + m1.m[11]*m2.m[13],
-		m1.m[8]*m2.m[2] + m1.m[9]*m2.m[6] + m1.m[10]*m2.m[10] + m1.m[11]*m2.m[14],
-		m1.m[8]*m2.m[3] + m1.m[9]*m2.m[7] + m1.m[10]*m2.m[11] + m1.m[11]*m2.m[15],
+		m1.e[8]*m2.e[0] + m1.e[9]*m2.e[4] + m1.e[10]*m2.e[8] + m1.e[11]*m2.e[12],
+		m1.e[8]*m2.e[1] + m1.e[9]*m2.e[5] + m1.e[10]*m2.e[9] + m1.e[11]*m2.e[13],
+		m1.e[8]*m2.e[2] + m1.e[9]*m2.e[6] + m1.e[10]*m2.e[10] + m1.e[11]*m2.e[14],
+		m1.e[8]*m2.e[3] + m1.e[9]*m2.e[7] + m1.e[10]*m2.e[11] + m1.e[11]*m2.e[15],
 
-		m1.m[12]*m2.m[0] + m1.m[13]*m2.m[4] + m1.m[14]*m2.m[8] + m1.m[15]*m2.m[12],
-		m1.m[12]*m2.m[1] + m1.m[13]*m2.m[5] + m1.m[14]*m2.m[9] + m1.m[15]*m2.m[13],
-		m1.m[12]*m2.m[2] + m1.m[13]*m2.m[6] + m1.m[14]*m2.m[10] + m1.m[15]*m2.m[14],
-		m1.m[12]*m2.m[3] + m1.m[13]*m2.m[7] + m1.m[14]*m2.m[11] + m1.m[15]*m2.m[15]);
+		m1.e[12]*m2.e[0] + m1.e[13]*m2.e[4] + m1.e[14]*m2.e[8] + m1.e[15]*m2.e[12],
+		m1.e[12]*m2.e[1] + m1.e[13]*m2.e[5] + m1.e[14]*m2.e[9] + m1.e[15]*m2.e[13],
+		m1.e[12]*m2.e[2] + m1.e[13]*m2.e[6] + m1.e[14]*m2.e[10] + m1.e[15]*m2.e[14],
+		m1.e[12]*m2.e[3] + m1.e[13]*m2.e[7] + m1.e[14]*m2.e[11] + m1.e[15]*m2.e[15]);
 }
 
 inline void COEMath::SetMatrixTranslation(CMatrix4x4& matOut, const CVector3& vPos)
 {
-	matOut.m[12] = vPos.x;
-	matOut.m[13] = vPos.y;
-	matOut.m[14] = vPos.z;
+	matOut.e[12] = vPos.x;
+	matOut.e[13] = vPos.y;
+	matOut.e[14] = vPos.z;
 }
 
 inline void COEMath::GetMatrixTranslation(CVector3& vPosOut, const CMatrix4x4& matIn)
 {
-	vPosOut.x = matIn.m[12];
-	vPosOut.y = matIn.m[13];
-	vPosOut.z = matIn.m[14];
+	vPosOut.x = matIn.e[12];
+	vPosOut.y = matIn.e[13];
+	vPosOut.z = matIn.e[14];
 }
 
 inline void COEMath::SetMatrixScale(CMatrix4x4& matOut, const CVector3& vScale)
 {
-	matOut.m[0] *= vScale.x;
-	matOut.m[1] *= vScale.x;
-	matOut.m[2] *= vScale.x;
+	matOut.e[0] *= vScale.x;
+	matOut.e[1] *= vScale.x;
+	matOut.e[2] *= vScale.x;
 
-	matOut.m[4] *= vScale.y;
-	matOut.m[5] *= vScale.y;
-	matOut.m[6] *= vScale.y;
+	matOut.e[4] *= vScale.y;
+	matOut.e[5] *= vScale.y;
+	matOut.e[6] *= vScale.y;
 
-	matOut.m[8] *= vScale.z;
-	matOut.m[9] *= vScale.z;
-	matOut.m[10] *= vScale.z;
+	matOut.e[8] *= vScale.z;
+	matOut.e[9] *= vScale.z;
+	matOut.e[10] *= vScale.z;
 }
 
 inline void COEMath::GetMatrixScale(CVector3& vScaleOut, const CMatrix4x4& matIn)
 {
-	vScaleOut.x = sqrtf(matIn.m[0]*matIn.m[0] + matIn.m[1]*matIn.m[1] + matIn.m[2]*matIn.m[2]);
-	vScaleOut.y = sqrtf(matIn.m[4]*matIn.m[4] + matIn.m[5]*matIn.m[5] + matIn.m[6]*matIn.m[6]);
-	vScaleOut.z = sqrtf(matIn.m[8]*matIn.m[8] + matIn.m[9]*matIn.m[9] + matIn.m[10]*matIn.m[10]);
+	vScaleOut.x = sqrtf(matIn.e[0]*matIn.e[0] + matIn.e[1]*matIn.e[1] + matIn.e[2]*matIn.e[2]);
+	vScaleOut.y = sqrtf(matIn.e[4]*matIn.e[4] + matIn.e[5]*matIn.e[5] + matIn.e[6]*matIn.e[6]);
+	vScaleOut.z = sqrtf(matIn.e[8]*matIn.e[8] + matIn.e[9]*matIn.e[9] + matIn.e[10]*matIn.e[10]);
 }
 
 inline void COEMath::InverseTranslateVector(CVector3& vInOut, const CMatrix4x4& matIn)
 {
-	vInOut.x = vInOut.x - matIn.m[12];
-	vInOut.y = vInOut.y - matIn.m[13];
-	vInOut.z = vInOut.z - matIn.m[14];
+	vInOut.x = vInOut.x - matIn.e[12];
+	vInOut.y = vInOut.y - matIn.e[13];
+	vInOut.z = vInOut.z - matIn.e[14];
 }
 
 inline void COEMath::InverseRotateVector(CVector3& vInOut, const CMatrix4x4& matIn)
 {
 	CVector3 vTemp;
-	vTemp.x = vInOut.x*matIn.m[0] + vInOut.y*matIn.m[1] + vInOut.z*matIn.m[2];
-	vTemp.y = vInOut.x*matIn.m[4] + vInOut.y*matIn.m[5] + vInOut.z*matIn.m[6];
-	vTemp.z = vInOut.x*matIn.m[8] + vInOut.y*matIn.m[9] + vInOut.z*matIn.m[10];
+	vTemp.x = vInOut.x*matIn.e[0] + vInOut.y*matIn.e[1] + vInOut.z*matIn.e[2];
+	vTemp.y = vInOut.x*matIn.e[4] + vInOut.y*matIn.e[5] + vInOut.z*matIn.e[6];
+	vTemp.z = vInOut.x*matIn.e[8] + vInOut.y*matIn.e[9] + vInOut.z*matIn.e[10];
 
 	vInOut = vTemp;
 }
