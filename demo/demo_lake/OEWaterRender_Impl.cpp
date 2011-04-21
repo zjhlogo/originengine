@@ -184,7 +184,7 @@ bool COEWaterRender_Impl::OnGetTransform(COEMsgTransform& msg)
 	{
 		// set reflect matrix
 		CMatrix4x4 matReflect;
-		matReflect.e[5] = -1.0f;
+		matReflect.m[5] = -1.0f;
 		matReflect *= msg.GetMatrix();
 		msg.SetMatrix(matReflect);
 	}
