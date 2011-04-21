@@ -510,7 +510,7 @@ bool CMs3dConverter_Impl::SaveToSkeletonFile(const tstring& strFile)
 		strncpy_s(Bone.szName, COEFmtSkeleton::BONE_NAME_SIZE, strName.c_str(), _TRUNCATE);
 
 		Bone.nParentIndex = BoneInfo.nParentIndex;
-		memcpy(Bone.matLocal, BoneInfo.matLocal.e, sizeof(float)*16);
+		memcpy(Bone.matLocal, BoneInfo.matLocal.m, sizeof(float)*16);
 
 		Bone.fTimeLength = 0.0f;
 		Bone.nNumFrameRot = (int)BoneInfo.vFrameRot.size();

@@ -102,7 +102,7 @@ bool COEBone_Impl::Create(const COEFmtSkeleton::BONE& Bone, int nID, IOEFile* pF
 	m_nParentID = Bone.nParentIndex;
 	m_fTimeLength = Bone.fTimeLength;
 
-	memcpy(m_matLocal.e, Bone.matLocal, sizeof(float)*16);
+	memcpy(m_matLocal.m, Bone.matLocal, sizeof(float)*16);
 	COEMath::BuildQuaternionFromMatrix(m_qLocalRot, m_matLocal);
 	COEMath::GetMatrixTranslation(m_vLocalPos, m_matLocal);
 	COEMath::GetMatrixScale(m_vLocalScale, m_matLocal);

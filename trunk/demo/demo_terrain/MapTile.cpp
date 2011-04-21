@@ -132,7 +132,7 @@ void CMapTile::CalcMatrix(CMatrix4x4& matOut, int nIndex)
 	int nX = nIndex%CTerrain::TILE_COUNT_X;
 
 	matOut.Identity();
-	matOut.e[12] = (float)(nX*TILE_WIDTH);
-	matOut.e[13] = 0.0f;
-	matOut.e[14] = (float)(nZ*TILE_HEIGHT);
+	matOut.m[12] = (float)(nX*TILE_WIDTH);
+	matOut.m[13] = 0.0f;
+	matOut.m[14] = (float)(nZ*TILE_HEIGHT);
 }

@@ -496,7 +496,7 @@ bool CModelExporter::SaveSkeletonFile(const tstring& strFileName)
 		COEOS::tchar2char(strName, BoneInfo.strName.c_str());
 		strncpy_s(Bone.szName, COEFmtSkeleton::BONE_NAME_SIZE, strName.c_str(), _TRUNCATE);
 		Bone.nParentIndex = BoneInfo.nParentID;
-		memcpy(Bone.matLocal, BoneInfo.matLocal.e, sizeof(float)*16);
+		memcpy(Bone.matLocal, BoneInfo.matLocal.m, sizeof(float)*16);
 
 		Bone.fTimeLength = 0.0f;
 		Bone.nNumFrameRot = (int)BoneInfo.FrameRot.size();
@@ -1606,47 +1606,47 @@ bool CModelExporter::InsertKeyFrame(BONE_INFO& BoneInfo, TimeValue time, const G
 
 void CModelExporter::MaxMat2OeMat(CMatrix4x4& matOut, const GMatrix& matIn)
 {
-	matOut.e[0] = matIn[0][0];
-	matOut.e[1] = matIn[0][2];
-	matOut.e[2] = matIn[0][1];
-	matOut.e[3] = 0.0f;
+	matOut.m[0] = matIn[0][0];
+	matOut.m[1] = matIn[0][2];
+	matOut.m[2] = matIn[0][1];
+	matOut.m[3] = 0.0f;
 
-	matOut.e[4] = matIn[2][0];
-	matOut.e[5] = matIn[2][2];
-	matOut.e[6] = matIn[2][1];
-	matOut.e[7] = 0.0f;
+	matOut.m[4] = matIn[2][0];
+	matOut.m[5] = matIn[2][2];
+	matOut.m[6] = matIn[2][1];
+	matOut.m[7] = 0.0f;
 
-	matOut.e[8] = matIn[1][0];
-	matOut.e[9] = matIn[1][2];
-	matOut.e[10] = matIn[1][1];
-	matOut.e[11] = 0.0f;
+	matOut.m[8] = matIn[1][0];
+	matOut.m[9] = matIn[1][2];
+	matOut.m[10] = matIn[1][1];
+	matOut.m[11] = 0.0f;
 
-	matOut.e[12] = matIn[3][0];
-	matOut.e[13] = matIn[3][2];
-	matOut.e[14] = matIn[3][1];
-	matOut.e[15] = 1.0f;
+	matOut.m[12] = matIn[3][0];
+	matOut.m[13] = matIn[3][2];
+	matOut.m[14] = matIn[3][1];
+	matOut.m[15] = 1.0f;
 }
 
 void CModelExporter::OeMat2MaxMat(GMatrix& matOut, const CMatrix4x4& matIn)
 {
-	matOut[0][0] = matIn.e[0];
-	matOut[0][1] = matIn.e[2];
-	matOut[0][2] = matIn.e[1];
+	matOut[0][0] = matIn.m[0];
+	matOut[0][1] = matIn.m[2];
+	matOut[0][2] = matIn.m[1];
 	matOut[0][3] = 0.0f;
 
-	matOut[1][0] = matIn.e[8];
-	matOut[1][1] = matIn.e[10];
-	matOut[1][2] = matIn.e[9];
+	matOut[1][0] = matIn.m[8];
+	matOut[1][1] = matIn.m[10];
+	matOut[1][2] = matIn.m[9];
 	matOut[1][3] = 0.0f;
 
-	matOut[2][0] = matIn.e[4];
-	matOut[2][1] = matIn.e[6];
-	matOut[2][2] = matIn.e[5];
+	matOut[2][0] = matIn.m[4];
+	matOut[2][1] = matIn.m[6];
+	matOut[2][2] = matIn.m[5];
 	matOut[2][3] = 0.0f;
 
-	matOut[3][0] = matIn.e[12];
-	matOut[3][1] = matIn.e[14];
-	matOut[3][2] = matIn.e[13];
+	matOut[3][0] = matIn.m[12];
+	matOut[3][1] = matIn.m[14];
+	matOut[3][2] = matIn.m[13];
 	matOut[3][3] = 1.0f;
 }
 
